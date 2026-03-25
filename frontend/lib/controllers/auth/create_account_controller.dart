@@ -1,4 +1,4 @@
-import '../../../models/auth/create_account_model.dart';
+import '../../models/auth/create_account_model.dart';
 
 class CreateAccountController {
   Future<String?> createAccount({

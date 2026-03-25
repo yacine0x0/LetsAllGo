@@ -1,4 +1,4 @@
-import '../../../models/auth/login_model.dart';
+import '../../models/auth/login_model.dart';
 
 class LoginController {
   Future<String?> login(String email, String password) async {
