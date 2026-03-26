@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import 'dotenv/config';
+
+
 
 const prisma = new PrismaClient();
 
@@ -36,6 +39,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json({ token, userId: user.id });
   } catch (error) {
+    console.error('LOGIN ERROR:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };
@@ -63,6 +67,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).json({ message: 'Compte créé', userId: user.id });
   } catch (error) {
+    console.error('REGISTER ERROR:', error);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };

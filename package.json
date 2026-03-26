@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "- Algorithemics 1 and 2 Courses\r - Randomized Quizes with adjustable intensity\r - Academic files (exams + TD)",
   "main": "index.js",
-"scripts": {
-  "dev": "nodemon --exec tsx src/index.ts",
-  "build": "tsc",
-  "start": "node dist/index.js"
-},
+  "scripts": {
+    "dev": "nodemon --exec tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yacine0x0/LetsAllGo.git"
