@@ -1,7 +1,8 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../controllers/auth/login_controller.dart';
+import '../dashboard/dashboard_page.dart';
 import 'create_account_page.dart';
-import 'dart:ui';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -32,7 +33,10 @@ class _LoginPageState extends State<LoginPage> {
       _errorMessage = null;
     });
 
-    final error = await _controller.login(_emailCtrl.text, _passwordCtrl.text);
+    final error = await _controller.login(
+      _emailCtrl.text,
+      _passwordCtrl.text,
+    );
 
     setState(() {
       _isLoading = false;
@@ -40,25 +44,25 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     if (error == null) {
-      // Navigation vers la page suivante
+      // Naviguer vers Dashboard après login réussi
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height; // hauteur écran c'est ce que j'utilise pour faire du responsive
-    final w = MediaQuery.of(context).size.width;  // largeur écran
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Stack(
         children: [
-
-          // 1. Background couleur
           Container(color: const Color.fromARGB(255, 89, 89, 189)),
-
-          // 2. Image avec opacité 70%
           Opacity(
-            opacity: 0.70,
+            opacity: 0.7,
             child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -68,8 +72,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-
-          // 3. Logo + texte + carte
           Center(
             child: SingleChildScrollView(
               child: ConstrainedBox(
@@ -78,18 +80,15 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-
-                      // Logo
-                 Padding(
-                      padding: EdgeInsets.only(top: h * 0.0), // ← espace en haut
-                    child: Image.asset(
-                     "assets/images/logo1_login.png",
-                        width: h * 0.15,
-                      height: h * 0.15,
+                      Padding(
+                        padding: EdgeInsets.only(top: h * 0.05),
+                        child: Image.asset(
+                          "assets/images/logo1_login.png",
+                          width: h * 0.15,
+                          height: h * 0.15,
+                        ),
                       ),
-                         ),
                       SizedBox(height: h * 0.005),
-                      // Nom application
                       Text(
                         "Let'sAllgo",
                         style: TextStyle(
@@ -99,14 +98,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: h * 0.01),
-
-                      // Sous-titre
                       Text(
-                        "learn algorithms in a fun way step by step with us to become a pro",
+                        "Learn algorithms in a fun way step by step",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: h * 0.016,
-                          color: const Color.fromARGB(246, 255, 255, 255),
+                          color: Colors.white70,
                         ),
                       ),
                       SizedBox(height: h * 0.025),
@@ -117,10 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
                           child: Container(
-                            width: w * 0.35,  
-                                     // 35% largeur écran
-                            
-                            padding: EdgeInsets.symmetric(horizontal: h * 0.04, vertical: h * 0.09),
+                            width: w * 0.35,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: h * 0.04,
+                              vertical: h * 0.09,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(16),
@@ -130,19 +128,14 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             child: Column(
-                              mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-
-                                // Icône
                                 Icon(
                                   Icons.lock_outline,
                                   size: h * 0.06,
                                   color: Colors.blue,
                                 ),
                                 SizedBox(height: h * 0.02),
-
-                                // Titre
                                 Text(
                                   "Login",
                                   textAlign: TextAlign.center,
@@ -153,13 +146,11 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(height: h * 0.01),
-
-                                // Sous-titre carte
                                 Text(
-                                  "hi, welcome back please login to your account",
+                                  "Hi, welcome back please login to your account",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: const Color.fromARGB(255, 249, 249, 250),
+                                    color: Colors.white,
                                     fontSize: h * 0.014,
                                   ),
                                 ),
@@ -169,26 +160,22 @@ class _LoginPageState extends State<LoginPage> {
                                 TextField(
                                   controller: _emailCtrl,
                                   style: TextStyle(
-                                    color: const Color.fromARGB(255, 254, 254, 254),
+                                    color: Colors.white,
                                     fontSize: h * 0.016,
                                   ),
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                     labelText: "Email",
                                     labelStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 254, 254, 254),
+                                      color: Colors.white,
                                       fontSize: h * 0.016,
                                     ),
-                                    hintText: "exemple@mail.com",
+                                    hintText: "example@mail.com",
                                     hintStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 148, 144, 227),
+                                      color: Colors.blue[200],
                                       fontSize: h * 0.015,
                                     ),
-                                    prefixIcon: Icon(
-                                      Icons.email_outlined,
-                                      size: h * 0.025,
-                                    ),
-                                    prefixIconColor: const Color.fromARGB(255, 254, 254, 254),
+                                    prefixIcon: Icon(Icons.email_outlined, size: h * 0.025, color: Colors.white),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(color: Colors.white, width: 1.5),
@@ -204,27 +191,14 @@ class _LoginPageState extends State<LoginPage> {
                                 // Password
                                 TextField(
                                   controller: _passwordCtrl,
-                                  style: TextStyle(
-                                    color: const Color.fromARGB(255, 254, 254, 254),
-                                    fontSize: h * 0.016,
-                                  ),
                                   obscureText: _obscurePassword,
+                                  style: TextStyle(color: Colors.white, fontSize: h * 0.016),
                                   decoration: InputDecoration(
-                                    labelText: "password",
-                                    labelStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 254, 254, 254),
-                                      fontSize: h * 0.016,
-                                    ),
-                                    hintText: "Entre your password",
-                                    hintStyle: TextStyle(
-                                      color: const Color.fromARGB(255, 148, 144, 227),
-                                      fontSize: h * 0.015,
-                                    ),
-                                    prefixIcon: Icon(
-                                      Icons.lock_outline,
-                                      size: h * 0.025,
-                                    ),
-                                    prefixIconColor: const Color.fromARGB(255, 254, 254, 254),
+                                    labelText: "Password",
+                                    labelStyle: TextStyle(color: Colors.white, fontSize: h * 0.016),
+                                    hintText: "Enter your password",
+                                    hintStyle: TextStyle(color: Colors.blue[200], fontSize: h * 0.015),
+                                    prefixIcon: Icon(Icons.lock_outline, size: h * 0.025, color: Colors.white),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(color: Colors.white, width: 1.5),
@@ -235,27 +209,20 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        _obscurePassword
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
+                                        _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                                         size: h * 0.025,
+                                        color: Colors.white,
                                       ),
-                                      onPressed: () => setState(
-                                        () => _obscurePassword = !_obscurePassword,
-                                      ),
+                                      onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: h * 0.015),
 
-                                // Message erreur
                                 if (_errorMessage != null)
                                   Text(
                                     _errorMessage!,
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: h * 0.014,
-                                    ),
+                                    style: TextStyle(color: Colors.red, fontSize: h * 0.014),
                                     textAlign: TextAlign.center,
                                   ),
                                 SizedBox(height: h * 0.025),
@@ -272,66 +239,48 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     child: _isLoading
-                                        ? CircularProgressIndicator(
-                                            color: const Color.fromARGB(255, 7, 36, 117),
-                                          )
+                                        ? CircularProgressIndicator(color: Colors.white)
                                         : Text(
                                             "Login",
-                                            style: TextStyle(
-                                              fontSize: h * 0.02,
-                                              color: const Color.fromARGB(255, 3, 16, 53),
-                                            ),
+                                            style: TextStyle(fontSize: h * 0.02, color: Colors.white),
                                           ),
                                   ),
                                 ),
                                 SizedBox(height: h * 0.02),
 
-                                // Lien create account
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Don't have an account ? ",
-                                      style: TextStyle(
-                                        color: const Color.fromARGB(255, 2, 17, 102),
-                                        fontSize: h * 0.014,
-                                      ),
+                                      "Don't have an account? ",
+                                      style: TextStyle(color: Colors.white, fontSize: h * 0.014),
                                     ),
                                     GestureDetector(
                                       onTap: () => Navigator.push(
                                         context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const CreateAccountPage(),
-                                        ),
+                                        MaterialPageRoute(builder: (_) => const CreateAccountPage()),
                                       ),
                                       child: Text(
                                         "Create an account",
-                                        style: TextStyle(
-                                          color: Colors.blue,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: h * 0.014,
-                                        ),
+                                        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: h * 0.014),
                                       ),
                                     ),
                                   ],
                                 ),
-
                               ],
-                            ),   // fin Column carte
-                          ),     // fin Container
-                        ),       // fin BackdropFilter
-                      ),         // fin ClipRRect
+                            ),
+                          ),
+                        ),
+                      ),
                       SizedBox(height: h * 0.03),
-
                     ],
-                  ),             // fin Column principale
-                ),               // fin IntrinsicHeight
-              ),                 // fin ConstrainedBox
-            ),                   // fin SingleChildScrollView
-          ),                     // fin Center
-
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
-      ),                         // fin Stack
-    );                           // fin Scaffold
+      ),
+    );
   }
 }

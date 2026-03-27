@@ -167,7 +167,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
                     // Gender
                     DropdownButtonFormField<String>(
-                      value: _selectedGender,
+                      initialValue: _selectedGender,
                       style: TextStyle(
                         fontSize: h * 0.018,
                         color: Colors.black87,
