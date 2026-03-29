@@ -1,61 +1,53 @@
-// ─────────────────────────────────────────
-// CONTROLLER : profile_controller.dart
-// lib/controllers/profile/profile_controller.dart
-// ─────────────────────────────────────────
-import '../../models/profil/profil_model.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../../models/profil/profil_model.dart'; // ✅ corrigé
+import '../../service/LoginService.dart';
 
 class ProfileController {
-  ProfileModel _model = ProfileModel.mock();
+  static const String _baseUrl = 'http://localhost:3000/api';
 
+  ProfileModel _model = ProfileModel.mock();
   ProfileModel get model => _model;
 
-  // ══════════════════════════════════════════════════════════════
-  // CHARGEMENT — appelle dans initState()
-  // ══════════════════════════════════════════════════════════════
   Future<void> loadProfile() async {
-    // ── DÉVELOPPEMENT : données fictives
-    _model = ProfileModel.mock();
+    final token = LoginService.getToken();
 
-    // ── PRODUCTION (BDD) : décommente et adapte
-    //
-    // Option A — API REST :
-    // final response = await http.get(Uri.parse('https://ton-api.com/profile'));
-    // if (response.statusCode == 200) {
-    //   final json = jsonDecode(response.body);
-    //   _model = ProfileModel(
-    //     firstName:      json['first_name'],
-    //     lastName:       json['last_name'],
-    //     email:          json['email'],
-    //     studentId:      json['student_id'],
-    //     enrollmentDate: json['enrollment_date'],
-    //     speciality:     json['speciality'],
-    //     studyLevel:     json['study_level'],
-    //     role:           json['role'],
-    //     globalProgress: json['global_progress'],
-    //     coursesSuivis:  json['courses_suivis'],
-    //     quizReussis:    json['quiz_reussis'],
-    //     classement:     json['classement'],
-    //     pointsXP:       json['points_xp'],
-    //   );
-    // }
-    //
-    // Option B — SQLite :
-    // final db = await openDatabase('app.db');
-    // final rows = await db.query('users', where: 'id = ?', whereArgs: [userId]);
-    // if (rows.isNotEmpty) { _model = ProfileModel(...rows.first); }
+    if (token == null) {
+      print('❌ Pas de token → mock');
+      _model = ProfileModel.mock();
+      return;
+    }
+
+    try {
+      print('🔄 Chargement profil depuis le backend...');
+
+      final response = await http.get(
+        Uri.parse('$_baseUrl/users/me'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('✅ Status: ${response.statusCode}');
+      print('✅ Body: ${response.body}');
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        _model = ProfileModel.fromApi(data['data']);
+        print('✅ Profil chargé: ${_model.firstName} ${_model.lastName}');
+      } else {
+        print('❌ Erreur backend → mock');
+        _model = ProfileModel.mock();
+      }
+    } catch (e) {
+      print('❌ ERREUR réseau: $e');
+      _model = ProfileModel.mock();
+    }
   }
 
-  // ── Toggle langue
-  void toggleLanguage() {
-    _model.isFrench = !_model.isFrench;
-  }
-
-  // ── Toggle son
-  void toggleSound() {
-    _model.soundEffects = !_model.soundEffects;
-  }
-
-  // ── Textes traduits selon la langue active
+  void toggleLanguage() => _model.isFrench = !_model.isFrench;
+  void toggleSound()    => _model.soundEffects = !_model.soundEffects;
   String t(String fr, String en) => _model.isFrench ? fr : en;
 }

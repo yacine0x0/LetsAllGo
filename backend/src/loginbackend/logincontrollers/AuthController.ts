@@ -1,78 +1,56 @@
+// ─────────────────────────────────────────
+// CONTROLLER : AuthController.ts
+// src/logincontrollers/AuthController.ts
+// ─────────────────────────────────────────
+
 import { Request, Response } from 'express';
 import { loginService, registerService } from '../loginservices/AuthService';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import 'dotenv/config';
+import { LoginInput, RegisterInput } from '../loginmodels/auth.model';
 
-export const login = async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    res.status(400).json({ message: 'Email et mot de passe requis' });
-    return;
-  }
-
+// ── POST /api/auth/login
+export async function login(req: Request, res: Response): Promise<void> {
   try {
-    // 1 — Récupérer l'utilisateur via le service
-    const user = await loginService(email);
-
-    if (!user) {
-      res.status(401).json({ message: 'Email ou mot de passe incorrect' });
-      return;
-    }
-
-    // 2 — Vérifier le mot de passe (logique)
-    const isValid = await bcrypt.compare(password, user.motdepasse);
-    if (!isValid) {
-      res.status(401).json({ message: 'Email ou mot de passe incorrect' });
-      return;
-    }
-
-    // 3 — Générer le token JWT (logique)
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET as string,
-      { expiresIn: '7d' }
-    );
+    const input: LoginInput = req.body;
+    const result = await loginService(input);
 
     res.status(200).json({
-      token,
-      userId: user.id,
-      nom: user.nom,
-      prenom: user.prenom,
-      role: user.role,
+      success: true,
+      message: 'Connexion réussie',
+      token:   result.token,
+      userId:  result.user.id,
+      nom:     result.user.nom,
+      prenom:  result.user.prenom,
+      role:    result.user.role,
+      data:    result,
     });
   } catch (error) {
-    console.error('LOGIN ERROR:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(401).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Erreur serveur',
+    });
   }
-};
+}
 
-export const register = async (req: Request, res: Response): Promise<void> => {
-  const { nom, prenom, email, password } = req.body;
-
-  if (!nom || !prenom || !email || !password) {
-    res.status(400).json({ message: 'Tous les champs sont requis' });
-    return;
-  }
-
+// ── POST /api/auth/register
+export async function register(req: Request, res: Response): Promise<void> {
   try {
-    // 1 — Vérifier si l'email existe via le service
-    const existing = await loginService(email);
-    if (existing) {
-      res.status(409).json({ message: 'Email déjà utilisé' });
-      return;
-    }
+    const input: RegisterInput = req.body;
+    const result = await registerService(input);
 
-    // 2 — Hasher le mot de passe (logique)
-    const hashed = await bcrypt.hash(password, 10);
-
-    // 3 — Créer l'utilisateur via le service
-    const user = await registerService(nom, prenom, email, hashed);
-
-    res.status(201).json({ message: 'Compte créé', userId: user.id });
+    res.status(201).json({
+      success: true,
+      message: 'Compte créé avec succès',
+      token:   result.token,
+      userId:  result.user.id,
+      nom:     result.user.nom,
+      prenom:  result.user.prenom,
+      role:    result.user.role,
+      data:    result,
+    });
   } catch (error) {
-    console.error('REGISTER ERROR:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(400).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Erreur serveur',
+    });
   }
-};
+}

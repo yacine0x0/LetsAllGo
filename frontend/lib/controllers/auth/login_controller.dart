@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../../models/auth/login_model.dart';
+import '../../service/LoginService.dart'; // 🆕
 
 class AuthData {
   final String token;
@@ -23,11 +24,7 @@ class LoginController {
   static AuthData? currentUser;
 
   Future<String?> login(String email, String password) async {
-    final model = LoginModel(
-      email: email.trim(),
-      password: password,
-    );
-
+    final model = LoginModel(email: email.trim(), password: password);
     final error = model.validate();
     if (error != null) return error;
 
@@ -49,15 +46,26 @@ class LoginController {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        // ── Sauvegarder dans AuthData (ton système existant)
         currentUser = AuthData(
-          token: data['token'],
+          token:  data['token'],
           userId: data['userId'].toString(),
-          nom: data['nom'],
+          nom:    data['nom'],
           prenom: data['prenom'],
-          role: data['role'] ?? 'etudiant',
+          role:   data['role'] ?? 'etudiant',
         );
+
+        // ── 🆕 Sauvegarder aussi dans AuthService pour ProfileController
+        LoginService.saveToken(data['token']);
+        LoginService.saveUser(
+          userId: data['userId'].toString(),
+          nom:    data['nom'],
+          prenom: data['prenom'],
+          role:   data['role'] ?? 'etudiant',
+        );
+
         print('✅ Utilisateur connecté: ${currentUser?.prenom} ${currentUser?.nom}');
-        return null;
+        return null; // ✅ succès
       } else {
         return data['message'] ?? 'Identifiants incorrects';
       }

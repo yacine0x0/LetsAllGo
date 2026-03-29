@@ -122,12 +122,9 @@ model quiz {
 model section {
   id_section  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   titre       String
-  contenu     String?
-  ordre       Int
   id_chapitre String?   @db.Uuid
   chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: Cascade, onUpdate: NoAction)
 
-  @@unique([id_chapitre, ordre])
   @@index([id_chapitre], map: "idx_section_chapitre")
 }
 
