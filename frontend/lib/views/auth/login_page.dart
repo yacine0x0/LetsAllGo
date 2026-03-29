@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../controllers/auth/login_controller.dart';
 import 'create_account_page.dart';
 import 'dart:ui';
+import '../dashboard/dashboard_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -27,22 +29,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _handleLogin() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+  setState(() {
+    _isLoading = true;
+    _errorMessage = null;
+  });
 
-    final error = await _controller.login(_emailCtrl.text, _passwordCtrl.text);
+  final error = await _controller.login(_emailCtrl.text, _passwordCtrl.text);
 
-    setState(() {
-      _isLoading = false;
-      _errorMessage = error;
-    });
+  if (!mounted) return;
 
-    if (error == null) {
-      // Navigation vers la page suivante
-    }
-  }
+  setState(() {
+    _isLoading = false;
+    _errorMessage = error;
+  });
+
+  if (error == null) {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (_) => const DashboardPage()),
+  );
+}
+}
 
   @override
   Widget build(BuildContext context) {
