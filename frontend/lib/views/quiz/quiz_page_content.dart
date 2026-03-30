@@ -1,17 +1,15 @@
-
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'dart:ui';
 
 import '../../models/quiz/quiz_model.dart';
+import '../../service/LoginService.dart';
 import '../dashboard/dashboard_page.dart';
-
 import '../files/files_page.dart';
 import '../leaderboard/leaderboard_page.dart';
 import 'quiz_selection_page.dart';
-
 import '../../controllers/quiz/base_quiz_controller.dart';
-
 
 class QuizPageContent extends StatefulWidget {
   final BaseQuizController controller;
@@ -22,19 +20,13 @@ class QuizPageContent extends StatefulWidget {
 }
 
 class _QuizPageContentState extends State<QuizPageContent> {
-  // null  = pas encore checké
-  // true  = checké et correct
-  // false = checké et incorrect
   bool? _answerChecked;
-
   List<String> _currentOrder = [];
   bool _quizCompleted = false;
-
-  // true si la question a déjà été validée dans une session précédente
   bool _isQuestionValidated = false;
-
-  // true si l'utilisateur a sélectionné/ordonné une réponse (mais pas encore checké)
   bool _hasSelection = false;
+  Map<String, dynamic>? _quizResult; // 🆕
+  bool _isSubmitting = false;        // 🆕
 
   @override
   void initState() {
@@ -42,7 +34,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
     _loadQuestion();
   }
 
-  // ─── Chargement d'une question ───────────────────────────────────────────────
+  // ─── Chargement question ─────────────────────────────────────────────────────
 
   void _loadQuestion() {
     final q = widget.controller.currentQuestion;
@@ -50,27 +42,26 @@ class _QuizPageContentState extends State<QuizPageContent> {
         widget.controller.currentQuiz.isQuestionValidated(q.id);
 
     if (_isQuestionValidated) {
-      // Question déjà validée → on affiche le résultat sans permettre de modifier
       _answerChecked = true;
       _hasSelection = true;
       if (q.type == QuestionType.ordering && q.codeLines != null) {
         final saved = widget.controller.currentQuiz.userOrderings[q.id];
-        _currentOrder = saved != null ? List.from(saved) : List.from(q.codeLines!);
+        _currentOrder = saved != null
+            ? List.from(saved)
+            : List.from(q.codeLines!);
       }
     } else {
-      // Question non validée → on repart d'un état propre
       _answerChecked = null;
       if (q.type == QuestionType.ordering && q.codeLines != null) {
         final saved = widget.controller.currentQuiz.userOrderings[q.id];
         if (saved != null) {
           _currentOrder = List.from(saved);
-          _hasSelection = true; // l'ordre avait déjà été modifié
+          _hasSelection = true;
         } else {
           _currentOrder = List.from(q.codeLines!);
           _hasSelection = false;
         }
       } else {
-        // Multiple choice : sélection sauvegardée ?
         _hasSelection =
             widget.controller.currentQuiz.userAnswers.containsKey(q.id);
       }
@@ -83,12 +74,13 @@ class _QuizPageContentState extends State<QuizPageContent> {
     if (widget.controller.isLastQuestion) {
       if (widget.controller.isLastQuiz) {
         setState(() => _quizCompleted = true);
+        _submitQuizToBackend(); // 🆕
       } else {
         widget.controller.nextQuiz();
         setState(() {
-          _answerChecked = null;
-          _currentOrder = [];
-          _hasSelection = false;
+          _answerChecked       = null;
+          _currentOrder        = [];
+          _hasSelection        = false;
           _isQuestionValidated = false;
           _loadQuestion();
         });
@@ -96,9 +88,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
     } else {
       widget.controller.nextQuestion();
       setState(() {
-        _answerChecked = null;
-        _currentOrder = [];
-        _hasSelection = false;
+        _answerChecked       = null;
+        _currentOrder        = [];
+        _hasSelection        = false;
         _isQuestionValidated = false;
         _loadQuestion();
       });
@@ -108,9 +100,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
   void _prevQuestion() {
     widget.controller.prevQuestion();
     setState(() {
-      _answerChecked = null;
-      _currentOrder = [];
-      _hasSelection = false;
+      _answerChecked       = null;
+      _currentOrder        = [];
+      _hasSelection        = false;
       _isQuestionValidated = false;
       _loadQuestion();
     });
@@ -119,16 +111,75 @@ class _QuizPageContentState extends State<QuizPageContent> {
   void _resetQuiz() {
     widget.controller.resetSession();
     setState(() {
-      _answerChecked = null;
-      _quizCompleted = false;
-      _currentOrder = [];
-      _hasSelection = false;
+      _answerChecked       = null;
+      _quizCompleted       = false;
+      _currentOrder        = [];
+      _hasSelection        = false;
       _isQuestionValidated = false;
+      _quizResult          = null;
+      _isSubmitting        = false;
       _loadQuestion();
     });
   }
 
-  // ─── Action Check ─────────────────────────────────────────────────────────────
+  // ─── Submit au backend 🆕 ────────────────────────────────────────────────────
+
+  Future<void> _submitQuizToBackend() async {
+    final token = LoginService.getToken();
+    if (token == null) {
+      print('❌ Pas de token → score non sauvegardé');
+      return;
+    }
+
+    setState(() => _isSubmitting = true);
+
+    final score          = widget.controller.getTotalScore();
+    final totalQuestions = widget.controller.session.totalPossibleScore;
+    final chapitreId     = widget.controller.currentQuiz.id;
+    final moduleId       = 'module_algo1'; // remplacer par vrai UUID plus tard
+
+    try {
+      print('🔄 Envoi résultat quiz...');
+      print('   Score: $score / $totalQuestions');
+
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/api/quiz/submit'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'quizId':         chapitreId,
+          'chapitreId':     chapitreId,
+          'moduleId':       moduleId,
+          'score':          score,
+          'totalQuestions': totalQuestions,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        print('✅ Quiz soumis !');
+        print('   Progression chapitre : ${data['data']['progressionChapitre']}%');
+        print('   Progression cours    : ${data['data']['progressionModule']}%');
+        print('   Score total user     : ${data['data']['scoretotalUtilisateur']}');
+
+        setState(() {
+          _quizResult   = data['data'];
+          _isSubmitting = false;
+        });
+      } else {
+        print('❌ Erreur: ${data['message']}');
+        setState(() => _isSubmitting = false);
+      }
+    } catch (e) {
+      print('❌ ERREUR réseau: $e');
+      setState(() => _isSubmitting = false);
+    }
+  }
+
+  // ─── Check réponse ────────────────────────────────────────────────────────────
 
   void _checkAnswer() {
     final q = widget.controller.currentQuestion;
@@ -140,7 +191,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
     });
   }
 
-  // ─── Build principal ─────────────────────────────────────────────────────────
+  // ─── Build principal ──────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -197,9 +248,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                                     SizedBox(height: h * 0.02),
                                     _buildProgressBar(h, w),
                                     SizedBox(height: h * 0.02),
-                                    Expanded(
-                                      child: _buildQuestionContent(h, w),
-                                    ),
+                                    Expanded(child: _buildQuestionContent(h, w)),
                                     _buildBottomNav(h, w),
                                   ],
                                 ),
@@ -221,9 +270,13 @@ class _QuizPageContentState extends State<QuizPageContent> {
     );
   }
 
-  // ─── Top Nav ─────────────────────────────────────────────────────────────────
+  // ─── Top Nav ──────────────────────────────────────────────────────────────────
 
   Widget _buildTopNavBar(double h, double w) {
+    // ✅ Vraies données depuis LoginService
+    final prenom  = LoginService.getPrenom() ?? 'User';
+    final initial = prenom[0].toUpperCase();
+
     return Container(
       height: h * 0.11,
       padding: EdgeInsets.symmetric(horizontal: w * 0.02),
@@ -269,6 +322,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
             child: _buildNavButton(Icons.folder_outlined, "Files", h),
           ),
           const Spacer(),
+          // ✅ Vrai nom depuis LoginService
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: w * 0.015,
@@ -285,7 +339,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                   radius: h * 0.030,
                   backgroundColor: Colors.blue,
                   child: Text(
-                    "H",
+                    initial, // ✅ vraie initiale
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: h * 0.025,
@@ -295,7 +349,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  "Hamid_09",
+                  prenom, // ✅ vrai prénom
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: h * 0.020,
@@ -321,12 +375,12 @@ class _QuizPageContentState extends State<QuizPageContent> {
     );
   }
 
-  // ─── Completion Screen ────────────────────────────────────────────────────────
+  // ─── Completion Screen 🆕 ─────────────────────────────────────────────────────
 
   Widget _buildCompletionScreen(double h, double w) {
-    final totalScore = widget.controller.getTotalScore();
+    final totalScore     = widget.controller.getTotalScore();
     final totalQuestions = widget.controller.session.totalPossibleScore;
-    final percentage = widget.controller.getPercentage();
+    final percentage     = widget.controller.getPercentage();
 
     String message;
     IconData icon;
@@ -334,20 +388,20 @@ class _QuizPageContentState extends State<QuizPageContent> {
 
     if (percentage >= 80) {
       message = "Excellent! You're a pro! 🎉";
-      icon = Icons.emoji_events;
-      color = const Color(0xFFFFD700);
+      icon    = Icons.emoji_events;
+      color   = const Color(0xFFFFD700);
     } else if (percentage >= 60) {
       message = "Good job! Keep going! 👍";
-      icon = Icons.thumb_up;
-      color = Colors.green;
+      icon    = Icons.thumb_up;
+      color   = Colors.green;
     } else if (percentage >= 40) {
       message = "Not bad! Review and try again! 📚";
-      icon = Icons.school;
-      color = Colors.orange;
+      icon    = Icons.school;
+      color   = Colors.orange;
     } else {
       message = "Keep practicing! You'll get there! 💪";
-      icon = Icons.fitness_center;
-      color = Colors.red;
+      icon    = Icons.fitness_center;
+      color   = Colors.red;
     }
 
     return Scaffold(
@@ -382,6 +436,8 @@ class _QuizPageContentState extends State<QuizPageContent> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+
+                        // ── Icône animée
                         TweenAnimationBuilder<double>(
                           tween: Tween<double>(begin: 0, end: 1),
                           duration: const Duration(milliseconds: 800),
@@ -394,12 +450,12 @@ class _QuizPageContentState extends State<QuizPageContent> {
                                 color: color.withValues(alpha: 0.2),
                                 border: Border.all(color: color, width: 3),
                               ),
-                              child:
-                                  Icon(icon, size: h * 0.08, color: color),
+                              child: Icon(icon, size: h * 0.08, color: color),
                             ),
                           ),
                         ),
                         SizedBox(height: h * 0.03),
+
                         Text(
                           "Quiz Completed!",
                           style: TextStyle(
@@ -416,6 +472,8 @@ class _QuizPageContentState extends State<QuizPageContent> {
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: h * 0.03),
+
+                        // ── Score circulaire
                         SizedBox(
                           width: h * 0.15,
                           height: h * 0.15,
@@ -458,6 +516,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                           ),
                         ),
                         SizedBox(height: h * 0.02),
+
                         Text(
                           "$percentage%",
                           style: TextStyle(
@@ -466,7 +525,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: h * 0.04),
+                        SizedBox(height: h * 0.03),
+
+                        // ── Barre progression score
                         Container(
                           height: h * 0.008,
                           width: double.infinity,
@@ -484,7 +545,203 @@ class _QuizPageContentState extends State<QuizPageContent> {
                             ),
                           ),
                         ),
-                        SizedBox(height: h * 0.04),
+                        SizedBox(height: h * 0.03),
+
+                        // ── Résultat backend 🆕
+                        if (_isSubmitting)
+                          Padding(
+                            padding: EdgeInsets.only(bottom: h * 0.02),
+                            child: Column(
+                              children: [
+                                const CircularProgressIndicator(
+                                    color: Colors.blue),
+                                SizedBox(height: h * 0.01),
+                                Text(
+                                  "Saving your score...",
+                                  style: TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: h * 0.014),
+                                ),
+                              ],
+                            ),
+                          )
+                        else if (_quizResult != null)
+                          Padding(
+                            padding: EdgeInsets.only(bottom: h * 0.025),
+                            child: Container(
+                              padding: EdgeInsets.all(h * 0.02),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.05),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: Colors.white12),
+                              ),
+                              child: Column(
+                                children: [
+
+                                  // Chapter Progress
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.book,
+                                              color: Colors.blue,
+                                              size: h * 0.02),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            "Chapter Progress",
+                                            style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: h * 0.015),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "${_quizResult!['progressionChapitre']}%",
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: h * 0.018,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: h * 0.008),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: LinearProgressIndicator(
+                                      value: (_quizResult!['progressionChapitre']
+                                              as int) /
+                                          100,
+                                      minHeight: h * 0.008,
+                                      backgroundColor: Colors.white12,
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              Colors.blue),
+                                    ),
+                                  ),
+                                  SizedBox(height: h * 0.015),
+
+                                  // Course Progress
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.school,
+                                              color: Colors.green,
+                                              size: h * 0.02),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            "Course Progress",
+                                            style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: h * 0.015),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "${_quizResult!['progressionModule']}%",
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: h * 0.018,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: h * 0.008),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: LinearProgressIndicator(
+                                      value: (_quizResult!['progressionModule']
+                                              as int) /
+                                          100,
+                                      minHeight: h * 0.008,
+                                      backgroundColor: Colors.white12,
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              Colors.green),
+                                    ),
+                                  ),
+                                  SizedBox(height: h * 0.015),
+
+                                  // Total XP
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(Icons.stars,
+                                              color: Colors.yellow,
+                                              size: h * 0.02),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            "Total XP",
+                                            style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: h * 0.015),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "${_quizResult!['scoretotalUtilisateur']} pts",
+                                        style: TextStyle(
+                                          color: Colors.yellow,
+                                          fontSize: h * 0.018,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  // Chapitre complété
+                                  if (_quizResult!['chapitreComplete'] == true)
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(top: h * 0.015),
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: h * 0.02,
+                                          vertical: h * 0.01,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.green
+                                              .withValues(alpha: 0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: Colors.green),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.check_circle,
+                                                color: Colors.green,
+                                                size: h * 0.02),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              "Chapter completed! 🎉",
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: h * 0.016,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                        // ── Boutons
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -492,8 +749,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                               onPressed: () => Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) =>
-                                        const QuizSelectionPage()),
+                                    builder: (_) => const QuizSelectionPage()),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white24,
@@ -506,8 +762,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                               child: Row(
                                 children: [
                                   Icon(Icons.refresh,
-                                      color: Colors.white,
-                                      size: h * 0.02),
+                                      color: Colors.white, size: h * 0.02),
                                   const SizedBox(width: 8),
                                   Text("New Quiz",
                                       style: TextStyle(
@@ -530,8 +785,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                               child: Row(
                                 children: [
                                   Icon(Icons.replay,
-                                      color: Colors.white,
-                                      size: h * 0.02),
+                                      color: Colors.white, size: h * 0.02),
                                   const SizedBox(width: 8),
                                   Text("Try Again",
                                       style: TextStyle(
@@ -568,7 +822,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
     );
   }
 
-  // ─── Header ───────────────────────────────────────────────────────────────────
+  // ─── Header ──────────────────────────────────────────────────────────────────
 
   Widget _buildHeader(double h) {
     return Column(
@@ -591,7 +845,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
     );
   }
 
-  // ─── Progress Bar ────────────────────────────────────────────────────────────
+  // ─── Progress Bar ─────────────────────────────────────────────────────────────
 
   Widget _buildProgressBar(double h, double w) {
     final currentQuizProgress =
@@ -623,8 +877,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
           child: LinearProgressIndicator(
             value: currentQuizProgress,
             backgroundColor: Colors.white12,
-            valueColor:
-                const AlwaysStoppedAnimation<Color>(Colors.blue),
+            valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
             minHeight: h * 0.012,
           ),
         ),
@@ -686,8 +939,6 @@ class _QuizPageContentState extends State<QuizPageContent> {
                     : _buildOrdering(h, question),
               ),
               SizedBox(height: h * 0.02),
-
-              // ── Feedback + bouton Check ──────────────────────────────────
               if (_answerChecked != null)
                 _buildFeedback(h)
               else
@@ -721,28 +972,22 @@ class _QuizPageContentState extends State<QuizPageContent> {
             widget.controller.currentQuiz.userAnswers[question.id] ==
                 choice["key"];
 
-        // Couleurs selon état
         Color borderColor = Colors.white24;
         Color bgColor = Colors.white.withValues(alpha: 0.08);
 
         if (_isQuestionValidated && isSelected) {
-          // Déjà validé dans une session précédente → vert
           borderColor = Colors.green;
           bgColor = Colors.green.withValues(alpha: 0.2);
         } else if (_answerChecked != null && isSelected) {
-          // Vient d'être checké
-          borderColor =
-              _answerChecked! ? Colors.green : Colors.red;
+          borderColor = _answerChecked! ? Colors.green : Colors.red;
           bgColor = _answerChecked!
               ? Colors.green.withValues(alpha: 0.2)
               : Colors.red.withValues(alpha: 0.2);
         } else if (isSelected) {
-          // Sélectionné mais pas encore checké → bleu
           borderColor = Colors.blue;
           bgColor = Colors.blue.withValues(alpha: 0.2);
         }
 
-        // Désactivé si déjà checké ou déjà validé
         final isLocked = _answerChecked != null || _isQuestionValidated;
 
         return GestureDetector(
@@ -750,10 +995,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
               ? null
               : () {
                   setState(() {
-                    widget.controller.answerMultipleChoice(
-                        question.id, choice["key"]!);
+                    widget.controller
+                        .answerMultipleChoice(question.id, choice["key"]!);
                     _hasSelection = true;
-                    // PAS de _answerChecked ici → l'utilisateur doit cliquer Check
                   });
                 },
           child: Container(
@@ -804,9 +1048,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
               Icon(Icons.drag_handle, color: Colors.blue, size: h * 0.02),
               const SizedBox(width: 8),
               Text(
-                isLocked
-                    ? "✓ Answer locked"
-                    : "Drag and drop to order the steps",
+                isLocked ? "✓ Answer locked" : "Drag and drop to order",
                 style: TextStyle(
                   color: isLocked ? Colors.green : Colors.blue,
                   fontSize: h * 0.014,
@@ -830,11 +1072,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
                       widget.controller
                           .setOrdering(question.id, _currentOrder);
                       _hasSelection = true;
-                      // PAS de _answerChecked ici → l'utilisateur doit cliquer Check
                     });
                   },
             itemBuilder: (context, index) {
-              // Couleur selon état
               Color itemBorderColor = Colors.white24;
               Color textColor = Colors.white;
               Color iconColor = Colors.white54;
@@ -912,10 +1152,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
     );
   }
 
-  // ─── Bouton Check ─────────────────────────────────────────────────────────────
+  // ─── Check Button ─────────────────────────────────────────────────────────────
 
   Widget _buildCheckButton(double h, double w) {
-    // Désactivé si aucune sélection / ordre non modifié
     final canCheck = _hasSelection;
 
     return Padding(
@@ -1033,8 +1272,6 @@ class _QuizPageContentState extends State<QuizPageContent> {
   // ─── Bottom Nav ───────────────────────────────────────────────────────────────
 
   Widget _buildBottomNav(double h, double w) {
-    // On peut passer à la question suivante seulement si :
-    // - la question a été checkée OU déjà validée
     final canGoNext = _answerChecked != null || _isQuestionValidated;
 
     return Padding(
@@ -1042,7 +1279,6 @@ class _QuizPageContentState extends State<QuizPageContent> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // ── Prev ──────────────────────────────────────────────────────────
           GestureDetector(
             onTap: widget.controller.isFirstQuestion ? null : _prevQuestion,
             child: Container(
@@ -1081,8 +1317,6 @@ class _QuizPageContentState extends State<QuizPageContent> {
               ),
             ),
           ),
-
-          // ── Indicateur ────────────────────────────────────────────────────
           Container(
             padding: EdgeInsets.symmetric(
                 horizontal: w * 0.02, vertical: h * 0.008),
@@ -1100,8 +1334,6 @@ class _QuizPageContentState extends State<QuizPageContent> {
               ),
             ),
           ),
-
-          // ── Next / Finish ─────────────────────────────────────────────────
           GestureDetector(
             onTap: canGoNext ? _nextQuestion : null,
             child: AnimatedContainer(
@@ -1189,8 +1421,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
               SizedBox(height: h * 0.02),
               Expanded(
                 child: ListView.builder(
-                  itemCount:
-                      widget.controller.totalQuestionsInCurrentQuiz,
+                  itemCount: widget.controller.totalQuestionsInCurrentQuiz,
                   itemBuilder: (context, index) {
                     final isCurrent =
                         widget.controller.currentQuestionIndex == index;
@@ -1200,9 +1431,9 @@ class _QuizPageContentState extends State<QuizPageContent> {
                         setState(() {
                           widget.controller.currentQuiz
                               .currentQuestionIndex = index;
-                          _answerChecked = null;
-                          _currentOrder = [];
-                          _hasSelection = false;
+                          _answerChecked       = null;
+                          _currentOrder        = [];
+                          _hasSelection        = false;
                           _isQuestionValidated = false;
                           _loadQuestion();
                         });
@@ -1217,8 +1448,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                               : Colors.white.withValues(alpha: 0.05),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color:
-                                isCurrent ? Colors.blue : Colors.white24,
+                            color: isCurrent ? Colors.blue : Colors.white24,
                             width: isCurrent ? 1.5 : 1,
                           ),
                         ),
@@ -1267,8 +1497,8 @@ class _QuizPageContentState extends State<QuizPageContent> {
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: Colors.blue.withValues(alpha: 0.5)),
+                  border: Border.all(
+                      color: Colors.blue.withValues(alpha: 0.5)),
                 ),
                 child: Column(
                   children: [
@@ -1290,8 +1520,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
-                        value: widget.controller.session.totalPossibleScore >
-                                0
+                        value: widget.controller.session.totalPossibleScore > 0
                             ? widget.controller.getTotalScore() /
                                 widget.controller.session.totalPossibleScore
                             : 0,

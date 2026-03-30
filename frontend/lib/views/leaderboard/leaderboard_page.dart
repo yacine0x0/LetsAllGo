@@ -1,15 +1,10 @@
-// ─────────────────────────────────────────
-// VIEW : leaderboard_page.dart
-// lib/views/leaderboard/leaderboard_page.dart
-// ─────────────────────────────────────────
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_project_1/views/profil/profil_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
 import '../../controllers/leaderboard/leaderboard_controller.dart';
 import '../../models/leaderboard/leaderboard_model.dart';
+import '../../service/LoginService.dart'; 
 import '../dashboard/dashboard_page.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
@@ -26,7 +21,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   bool _isLoading = true;
   int _selectedIndex = 2;
 
-  // ── Font Orbitron — identique à la maquette
   TextStyle _orbitron({
     double size = 14,
     FontWeight weight = FontWeight.normal,
@@ -109,17 +103,13 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 if (entry.key == 0) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const DashboardPage()));
-
-
                 } else if (entry.key == 1) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const QuizSelectionPage()));
-                }else if (entry.key == 3) {
+                } else if (entry.key == 3) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const FilesPage()));
                 }
-
-
               },
               child: _buildSidebarItem(
                 icon: entry.value["icon"] as IconData,
@@ -188,7 +178,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   // ══════════════════════════════════════════
-  // CONTENU PRINCIPAL — tableau leaderboard
+  // CONTENU PRINCIPAL
   // ══════════════════════════════════════════
   Widget _buildMainContent(double h, double w) {
     return ClipRRect(
@@ -215,11 +205,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                         letterSpacing: 2)),
                 SizedBox(height: h * 0.005),
                 Text("Classement global des étudiants",
-                    style: _orbitron(size: h * 0.018, color: const Color.fromARGB(200, 255, 255, 255))),
+                    style: _orbitron(
+                        size: h * 0.018,
+                        color: const Color.fromARGB(200, 255, 255, 255))),
                 SizedBox(height: h * 0.03),
                 _buildTableHeader(h, w),
                 SizedBox(height: h * 0.01),
-                Container(height: 1.5, color: Colors.blue.withValues(alpha: 0.6)),
+                Container(
+                    height: 1.5,
+                    color: Colors.blue.withValues(alpha: 0.6)),
                 SizedBox(height: h * 0.01),
                 Expanded(
                   child: ListView.builder(
@@ -238,7 +232,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   Widget _buildTableHeader(double h, double w) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.012),
+      padding:
+          EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: Colors.blue.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
@@ -284,14 +279,16 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
     return Container(
       margin: EdgeInsets.only(bottom: h * 0.008),
-      padding: EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.012),
+      padding:
+          EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: isTop3
             ? medalColor.withValues(alpha: 0.08)
             : Colors.white.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: isTop3 ? medalColor.withValues(alpha: 0.3) : Colors.white12,
+          color:
+              isTop3 ? medalColor.withValues(alpha: 0.3) : Colors.white12,
           width: isTop3 ? 1.5 : 1,
         ),
       ),
@@ -323,7 +320,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 Text(entry.username,
                     style: _orbitron(
                         size: h * 0.018,
-                        weight: isTop3 ? FontWeight.bold : FontWeight.normal,
+                        weight:
+                            isTop3 ? FontWeight.bold : FontWeight.normal,
                         color: isTop3 ? Colors.white : Colors.white70)),
               ],
             ),
@@ -334,7 +332,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 textAlign: TextAlign.center,
                 style: _orbitron(
                     size: h * 0.018,
-                    weight: isTop3 ? FontWeight.bold : FontWeight.normal,
+                    weight:
+                        isTop3 ? FontWeight.bold : FontWeight.normal,
                     color: isTop3 ? medalColor : Colors.white60,
                     letterSpacing: 0.5)),
           ),
@@ -344,11 +343,27 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   // ══════════════════════════════════════════
-  // PANNEAU DROIT — amélioré
+  // PANNEAU DROIT ✅ vraies données LoginService
   // ══════════════════════════════════════════
   Widget _buildRightPanel(double h, double w) {
-    final user = _controller.model.currentUser;
-    if (user == null) return const SizedBox.shrink();
+    // ✅ Récupère les vraies données depuis LoginService
+    final prenom   = LoginService.getPrenom() ?? 'Utilisateur';
+    final nom      = LoginService.getNom() ?? '';
+    final fullName = '$prenom $nom'.trim();
+    final initial  = prenom[0].toUpperCase();
+    final role     = LoginService.getRole() ?? 'etudiant';
+
+    // Trouver le score et rang de l'utilisateur connecté dans le leaderboard
+    final userId = LoginService.getUserId();
+    final currentEntry = _controller.model.entries.isEmpty ? null :
+        _controller.model.entries.cast<LeaderboardEntry?>().firstWhere(
+          (e) => e?.username == fullName,
+          orElse: () => null,
+        );
+
+    final score = currentEntry?.totalPoints ?? 0;
+    final rang  = currentEntry?.rank ?? 0;
+    final algo1Progress = currentEntry?.algo1Progress ?? 0.0;
 
     return ClipRRect(
       child: BackdropFilter(
@@ -366,101 +381,92 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // ── Carte profil avec dégradé
-             Material(
-              color: Colors.transparent,
-              child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: () {
-                Navigator.push(
-                  context,
-                    MaterialPageRoute(
-                    builder: (_) => const ProfilePage(), // change vers ProfilePage après
-                  ),
-                );
-              },
-            child: Container(
-              padding: EdgeInsets.all(h * 0.02),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blue.withValues(alpha: 0.25),
-                    Colors.purple.withValues(alpha: 0.15),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blue.withValues(alpha: 0.4)),
-              ),
-            child: Row(
-              children: [
-                Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: h * 0.08,
-                    height: h * 0.08,
+              // ── Carte profil
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const ProfilePage())),
+                  child: Container(
+                    padding: EdgeInsets.all(h * 0.02),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.blue, width: 2),
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blue.withValues(alpha: 0.25),
+                          Colors.purple.withValues(alpha: 0.15),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                          color: Colors.blue.withValues(alpha: 0.4)),
+                    ),
+                    child: Row(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: h * 0.08,
+                              height: h * 0.08,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.blue, width: 2),
+                              ),
+                            ),
+                            CircleAvatar(
+                              radius: h * 0.032,
+                              backgroundColor:
+                                  Colors.blue.withValues(alpha: 0.6),
+                              child: Text(
+                                initial, // ✅ vraie initiale
+                                style: _orbitron(
+                                    size: h * 0.025,
+                                    weight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: w * 0.012),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                fullName, // ✅ vrai nom
+                                style: _orbitron(
+                                    size: h * 0.020,
+                                    weight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                      color: Colors.blue
+                                          .withValues(alpha: 0.4)),
+                                ),
+                                child: Text(
+                                  role, // ✅ vrai rôle
+                                  style: _orbitron(
+                                      size: h * 0.013, color: Colors.blue),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  CircleAvatar(
-                    radius: h * 0.032,
-                    backgroundColor: Colors.blue.withValues(alpha: 0.6),
-                  child: Text(
-                    user.avatarInitial,
-                    style: _orbitron(
-                      size: h * 0.025,
-                      weight: FontWeight.bold,
-                    ),
                 ),
               ),
-            ],
-          ),
-          SizedBox(width: w * 0.012),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.username,
-                  style: _orbitron(
-                    size: h * 0.020,
-                    weight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.blue.withValues(alpha: 0.4),
-                    ),
-                  ),
-                  child: Text(
-                    "Student",
-                    style: _orbitron(
-                      size: h * 0.013,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-),
               SizedBox(height: h * 0.025),
 
               // ── Titre progression
@@ -477,27 +483,26 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               ),
               SizedBox(height: h * 0.02),
 
-              // ── Score
+              // ── Score ✅
               _buildStatCard(
                 h: h,
                 icon: Icons.stars_rounded,
                 label: "Score",
-                value: user.totalPoints.toString(),
+                value: score.toString(),
                 color: const Color.fromARGB(255, 251, 255, 0),
               ),
               SizedBox(height: h * 0.015),
 
-              // ── Rank
+              // ── Rank ✅
               _buildStatCard(
                 h: h,
                 icon: Icons.emoji_events,
                 label: "Rank",
-                value: user.rank.toString().padLeft(2, '0'),
+                value: rang.toString().padLeft(2, '0'),
                 color: const Color.fromARGB(255, 71, 255, 92),
               ),
               SizedBox(height: h * 0.025),
 
-              // ── Divider décoratif
               Container(
                 height: 1,
                 decoration: BoxDecoration(
@@ -510,16 +515,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               ),
               SizedBox(height: h * 0.025),
 
-              // ── Algo progress
+              // ── Algo progress ✅
               _buildProgressSection(
-                h: h, w: w,
+                h: h,
+                w: w,
                 label: "Algorithmic Progress",
-                value: user.algo1Progress,
+                value: algo1Progress,
                 color: const Color.fromARGB(255, 0, 255, 247),
-                labelColor: const Color.fromARGB(200, 255, 255, 255), // ← ta couleur ici
+                labelColor: const Color.fromARGB(200, 255, 255, 255),
               ),
-              SizedBox(height: h * 0.025),
-
             ],
           ),
         ),
@@ -536,7 +540,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: h * 0.015, vertical: h * 0.012),
+      padding: EdgeInsets.symmetric(
+          horizontal: h * 0.015, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
@@ -574,7 +579,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }) {
     return Row(
       children: [
-        // Cercle
         SizedBox(
           width: h * 0.10,
           height: h * 0.10,
@@ -621,7 +625,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               ),
               SizedBox(height: h * 0.005),
               Text("${(value * 100).toInt()}% complété",
-                  style: _orbitron(size: h * 0.015, color: const Color.fromARGB(200, 255, 255, 255))),
+                  style: _orbitron(
+                      size: h * 0.015,
+                      color: const Color.fromARGB(200, 255, 255, 255))),
             ],
           ),
         ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../models/profil/profil_model.dart'; // ✅ corrigé
+import '../../models/profil/profil_model.dart'; 
 import '../../service/LoginService.dart';
 
 class ProfileController {
@@ -13,7 +13,7 @@ class ProfileController {
     final token = LoginService.getToken();
 
     if (token == null) {
-      print('❌ Pas de token → mock');
+      print(' Pas de token → mock');
       _model = ProfileModel.mock();
       return;
     }
