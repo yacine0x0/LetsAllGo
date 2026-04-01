@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model chapitre {
+  id_chapitre         String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  titre               String
+  termine             Boolean?          @default(false)
+  PourcentageChapitre Int?              @default(0)
+  id_module           String?           @db.Uuid
+  id_progression      String?           @db.Uuid
+  id_quiz             String?           @db.Uuid
+  PointsObtenus       Int?              @db.SmallInt
+  module              module?           @relation(fields: [id_module], references: [id_module], onDelete: Cascade, onUpdate: NoAction)
+  progression         progression?      @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
+  quiz                quiz?             @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
+  section             section[]
+  selectionne         selectionne[]
+  suividuchapitre     suividuchapitre[]
+
+  @@index([id_module], map: "idx_chapitre_module")
+  @@index([id_progression], map: "idx_chapitre_progression")
+}
+
+model concernem {
+  id_module      String      @db.Uuid
+  id_progression String      @db.Uuid
+  module         module      @relation(fields: [id_module], references: [id_module], onDelete: Cascade, onUpdate: NoAction)
+  progression    progression @relation(fields: [id_progression], references: [id_progression], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_module, id_progression])
+}
+
+model etudie {
+  id_etudiant String      @db.Uuid
+  id_module   String      @db.Uuid
+  datepassage DateTime?   @db.Date
+  utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  module      module      @relation(fields: [id_module], references: [id_module], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_etudiant, id_module])
+  @@index([id_etudiant], map: "idx_etudie_etudiant")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model module {
+  id_module         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nom               String
+  description       String?
+  progressionmodule Int?        @default(0)
+  chapitre          chapitre[]
+  concernem         concernem[]
+  etudie            etudie[]
+
+  @@index([nom], map: "idx_module_nom")
+}
+
+model obtient {
+  id_etudiant      String          @db.Uuid
+  id_suivichapitre String          @db.Uuid
+  utilisateur      utilisateur     @relation(fields: [id_etudiant], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  suividuchapitre  suividuchapitre @relation(fields: [id_suivichapitre], references: [id_s], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_etudiant, id_suivichapitre])
+  @@index([id_etudiant], map: "idx_obtient_etudiant")
+}
+
+model passe {
+  id_etudiant String      @db.Uuid
+  id_quiz     String      @db.Uuid
+  datepassage DateTime?   @db.Date
+  utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  quiz        quiz        @relation(fields: [id_quiz], references: [id_quiz], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_etudiant, id_quiz])
+  @@index([id_etudiant], map: "idx_passe_etudiant")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model progression {
+  id_progression    String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pourcentage       Int?        @default(0)
+  progressiontotale Int?        @default(0)
+  chapitre          chapitre[]
+  concernem         concernem[]
+  suit              suit[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model question {
+  id_question     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  enonce          String
+  reponsecorrecte String
+  id_quiz         String? @db.Uuid
+  quiz            quiz?   @relation(fields: [id_quiz], references: [id_quiz], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([id_quiz], map: "idx_question_quiz")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model quiz {
+  id_quiz                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  score                  Int?          @default(0)
+  nombrequestionstotal   Int
+  nombrequestionsfaites  Int?          @default(0)
+  chapitresselectionnees Json?
+  intensite              String?
+  chapitre               chapitre[]
+  passe                  passe[]
+  question               question[]
+  selectionne            selectionne[]
+}
+
+model section {
+  id_section  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  titre       String
+  id_chapitre String?   @db.Uuid
+  chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([id_chapitre], map: "idx_section_chapitre")
+}
+
+model selectionne {
+  id_quiz     String   @db.Uuid
+  id_chapitre String   @db.Uuid
+  ordre       Int?     @default(0)
+  chapitre    chapitre @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: Cascade, onUpdate: NoAction)
+  quiz        quiz     @relation(fields: [id_quiz], references: [id_quiz], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_quiz, id_chapitre])
+  @@index([id_quiz], map: "idx_selectionne_quiz")
+}
+
+model statistiquescours {
+  id_sc                  String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dategeneration         DateTime?    @default(now()) @db.Timestamptz(6)
+  nombreconsultations    Int?         @default(0)
+  coursleplusconsultable String?
+  id_admin               String?      @db.Uuid
+  utilisateur            utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model statistiquesetudiant {
+  id_se          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dategeneration DateTime?    @default(now()) @db.Timestamptz(6)
+  nombreinscrits Int?         @default(0)
+  nombreactifs   Int?         @default(0)
+  id_admin       String?      @db.Uuid
+  utilisateur    utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model statistiquesquiz {
+  id_sq            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dategeneration   DateTime?    @default(now()) @db.Timestamptz(6)
+  moyennescores    Decimal?     @default(0) @db.Decimal(5, 2)
+  nombretentatives Int?         @default(0)
+  id_admin         String?      @db.Uuid
+  utilisateur      utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model suit {
+  id_etudiant    String      @db.Uuid
+  id_progression String      @db.Uuid
+  utilisateur    utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  progression    progression @relation(fields: [id_progression], references: [id_progression], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_etudiant, id_progression])
+  @@index([id_etudiant], map: "idx_suit_etudiant")
+}
+
+model suividuchapitre {
+  id_s        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  datepassage DateTime? @default(now()) @db.Timestamptz(6)
+  complete    Boolean?  @default(false)
+  id_chapitre String?   @db.Uuid
+  obtient     obtient[]
+  chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([id_chapitre], map: "idx_suivi_chapitre")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model utilisateur {
+  id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nom                  String
+  prenom               String
+  email                String                 @unique
+  role                 String?                @default("etudiant")
+  motdepasse           String
+  dateinscription      DateTime?              @default(now()) @db.Timestamptz(6)
+  scoretotal           Int?                   @default(0)
+  rang                 Int?
+  etudie               etudie[]
+  obtient              obtient[]
+  passe                passe[]
+  statistiquescours    statistiquescours[]
+  statistiquesetudiant statistiquesetudiant[]
+  statistiquesquiz     statistiquesquiz[]
+  suit                 suit[]
+
+  @@index([email], map: "idx_utilisateur_email")
+  @@index([role], map: "idx_utilisateur_role")
+}
