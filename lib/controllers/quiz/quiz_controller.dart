@@ -1,5 +1,6 @@
 // controllers/quiz/quiz_controller.dart
-
+import 'package:flutter/services.dart';
+import 'package:xml/xml.dart';
 import '../../models/quiz/quiz_model.dart';
 import 'base_quiz_controller.dart';
 
@@ -9,367 +10,135 @@ class QuizController implements BaseQuizController {
   @override
   CustomQuizSession get session => _session;
 
-  static const List<Map<String, dynamic>> _questionsDatabase = [
-    // ========== CHAPITRE 01: BASICS ==========
-    {
-      'id': 'c1_q1',
-      'chapter': 'Chapitre 01',
-      'enonce': 'What is an algorithm?',
-      'reponseA': 'A programming language',
-      'reponseB': 'A step-by-step procedure for solving a problem',
-      'reponseC': 'A type of computer',
-      'reponseD': 'A data structure',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c1_q2',
-      'chapter': 'Chapitre 01',
-      'enonce': 'Which of the following is NOT a characteristic of an algorithm?',
-      'reponseA': 'Finiteness',
-      'reponseB': 'Definiteness',
-      'reponseC': 'Ambiguity',
-      'reponseD': 'Effectiveness',
-      'bonneReponse': 'C',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c1_q3',
-      'chapter': 'Chapitre 01',
-      'enonce': 'What is the time complexity of searching in an unsorted array?',
-      'reponseA': 'O(1)',
-      'reponseB': 'O(n)',
-      'reponseC': 'O(log n)',
-      'reponseD': 'O(n²)',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c1_q4',
-      'chapter': 'Chapitre 01',
-      'enonce': 'Which is the best time complexity for a search algorithm?',
-      'reponseA': 'O(n)',
-      'reponseB': 'O(log n)',
-      'reponseC': 'O(1)',
-      'reponseD': 'O(n log n)',
-      'bonneReponse': 'C',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c1_q5',
-      'chapter': 'Chapitre 01',
-      'enonce': 'What does "Big O" notation describe?',
-      'reponseA': 'Memory usage',
-      'reponseB': 'Time complexity in worst case',
-      'reponseC': 'The number of lines of code',
-      'reponseD': 'CPU speed',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    // ========== CHAPITRE 02: CONDITIONS ==========
-    {
-      'id': 'c2_q1',
-      'chapter': 'Chapitre 02',
-      'enonce': 'What does an "if-else" statement do?',
-      'reponseA': 'Loop execution',
-      'reponseB': 'Conditional execution',
-      'reponseC': 'Function definition',
-      'reponseD': 'Variable declaration',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c2_q2',
-      'chapter': 'Chapitre 02',
-      'enonce': 'Which keyword is used for multiple conditions?',
-      'reponseA': 'switch',
-      'reponseB': 'while',
-      'reponseC': 'for',
-      'reponseD': 'foreach',
-      'bonneReponse': 'A',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c2_q3',
-      'chapter': 'Chapitre 02',
-      'enonce': 'What is the logical operator for AND?',
-      'reponseA': '|',
-      'reponseB': '||',
-      'reponseC': '&&',
-      'reponseD': '&',
-      'bonneReponse': 'C',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c2_q4',
-      'chapter': 'Chapitre 02',
-      'enonce': 'What is the logical operator for OR?',
-      'reponseA': '&&',
-      'reponseB': '||',
-      'reponseC': '&',
-      'reponseD': '!',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c2_q5',
-      'chapter': 'Chapitre 02',
-      'enonce': 'What does the NOT operator (!) do?',
-      'reponseA': 'Inverts a boolean value',
-      'reponseB': 'Adds two numbers',
-      'reponseC': 'Compares two values',
-      'reponseD': 'Declares a variable',
-      'bonneReponse': 'A',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    // ========== CHAPITRE 03: LOOPS ==========
-    {
-      'id': 'c3_q1',
-      'chapter': 'Chapitre 03',
-      'enonce': 'Order the steps for a for loop:',
-      'reponseA': '',
-      'reponseB': '',
-      'reponseC': '',
-      'reponseD': '',
-      'bonneReponse': 'Initialization|Condition|Body|Increment',
-      'type': 'ordering',
-      'codeLines': ['Body', 'Initialization', 'Increment', 'Condition'],
-    },
-    {
-      'id': 'c3_q2',
-      'chapter': 'Chapitre 03',
-      'enonce': 'What is the purpose of a while loop?',
-      'reponseA': 'Execute code a fixed number of times',
-      'reponseB': 'Execute code while a condition is true',
-      'reponseC': 'Define a function',
-      'reponseD': 'Create an array',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c3_q3',
-      'chapter': 'Chapitre 03',
-      'enonce': 'What is the key difference between for and while loops?',
-      'reponseA': 'for is faster',
-      'reponseB': 'while cannot iterate',
-      'reponseC': 'for has a predefined iteration count',
-      'reponseD': 'They are identical',
-      'bonneReponse': 'C',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c3_q4',
-      'chapter': 'Chapitre 03',
-      'enonce': 'What does "break" statement do in a loop?',
-      'reponseA': 'Pauses the loop',
-      'reponseB': 'Exits the loop immediately',
-      'reponseC': 'Restarts the loop',
-      'reponseD': 'Increases the iteration',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c3_q5',
-      'chapter': 'Chapitre 03',
-      'enonce': 'What does "continue" statement do?',
-      'reponseA': 'Exits the loop',
-      'reponseB': 'Pauses the execution',
-      'reponseC': 'Skips to the next iteration',
-      'reponseD': 'Repeats the current iteration',
-      'bonneReponse': 'C',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    // ========== CHAPITRE 04: DATA STRUCTURES ==========
-    {
-      'id': 'c4_q1',
-      'chapter': 'Chapitre 04',
-      'enonce': 'What is a vector?',
-      'reponseA': 'A fixed-size array',
-      'reponseB': 'A dynamic array that can grow or shrink',
-      'reponseC': 'A constant value',
-      'reponseD': 'A function parameter',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c4_q2',
-      'chapter': 'Chapitre 04',
-      'enonce': 'What is the time complexity of accessing an element in an array?',
-      'reponseA': 'O(n)',
-      'reponseB': 'O(log n)',
-      'reponseC': 'O(1)',
-      'reponseD': 'O(n²)',
-      'bonneReponse': 'C',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c4_q3',
-      'chapter': 'Chapitre 04',
-      'enonce': 'What is a matrix?',
-      'reponseA': 'A one-dimensional array',
-      'reponseB': 'A two-dimensional array',
-      'reponseC': 'A dynamic array',
-      'reponseD': 'A type of vector',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c4_q4',
-      'chapter': 'Chapitre 04',
-      'enonce': 'Order the steps for matrix traversal:',
-      'reponseA': '',
-      'reponseB': '',
-      'reponseC': '',
-      'reponseD': '',
-      'bonneReponse': 'Initialize row index|Initialize column index|Access element|Move to next element',
-      'type': 'ordering',
-      'codeLines': ['Access element', 'Initialize row index', 'Move to next element', 'Initialize column index'],
-    },
-    {
-      'id': 'c4_q5',
-      'chapter': 'Chapitre 04',
-      'enonce': 'What is the advantage of using vectors over arrays?',
-      'reponseA': 'Faster access',
-      'reponseB': 'Dynamic sizing',
-      'reponseC': 'Less memory usage',
-      'reponseD': 'No advantages',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    // ========== CHAPITRE 05: FUNCTIONS ==========
-    {
-      'id': 'c5_q1',
-      'chapter': 'Chapitre 05',
-      'enonce': 'What is a function?',
-      'reponseA': 'A variable',
-      'reponseB': 'A reusable block of code that performs a task',
-      'reponseC': 'A loop',
-      'reponseD': 'A data type',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c5_q2',
-      'chapter': 'Chapitre 05',
-      'enonce': 'What are parameters in a function?',
-      'reponseA': 'The function name',
-      'reponseB': 'Input values passed to the function',
-      'reponseC': 'The function body',
-      'reponseD': 'The return type',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c5_q3',
-      'chapter': 'Chapitre 05',
-      'enonce': 'What is recursion?',
-      'reponseA': 'A loop',
-      'reponseB': 'A function calling itself',
-      'reponseC': 'A data structure',
-      'reponseD': 'An array operation',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c5_q4',
-      'chapter': 'Chapitre 05',
-      'enonce': 'What is the base case in recursion?',
-      'reponseA': 'The first function call',
-      'reponseB': 'The condition to stop recursion',
-      'reponseC': 'The return value',
-      'reponseD': 'The function parameters',
-      'bonneReponse': 'B',
-      'type': 'multipleChoice',
-      'codeLines': null,
-    },
-    {
-      'id': 'c5_q5',
-      'chapter': 'Chapitre 05',
-      'enonce': 'Order the function execution steps:',
-      'reponseA': '',
-      'reponseB': '',
-      'reponseC': '',
-      'reponseD': '',
-      'bonneReponse': 'Function declaration|Function call|Parameter passing|Function execution|Return value',
-      'type': 'ordering',
-      'codeLines': ['Function execution', 'Function declaration', 'Return value', 'Function call', 'Parameter passing'],
-    },
-  ];
+  // Map chapitre → icône (inchangé)
+  static const Map<String, String> _chapterIcons = {
+    'Chapitre 01': 'assets/images/icons_algo1/basics_icone.png',
+    'Chapitre 02': 'assets/images/icons_algo1/si_sinon_icon.png',
+    'Chapitre 03': 'assets/images/icons_algo1/loops_icone.png',
+    'Chapitre 04': 'assets/images/icons_algo1/vectors_matris_icon.png',
+    'Chapitre 05': 'assets/images/icons_algo1/fonction_procedure_icone.png',
+  };
 
-  QuizController({
+  // Constructeur privé — utilise QuizController.create() pour instancier
+  QuizController._();
+
+  /// Factory async : charge les XML puis construit la session.
+  static Future<QuizController> create({
     required List<String> selectedChapters,
     required int intensity,
-  }) {
-    _initializeSession(selectedChapters, intensity);
+  }) async {
+    final ctrl = QuizController._();
+    await ctrl._initializeSession(selectedChapters, intensity);
+    return ctrl;
   }
 
-  void _initializeSession(List<String> selectedChapters, int intensity) {
-    List<Quiz> quizzes = [];
+  // ─── Chargement XML ───────────────────────────────────────────────────────
 
-    for (var chapter in selectedChapters) {
-      final chapterQuestions = _getQuestionsByChapter(chapter);
-      final selectedQuestions = chapterQuestions.take(intensity).toList();
+  /// Convertit "Chapitre 01" → "chapitre01", "Chapitre 05" → "chapitre05"
+  static String _chapterToFileName(String chapter) {
+    final match = RegExp(r'(\d+)').firstMatch(chapter);
+    final number = match != null ? match.group(1)!.padLeft(2, '0') : '';
+    return 'chapitre$number';
+  }
 
-      final quiz = Quiz(
-        id: 'quiz_${chapter.replaceAll(' ', '_')}',
-        title: chapter,
-        chapter: chapter,
-        icon: "assets/images/icons_algo1/basics_icone.png",
-        questions: selectedQuestions,
-      );
+  /// Charge et parse un fichier XML d'un chapitre.
+  static Future<List<Question>> _loadQuestionsFromXml(String chapter) async {
+    final fileName = _chapterToFileName(chapter);
+    final path = 'assets/data/algo1/quiz/$fileName.xml';
 
-      quizzes.add(quiz);
+    late String raw;
+    try {
+      raw = await rootBundle.loadString(path);
+    } catch (_) {
+      // Fichier absent → chapitre ignoré silencieusement
+      return [];
+    }
+
+    final document = XmlDocument.parse(raw);
+    final List<Question> questions = [];
+
+    for (final node in document.findAllElements('question')) {
+      final id     = node.getAttribute('id') ?? '';
+      final type   = node.getAttribute('type') ?? 'multipleChoice';
+      final enonce = node.findElements('enonce').first.innerText.trim();
+      final bonneReponseRaw =
+          node.findElements('bonneReponse').first.innerText.trim();
+
+      if (type == 'ordering') {
+        // Les lignes à afficher (déjà mélangées dans le XML)
+        final codeLines = node
+            .findAllElements('line')
+            .map((l) => l.innerText.trim())
+            .toList();
+
+        questions.add(Question(
+          id:           id,
+          enonce:       enonce,
+          reponseA:     '',
+          reponseB:     '',
+          reponseC:     '',
+          reponseD:     '',
+          bonneReponse: bonneReponseRaw, // "Step1|Step2|Step3"
+          type:         QuestionType.ordering,
+          codeLines:    codeLines,
+        ));
+      } else {
+        // multipleChoice — construit reponseA..D depuis les <choice>
+        final choices = {
+          for (final c in node.findAllElements('choice'))
+            c.getAttribute('id')!: c.innerText.trim()
+        };
+
+        questions.add(Question(
+          id:           id,
+          enonce:       enonce,
+          reponseA:     choices['A'] ?? '',
+          reponseB:     choices['B'] ?? '',
+          reponseC:     choices['C'] ?? '',
+          reponseD:     choices['D'] ?? '',
+          bonneReponse: bonneReponseRaw, // "A", "B", "C" ou "D"
+          type:         QuestionType.multipleChoice,
+          codeLines:    null,
+        ));
+      }
+    }
+
+    return questions;
+  }
+
+  // ─── Initialisation de la session ─────────────────────────────────────────
+
+  Future<void> _initializeSession(
+    List<String> selectedChapters,
+    int intensity,
+  ) async {
+    final List<Quiz> quizzes = [];
+
+    for (final chapter in selectedChapters) {
+      final allQuestions = await _loadQuestionsFromXml(chapter);
+
+      // Prend au maximum `intensity` questions
+      final selected = allQuestions.take(intensity).toList();
+
+      quizzes.add(Quiz(
+        id:        'quiz_${chapter.replaceAll(' ', '_')}',
+        title:     chapter,
+        chapter:   chapter,
+        icon:      _chapterIcons[chapter] ??
+                   'assets/images/icons_algo1/basics_icone.png',
+        questions: selected,
+      ));
     }
 
     _session = CustomQuizSession(
-      id: 'session_${DateTime.now().millisecondsSinceEpoch}',
+      id:               'session_${DateTime.now().millisecondsSinceEpoch}',
       selectedChapters: selectedChapters,
-      intensity: intensity,
-      quizzes: quizzes,
+      intensity:        intensity,
+      quizzes:          quizzes,
     );
   }
 
-  List<Question> _getQuestionsByChapter(String chapter) {
-    return _questionsDatabase
-        .where((q) => q['chapter'] == chapter)
-        .map((q) => _mapToQuestion(q))
-        .toList();
-  }
-
-  Question _mapToQuestion(Map<String, dynamic> data) {
-    return Question(
-      id: data['id'],
-      enonce: data['enonce'],
-      reponseA: data['reponseA'],
-      reponseB: data['reponseB'],
-      reponseC: data['reponseC'],
-      reponseD: data['reponseD'],
-      bonneReponse: data['bonneReponse'],
-      type: data['type'] == 'ordering' ? QuestionType.ordering : QuestionType.multipleChoice,
-      codeLines: data['codeLines'] as List<String>?,
-    );
-  }
+  // ─── BaseQuizController (inchangé) ────────────────────────────────────────
 
   @override
   void nextQuestion() {
@@ -386,9 +155,7 @@ class QuizController implements BaseQuizController {
   }
 
   @override
-  bool nextQuiz() {
-    return _session.nextQuiz();
-  }
+  bool nextQuiz() => _session.nextQuiz();
 
   @override
   bool get isFirstQuestion => _session.currentQuiz.isFirstQuestion;
@@ -413,17 +180,13 @@ class QuizController implements BaseQuizController {
 
   @override
   void answerMultipleChoice(String questionId, String answer) {
-    if (_session.currentQuiz.isQuestionValidated(questionId)) {
-      return;
-    }
+    if (_session.currentQuiz.isQuestionValidated(questionId)) return;
     _session.currentQuiz.userAnswers[questionId] = answer;
   }
 
   @override
   void setOrdering(String questionId, List<String> order) {
-    if (_session.currentQuiz.isQuestionValidated(questionId)) {
-      return;
-    }
+    if (_session.currentQuiz.isQuestionValidated(questionId)) return;
     _session.currentQuiz.userOrderings[questionId] = order;
   }
 
@@ -439,8 +202,8 @@ class QuizController implements BaseQuizController {
     bool isCorrect;
 
     if (question.type == QuestionType.multipleChoice) {
-      isCorrect = _session.currentQuiz.userAnswers[questionId] ==
-          question.bonneReponse;
+      isCorrect =
+          _session.currentQuiz.userAnswers[questionId] == question.bonneReponse;
     } else {
       final userOrder = _session.currentQuiz.userOrderings[questionId];
       if (userOrder == null) return false;
@@ -448,9 +211,7 @@ class QuizController implements BaseQuizController {
       isCorrect = userOrder.join('|') == correctOrder.join('|');
     }
 
-    if (isCorrect) {
-      _session.currentQuiz.validateQuestion(questionId);
-    }
+    if (isCorrect) _session.currentQuiz.validateQuestion(questionId);
 
     return isCorrect;
   }
@@ -467,19 +228,14 @@ class QuizController implements BaseQuizController {
       } else {
         final userOrder = _session.currentQuiz.userOrderings[questionId];
         if (userOrder == null) return false;
-        final correctOrder = question.bonneReponse.split('|');
-        return userOrder.join('|') == correctOrder.join('|');
+        return userOrder.join('|') == question.bonneReponse;
       }
     }
 
     if (question.type == QuestionType.multipleChoice) {
-      if (!_session.currentQuiz.userAnswers.containsKey(questionId)) {
-        return null;
-      }
+      if (!_session.currentQuiz.userAnswers.containsKey(questionId)) return null;
     } else {
-      if (!_session.currentQuiz.userOrderings.containsKey(questionId)) {
-        return null;
-      }
+      if (!_session.currentQuiz.userOrderings.containsKey(questionId)) return null;
     }
 
     return checkAnswer(questionId);
@@ -488,29 +244,21 @@ class QuizController implements BaseQuizController {
   @override
   int getCurrentQuizScore() {
     int score = 0;
-    for (var question in _session.currentQuiz.questions) {
-      if (getQuestionStatus(question.id) == true) {
-        score++;
-      }
+    for (final q in _session.currentQuiz.questions) {
+      if (getQuestionStatus(q.id) == true) score++;
     }
     return score;
   }
 
   @override
-  int getTotalScore() {
-    return _session.getTotalScore();
-  }
+  int getTotalScore() => _session.getTotalScore();
 
   @override
-  int getPercentage() {
-    return _session.getPercentage();
-  }
+  int getPercentage() => _session.getPercentage();
 
   @override
   void resetSession() {
-    for (var quiz in _session.quizzes) {
-      quiz.reset();
-    }
+    for (final quiz in _session.quizzes) quiz.reset();
     _session.currentQuizIndex = 0;
   }
 }

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_05" title="Functions - Fonctions et récursivité">
+
+  <question id="c5_q1" type="multipleChoice">
+    <enonce>What is a function?</enonce>
+    <choices>
+      <choice id="A">A variable</choice>
+      <choice id="B">A reusable block of code that performs a task</choice>
+      <choice id="C">A loop</choice>
+      <choice id="D">A data type</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q2" type="multipleChoice">
+    <enonce>What are parameters in a function?</enonce>
+    <choices>
+      <choice id="A">The function name</choice>
+      <choice id="B">Input values passed to the function</choice>
+      <choice id="C">The function body</choice>
+      <choice id="D">The return type</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q3" type="multipleChoice">
+    <enonce>What is recursion?</enonce>
+    <choices>
+      <choice id="A">A loop</choice>
+      <choice id="B">A function calling itself</choice>
+      <choice id="C">A data structure</choice>
+      <choice id="D">An array operation</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q4" type="multipleChoice">
+    <enonce>What is the base case in recursion?</enonce>
+    <choices>
+      <choice id="A">The first function call</choice>
+      <choice id="B">The condition to stop recursion</choice>
+      <choice id="C">The return value</choice>
+      <choice id="D">The function parameters</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q5" type="ordering">
+    <enonce>Order the function execution steps:</enonce>
+    <bonneReponse>Function declaration|Function call|Parameter passing|Function execution|Return value</bonneReponse>
+    <codeLines>
+      <line>Function execution</line>
+      <line>Function declaration</line>
+      <line>Return value</line>
+      <line>Function call</line>
+      <line>Parameter passing</line>
+    </codeLines>
+  </question>
+
+  <question id="c5_q6" type="multipleChoice">
+    <enonce>What is a void function?</enonce>
+    <choices>
+      <choice id="A">A function that takes no parameters</choice>
+      <choice id="B">A function that returns no value</choice>
+      <choice id="C">A function that is never called</choice>
+      <choice id="D">A function with infinite loops</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q7" type="multipleChoice">
+    <enonce>What is function overloading?</enonce>
+    <choices>
+      <choice id="A">Calling a function multiple times</choice>
+      <choice id="B">A function that calls itself</choice>
+      <choice id="C">Defining multiple functions with the same name but different parameters</choice>
+      <choice id="D">A function inside another function</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q8" type="multipleChoice">
+    <enonce>What is the scope of a local variable?</enonce>
+    <choices>
+      <choice id="A">Accessible everywhere in the program</choice>
+      <choice id="B">Accessible only within the function it is declared in</choice>
+      <choice id="C">Accessible in all functions of the same file</choice>
+      <choice id="D">Accessible only in loops</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q9" type="multipleChoice">
+    <enonce>What keyword is used to return a value from a function?</enonce>
+    <choices>
+      <choice id="A">yield</choice>
+      <choice id="B">output</choice>
+      <choice id="C">return</choice>
+      <choice id="D">send</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q10" type="ordering">
+    <enonce>Order the steps of a recursive function:</enonce>
+    <bonneReponse>Check base case|Return if base case met|Call function recursively|Return recursive result</bonneReponse>
+    <codeLines>
+      <line>Call function recursively</line>
+      <line>Check base case</line>
+      <line>Return recursive result</line>
+      <line>Return if base case met</line>
+    </codeLines>
+  </question>
+
+  <question id="c5_q11" type="multipleChoice">
+    <enonce>What happens if a recursive function has no base case?</enonce>
+    <choices>
+      <choice id="A">It returns 0</choice>
+      <choice id="B">It runs forever causing a stack overflow</choice>
+      <choice id="C">It returns null</choice>
+      <choice id="D">It automatically stops after 100 calls</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q12" type="multipleChoice">
+    <enonce>What is the call stack?</enonce>
+    <choices>
+      <choice id="A">A list of all declared variables</choice>
+      <choice id="B">A data structure that tracks active function calls</choice>
+      <choice id="C">A type of recursive function</choice>
+      <choice id="D">A memory area for storing arrays</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q13" type="multipleChoice">
+    <enonce>What is "pass by value"?</enonce>
+    <choices>
+      <choice id="A">Passing the memory address of a variable</choice>
+      <choice id="B">Passing a copy of the variable's value to the function</choice>
+      <choice id="C">Returning a value from a function</choice>
+      <choice id="D">Declaring a global variable</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q14" type="multipleChoice">
+    <enonce>What is "pass by reference"?</enonce>
+    <choices>
+      <choice id="A">Passing a copy of the variable</choice>
+      <choice id="B">Passing the memory address so the function can modify the original</choice>
+      <choice id="C">Returning multiple values</choice>
+      <choice id="D">Declaring a local variable</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q15" type="multipleChoice">
+    <enonce>What is a global variable?</enonce>
+    <choices>
+      <choice id="A">A variable declared inside a function</choice>
+      <choice id="B">A variable accessible only in loops</choice>
+      <choice id="C">A variable declared outside all functions, accessible everywhere</choice>
+      <choice id="D">A variable that cannot be modified</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q16" type="multipleChoice">
+    <enonce>What is a function prototype (declaration)?</enonce>
+    <choices>
+      <choice id="A">The implementation of a function</choice>
+      <choice id="B">A statement that declares the function signature before its full definition</choice>
+      <choice id="C">A function that has no body</choice>
+      <choice id="D">A recursive call</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q17" type="multipleChoice">
+    <enonce>What is tail recursion?</enonce>
+    <choices>
+      <choice id="A">Recursion with multiple base cases</choice>
+      <choice id="B">Recursion where the recursive call is the last operation in the function</choice>
+      <choice id="C">Recursion that always causes a stack overflow</choice>
+      <choice id="D">Recursion with no return value</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q18" type="multipleChoice">
+    <enonce>What is the result of factorial(0) in a standard recursive implementation?</enonce>
+    <choices>
+      <choice id="A">0</choice>
+      <choice id="B">Undefined</choice>
+      <choice id="C">1</choice>
+      <choice id="D">Infinite loop</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q19" type="multipleChoice">
+    <enonce>What is a lambda function (anonymous function)?</enonce>
+    <choices>
+      <choice id="A">A function with no parameters</choice>
+      <choice id="B">A recursive function</choice>
+      <choice id="C">A small unnamed function defined inline</choice>
+      <choice id="D">A function that returns void</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q20" type="ordering">
+    <enonce>Order the steps to compute factorial(n) recursively:</enonce>
+    <bonneReponse>Check if n equals 0|Return 1 if base case|Return n * factorial(n-1)|Receive final result</bonneReponse>
+    <codeLines>
+      <line>Return n * factorial(n-1)</line>
+      <line>Check if n equals 0</line>
+      <line>Receive final result</line>
+      <line>Return 1 if base case</line>
+    </codeLines>
+  </question>
+
+  <question id="c5_q21" type="multipleChoice">
+    <enonce>What does "return" do in the middle of a function?</enonce>
+    <choices>
+      <choice id="A">Pauses the function temporarily</choice>
+      <choice id="B">Exits the function immediately and returns the specified value</choice>
+      <choice id="C">Restarts the function</choice>
+      <choice id="D">Jumps to the next function</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q22" type="multipleChoice">
+    <enonce>What is mutual recursion?</enonce>
+    <choices>
+      <choice id="A">A function calling itself twice</choice>
+      <choice id="B">Two functions that call each other recursively</choice>
+      <choice id="C">A recursive function with two base cases</choice>
+      <choice id="D">A function shared between two programs</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q23" type="multipleChoice">
+    <enonce>What is a default parameter in a function?</enonce>
+    <choices>
+      <choice id="A">A parameter that is always required</choice>
+      <choice id="B">A parameter with a predefined value used if no argument is passed</choice>
+      <choice id="C">A parameter of type void</choice>
+      <choice id="D">A parameter that cannot be changed</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q24" type="multipleChoice">
+    <enonce>What is the difference between a function and a procedure?</enonce>
+    <choices>
+      <choice id="A">A procedure runs faster</choice>
+      <choice id="B">A function returns a value; a procedure does not</choice>
+      <choice id="C">A function cannot have parameters</choice>
+      <choice id="D">There is no difference</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q25" type="multipleChoice">
+    <enonce>What is stack overflow in recursion?</enonce>
+    <choices>
+      <choice id="A">When the function returns too many values</choice>
+      <choice id="B">When too many recursive calls fill the call stack beyond its limit</choice>
+      <choice id="C">When a function is called with wrong parameters</choice>
+      <choice id="D">When a function has no return statement</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q26" type="multipleChoice">
+    <enonce>What is memoization in recursion?</enonce>
+    <choices>
+      <choice id="A">Adding comments to recursive functions</choice>
+      <choice id="B">Storing the results of recursive calls to avoid recomputation</choice>
+      <choice id="C">Using global variables inside recursive functions</choice>
+      <choice id="D">Converting recursion to iteration</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q27" type="multipleChoice">
+    <enonce>What is the time complexity of a naive recursive Fibonacci implementation?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(n log n)</choice>
+      <choice id="C">O(2^n)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q28" type="multipleChoice">
+    <enonce>What is a higher-order function?</enonce>
+    <choices>
+      <choice id="A">A function that runs faster than normal</choice>
+      <choice id="B">A function that takes other functions as parameters or returns a function</choice>
+      <choice id="C">A function declared at the top of the file</choice>
+      <choice id="D">A function with more than 5 parameters</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q29" type="ordering">
+    <enonce>Order the steps to compute Fibonacci(n) with memoization:</enonce>
+    <bonneReponse>Check if n is in cache|Return cached value if found|Compute Fibonacci(n-1) + Fibonacci(n-2)|Store result in cache|Return result</bonneReponse>
+    <codeLines>
+      <line>Store result in cache</line>
+      <line>Return cached value if found</line>
+      <line>Return result</line>
+      <line>Check if n is in cache</line>
+      <line>Compute Fibonacci(n-1) + Fibonacci(n-2)</line>
+    </codeLines>
+  </question>
+
+  <question id="c5_q30" type="multipleChoice">
+    <enonce>When should you prefer iteration over recursion?</enonce>
+    <choices>
+      <choice id="A">When the problem is naturally tree-shaped</choice>
+      <choice id="B">When the recursive depth could be very large, risking stack overflow</choice>
+      <choice id="C">When the code needs to be shorter</choice>
+      <choice id="D">When the function has no return value</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+</chapter>

@@ -9,8 +9,6 @@ import '../auth/login_page.dart';
 import '../leaderboard/leaderboard_page.dart';
 import '../files/files_page.dart';
 
-// views/quiz/quiz_selection_page.dart
-
 class QuizSelectionPage extends StatefulWidget {
   const QuizSelectionPage({super.key});
 
@@ -24,6 +22,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
   final List<String> _selectedChapters = [];
   int _selectedIntensity = 10;
   int _currentStep = 1;
+  bool _isLoadingQuiz = false; // ← nouveau : évite double-tap pendant le chargement
 
   final List<Map<String, String>> _chaptersAlgo1 = const [
     {"id": "Chapitre 01", "title": "Basics", "icon": "assets/images/icons_algo1/basics_icone.png"},
@@ -55,6 +54,52 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
           : [Colors.green, Colors.orange, Colors.red, Colors.purple];
 
   int get _defaultIntensity => _selectedAlgo == 1 ? 10 : 5;
+
+  // ─── Start Quiz ────────────────────────────────────────────────────────────
+
+  Future<void> _startQuiz() async {
+    if (_isLoadingQuiz) return;
+    setState(() => _isLoadingQuiz = true);
+
+    try {
+      if (_selectedAlgo == 1) {
+        // QuizController charge les XML de façon async
+        final controller = await QuizController.create(
+          selectedChapters: _selectedChapters,
+          intensity: _selectedIntensity,
+        );
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => QuizPageContent(controller: controller)),
+        );
+      } else {
+        // Algo2QuizController — garde le comportement existant (sync ou à migrer plus tard)
+        final controller = Algo2QuizController(
+          selectedChapters: _selectedChapters,
+          intensity: _selectedIntensity,
+        );
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => QuizPageContent(controller: controller)),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors du chargement du quiz : $e'),
+          backgroundColor: Colors.red.shade700,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isLoadingQuiz = false);
+    }
+  }
+
+  // ─── Build ────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +324,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
           onTap: () => _switchAlgo(1),
           child: _filterChip("Algo 1", h, selected: _selectedAlgo == 1),
         ),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         GestureDetector(
           onTap: () => _switchAlgo(2),
           child: _filterChip("Algo 2", h, selected: _selectedAlgo == 2),
@@ -376,17 +421,12 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
 
   Widget _buildChapterSelection(double h, double w) {
     final chapters = _currentChapters;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Select chapters",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: h * 0.022,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: h * 0.022, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: h * 0.02),
         Expanded(
@@ -401,7 +441,6 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
             itemBuilder: (context, index) {
               final chapter = chapters[index];
               final isSelected = _selectedChapters.contains(chapter["id"]);
-
               return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -500,11 +539,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                                   ),
                                 ),
                                 child: isSelected
-                                    ? Icon(
-                                        Icons.check,
-                                        color: Colors.white,
-                                        size: h * 0.015,
-                                      )
+                                    ? Icon(Icons.check, color: Colors.white, size: h * 0.015)
                                     : null,
                               ),
                             ],
@@ -528,11 +563,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
       children: [
         Text(
           "Quiz difficulty level",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: h * 0.022,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: h * 0.022, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: h * 0.02),
         Wrap(
@@ -544,17 +575,11 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
             return GestureDetector(
               onTap: () => setState(() => _selectedIntensity = intensity),
               child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: w * 0.03,
-                  vertical: h * 0.015,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: w * 0.03, vertical: h * 0.015),
                 decoration: BoxDecoration(
                   color: isSelected ? color.withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: isSelected ? color : Colors.white24,
-                    width: isSelected ? 2 : 1,
-                  ),
+                  border: Border.all(color: isSelected ? color : Colors.white24, width: isSelected ? 2 : 1),
                 ),
                 child: Column(
                   children: [
@@ -592,11 +617,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
             children: [
               Text(
                 "What does difficulty level mean?",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: h * 0.018,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(color: Colors.blue, fontSize: h * 0.018, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: h * 0.01),
               Text(
@@ -611,11 +632,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                       "• 10 ● : Medium - Mix of basic and intermediate questions\n"
                       "• 15 ● : Hard - Challenging questions for advanced learners\n"
                       "• 20 ● : Expert - Maximum difficulty for experts",
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: h * 0.014,
-                  height: 1.5,
-                ),
+                style: TextStyle(color: Colors.white54, fontSize: h * 0.014, height: 1.5),
               ),
             ],
           ),
@@ -626,7 +643,6 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
 
   Widget _buildReviewSection(double h, double w) {
     final totalQuestions = _selectedChapters.length * _selectedIntensity;
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -644,14 +660,10 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                 Row(
                   children: [
                     Icon(Icons.check_circle, color: Colors.green, size: h * 0.03),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Text(
                       "Quiz Configuration — ${_selectedAlgo == 1 ? "Algo 1" : "Algo 2"}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: h * 0.022,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: h * 0.022, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -668,11 +680,8 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                     child: Row(
                       children: [
                         Text("•", style: TextStyle(color: Colors.blue, fontSize: h * 0.020)),
-                        SizedBox(width: 8),
-                        Text(
-                          chapter["title"]!,
-                          style: TextStyle(color: Colors.white70, fontSize: h * 0.016),
-                        ),
+                        const SizedBox(width: 8),
+                        Text(chapter["title"]!, style: TextStyle(color: Colors.white70, fontSize: h * 0.016)),
                       ],
                     ),
                   );
@@ -692,7 +701,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                   child: Row(
                     children: [
                       Icon(Icons.info_outline, color: Colors.green, size: h * 0.022),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           "You're ready to start! Click 'Start Quiz' to begin.",
@@ -768,43 +777,48 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                 child: Row(
                   children: [
                     Text("Next", style: TextStyle(color: Colors.white, fontSize: h * 0.018, fontWeight: FontWeight.bold)),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Icon(Icons.chevron_right, color: Colors.white, size: h * 0.02),
                   ],
                 ),
               ),
             )
           else
+            // ── Bouton Start Quiz — utilise _startQuiz() async ──────────────
             GestureDetector(
-              onTap: () {
-                final controller = _selectedAlgo == 1
-                    ? QuizController(
-                        selectedChapters: _selectedChapters,
-                        intensity: _selectedIntensity,
-                      )
-                    : Algo2QuizController(
-                        selectedChapters: _selectedChapters,
-                        intensity: _selectedIntensity,
-                      );
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => QuizPageContent(controller: controller),
-                  ),
-                );
-              },
+              onTap: _isLoadingQuiz ? null : _startQuiz,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.015),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [Colors.green, Colors.green.shade700]),
+                  gradient: LinearGradient(
+                    colors: _isLoadingQuiz
+                        ? [Colors.grey, Colors.grey.shade700]
+                        : [Colors.green, Colors.green.shade700],
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   children: [
-                    Text("Start Quiz", style: TextStyle(color: Colors.white, fontSize: h * 0.018, fontWeight: FontWeight.bold)),
-                    SizedBox(width: 8),
-                    Icon(Icons.play_arrow, color: Colors.white, size: h * 0.022),
+                    if (_isLoadingQuiz)
+                      SizedBox(
+                        width: h * 0.022,
+                        height: h * 0.022,
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    else
+                      Icon(Icons.play_arrow, color: Colors.white, size: h * 0.022),
+                    const SizedBox(width: 8),
+                    Text(
+                      _isLoadingQuiz ? "Loading..." : "Start Quiz",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: h * 0.018,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -828,61 +842,29 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
             border: Border(left: BorderSide(color: Colors.blue.withValues(alpha: 0.2))),
           ),
           padding: EdgeInsets.all(h * 0.025),
-           child: Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
                   Icon(Icons.info_outline, color: Colors.blue, size: h * 0.022),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
                     "Quiz Info — ${_selectedAlgo == 1 ? "Algo 1" : "Algo 2"}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: h * 0.020,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: h * 0.020, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               SizedBox(height: h * 0.02),
-              _buildInfoCard(
-                h,
-                icon: Icons.school,
-                label: "Total Chapters",
-                value: "$totalChapters",
-                color: Colors.blue,
-              ),
+              _buildInfoCard(h, icon: Icons.school, label: "Total Chapters", value: "$totalChapters", color: Colors.blue),
               SizedBox(height: h * 0.015),
-              _buildInfoCard(
-                h,
-                icon: Icons.check_circle_outline,
-                label: "Selected",
-                value: "${_selectedChapters.length}",
-                color: Colors.green,
-              ),
+              _buildInfoCard(h, icon: Icons.check_circle_outline, label: "Selected", value: "${_selectedChapters.length}", color: Colors.green),
               SizedBox(height: h * 0.015),
-              _buildInfoCard(
-                h,
-                icon: Icons.assignment,
-                label: "Questions",
-                value: "$totalQuestions",
-                color: Colors.purple,
-              ),
+              _buildInfoCard(h, icon: Icons.assignment, label: "Questions", value: "$totalQuestions", color: Colors.purple),
               SizedBox(height: h * 0.02),
-              Container(
-                height: 1,
-                color: Colors.white12,
-              ),
+              Container(height: 1, color: Colors.white12),
               SizedBox(height: h * 0.02),
-              Text(
-                "Tips:",
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: h * 0.016,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text("Tips:", style: TextStyle(color: Colors.white70, fontSize: h * 0.016, fontWeight: FontWeight.bold)),
               SizedBox(height: h * 0.01),
               Text(
                 _selectedAlgo == 1
@@ -895,11 +877,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                       "• Higher difficulty = more challenging\n"
                       "• Review before starting\n"
                       "• Take your time answering",
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: h * 0.013,
-                  height: 1.5,
-                ),
+                style: TextStyle(color: Colors.white54, fontSize: h * 0.013, height: 1.5),
               ),
             ],
           ),
@@ -925,25 +903,12 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
       child: Row(
         children: [
           Icon(icon, color: color, size: h * 0.028),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: h * 0.013,
-                ),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  color: color,
-                  fontSize: h * 0.020,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Text(label, style: TextStyle(color: Colors.white54, fontSize: h * 0.013)),
+              Text(value, style: TextStyle(color: color, fontSize: h * 0.020, fontWeight: FontWeight.bold)),
             ],
           ),
         ],

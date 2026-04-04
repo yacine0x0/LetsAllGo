@@ -1,18 +1,16 @@
 class ProfileModel {
-  final String id;          // UUID depuis la BDD
-  final String firstName;   // prenom
-  final String lastName;    // nom
-  final String email;
-  final String studentId;   // généré depuis id
-  final String enrollmentDate; // dateinscription
-  final String speciality;
-  final String studyLevel;
+  final String id;
+  final String firstName;
+  final String lastName;
+  String email;
+  final String studentId;
+  final String enrollmentDate;
   final String role;
   final double globalProgress;
-  final int coursesSuivis;  // depuis etudie
-  final int quizReussis;    // depuis passe
-  final int classement;     // rang
-  final int pointsXP;       // scoretotal
+  final int coursesSuivis;
+  final int quizReussis;
+  final int classement;
+  final int pointsXP;
   bool isFrench;
   bool soundEffects;
 
@@ -23,8 +21,6 @@ class ProfileModel {
     required this.email,
     required this.studentId,
     required this.enrollmentDate,
-    required this.speciality,
-    required this.studyLevel,
     required this.role,
     required this.globalProgress,
     required this.coursesSuivis,
@@ -35,49 +31,59 @@ class ProfileModel {
     this.soundEffects = true,
   });
 
-  // 🆕 Depuis la réponse JSON du backend
   factory ProfileModel.fromApi(Map<String, dynamic> json) {
-    // dateinscription → "2024-09-15T00:00:00.000Z" → "2024-09-15"
     final dateRaw = (json['dateinscription'] as String?) ?? '';
     final date = dateRaw.length >= 10 ? dateRaw.substring(0, 10) : '—';
+    final rawId = json['id']?.toString() ?? '';
+    final shortId = rawId.replaceAll('-', '').substring(0, 8).toUpperCase();
 
     return ProfileModel(
-      id:              json['id'] as String,
-      firstName:       json['prenom'] as String,
-      lastName:        json['nom'] as String,
-      email:           json['email'] as String,
-      studentId:       json['id'].toString().substring(0, 8).toUpperCase(),
-      enrollmentDate:  date,
-      speciality:      'Informatique — Génie logiciel',
-      studyLevel:      'Licence 3',
-      role:            json['role'] as String? ?? 'etudiant',
-      globalProgress:  0.0,
-      coursesSuivis:   0,
-      quizReussis:     0,
-      classement:      json['rang'] as int? ?? 0,
-      pointsXP:        json['scoretotal'] as int? ?? 0,
+      id:             rawId,
+      firstName:      json['prenom']?.toString() ?? '',
+      lastName:       json['nom']?.toString() ?? '',
+      email:          json['email']?.toString() ?? '',
+      studentId:      shortId,
+      enrollmentDate: date,
+      role:           json['role']?.toString() ?? 'etudiant',
+      globalProgress: 0.0,
+      coursesSuivis:  0,
+      quizReussis:    0,
+      classement:     (json['rang'] as num?)?.toInt() ?? 0,
+      pointsXP:       (json['scoretotal'] as num?)?.toInt() ?? 0,
     );
   }
 
-  // Données fictives
-  static ProfileModel mock() {
+  static ProfileModel mock() => ProfileModel(
+    id:             '00000000',
+    firstName:      'Utilisateur',
+    lastName:       '',
+    email:          '',
+    studentId:      '00000000',
+    enrollmentDate: '—',
+    role:           'etudiant',
+    globalProgress: 0.0,
+    coursesSuivis:  0,
+    quizReussis:    0,
+    classement:     0,
+    pointsXP:       0,
+  );
+
+  ProfileModel copyWith({String? firstName, String? lastName, String? email}) {
     return ProfileModel(
-      id:              '00000000',
-      firstName:       'Zakaria',
-      lastName:        'Laadj',
-      email:           'zakaria.laadj@gmail.com',
-      studentId:       '2024-004872',
-      enrollmentDate:  '09/15/2024',
-      speciality:      'Informatique — Génie logiciel',
-      studyLevel:      'Licence 3',
-      role:            'etudiant',
-      globalProgress:  0.65,
-      coursesSuivis:   12,
-      quizReussis:     38,
-      classement:      4,
-      pointsXP:        2420,
-      isFrench:        true,
-      soundEffects:    true,
+      id:             id,
+      firstName:      firstName      ?? this.firstName,
+      lastName:       lastName       ?? this.lastName,
+      email:          email          ?? this.email,
+      studentId:      studentId,
+      enrollmentDate: enrollmentDate,
+      role:           role,
+      globalProgress: globalProgress,
+      coursesSuivis:  coursesSuivis,
+      quizReussis:    quizReussis,
+      classement:     classement,
+      pointsXP:       pointsXP,
+      isFrench:       isFrench,
+      soundEffects:   soundEffects,
     );
   }
 }
