@@ -47,7 +47,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
       _selectedAlgo == 1 ? [10, 15, 20, 30] : [5, 10, 15, 20];
 
   List<String> get _currentIntensityLabels =>
-      _selectedAlgo == 1 ? ["Medium", "Hard", "Expert", "Master"] : ["Easy", "Medium", "Hard", "Expert"];
+      _selectedAlgo == 1 ? ["Easy", "Medium", "Hard", "Expert"] : ["Easy", "Medium", "Hard", "Expert"];
 
   List<Color> get _currentIntensityColors =>
       _selectedAlgo == 1
@@ -72,10 +72,12 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
         if (!mounted) return;
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => QuizPageContent(controller: controller)),
+          MaterialPageRoute(builder: (_) => QuizPageContent(
+            controller: controller,
+            algoType: 'algo1',
+          )),
         );
       } else {
-        // Algo2QuizController — garde le comportement existant (sync ou à migrer plus tard)
         final controller = await Algo2QuizController.create(
           selectedChapters: _selectedChapters,
           intensity: _selectedIntensity,
@@ -83,7 +85,10 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
         if (!mounted) return;
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => QuizPageContent(controller: controller)),
+          MaterialPageRoute(builder: (_) => QuizPageContent(
+            controller: controller,
+            algoType: 'algo2',
+          )),
         );
       }
     } catch (e) {

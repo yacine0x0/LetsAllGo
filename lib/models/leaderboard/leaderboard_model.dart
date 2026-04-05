@@ -1,16 +1,11 @@
-// ─────────────────────────────────────────
-// MODEL : leaderboard_model.dart
-// lib/models/leaderboard/leaderboard_model.dart
-// ─────────────────────────────────────────
- 
 class LeaderboardEntry {
   final int rank;
   final String username;
   final int totalPoints;
-  final double algo1Progress; // 0.0 → 1.0
-  final double algo2Progress; // 0.0 → 1.0
+  final double algo1Progress;
+  final double algo2Progress;
   final String avatarInitial;
- 
+
   const LeaderboardEntry({
     required this.rank,
     required this.username,
@@ -19,33 +14,29 @@ class LeaderboardEntry {
     required this.algo2Progress,
     required this.avatarInitial,
   });
- 
-  // ── Quand tu connectes la BDD, remplace ce factory par
-  //    LeaderboardEntry.fromJson(Map<String, dynamic> json) et parse
-  //    les champs retournés par ton API/requête SQL.
+
   factory LeaderboardEntry.fromJson(Map<String, dynamic> json) {
+    final username = json['username']?.toString() ?? '?';
     return LeaderboardEntry(
-      rank:          json['rank']           as int,
-      username:      json['username']       as String,
-      totalPoints:   json['total_points']   as int,
-      algo1Progress: (json['algo1_progress'] as num).toDouble(),
-      algo2Progress: (json['algo2_progress'] as num).toDouble(),
-      avatarInitial: (json['username'] as String)[0].toUpperCase(),
+      rank:          (json['rank']          as num?)?.toInt()    ?? 0,
+      username:      username,
+      totalPoints:   (json['totalPoints']   as num?)?.toInt()    ?? 0,
+      algo1Progress: (json['algo1Progress'] as num?)?.toDouble() ?? 0.0,
+      algo2Progress: (json['algo2Progress'] as num?)?.toDouble() ?? 0.0,
+      avatarInitial: username.isNotEmpty ? username[0].toUpperCase() : '?',
     );
   }
 }
- 
+
 class LeaderboardModel {
   final List<LeaderboardEntry> entries;
-  final LeaderboardEntry? currentUser; // l'utilisateur connecté
- 
+  final LeaderboardEntry? currentUser;
+
   const LeaderboardModel({
     required this.entries,
     this.currentUser,
   });
- 
-  // ── Données fictives pour le développement UI
-  //    Remplace par un appel BDD dans le controller
+
   static LeaderboardModel mock() {
     final entries = [
       const LeaderboardEntry(rank: 1,  username: 'zaki',       totalPoints: 9999915452, algo1Progress: 1.0,  algo2Progress: 0.85, avatarInitial: 'Z'),
@@ -59,18 +50,17 @@ class LeaderboardModel {
       const LeaderboardEntry(rank: 9,  username: 'sousou__42', totalPoints: 9497861090, algo1Progress: 0.65, algo2Progress: 0.45, avatarInitial: 'S'),
       const LeaderboardEntry(rank: 10, username: 'karim__39',  totalPoints: 9294201020, algo1Progress: 0.60, algo2Progress: 0.40, avatarInitial: 'K'),
     ];
- 
-    // Simule l'utilisateur connecté (Zakaria Laadj dans la maquette)
-    final currentUser = const LeaderboardEntry(
-      rank: 1,
-      username: 'Zakaria Laadj',
-      totalPoints: 9999915452,
-      algo1Progress: 0.64,
-      algo2Progress: 0.32,
-      avatarInitial: 'Z',
+
+    return LeaderboardModel(
+      entries: entries,
+      currentUser: const LeaderboardEntry(
+        rank: 1,
+        username: 'Zakaria Laadj',
+        totalPoints: 9999915452,
+        algo1Progress: 0.64,
+        algo2Progress: 0.32,
+        avatarInitial: 'Z',
+      ),
     );
- 
-    return LeaderboardModel(entries: entries, currentUser: currentUser);
   }
 }
- 
