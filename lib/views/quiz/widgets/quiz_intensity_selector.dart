@@ -124,10 +124,10 @@ class QuizIntensitySelector extends StatelessWidget {
           "• 20 ● : Expert - Maximum difficulty for experts";
     } else {
       return "The difficulty level determines how many questions you'll answer from each selected chapter:\n\n"
-          "• 10 ● : Medium - Good for learning\n"
-          "• 15 ● : Hard - Challenging questions\n"
-          "• 20 ● : Expert - Advanced difficulty\n"
-          "• 30 ● : Master - Maximum difficulty";
+          "• 10 ● : Easyy - Good for learning\n"
+          "• 15 ● : Medieum - Challenging questions\n"
+          "• 20 ● : Hard - Advanced difficulty\n"
+          "• 30 ● : Expert - Maximum difficulty";
     }
   }
 }

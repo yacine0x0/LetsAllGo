@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_02" title="Algorithmes de recherche (Searching Algorithms)">
+
+  <question id="c2_q1" type="multipleChoice">
+    <enonce>What is the time complexity of Linear Search?</enonce>
+    <choices>
+      <choice id="A">O(1)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q2" type="multipleChoice">
+    <enonce>What is required for Binary Search to work?</enonce>
+    <choices>
+      <choice id="A">The array must be unsorted</choice>
+      <choice id="B">The array must be sorted</choice>
+      <choice id="C">The array must contain only integers</choice>
+      <choice id="D">The array must have even size</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c2_q3" type="multipleChoice">
+    <enonce>What is the time complexity of Binary Search?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(n²)</choice>
+      <choice id="C">O(log n)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q4" type="multipleChoice">
+    <enonce>In Binary Search, what happens when the target is less than the middle element?</enonce>
+    <choices>
+      <choice id="A">Search the right half</choice>
+      <choice id="B">Search the left half</choice>
+      <choice id="C">Return -1</choice>
+      <choice id="D">Restart from the beginning</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c2_q5" type="multipleChoice">
+    <enonce>What is the worst case for Linear Search?</enonce>
+    <choices>
+      <choice id="A">The element is at the first position</choice>
+      <choice id="B">The array is sorted</choice>
+      <choice id="C">The element is at the last position or not present</choice>
+      <choice id="D">The array has one element</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q6" type="multipleChoice">
+    <enonce>How does Binary Search find the middle element?</enonce>
+    <choices>
+      <choice id="A">(left + right) / 2</choice>
+      <choice id="B">(left - right) / 2</choice>
+      <choice id="C">left * right</choice>
+      <choice id="D">right - left</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c2_q7" type="multipleChoice">
+    <enonce>Which search algorithm is more efficient for large sorted datasets?</enonce>
+    <choices>
+      <choice id="A">Linear Search</choice>
+      <choice id="B">Binary Search</choice>
+      <choice id="C">Both are equal</choice>
+      <choice id="D">Neither works on large datasets</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c2_q8" type="multipleChoice">
+    <enonce>What does Binary Search return when the element is not found?</enonce>
+    <choices>
+      <choice id="A">0</choice>
+      <choice id="B">null</choice>
+      <choice id="C">-1</choice>
+      <choice id="D">The last index checked</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q9" type="multipleChoice">
+    <enonce>What is the best case time complexity of Binary Search?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(1)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q10" type="ordering">
+    <enonce>Order the steps of Binary Search:</enonce>
+    <bonneReponse>Set left and right pointers|Calculate middle index|Compare target with middle|Adjust pointers or return result</bonneReponse>
+    <codeLines>
+      <line>Compare target with middle</line>
+      <line>Set left and right pointers</line>
+      <line>Adjust pointers or return result</line>
+      <line>Calculate middle index</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q11" type="multipleChoice">
+    <enonce>How many comparisons does Binary Search need in the worst case for an array of 16 elements?</enonce>
+    <choices>
+      <choice id="A">16</choice>
+      <choice id="B">8</choice>
+      <choice id="C">4</choice>
+      <choice id="D">2</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q12" type="multipleChoice">
+    <enonce>What is Interpolation Search best suited for?</enonce>
+    <choices>
+      <choice id="A">Unsorted arrays</choice>
+      <choice id="B">Uniformly distributed sorted arrays</choice>
+      <choice id="C">Arrays with duplicate elements</choice>
+      <choice id="D">Arrays of strings</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c2_q13" type="multipleChoice">
+    <enonce>Can Binary Search be implemented recursively?</enonce>
+    <choices>
+      <choice id="A">No, it can only be iterative</choice>
+      <choice id="B">Yes, it can be both recursive and iterative</choice>
+      <choice id="C">Yes, but only with extra memory</choice>
+      <choice id="D">Only with sorted linked lists</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c2_q14" type="multipleChoice">
+    <enonce>What is the best case for Linear Search?</enonce>
+    <choices>
+      <choice id="A">The target is at the last position</choice>
+      <choice id="B">The array is sorted</choice>
+      <choice id="C">The target is at the first position</choice>
+      <choice id="D">The array is empty</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q15" type="multipleChoice">
+    <enonce>Which search algorithm can work on unsorted arrays?</enonce>
+    <choices>
+      <choice id="A">Binary Search</choice>
+      <choice id="B">Interpolation Search</choice>
+      <choice id="C">Linear Search</choice>
+      <choice id="D">Exponential Search</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q16" type="multipleChoice">
+    <enonce>What is the space complexity of iterative Binary Search?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n²)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c2_q17" type="multipleChoice">
+    <enonce>In Binary Search, when target is greater than the middle element, what happens?</enonce>
+    <choices>
+      <choice id="A">Search the left half</choice>
+      <choice id="B">Return the middle index</choice>
+      <choice id="C">Search the right half</choice>
+      <choice id="D">Restart from the beginning</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c2_q18" type="multipleChoice">
+    <enonce>What is Jump Search?</enonce>
+    <choices>
+      <choice id="A">A search that skips every other element</choice>
+      <choice id="B">A search that jumps by fixed steps then does linear search in a block</choice>
+      <choice id="C">A search that jumps to a random position</choice>
+      <choice id="D">A recursive version of binary search</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c2_q19" type="ordering">
+    <enonce>Order the steps of Linear Search:</enonce>
+    <bonneReponse>Start at index 0|Compare current element with target|If match return index|If not move to next index|If end reached return -1</bonneReponse>
+    <codeLines>
+      <line>If match return index</line>
+      <line>Start at index 0</line>
+      <line>If end reached return -1</line>
+      <line>Compare current element with target</line>
+      <line>If not move to next index</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q20" type="multipleChoice">
+    <enonce>For an array of n=1024 elements, how many steps does Binary Search need at most?</enonce>
+    <choices>
+      <choice id="A">1024</choice>
+      <choice id="B">512</choice>
+      <choice id="C">10</choice>
+      <choice id="D">32</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+</chapter>

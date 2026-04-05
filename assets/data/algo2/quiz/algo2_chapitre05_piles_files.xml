@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_05" title="Piles et Files (Stacks and Queues)">
+
+  <question id="c5_q1" type="multipleChoice">
+    <enonce>What principle does a Stack follow?</enonce>
+    <choices>
+      <choice id="A">FIFO (First In First Out)</choice>
+      <choice id="B">LIFO (Last In First Out)</choice>
+      <choice id="C">Random access</choice>
+      <choice id="D">Sorted order</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q2" type="multipleChoice">
+    <enonce>What principle does a Queue follow?</enonce>
+    <choices>
+      <choice id="A">LIFO (Last In First Out)</choice>
+      <choice id="B">Random access</choice>
+      <choice id="C">FIFO (First In First Out)</choice>
+      <choice id="D">Sorted order</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q3" type="multipleChoice">
+    <enonce>What operation adds an element to a Stack?</enonce>
+    <choices>
+      <choice id="A">enqueue</choice>
+      <choice id="B">insert</choice>
+      <choice id="C">push</choice>
+      <choice id="D">add</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q4" type="multipleChoice">
+    <enonce>What operation removes an element from a Stack?</enonce>
+    <choices>
+      <choice id="A">dequeue</choice>
+      <choice id="B">pop</choice>
+      <choice id="C">delete</choice>
+      <choice id="D">remove</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q5" type="multipleChoice">
+    <enonce>What operation adds an element to a Queue?</enonce>
+    <choices>
+      <choice id="A">push</choice>
+      <choice id="B">insert</choice>
+      <choice id="C">enqueue</choice>
+      <choice id="D">append</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q6" type="multipleChoice">
+    <enonce>What does the "peek" operation do in a Stack?</enonce>
+    <choices>
+      <choice id="A">Removes the top element</choice>
+      <choice id="B">Returns the top element without removing it</choice>
+      <choice id="C">Adds a new element on top</choice>
+      <choice id="D">Clears the entire stack</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q7" type="multipleChoice">
+    <enonce>Which real-world scenario uses a Queue?</enonce>
+    <choices>
+      <choice id="A">Browser back button</choice>
+      <choice id="B">Undo operation in a text editor</choice>
+      <choice id="C">Printer job scheduling</choice>
+      <choice id="D">Function call management</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q8" type="multipleChoice">
+    <enonce>Which real-world scenario uses a Stack?</enonce>
+    <choices>
+      <choice id="A">Printer job scheduling</choice>
+      <choice id="B">Customer service line</choice>
+      <choice id="C">Undo operation in a text editor</choice>
+      <choice id="D">Traffic management</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q9" type="multipleChoice">
+    <enonce>What is the time complexity of push and pop operations in a Stack?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n²)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c5_q10" type="ordering">
+    <enonce>Order the steps to process a Queue:</enonce>
+    <bonneReponse>Enqueue first element|Enqueue second element|Dequeue first element|Process dequeued element</bonneReponse>
+    <codeLines>
+      <line>Dequeue first element</line>
+      <line>Enqueue second element</line>
+      <line>Process dequeued element</line>
+      <line>Enqueue first element</line>
+    </codeLines>
+  </question>
+
+  <question id="c5_q11" type="multipleChoice">
+    <enonce>What is a Deque (Double-Ended Queue)?</enonce>
+    <choices>
+      <choice id="A">A queue that can only enqueue</choice>
+      <choice id="B">A data structure where elements can be added or removed from both ends</choice>
+      <choice id="C">A stack with two tops</choice>
+      <choice id="D">A sorted queue</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q12" type="multipleChoice">
+    <enonce>What is a Priority Queue?</enonce>
+    <choices>
+      <choice id="A">A queue where the first element is always removed</choice>
+      <choice id="B">A queue where elements are removed based on their priority value</choice>
+      <choice id="C">A stack with priorities</choice>
+      <choice id="D">A queue that sorts automatically</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q13" type="multipleChoice">
+    <enonce>What does "isEmpty" check in a Stack?</enonce>
+    <choices>
+      <choice id="A">Whether the stack is full</choice>
+      <choice id="B">Whether the stack has no elements</choice>
+      <choice id="C">Whether the top element is null</choice>
+      <choice id="D">Whether the stack is sorted</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q14" type="multipleChoice">
+    <enonce>What is a circular queue?</enonce>
+    <choices>
+      <choice id="A">A queue stored in a circular linked list only</choice>
+      <choice id="B">A queue where the last position wraps around to the first, reusing empty spaces</choice>
+      <choice id="C">A queue with no front or rear</choice>
+      <choice id="D">A queue that processes in random order</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q15" type="multipleChoice">
+    <enonce>Which algorithm uses a Stack for its traversal?</enonce>
+    <choices>
+      <choice id="A">BFS (Breadth First Search)</choice>
+      <choice id="B">Dijkstra's algorithm</choice>
+      <choice id="C">DFS (Depth First Search)</choice>
+      <choice id="D">Prim's algorithm</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q16" type="multipleChoice">
+    <enonce>Which algorithm uses a Queue for its traversal?</enonce>
+    <choices>
+      <choice id="A">DFS (Depth First Search)</choice>
+      <choice id="B">BFS (Breadth First Search)</choice>
+      <choice id="C">Quick Sort</choice>
+      <choice id="D">Binary Search</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c5_q17" type="multipleChoice">
+    <enonce>What operation removes an element from the front of a Queue?</enonce>
+    <choices>
+      <choice id="A">pop</choice>
+      <choice id="B">delete</choice>
+      <choice id="C">dequeue</choice>
+      <choice id="D">shift</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q18" type="multipleChoice">
+    <enonce>What happens when you try to pop from an empty stack?</enonce>
+    <choices>
+      <choice id="A">Returns 0</choice>
+      <choice id="B">Returns the last popped element</choice>
+      <choice id="C">Stack underflow error</choice>
+      <choice id="D">The stack resets</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c5_q19" type="ordering">
+    <enonce>Order the steps to check balanced parentheses using a Stack:</enonce>
+    <bonneReponse>Read character from expression|If opening bracket push to stack|If closing bracket pop from stack|Check if popped bracket matches|If stack empty at end: balanced</bonneReponse>
+    <codeLines>
+      <line>If closing bracket pop from stack</line>
+      <line>If stack empty at end: balanced</line>
+      <line>Read character from expression</line>
+      <line>Check if popped bracket matches</line>
+      <line>If opening bracket push to stack</line>
+    </codeLines>
+  </question>
+
+  <question id="c5_q20" type="multipleChoice">
+    <enonce>What is the front of a Queue?</enonce>
+    <choices>
+      <choice id="A">The last element added</choice>
+      <choice id="B">The element with the highest value</choice>
+      <choice id="C">The element that will be removed next (oldest element)</choice>
+      <choice id="D">The middle element</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+</chapter>

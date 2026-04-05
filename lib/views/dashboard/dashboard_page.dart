@@ -11,6 +11,7 @@ import 'algo2_grid.dart';
 import '../../controllers/dashboard/algo2_controller.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
+import '../admin/users_page.dart';
 
 
 class DashboardPage extends StatefulWidget {
@@ -181,7 +182,7 @@ class _DashboardPageState extends State<DashboardPage> {
           GestureDetector(
             onTap: () => Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => const LoginPage()),
+              MaterialPageRoute(builder: (_) => const AdminPage()),
             ),
             child: _buildSidebarItem(
               icon: Icons.logout,
