@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_04" title="Listes chaînées (Linked Lists)">
+
+  <question id="c4_q1" type="multipleChoice">
+    <enonce>What is a linked list?</enonce>
+    <choices>
+      <choice id="A">A fixed-size array</choice>
+      <choice id="B">A collection of nodes where each node points to the next</choice>
+      <choice id="C">A two-dimensional array</choice>
+      <choice id="D">A sorted array</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q2" type="multipleChoice">
+    <enonce>What does the last node of a singly linked list point to?</enonce>
+    <choices>
+      <choice id="A">The first node</choice>
+      <choice id="B">Itself</choice>
+      <choice id="C">null</choice>
+      <choice id="D">The middle node</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q3" type="multipleChoice">
+    <enonce>What is the time complexity of inserting at the beginning of a linked list?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(n²)</choice>
+      <choice id="C">O(log n)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q4" type="multipleChoice">
+    <enonce>What is the difference between a singly and doubly linked list?</enonce>
+    <choices>
+      <choice id="A">Singly linked list can only store integers</choice>
+      <choice id="B">Doubly linked list has pointers to both next and previous nodes</choice>
+      <choice id="C">Singly linked list is always sorted</choice>
+      <choice id="D">Doubly linked list uses less memory</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q5" type="multipleChoice">
+    <enonce>What is the time complexity of searching in a linked list?</enonce>
+    <choices>
+      <choice id="A">O(1)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q6" type="multipleChoice">
+    <enonce>What is a circular linked list?</enonce>
+    <choices>
+      <choice id="A">A list where elements are sorted in a circle</choice>
+      <choice id="B">A list where the last node points back to the first node</choice>
+      <choice id="C">A list with no head node</choice>
+      <choice id="D">A list that cannot be traversed</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q7" type="multipleChoice">
+    <enonce>What is the head of a linked list?</enonce>
+    <choices>
+      <choice id="A">The last node</choice>
+      <choice id="B">The middle node</choice>
+      <choice id="C">The first node</choice>
+      <choice id="D">The largest element</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q8" type="multipleChoice">
+    <enonce>What advantage does a linked list have over an array?</enonce>
+    <choices>
+      <choice id="A">Faster random access</choice>
+      <choice id="B">Less memory usage</choice>
+      <choice id="C">Dynamic size and efficient insertions/deletions</choice>
+      <choice id="D">Better cache performance</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q9" type="multipleChoice">
+    <enonce>What is the time complexity of deleting the last node in a singly linked list?</enonce>
+    <choices>
+      <choice id="A">O(1)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q10" type="ordering">
+    <enonce>Order the steps to insert a node at the end of a linked list:</enonce>
+    <bonneReponse>Create new node|Traverse to last node|Set last node next to new node|Set new node next to null</bonneReponse>
+    <codeLines>
+      <line>Set last node next to new node</line>
+      <line>Create new node</line>
+      <line>Set new node next to null</line>
+      <line>Traverse to last node</line>
+    </codeLines>
+  </question>
+
+  <question id="c4_q11" type="multipleChoice">
+    <enonce>How much memory does each node in a doubly linked list use compared to singly?</enonce>
+    <choices>
+      <choice id="A">Same amount</choice>
+      <choice id="B">Less memory</choice>
+      <choice id="C">More memory due to the extra previous pointer</choice>
+      <choice id="D">Twice the data storage</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q12" type="multipleChoice">
+    <enonce>What is the time complexity of inserting at the end of a singly linked list (with tail pointer)?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n²)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q13" type="multipleChoice">
+    <enonce>What is the disadvantage of linked lists compared to arrays?</enonce>
+    <choices>
+      <choice id="A">They cannot store data</choice>
+      <choice id="B">No random access — must traverse from head</choice>
+      <choice id="C">They have a fixed size</choice>
+      <choice id="D">They cannot be sorted</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q14" type="multipleChoice">
+    <enonce>How do you detect a cycle in a linked list?</enonce>
+    <choices>
+      <choice id="A">Count all nodes</choice>
+      <choice id="B">Use Floyd's cycle detection algorithm (slow and fast pointers)</choice>
+      <choice id="C">Sort the list first</choice>
+      <choice id="D">Check if the head is null</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q15" type="multipleChoice">
+    <enonce>What is a sentinel node in a linked list?</enonce>
+    <choices>
+      <choice id="A">The node with the largest value</choice>
+      <choice id="B">A dummy node used to simplify boundary conditions</choice>
+      <choice id="C">The last node in the list</choice>
+      <choice id="D">A node that stores multiple values</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q16" type="multipleChoice">
+    <enonce>What does reversing a linked list mean?</enonce>
+    <choices>
+      <choice id="A">Sorting it in descending order</choice>
+      <choice id="B">Changing all pointers so the list is traversed in opposite direction</choice>
+      <choice id="C">Deleting all nodes</choice>
+      <choice id="D">Copying the list into an array</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q17" type="multipleChoice">
+    <enonce>What is the time complexity of reversing a linked list?</enonce>
+    <choices>
+      <choice id="A">O(1)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q18" type="multipleChoice">
+    <enonce>What is a self-referential structure in a linked list node?</enonce>
+    <choices>
+      <choice id="A">A node that stores its own index</choice>
+      <choice id="B">A struct that contains a pointer to another struct of the same type</choice>
+      <choice id="C">A node with two data fields</choice>
+      <choice id="D">A node that cannot be deleted</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q19" type="ordering">
+    <enonce>Order the steps to delete a node from the middle of a linked list:</enonce>
+    <bonneReponse>Traverse to node before target|Update next pointer to skip target node|Free the target node memory</bonneReponse>
+    <codeLines>
+      <line>Free the target node memory</line>
+      <line>Traverse to node before target</line>
+      <line>Update next pointer to skip target node</line>
+    </codeLines>
+  </question>
+
+  <question id="c4_q20" type="multipleChoice">
+    <enonce>Which operation is more efficient in a linked list than in an array?</enonce>
+    <choices>
+      <choice id="A">Random access by index</choice>
+      <choice id="B">Binary search</choice>
+      <choice id="C">Insertion at the beginning</choice>
+      <choice id="D">Accessing the last element</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+</chapter>

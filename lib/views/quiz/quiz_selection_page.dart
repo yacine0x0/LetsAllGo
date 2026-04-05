@@ -33,10 +33,11 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
   ];
 
   final List<Map<String, String>> _chaptersAlgo2 = const [
-    {"id": "Chapitre 01", "title": "Data Structure", "icon": "assets/images/icons_algo2/data_structure_icone.png"},
-    {"id": "Chapitre 02", "title": "Files", "icon": "assets/images/icons_algo2/files_icone.png"},
-    {"id": "Chapitre 03", "title": "Linked List", "icon": "assets/images/icons_algo2/listes_icones.png"},
-    {"id": "Chapitre 04", "title": "Queues and Stacks", "icon": "assets/images/icons_algo2/stacks_icone.png"},
+    {"id": "Chapitre 01", "title": "Sorting Algorithms", "icon": "assets/images/icons_algo2/data_structure_icone.png"},
+    {"id": "Chapitre 02", "title": "Searching Algorithms", "icon": "assets/images/icons_algo2/files_icone.png"},
+    {"id": "Chapitre 03", "title": "Advanced Recursion", "icon": "assets/images/icons_algo2/listes_icones.png"},
+    {"id": "Chapitre 04", "title": "Linked Lists", "icon": "assets/images/icons_algo2/stacks_icone.png"},
+    {"id": "Chapitre 05", "title": "Stacks and Queues", "icon": "assets/images/icons_algo2/stacks_icone.png"},
   ];
 
   List<Map<String, String>> get _currentChapters =>
@@ -75,7 +76,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
         );
       } else {
         // Algo2QuizController — garde le comportement existant (sync ou à migrer plus tard)
-        final controller = Algo2QuizController(
+        final controller = await Algo2QuizController.create(
           selectedChapters: _selectedChapters,
           intensity: _selectedIntensity,
         );
