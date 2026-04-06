@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project_1/views/admin/analytics.dart';
 import 'dart:ui';
 import '../../controllers/admin_controllers/admin_profil_controller.dart';
 import '../admin/users_page.dart';
@@ -128,8 +129,8 @@ class _ProfilePageState extends State<ProfilePage> {
               // Logo
               Image.asset(
                 "assets/images/icone_dash.png",
-                width: h * 0.08,
-                height: h * 0.08,
+                width: h * 0.13,
+                height: h * 0.13,
                 errorBuilder: (_, __, ___) => const Icon(
                   Icons.school,
                   color: Colors.blue,
@@ -144,17 +145,49 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     setState(() => _selectedSidebarIndex = entry.key);
                     if (entry.key == 0) {
-                      // TODO: Navigation vers AdminPage
-                       Navigator.pushReplacement(
-                         context,
-                         MaterialPageRoute(builder: (_) => const AdminPage()),
-                       );
+                      
+                      
+
+                        Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => AdminPage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(0.0, -1.0); 
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ));
+
+
+
+
+                       
                     } else if (entry.key == 1) {
-                      // TODO: Navigation vers AnalyticsPage
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (_) => const AnalyticsPage()),
-                      // );
+                       
+                       
+
+                      Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => AnalyticsPage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(0.0, -1.0); 
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ));
+
+
+                       
                     }
                   },
                   child: _buildSidebarItem(
@@ -465,7 +498,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       items: const [
                         DropdownMenuItem(value: "Français", child: Text("Français")),
                         DropdownMenuItem(value: "English", child: Text("English")),
-                        DropdownMenuItem(value: "العربية", child: Text("العربية")),
                       ],
                       onChanged: (value) {
                         if (value != null) {

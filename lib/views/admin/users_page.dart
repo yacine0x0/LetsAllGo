@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project_1/views/admin/analytics.dart';
 import 'dart:ui';
 import '../../controllers/admin_controllers/users_controller.dart';
 import '../../models/admin_models/users_model.dart';
@@ -101,8 +102,8 @@ class _AdminPageState extends State<AdminPage> {
               // Logo
               Image.asset(
                 "assets/images/icone_dash.png",
-                width: h * 0.08,
-                height: h * 0.08,
+                width: h * 0.13,
+                height: h * 0.13,
                 errorBuilder: (_, __, ___) => const Icon(
                   Icons.school,
                   color: Colors.blue,
@@ -117,19 +118,40 @@ class _AdminPageState extends State<AdminPage> {
                  onTap: () {
                   setState(() => _selectedSidebarIndex = entry.key);
 
-                   if (entry.key == 1) { // Analytics
-                // TODO: Navigation vers AnalyticsPage
-                    // Navigator.push(
-                   //   context,
-                  //   MaterialPageRoute(builder: (_) => const AnalyticsPage()),
-                        // );
-                          } else if (entry.key == 2) { // Profile
-                           // TODO: Navigation vers ProfilePage
-                             Navigator.push(
-                                context,
-                               MaterialPageRoute(builder: (_) => const ProfilePage()),
-                             );
-                        }
+                   if (entry.key == 2) {
+                      // TODO: Navigation vers AdminPage
+                       Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => ProfilePage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(0.0, 1.0); 
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ));
+                       
+                    } else if (entry.key == 1) {
+                       Navigator.of(context).push(PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => AnalyticsPage(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(0.0, 1.0); 
+                        const end = Offset.zero;
+                        const curve = Curves.easeInOut;
+
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ));
+                       
+                    }
                           },
                         child: _buildSidebarItem(
                        icon: entry.value["icon"] as IconData,

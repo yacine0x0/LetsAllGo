@@ -118,6 +118,7 @@ flutter:
     - assets/data/algo1/cours/
     - assets/files/
     - assets/images/masscott01.png
+    - assets/images/masscott02.png
     - assets/data/algo1/quiz/
 
     - assets/images/background_admin.png
