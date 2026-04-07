@@ -1,18 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_project_1/views/profil/profil_page.dart';
 import '../leaderboard/leaderboard_page.dart';
 import 'dart:ui';
 import '../../controllers/dashboard/dashboard_controller.dart';
 import '../courses_study_page/courses_study_page.dart';
-
 import '../auth/login_page.dart';
 import 'algo2_grid.dart';
 import '../../controllers/dashboard/algo2_controller.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
-import '../admin/users_page.dart';
-
+import '../../controllers/auth/login_controller.dart';   // ← Ajouté
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -24,13 +21,14 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final DashboardController _controller = DashboardController();
   final Algo2Controller _algo2Controller = Algo2Controller();
-  int _selectedIndex = 0;// 0 = Courses, 1 = Quiz, 2 = Leaderboard, 3 = Files
-  int _selectedAlgo = 1; // 1 = Algo 1, 2 = Algo 2 (en construction)
+  int _selectedIndex = 0; // 0 = Courses, 1 = Quiz, 2 = Leaderboard, 3 = Files
+  int _selectedAlgo = 1; // 1 = Algo 1, 2 = Algo 2
 
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -57,13 +55,11 @@ class _DashboardPageState extends State<DashboardPage> {
               // ── Contenu central avec effet verre
               Expanded(
                 child: ClipRRect(
-                  // ← ajouté
                   borderRadius: BorderRadius.circular(16),
                   child: BackdropFilter(
-                    // ← ajouté
                     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                     child: Container(
-                      margin: EdgeInsets.all(h * 0.02), // ← ajouté
+                      margin: EdgeInsets.all(h * 0.02),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.02),
                         borderRadius: BorderRadius.circular(16),
@@ -83,22 +79,20 @@ class _DashboardPageState extends State<DashboardPage> {
                             SizedBox(height: h * 0.02),
                             _buildFilters(h),
                             SizedBox(height: h * 0.02),
-                           
-                           Expanded(
-                               child: _selectedAlgo == 1
-                         ? _buildChaptersGrid(h, w)
-                           : Algo2Grid(
-                            h: h,
-                               w: w,
-                               onChapterSelected: (index) {
-                                setState(() {
-                                  _algo2Controller.selectChapter(index);
-                                });
-                                 },
-                               ),
-                              ),
-
-                        _buildContinueButton(h, w),
+                            Expanded(
+                              child: _selectedAlgo == 1
+                                  ? _buildChaptersGrid(h, w)
+                                  : Algo2Grid(
+                                      h: h,
+                                      w: w,
+                                      onChapterSelected: (index) {
+                                        setState(() {
+                                          _algo2Controller.selectChapter(index);
+                                        });
+                                      },
+                                    ),
+                            ),
+                            _buildContinueButton(h, w),
                           ],
                         ),
                       ),
@@ -116,8 +110,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-
-// ── SIDEBAR
+  // ── SIDEBAR (avec bouton Logout en bas comme dans la première version du Leaderboard)
   Widget _buildSidebar(double h, double w) {
     final items = [
       {"icon": Icons.menu_book, "label": "Courses"},
@@ -147,24 +140,21 @@ class _DashboardPageState extends State<DashboardPage> {
               onTap: () {
                 setState(() => _selectedIndex = entry.key);
 
-                // Navigation selon l'index
                 if (entry.key == 1) {
-                  // Quiz
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const QuizSelectionPage() ),
+                    MaterialPageRoute(builder: (_) => const QuizSelectionPage()),
                   );
                 } else if (entry.key == 2) {
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(builder: (_) => const LeaderboardPage()),
-                   );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LeaderboardPage()),
+                  );
                 } else if (entry.key == 3) {
-                  // Files
-                   Navigator.push(
-                     context,
-                     MaterialPageRoute(builder: (_) => const FilesPage()),
-                   );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const FilesPage()),
+                  );
                 }
               },
               child: _buildSidebarItem(
@@ -178,12 +168,19 @@ class _DashboardPageState extends State<DashboardPage> {
 
           const Spacer(),
 
-          // Logout
+          // ====================== BOUTON LOGOUT DANS LA SIDEBAR ======================
           GestureDetector(
-            onTap: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const AdminPage()),
-            ),
+            onTap: () async {
+              final controller = LoginController();
+              await controller.logout();
+
+              if (!mounted) return;
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+              );
+            },
             child: _buildSidebarItem(
               icon: Icons.logout,
               label: "Logout",
@@ -206,7 +203,6 @@ class _DashboardPageState extends State<DashboardPage> {
   }) {
     return Row(
       children: [
-        // Ligne verticale bleue
         Container(
           width: 4,
           height: h * 0.08,
@@ -215,10 +211,6 @@ class _DashboardPageState extends State<DashboardPage> {
             borderRadius: BorderRadius.circular(2),
           ),
         ),
-
-        
-
-        // Icône + label
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: h * 0.02),
@@ -250,8 +242,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-
-// ── HEADER
+  // ── HEADER
   Widget _buildHeader(double h, double w) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,7 +340,7 @@ class _DashboardPageState extends State<DashboardPage> {
         crossAxisCount: 2,
         crossAxisSpacing: 60,
         mainAxisSpacing: 25,
-        childAspectRatio: 3.5, // ← pas changé
+        childAspectRatio: 3.5,
       ),
       itemCount: chapters.length,
       itemBuilder: (context, index) {
@@ -357,37 +348,32 @@ class _DashboardPageState extends State<DashboardPage> {
         final isSelected = _controller.model.selectedChapterIndex == index;
 
         return GestureDetector(
-
-
           onDoubleTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => CourseStudyPage(
-        chapterTitle: chapter.title,
-        chapterSubtitle: chapter.id,
-        xmlPath: chapter.xmlPath,
-        chapterIcon: chapter.icon, // ← dynamique maintenant
-      ),
-    ),
-  );
-},
-
-
-onTap: () => setState(() => _controller.selectChapter(index)),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CourseStudyPage(
+                  chapterTitle: chapter.title,
+                  chapterSubtitle: chapter.id,
+                  xmlPath: chapter.xmlPath,
+                  chapterIcon: chapter.icon,
+                ),
+              ),
+            );
+          },
+          onTap: () => setState(() => _controller.selectChapter(index)),
           child: ClipRRect(
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(13), // ← coin haut gauche
-              topRight: Radius.circular(13), // ← coin haut droit
-              bottomLeft: Radius.circular(27), // ← coin bas gauche
-              bottomRight: Radius.circular(27), // ← coin bas droit
+              topLeft: Radius.circular(13),
+              topRight: Radius.circular(13),
+              bottomLeft: Radius.circular(27),
+              bottomRight: Radius.circular(27),
             ),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
-                // ← conteneur du chapitre
                 padding: EdgeInsets.only(
-                  top: h * 0.005, // pour espacer le contenu du bord supérieur
+                  top: h * 0.005,
                   left: h * 0.02,
                   right: h * 0.02,
                   bottom: h * 0.02,
@@ -406,14 +392,11 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                   children: [
                     Expanded(
                       child: FittedBox(
-                        // ← adapte le contenu automatiquement
-                        fit: BoxFit.scaleDown, // ← pour éviter les débordements
+                        fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
                         child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start, // ← aligner à gauche
-                          mainAxisAlignment:
-                              MainAxisAlignment.start, // ← pour aligner en haut
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
                               chapter.id,
@@ -439,10 +422,7 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                       ),
                     ),
                     SizedBox(width: h * 0.010),
-
-                    // Image sécurisée
                     FittedBox(
-                      // ← adapte l'image automatiquement
                       fit: BoxFit.scaleDown,
                       child: Image.asset(
                         chapter.icon,
@@ -465,8 +445,7 @@ onTap: () => setState(() => _controller.selectChapter(index)),
     );
   }
 
-
-// ── BOUTON CONTINUER
+  // ── BOUTON CONTINUER
   Widget _buildContinueButton(double h, double w) {
     return Padding(
       padding: EdgeInsets.only(top: h * 0.02),
@@ -483,7 +462,6 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                 side: const BorderSide(color: Colors.blue),
               ),
             ),
-
             icon: const Icon(Icons.play_circle_outline, color: Colors.white),
             label: Text(
               "Continuer le dernier chapitre",
@@ -498,10 +476,10 @@ onTap: () => setState(() => _controller.selectChapter(index)),
   // ── PANNEAU DROIT
   Widget _buildRightPanel(double h, double w) {
     final lessons = _selectedAlgo == 1
-        ? _controller.getSelectedLessons() //pour faire le lien entre les deux algos et afficher les leçons du chapitre sélectionné
-        : _algo2Controller.getSelectedLessons(); //pour faire le lien entre les deux algos et afficher les leçons du chapitre sélectionné
+        ? _controller.getSelectedLessons()
+        : _algo2Controller.getSelectedLessons();
     final chapterTitle = _selectedAlgo == 1
-        ? _controller.getSelectedChapterTitle() //pour faire le lien entre les deux algos et afficher le titre du chapitre sélectionné
+        ? _controller.getSelectedChapterTitle()
         : _algo2Controller.getSelectedChapterTitle();
 
     return ClipRRect(
@@ -517,10 +495,9 @@ onTap: () => setState(() => _controller.selectChapter(index)),
               // Profil
               GestureDetector(
                 onTap: () {
-                  // TODO: Navigation vers ProfilePage
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const ProfilePage()), // ← temporaire
+                    MaterialPageRoute(builder: (_) => const ProfilePage()),
                   );
                 },
                 child: Container(
@@ -532,37 +509,33 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                   child: Row(
                     children: [
                       CircleAvatar(
-                        radius: h * 0.035, // ← agrandi
+                        radius: h * 0.035,
                         backgroundColor: Colors.blue,
                         child: Text(
                           _controller.model.username[0],
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: h * 0.025, // ← agrandi
+                            fontSize: h * 0.025,
                           ),
                         ),
                       ),
                       SizedBox(width: 12),
                       Expanded(
-                        // ← ajouté pour éviter overflow
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _controller.model.username, // controller de l'algo 1 
+                              _controller.model.username,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize:
-                                    h *
-                                    0.023, // ← corrigé (était 0.06 trop grand)
+                                fontSize: h * 0.023,
                                 fontWeight: FontWeight.bold,
                               ),
-                              overflow: TextOverflow.ellipsis, // ← sécurisé
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               _controller.model.role,
                               style: TextStyle(
-
                                 color: const Color.fromARGB(255, 223, 220, 220),
                                 fontSize: h * 0.020,
                               ),
@@ -581,17 +554,16 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                 "cours actuel",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: h * 0.030, // ← agrandi
+                  fontSize: h * 0.030,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: h * 0.01),
 
-              // Titre chapitre sélectionné
               if (chapterTitle.isNotEmpty)
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(h * 0.015), // ← agrandi
+                  padding: EdgeInsets.all(h * 0.015),
                   decoration: BoxDecoration(
                     color: Colors.blue.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(8),
@@ -600,20 +572,19 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                     "content of $chapterTitle",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: h * 0.022, // ← agrandi
+                      fontSize: h * 0.022,
                     ),
                   ),
                 ),
               SizedBox(height: h * 0.015),
 
-              // Liste des leçons
               Expanded(
                 child: lessons.isEmpty
                     ? Text(
                         "Selection a chapter to see its lessons.",
                         style: TextStyle(
                           color: const Color.fromARGB(255, 255, 254, 254),
-                          fontSize: h * 0.023, // ← agrandi
+                          fontSize: h * 0.023,
                         ),
                       )
                     : ListView.builder(
@@ -622,10 +593,8 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                           return GestureDetector(
                             onTap: () {},
                             child: Container(
-                              margin: EdgeInsets.only(
-                                bottom: h * 0.015,
-                              ), // ← agrandi
-                              padding: EdgeInsets.all(h * 0.018), // ← agrandi
+                              margin: EdgeInsets.only(bottom: h * 0.015),
+                              padding: EdgeInsets.all(h * 0.018),
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(8),
@@ -634,22 +603,20 @@ onTap: () => setState(() => _controller.selectChapter(index)),
                               child: Row(
                                 children: [
                                   Text(
-                                    "${index + 1}", // Numéro de la leçon
+                                    "${index + 1}",
                                     style: TextStyle(
                                       color: Colors.blue,
                                       fontSize: h * 0.020,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ), //l'espacement entre le numéro et le titre
+                                  SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
                                       lessons[index],
                                       style: TextStyle(
                                         color: Colors.white70,
-                                        fontSize: h * 0.016, // ← agrandi
+                                        fontSize: h * 0.016,
                                       ),
                                     ),
                                   ),
