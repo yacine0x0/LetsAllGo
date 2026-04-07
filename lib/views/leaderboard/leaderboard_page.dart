@@ -5,6 +5,8 @@ import 'dart:ui';
 import '../../controllers/leaderboard/leaderboard_controller.dart';
 import '../../models/leaderboard/leaderboard_model.dart';
 import '../../service/LoginService.dart'; 
+import '../../controllers/auth/login_controller.dart';   // ← Ajouté pour le logout
+import '../auth/login_page.dart';                       // ← Ajouté pour la redirection vers LoginPage
 import '../dashboard/dashboard_page.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
@@ -120,9 +122,20 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             ),
           ),
           const Spacer(),
+
+          // ====================== BOUTON LOGOUT (corrigé comme dans DashboardPage) ======================
           GestureDetector(
-            onTap: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const DashboardPage())),
+            onTap: () async {
+              final controller = LoginController();
+              await controller.logout();
+
+              if (!mounted) return;
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+              );
+            },
             child: _buildSidebarItem(
                 icon: Icons.logout, label: "Logout", h: h, isLogout: true),
           ),
