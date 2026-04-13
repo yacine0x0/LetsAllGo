@@ -716,7 +716,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
               SizedBox(width: h * 0.012),
               Expanded(child: Text(choice["label"]!,
                   style: TextStyle(color: Colors.white, fontSize: h * 0.016), maxLines: 3, overflow: TextOverflow.ellipsis)),
-              if (trailingIcon != null) trailingIcon,
+              ?trailingIcon,
             ],
           ),
         ),

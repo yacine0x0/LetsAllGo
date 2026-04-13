@@ -156,7 +156,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
             "assets/images/icone_dash.png",
             height: h * 0.12,
             width: w * 0.12,
-            errorBuilder: (_, __, ___) => const Icon(
+            errorBuilder: (_, _, _) => const Icon(
               Icons.school,
               color: Colors.blue,
               size: 40,
@@ -272,7 +272,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
               widget.chapterIcon,
               width: h * 0.05,
               height: h * 0.05,
-              errorBuilder: (_, __, ___) => Icon(
+              errorBuilder: (_, _, _) => Icon(
                 Icons.smart_toy_outlined,
                 color: Colors.blue,
                 size: h * 0.04,

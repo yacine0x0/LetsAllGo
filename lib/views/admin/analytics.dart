@@ -117,7 +117,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                 "assets/images/icone_dash.png",
                 width: h * 0.13,
                 height: h * 0.13,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, _, _) => const Icon(
                   Icons.school,
                   color: Colors.blue,
                   size: 40,
@@ -317,7 +317,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                     child: Image.asset(
                       "assets/images/masscott02.png", // ← METTEZ ICI LE PATH DE VOTRE MASCOTTE
                       fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) => Icon(
+                      errorBuilder: (_, _, _) => Icon(
                         Icons.emoji_nature,
                         color: Colors.white24,
                         size: h * 0.12,

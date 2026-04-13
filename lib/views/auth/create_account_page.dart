@@ -199,7 +199,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             SizedBox(height: h * 0.025),
 
             DropdownButtonFormField<String>(
-              value: _selectedGender,
+              initialValue: _selectedGender,
               style: TextStyle(fontSize: h * 0.018, color: Colors.black87),
               decoration: InputDecoration(
                 labelText: "Gender",

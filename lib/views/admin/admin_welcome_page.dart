@@ -31,7 +31,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
     LogicalKeyboardKey.arrowUp,
   ];
 
-  List<LogicalKeyboardKey> _currentInput = [];
+  final List<LogicalKeyboardKey> _currentInput = [];
   bool _codeSuccess = false;
   bool _codeError = false;
   String _statusMessage = "Enter the secret sequence using arrow keys";
@@ -137,8 +137,8 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const AdminPage(),
-        transitionsBuilder: (_, anim, __, child) =>
+        pageBuilder: (_, _, _) => const AdminPage(),
+        transitionsBuilder: (_, anim, _, child) =>
             FadeTransition(opacity: anim, child: child),
         transitionDuration: const Duration(milliseconds: 500),
       ),
@@ -254,7 +254,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                         // Icône admin
                         AnimatedBuilder(
                           animation: _pulseCtrl,
-                          builder: (_, __) {
+                          builder: (_, _) {
                             final glow = _codeSuccess ? 1.0 : _pulseCtrl.value;
                             return Container(
                               padding: EdgeInsets.all(h * 0.025),
@@ -380,7 +380,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
   Widget _buildActionButton(double h) {
     return AnimatedBuilder(
       animation: _pulseCtrl,
-      builder: (_, __) {
+      builder: (_, _) {
         final scale = _codeSuccess ? 1.02 : 1.0;
         return Transform.scale(
           scale: scale,

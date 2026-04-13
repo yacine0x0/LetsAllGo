@@ -102,7 +102,7 @@ class _AdminPageState extends State<AdminPage> {
                 "assets/images/icone_dash.png",
                 width: h * 0.13,
                 height: h * 0.13,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, _, _) => const Icon(
                   Icons.school,
                   color: Colors.blue,
                   size: 40,

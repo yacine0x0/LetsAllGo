@@ -131,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 "assets/images/icone_dash.png",
                 width: h * 0.13,
                 height: h * 0.13,
-                errorBuilder: (_, __, ___) => const Icon(
+                errorBuilder: (_, _, _) => const Icon(
                   Icons.school,
                   color: Colors.blue,
                   size: 40,
@@ -440,7 +440,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onChanged: (value) {
                       setState(() => _controller.toggleDarkMode(value));
                     },
-                    activeColor: Colors.blue,
+                    activeThumbColor: Colors.blue,
                   ),
                 ],
               ),
