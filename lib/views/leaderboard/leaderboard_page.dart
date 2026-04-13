@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
 import '../../controllers/leaderboard/leaderboard_controller.dart';
 import '../../models/leaderboard/leaderboard_model.dart';
-import '../../service/LoginService.dart'; 
+import '../../service/auth/LoginService.dart'; 
 import '../../controllers/auth/login_controller.dart';   // ← Ajouté pour le logout
 import '../auth/login_page.dart';                       // ← Ajouté pour la redirection vers LoginPage
 import '../dashboard/dashboard_page.dart';

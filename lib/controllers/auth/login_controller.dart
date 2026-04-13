@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';   // ← Ajout important
 
 import '../../../models/auth/login_model.dart';
-import '../../service/LoginService.dart';
+import '../../service/auth/LoginService.dart';
 
 class AuthData {
   final String token;

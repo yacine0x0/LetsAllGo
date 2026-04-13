@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { savePendingRegistration, getPendingRegistration, incrementAttempts, deletePendingRegistration } from '../utils/verificationStore';
+import { savePendingRegistration, getPendingRegistration, incrementAttempts, deletePendingRegistration } from '../../utils/verificationStore';
 import { sendVerificationEmail } from './email.service';
 
 const prisma = new PrismaClient();
@@ -112,7 +112,7 @@ export const confirmUserEmailChange = async (
     throw new Error('Nombre de tentatives dépassé, veuillez recommencer');
   }
 
-  const isMatch = await bcrypt.compare(code, pending.hashedCode);
+  const isMatch = await bcrypt.compare(code, pending.hashedCode); 
   if (!isMatch) {
     incrementAttempts(newEmail.trim());
     const remaining = 3 - (pending.attempts + 1);

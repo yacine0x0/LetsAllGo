@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../models/admin_models/profil_admin_model.dart';
-import '../../service/LoginService.dart';
+import '../../service/auth/LoginService.dart';
 
 class ProfileController {
   static const String _baseUrl = 'http://localhost:3000/api';

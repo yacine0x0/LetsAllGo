@@ -1,6 +1,6 @@
 import { Response } from 'express';
-import { AuthRequest } from '../middlewares/auth.middleware';
-import { getAdminById, updateAdminProfile } from '../service/admin.service';
+import { AuthRequest } from '../../middlewares/auth.middleware';
+import { getAdminById, updateAdminProfile } from './admin.service';
 
 // GET /api/admin/me
 export async function getAdminMe(

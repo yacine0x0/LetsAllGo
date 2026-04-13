@@ -1,5 +1,5 @@
 import '../../models/auth/verify_account_model.dart';
-import '../../service/auth_services.dart';
+import '../../service/auth/auth_services.dart';
 
 class VerifyAccountController {
   final String email;

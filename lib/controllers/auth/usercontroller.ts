@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from '../../middlewares/auth.middleware';
-import { getUserById, updateUserName, updateUserPassword, requestUserEmailChange, confirmUserEmailChange } from '../../service/user.service';
+import { getUserById, updateUserName, updateUserPassword, requestUserEmailChange, confirmUserEmailChange } from '../../service/auth/user.service';
 
 // GET /api/users/me
 export async function getMe(req: AuthRequest, res: Response): Promise<void> {

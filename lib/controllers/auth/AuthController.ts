@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { loginService, registerService, verifyEmailService } from '../../service/AuthService';
+import { loginService, registerService, verifyEmailService } from '../../service/auth/AuthService';
 import { LoginInput, RegisterInput, VerifyEmailInput, validateLoginInput, validateRegisterInput, validateVerifyEmailInput } from '../../models/auth/auth.model';
 
 export async function login(req: Request, res: Response): Promise<void> {
