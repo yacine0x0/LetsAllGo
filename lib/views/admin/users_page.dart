@@ -4,6 +4,7 @@ import 'dart:ui';
 import '../../controllers/admin_controllers/users_controller.dart';
 import '../../models/admin_models/users_model.dart';
 import '../admin/profil_admin_page.dart';
+import '../auth/login_page.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -161,6 +162,50 @@ class _AdminPageState extends State<AdminPage> {
             ),
            ),
          ),
+
+              const Spacer(),
+
+              // ── Logout button
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const LoginPage(),
+                      transitionsBuilder: (_, anim, __, child) =>
+                          FadeTransition(opacity: anim, child: child),
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: h * 0.03),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.white.withValues(alpha: 0.08),
+                        margin: EdgeInsets.only(bottom: h * 0.02),
+                      ),
+                      Icon(
+                        Icons.logout_rounded,
+                        color: Colors.red.shade300,
+                        size: h * 0.035,
+                      ),
+                      SizedBox(height: h * 0.005),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.red.shade300,
+                          fontSize: h * 0.014,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

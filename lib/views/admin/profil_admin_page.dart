@@ -3,6 +3,7 @@ import 'package:flutter_project_1/views/admin/analytics.dart';
 import 'dart:ui';
 import '../../controllers/admin_controllers/admin_profil_controller.dart';
 import '../admin/users_page.dart';
+import '../auth/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -195,6 +196,50 @@ class _ProfilePageState extends State<ProfilePage> {
                     label: entry.value["label"] as String,
                     h: h,
                     isActive: _selectedSidebarIndex == entry.key,
+                  ),
+                ),
+              ),
+
+              const Spacer(),
+
+              // ── Logout button
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const LoginPage(),
+                      transitionsBuilder: (_, anim, __, child) =>
+                          FadeTransition(opacity: anim, child: child),
+                      transitionDuration: const Duration(milliseconds: 400),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: h * 0.03),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 1,
+                        color: Colors.white.withValues(alpha: 0.08),
+                        margin: EdgeInsets.only(bottom: h * 0.02),
+                      ),
+                      Icon(
+                        Icons.logout_rounded,
+                        color: Colors.red.shade300,
+                        size: h * 0.035,
+                      ),
+                      SizedBox(height: h * 0.005),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.red.shade300,
+                          fontSize: h * 0.014,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
