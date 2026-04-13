@@ -500,7 +500,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               _buildStatCard(
                 h: h,
                 icon: Icons.stars_rounded,
-                label: "Score",
+                label: "Go Points !",
                 value: score.toString(),
                 color: const Color.fromARGB(255, 251, 255, 0),
               ),

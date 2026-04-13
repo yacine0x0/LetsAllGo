@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project_1/views/admin/analytics.dart';
 import 'dart:ui';
+import 'package:shared_preferences/shared_preferences.dart'; // ← Ajouté pour logout
+
 import '../../controllers/admin_controllers/admin_profil_controller.dart';
 import '../admin/users_page.dart';
+import '../auth/login_page.dart'; // Assure-toi que ce chemin est correct
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,25 +16,66 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final ProfileController _controller = ProfileController();
+
   late TextEditingController _firstNameCtrl;
   late TextEditingController _lastNameCtrl;
   late TextEditingController _emailCtrl;
-  int _selectedSidebarIndex = 2; // ← Profile actif par défaut
+
+  int _selectedSidebarIndex = 2; // Profile actif par défaut
+
 
   @override
-  void initState() {
-    super.initState();
-    _firstNameCtrl = TextEditingController(text: _controller.model.firstName);
-    _lastNameCtrl = TextEditingController(text: _controller.model.lastName);
-    _emailCtrl = TextEditingController(text: _controller.model.email);
-  }
+void initState() {
+  super.initState();
+  // ✅ Charger les vraies données depuis la BDD
+  _controller.loadProfile().then((_) {
+    setState(() {
+      _firstNameCtrl.text = _controller.model.firstName;
+      _lastNameCtrl.text  = _controller.model.lastName;
+      _emailCtrl.text     = _controller.model.email;
+    });
+  });
 
+  _firstNameCtrl = TextEditingController(text: _controller.model.firstName);
+  _lastNameCtrl  = TextEditingController(text: _controller.model.lastName);
+  _emailCtrl     = TextEditingController(text: _controller.model.email);
+}
   @override
   void dispose() {
     _firstNameCtrl.dispose();
     _lastNameCtrl.dispose();
     _emailCtrl.dispose();
     super.dispose();
+  }
+
+  // ====================== LOGOUT FUNCTION ======================
+  Future<void> _logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Supprime le token (adapte la clé selon ton code de login)
+      await prefs.remove('auth_token');
+      await prefs.remove('user_token');
+      // Si tu veux tout supprimer :
+      // await prefs.clear();
+
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginPage()),
+          (route) => false, // Efface tout l'historique de navigation
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Erreur lors de la déconnexion'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -61,22 +105,19 @@ class _ProfilePageState extends State<ProfilePage> {
           // Contenu
           Row(
             children: [
-              // ── Sidebar
+              // Sidebar
               _buildSidebar(h, w),
 
-              // ── Contenu principal
+              // Contenu principal
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(h * 0.04),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                      // Section informations personnelles
                       _buildPersonalInfo(h, w),
                       SizedBox(height: h * 0.04),
 
-                      // Titre Paramètres
                       Text(
                         "Paramètres",
                         style: TextStyle(
@@ -95,7 +136,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       SizedBox(height: h * 0.03),
 
-                      // Section Apparence & Langue
                       _buildAppearanceSection(h, w),
                     ],
                   ),
@@ -108,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // ── SIDEBAR
+  // ── SIDEBAR ─────────────────────────────────────
   Widget _buildSidebar(double h, double w) {
     final items = [
       {"icon": Icons.people, "label": "Users"},
@@ -139,55 +179,46 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: h * 0.04),
 
-              // Items
+              // Menu Items
               ...items.asMap().entries.map(
                 (entry) => GestureDetector(
                   onTap: () {
                     setState(() => _selectedSidebarIndex = entry.key);
+
                     if (entry.key == 0) {
-                      
-                      
-
-                        Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) => AdminPage(),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(0.0, -1.0); 
-                        const end = Offset.zero;
-                        const curve = Curves.easeInOut;
-
-                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                      ));
-
-
-
-
-                       
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const AdminPage(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, -1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     } else if (entry.key == 1) {
-                       
-                       
-
-                      Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) => AnalyticsPage(),
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(0.0, -1.0); 
-                        const end = Offset.zero;
-                        const curve = Curves.easeInOut;
-
-                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                      ));
-
-
-                       
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => const AnalyticsPage(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, -1.0);
+                            const end = Offset.zero;
+                            const curve = Curves.easeInOut;
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     }
                   },
                   child: _buildSidebarItem(
@@ -198,6 +229,34 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+
+              const Spacer(),
+
+              // Bouton Logout
+              GestureDetector(
+                onTap: _logout,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: h * 0.03),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        color: Colors.redAccent,
+                        size: h * 0.042,
+                      ),
+                      SizedBox(height: h * 0.006),
+                      Text(
+                        "Logout",
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontSize: h * 0.015,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -205,6 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // ── Sidebar Item
   Widget _buildSidebarItem({
     required IconData icon,
     required String label,
@@ -264,8 +324,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Titre section
               Row(
                 children: [
                   const Text("📝", style: TextStyle(fontSize: 20)),
@@ -280,21 +338,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(width: w * 0.01),
                   Expanded(
-                    child: Container(
-                      height: 1,
-                      color: Colors.white24,
-                    ),
+                    child: Container(height: 1, color: Colors.white24),
                   ),
                 ],
               ),
               SizedBox(height: h * 0.03),
 
-              // Prénom + Nom
               Row(
                 children: [
                   Expanded(
                     child: _buildInputField(
-                      value: _controller.model.firstName, // ← valeur directe
+                      value: _controller.model.firstName,
                       label: "PRÉNOM",
                       icon: Icons.person_outline,
                       h: h,
@@ -303,7 +357,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(width: w * 0.02),
                   Expanded(
                     child: _buildInputField(
-                      value: _controller.model.lastName, // ← valeur directe
+                      value: _controller.model.lastName,
                       label: "NOM",
                       icon: Icons.person_outline,
                       h: h,
@@ -313,9 +367,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: h * 0.025),
 
-              // Email
               _buildInputField(
-                value: _controller.model.email, // ← valeur directe
+                value: _controller.model.email,
                 label: "ADRESSE EMAIL",
                 icon: Icons.email_outlined,
                 h: h,
@@ -328,11 +381,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildInputField({
-    required String value,        
+    required String value,
     required String label,
     required IconData icon,
     required double h,
-        
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,7 +392,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Row(
           children: [
             Icon(icon, color: Colors.white54, size: h * 0.018),
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
             Text(
               label,
               style: TextStyle(
@@ -353,8 +405,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         SizedBox(height: h * 0.008),
-
-        // Container non modifiable
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(
@@ -362,14 +412,14 @@ class _ProfilePageState extends State<ProfilePage> {
             vertical: h * 0.015,
           ),
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 0, 0, 0).withValues(alpha: 0.2), 
+            color: const Color.fromARGB(255, 0, 0, 0).withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.white12),   // ← bordure discrète
+            border: Border.all(color: Colors.white12),
           ),
           child: Text(
-            value,
+            value.isNotEmpty ? value : "—",
             style: TextStyle(
-              color: Colors.white70, // ← légèrement grisé
+              color: Colors.white70,
               fontSize: h * 0.018,
             ),
           ),
@@ -377,6 +427,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
+
   // ── APPARENCE & LANGUE
   Widget _buildAppearanceSection(double h, double w) {
     return ClipRRect(
@@ -393,12 +444,10 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // Titre
               Row(
                 children: [
                   const Text("🎨", style: TextStyle(fontSize: 20)),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
                     "Apparence & Langue",
                     style: TextStyle(
@@ -411,7 +460,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: h * 0.03),
 
-              // Mode sombre
               Row(
                 children: [
                   Column(
@@ -445,12 +493,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               SizedBox(height: h * 0.025),
-
-              // Divider
               Container(height: 1, color: Colors.white12),
               SizedBox(height: h * 0.025),
 
-              // Langue
               Row(
                 children: [
                   Column(
@@ -474,8 +519,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   const Spacer(),
-
-                  // Dropdown langue
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: h * 0.02,
@@ -490,10 +533,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: _controller.model.language,
                       dropdownColor: const Color(0xFF1A1A2E),
                       underline: const SizedBox(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: h * 0.016,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: h * 0.016),
                       icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
                       items: const [
                         DropdownMenuItem(value: "Français", child: Text("Français")),
