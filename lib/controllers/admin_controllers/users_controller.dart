@@ -1,76 +1,98 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../models/admin_models/users_model.dart';
+import '../../service/auth/LoginService.dart';
 
 class AdminController {
-  late AdminModel model;
+  static const String _baseUrl = 'http://localhost:3000/api';
 
-  AdminController() {
-    model = AdminModel(
-      users: [
-        UserItem(
-          rank: 1,
-          firstName: "laadj",
-          lastName: "Zakaria",
-          totalPoints: 125,
-        ),
-        UserItem(
-          rank: 2,
-          firstName: "laarbi",
-          lastName: "hamid",
-          totalPoints: 120,
-        ),
-        UserItem(
-          rank: 3,
-          firstName: "kersani",
-          lastName: "ilyas",
-          totalPoints: 106,
-        ),
-        UserItem(
-          rank: 4,
-          firstName: "lebsir",
-          lastName: "ali",
-          totalPoints: 105,
-        ),
-        UserItem(
-          rank: 5,
-          firstName: "user5",
-          lastName: "test",
-          totalPoints: 98,
-        ),
-        UserItem(
-          rank: 6,
-          firstName: "user6",
-          lastName: "test",
-          totalPoints: 90,
-        ),
-        UserItem(
-          rank: 7,
-          firstName: "user7",
-          lastName: "test",
-          totalPoints: 85,
-        ),
-        UserItem(
-          rank: 8,
-          firstName: "user8",
-          lastName: "test",
-          totalPoints: 80,
-        ),
-      ],
-    );
+  UsersModel _model = UsersModel(users: []);
+  UsersModel get model => _model;
+
+  bool isLoading = false;
+
+  // ── Charger les étudiants depuis la BDD
+  Future<void> loadUsers() async {
+    final token = LoginService.getToken();
+    if (token == null) return;
+
+    isLoading = true;
+
+    try {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/admin/users'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        final List<dynamic> list = data['data'];
+        _model = UsersModel(
+          users: list.map((e) => UserItem.fromApi(e)).toList(),
+        );
+        print('✅ ${_model.users.length} étudiants chargés');
+      }
+    } catch (e) {
+      print('❌ Erreur chargement users: $e');
+    }
+
+    isLoading = false;
   }
 
-  // Supprimer un utilisateur
-  void deleteUser(int rank) {
-    model.users.removeWhere((u) => u.rank == rank);
+  // ── Supprimer un étudiant depuis la BDD
+  Future<String?> deleteUser(String userId) async {
+    final token = LoginService.getToken();
+    if (token == null) return 'Non connecté';
+
+    try {
+      final response = await http.delete(
+        Uri.parse('$_baseUrl/admin/users/$userId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        // Supprimer localement aussi
+        _model.users.removeWhere((u) => u.id == userId);
+        // Recalculer les rangs
+        for (int i = 0; i < _model.users.length; i++) {
+          _model.users[i] = UserItem(
+            id:          _model.users[i].id,
+            rank:        i + 1,
+            firstName:   _model.users[i].firstName,
+            lastName:    _model.users[i].lastName,
+            email:       _model.users[i].email,
+            totalPoints: _model.users[i].totalPoints,
+            isBlocked:   _model.users[i].isBlocked,
+          );
+        }
+        return null; // ✅ succès
+      }
+
+      return data['message'] ?? 'Erreur suppression';
+    } catch (e) {
+      return 'Impossible de contacter le serveur';
+    }
   }
 
-  // Bloquer / débloquer un utilisateur
-  void toggleBlock(int rank) {
-    final user = model.users.firstWhere((u) => u.rank == rank);
-    user.isBlocked = !user.isBlocked;
-  }
-
-  // Recherche
+  // ── Recherche locale
   void search(String query) {
-    model.searchQuery = query;
+    _model.searchQuery = query;
+  }
+
+  // ── Toggle block (local uniquement pour l'instant)
+  void toggleBlock(String userId) {
+    final index = _model.users.indexWhere((u) => u.id == userId);
+    if (index != -1) {
+      _model.users[index].isBlocked = !_model.users[index].isBlocked;
+    }
   }
 }
