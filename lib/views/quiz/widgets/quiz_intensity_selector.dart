@@ -27,7 +27,7 @@ class QuizIntensitySelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Quiz difficulty level",
+          "Niveau de difficulté du quiz",
           style: TextStyle(
             color: Colors.white,
             fontSize: h * 0.022,
@@ -67,7 +67,7 @@ class QuizIntensitySelector extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "$intensity questions/chapter",
+                      "$intensity questions par chapitre",
                       style: TextStyle(
                         color: isSelected ? color.withValues(alpha: 0.8) : Colors.white54,
                         fontSize: h * 0.012,
@@ -91,7 +91,7 @@ class QuizIntensitySelector extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "What does difficulty level mean?",
+                "Que signifie le niveau de difficulté ?",
                 style: TextStyle(
                   color: Colors.blue,
                   fontSize: h * 0.018,
@@ -100,7 +100,11 @@ class QuizIntensitySelector extends StatelessWidget {
               ),
               SizedBox(height: h * 0.01),
               Text(
-                _getDescription(),
+                "Le niveau de difficulté détermine le nombre de questions que tu devras répondre par chapitre sélectionné.\n\n"
+                "• Facile : Bon pour apprendre\n"
+                "• Moyen : Questions plus challenging\n"
+                "• Difficile : Niveau avancé\n"
+                "• Expert : Difficulté maximale",
                 style: TextStyle(
                   color: Colors.white54,
                   fontSize: h * 0.014,
@@ -112,22 +116,5 @@ class QuizIntensitySelector extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String _getDescription() {
-    // On peut personnaliser selon le premier label (Algo 1 ou Algo 2)
-    if (labels.contains("Easy")) {
-      return "The difficulty level determines how many questions you'll answer from each selected chapter:\n\n"
-          "• 5 ● : Easy - Basic questions to get started\n"
-          "• 10 ● : Medium - Mix of basic and intermediate questions\n"
-          "• 15 ● : Hard - Challenging questions for advanced learners\n"
-          "• 20 ● : Expert - Maximum difficulty for experts";
-    } else {
-      return "The difficulty level determines how many questions you'll answer from each selected chapter:\n\n"
-          "• 10 ● : Easyy - Good for learning\n"
-          "• 15 ● : Medieum - Challenging questions\n"
-          "• 20 ● : Hard - Advanced difficulty\n"
-          "• 30 ● : Expert - Maximum difficulty";
-    }
   }
 }

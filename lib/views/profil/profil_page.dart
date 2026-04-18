@@ -8,6 +8,8 @@ import 'dart:ui';
 import '../../controllers/profil/profil_controller.dart';
 import '../auth/login_page.dart';
 import '../dashboard/dashboard_page.dart';
+import '../files/files_page.dart';
+import '../quiz/quiz_selection_page.dart';
 import 'package:provider/provider.dart';
 import '../../service/language_service.dart';
 
@@ -709,15 +711,23 @@ class _ProfilePageState extends State<ProfilePage> {
           ...items.asMap().entries.map(
             (entry) => GestureDetector(
               onTap: () {
-                if (entry.key == 0) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => const DashboardPage()));
-                } else if (entry.key == 2) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(
-                          builder: (_) => const LeaderboardPage()));
-                }
-              },
+  if (entry.key == 0) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (_) => const DashboardPage()));
+  } 
+  else if (entry.key == 1) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (_) => const QuizSelectionPage()));
+  } 
+  else if (entry.key == 2) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (_) => const LeaderboardPage()));
+  } 
+  else if (entry.key == 3) {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (_) => const FilesPage()));
+  }
+},
               child: _buildSidebarItem(
                 icon: entry.value["icon"] as IconData,
                 label: entry.value["label"] as String,
@@ -730,8 +740,7 @@ class _ProfilePageState extends State<ProfilePage> {
           GestureDetector(
             onTap: () => Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (_) => const LoginPage())),
-            child: _buildSidebarItem(
-                icon: Icons.logout, label: "Logout", h: h, isLogout: true),
+            child: _buildSidebarItem( icon: Icons.logout, label: "Logout", h: h, isLogout: true),
           ),
           SizedBox(height: h * 0.02),
         ],
@@ -1090,7 +1099,7 @@ class _ProfilePageState extends State<ProfilePage> {
         h: h,
         icon: Icons.language,
         iconColor: Colors.blue,
-        title: lang.t('language', fallback: 'Langue'),
+        title: lang.t('langue',  'Language'),
         subtitle: lang.isFrench ? "Français" : "English",
         trailing: GestureDetector(
           onTap: () {
@@ -1123,8 +1132,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(width: 8),
                 Text(
                   lang.isFrench
-                      ? lang.t('switch_to_english', fallback: 'Passer en Anglais')
-                      : lang.t('switch_to_french', fallback: 'Passer en Français'),
+                      ? lang.t('Passer en anglais', 'Switch to french')
+                      : lang.t('Passer en anglais',  'Switch to French'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: h * 0.015,
@@ -1140,10 +1149,10 @@ class _ProfilePageState extends State<ProfilePage> {
         h: h,
         icon: m.soundEffects ? Icons.volume_up : Icons.volume_off,
         iconColor: m.soundEffects ? const Color(0xFF00E5FF) : Colors.white38,
-        title: lang.t('sound_effects', fallback: 'Effets sonores'),
+        title: lang.t('Effets sonores', 'Sound Effects'),
         subtitle: m.soundEffects
-            ? lang.t('enabled', fallback: 'Activés')
-            : lang.t('disabled', fallback: 'Désactivés'),
+            ? lang.t(  'Activés' , 'enabled')
+            : lang.t(  'Désactivés', 'disabled' ),
         trailing: GestureDetector(
           onTap: () => setState(() => _controller.toggleSound()),
           child: AnimatedContainer(

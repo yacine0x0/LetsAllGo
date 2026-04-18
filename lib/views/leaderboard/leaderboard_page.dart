@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_1/views/profil/profil_page.dart';
+import 'package:provider/provider.dart';                    // ← AJOUTÉ
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
+
+import '../../service/language_service.dart';               // ← AJOUTÉ (adapte le chemin si nécessaire)
+
+import 'package:flutter_project_1/views/profil/profil_page.dart';
 import '../../controllers/leaderboard/leaderboard_controller.dart';
 import '../../models/leaderboard/leaderboard_model.dart';
 import '../../service/auth/LoginService.dart'; 
-import '../../controllers/auth/login_controller.dart';   // ← Ajouté pour le logout
-import '../auth/login_page.dart';                       // ← Ajouté pour la redirection vers LoginPage
+import '../../controllers/auth/login_controller.dart';
+import '../auth/login_page.dart';
 import '../dashboard/dashboard_page.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
@@ -22,6 +26,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   final LeaderboardController _controller = LeaderboardController();
   bool _isLoading = true;
   int _selectedIndex = 2;
+
+  late LanguageService _lang;   // ← AJOUTÉ
 
   TextStyle _orbitron({
     double size = 14,
@@ -39,6 +45,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   void initState() {
     super.initState();
+    _lang = Provider.of<LanguageService>(context, listen: false); // ← AJOUTÉ
+
     _controller.loadLeaderboard().then((_) {
       setState(() => _isLoading = false);
     });
@@ -46,6 +54,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Mise à jour en temps réel quand la langue change
+    _lang = context.watch<LanguageService>();   // ← IMPORTANT
+
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
@@ -83,10 +94,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   // ══════════════════════════════════════════
   Widget _buildSidebar(double h, double w) {
     final items = [
-      {"icon": Icons.menu_book, "label": "Courses"},
-      {"icon": Icons.quiz, "label": "Quiz"},
-      {"icon": Icons.emoji_events, "label": "Leaderboard"},
-      {"icon": Icons.folder, "label": "Files"},
+      {"icon": Icons.menu_book, "label": _lang.t("Cours", "Courses")},
+      {"icon": Icons.quiz, "label": _lang.t("Quiz", "Quiz")},
+      {"icon": Icons.emoji_events, "label": _lang.t("Classement", "Leaderboard")},
+      {"icon": Icons.folder, "label": _lang.t("Fichiers", "Files")},
     ];
 
     return Container(
@@ -123,7 +134,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           ),
           const Spacer(),
 
-          // ====================== BOUTON LOGOUT (corrigé comme dans DashboardPage) ======================
+          // Bouton Logout
           GestureDetector(
             onTap: () async {
               final controller = LoginController();
@@ -137,7 +148,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               );
             },
             child: _buildSidebarItem(
-                icon: Icons.logout, label: "Logout", h: h, isLogout: true),
+                icon: Icons.logout, 
+                label: _lang.t("Déconnexion", "Logout"), 
+                h: h, 
+                isLogout: true),
           ),
           SizedBox(height: h * 0.02),
         ],
@@ -211,13 +225,13 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Leaderboard",
+                Text(_lang.t("Classement", "Leaderboard"),
                     style: _orbitron(
                         size: h * 0.04,
                         weight: FontWeight.bold,
                         letterSpacing: 2)),
                 SizedBox(height: h * 0.005),
-                Text("Classement global des étudiants",
+                Text(_lang.t("Classement global des étudiants", "Global student ranking"),
                     style: _orbitron(
                         size: h * 0.018,
                         color: const Color.fromARGB(200, 255, 255, 255))),
@@ -254,8 +268,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       child: Row(
         children: [
           SizedBox(
-            width: w * 0.06,
-            child: Text("Rank",
+            width: w * 0.12,
+            child: Text(_lang.t("Classement", "Rank"),
                 style: _orbitron(
                     size: h * 0.018,
                     weight: FontWeight.bold,
@@ -263,7 +277,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     letterSpacing: 1.5)),
           ),
           Expanded(
-            child: Text("User Name",
+            child: Text(_lang.t("Nom D'utilisateur", "User Name"),
                 style: _orbitron(
                     size: h * 0.018,
                     weight: FontWeight.bold,
@@ -272,7 +286,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           ),
           SizedBox(
             width: w * 0.15,
-            child: Text("Total Points",
+            child: Text(_lang.t("Points Totals", "Total Points"),
                 textAlign: TextAlign.center,
                 style: _orbitron(
                     size: h * 0.018,
@@ -356,17 +370,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   // ══════════════════════════════════════════
-  // PANNEAU DROIT ✅ vraies données LoginService
+  // PANNEAU DROIT (traduction des textes statiques)
   // ══════════════════════════════════════════
   Widget _buildRightPanel(double h, double w) {
-    // ✅ Récupère les vraies données depuis LoginService
     final prenom   = LoginService.getPrenom() ?? 'Utilisateur';
     final nom      = LoginService.getNom() ?? '';
     final fullName = '$prenom $nom'.trim();
-    final initial  = prenom[0].toUpperCase();
+    final initial  = prenom.isNotEmpty ? prenom[0].toUpperCase() : '?';
     final role     = LoginService.getRole() ?? 'etudiant';
 
-    // Trouver le score et rang de l'utilisateur connecté dans le leaderboard
     final userId = LoginService.getUserId();
     final currentEntry = _controller.model.entries.isEmpty ? null :
         _controller.model.entries.cast<LeaderboardEntry?>().firstWhere(
@@ -393,8 +405,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              // ── Carte profil
+              // Carte profil (nom et rôle restent dynamiques)
               Material(
                 color: Colors.transparent,
                 child: InkWell(
@@ -418,6 +429,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     ),
                     child: Row(
                       children: [
+                        // ... (le profil reste inchangé visuellement)
                         Stack(
                           alignment: Alignment.center,
                           children: [
@@ -426,19 +438,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                               height: h * 0.08,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.blue, width: 2),
+                                border: Border.all(color: Colors.blue, width: 2),
                               ),
                             ),
                             CircleAvatar(
                               radius: h * 0.032,
-                              backgroundColor:
-                                  Colors.blue.withValues(alpha: 0.6),
+                              backgroundColor: Colors.blue.withValues(alpha: 0.6),
                               child: Text(
-                                initial, // ✅ vraie initiale
-                                style: _orbitron(
-                                    size: h * 0.025,
-                                    weight: FontWeight.bold),
+                                initial,
+                                style: _orbitron(size: h * 0.025, weight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -448,29 +456,19 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                fullName, // ✅ vrai nom
-                                style: _orbitron(
-                                    size: h * 0.020,
-                                    weight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              Text(fullName,
+                                  style: _orbitron(size: h * 0.020, weight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis),
                               SizedBox(height: 4),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 2),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: Colors.blue.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                      color: Colors.blue
-                                          .withValues(alpha: 0.4)),
+                                  border: Border.all(color: Colors.blue.withValues(alpha: 0.4)),
                                 ),
-                                child: Text(
-                                  role, // ✅ vrai rôle
-                                  style: _orbitron(
-                                      size: h * 0.013, color: Colors.blue),
-                                ),
+                                child: Text(role.toUpperCase(),
+                                    style: _orbitron(size: h * 0.013, color: Colors.blue)),
                               ),
                             ],
                           ),
@@ -482,35 +480,30 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               ),
               SizedBox(height: h * 0.025),
 
-              // ── Titre progression
+              // Titre progression
               Row(
                 children: [
                   Icon(Icons.trending_up, color: Colors.blue, size: h * 0.025),
                   SizedBox(width: 8),
-                  Text("Your progression",
-                      style: _orbitron(
-                          size: h * 0.020,
-                          weight: FontWeight.bold,
-                          letterSpacing: 1)),
+                  Text(_lang.t("Votre  progression", "Your progression"),
+                      style: _orbitron(size: h * 0.020, weight: FontWeight.bold, letterSpacing: 1)),
                 ],
               ),
               SizedBox(height: h * 0.02),
 
-              // ── Score ✅
               _buildStatCard(
                 h: h,
                 icon: Icons.stars_rounded,
-                label: "Go Points !",
+                label: _lang.t("Points Go !", "Go Points !"),
                 value: score.toString(),
                 color: const Color.fromARGB(255, 251, 255, 0),
               ),
               SizedBox(height: h * 0.015),
 
-              // ── Rank ✅
               _buildStatCard(
                 h: h,
                 icon: Icons.emoji_events,
-                label: "Rank",
+                label: _lang.t("Classement", "Rank"),
                 value: rang.toString().padLeft(2, '0'),
                 color: const Color.fromARGB(255, 71, 255, 92),
               ),
@@ -528,11 +521,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               ),
               SizedBox(height: h * 0.025),
 
-              // ── Algo progress ✅
               _buildProgressSection(
                 h: h,
                 w: w,
-                label: "Algorithmic Progress",
+                label: _lang.t("Progression D'Algorithmique ", "Algorithmic Progress"),
                 value: algo1Progress,
                 color: const Color.fromARGB(255, 0, 255, 247),
                 labelColor: const Color.fromARGB(200, 255, 255, 255),
@@ -544,6 +536,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
+  // Les méthodes _buildStatCard et _buildProgressSection restent identiques
+  // (seul le label est maintenant traduit via _lang)
+
   Widget _buildStatCard({
     required double h,
     required IconData icon,
@@ -553,8 +548,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(
-          horizontal: h * 0.015, vertical: h * 0.012),
+      padding: EdgeInsets.symmetric(horizontal: h * 0.015, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
@@ -567,14 +561,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label,
-                  style: _orbitron(size: h * 0.013, color: Colors.white54)),
-              Text(value,
-                  style: _orbitron(
-                      size: h * 0.026,
-                      weight: FontWeight.bold,
-                      color: color,
-                      letterSpacing: 1)),
+              Text(label, style: _orbitron(size: h * 0.013, color: Colors.white54)),
+              Text(value, style: _orbitron(size: h * 0.026, weight: FontWeight.bold, color: color, letterSpacing: 1)),
             ],
           ),
         ],
@@ -609,10 +597,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ),
               Text("${(value * 100).toInt()}%",
-                  style: _orbitron(
-                      size: h * 0.018,
-                      weight: FontWeight.bold,
-                      color: color)),
+                  style: _orbitron(size: h * 0.018, weight: FontWeight.bold, color: color)),
             ],
           ),
         ),
@@ -622,10 +607,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label,
-                  style: _orbitron(
-                      size: h * 0.015,
-                      weight: FontWeight.bold,
-                      color: labelColor ?? Colors.white70)),
+                  style: _orbitron(size: h * 0.015, weight: FontWeight.bold, color: labelColor ?? Colors.white70)),
               SizedBox(height: h * 0.008),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
@@ -637,10 +619,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ),
               SizedBox(height: h * 0.005),
-              Text("${(value * 100).toInt()}% complété",
-                  style: _orbitron(
-                      size: h * 0.015,
-                      color: const Color.fromARGB(200, 255, 255, 255))),
+              Text(_lang.t("${(value * 100).toInt()}% complété", "${(value * 100).toInt()}% completed"),
+                  style: _orbitron(size: h * 0.015, color: const Color.fromARGB(200, 255, 255, 255))),
             ],
           ),
         ),

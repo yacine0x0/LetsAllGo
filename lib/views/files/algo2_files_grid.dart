@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:provider/provider.dart';
+
 import '../../controllers/files/files_algo2_controller.dart';
 import '../pdf_images_views/pdf_viewer_page.dart';
 import '../pdf_images_views/image_viewer_page.dart';
 import '../../models/files/files_algo2_model.dart';
+import '../../service/language_service.dart';
 
 class Algo2FilesGrid extends StatelessWidget {
   final double h;
   final double w;
   final Function(int) onFileSelected;
-  final Algo2FilesController controller; // ← Ce paramètre existe bien
+  final Algo2FilesController controller;
 
   const Algo2FilesGrid({
     super.key,
     required this.h,
     required this.w,
     required this.onFileSelected,
-    required this.controller, // ← Il est bien défini ici
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.watch<LanguageService>();
+
     final files = controller.getFilesByCategory(
       controller.model.selectedAlgo,
       controller.model.selectedCategory,
@@ -34,7 +39,7 @@ class Algo2FilesGrid extends StatelessWidget {
             Icon(Icons.folder_open, color: Colors.white24, size: h * 0.08),
             SizedBox(height: h * 0.02),
             Text(
-              _getEmptyMessage(controller.model.selectedCategory),
+              _getEmptyMessage(controller.model.selectedCategory, lang),
               style: TextStyle(color: Colors.white38, fontSize: h * 0.02),
               textAlign: TextAlign.center,
             ),
@@ -133,7 +138,9 @@ class Algo2FilesGrid extends StatelessWidget {
                     SizedBox(height: h * 0.005),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 8, vertical: h * 0.004),
+                        horizontal: 8,
+                        vertical: h * 0.004,
+                      ),
                       decoration: BoxDecoration(
                         color: file.type == FileType.pdf
                             ? Colors.redAccent.withValues(alpha: 0.2)
@@ -141,7 +148,9 @@ class Algo2FilesGrid extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        file.type == FileType.pdf ? "PDF" : "IMAGE",
+                        file.type == FileType.pdf
+                            ? "PDF"
+                            : lang.t("IMAGE", "IMAGE"),
                         style: TextStyle(
                           color: file.type == FileType.pdf
                               ? Colors.redAccent
@@ -161,18 +170,19 @@ class Algo2FilesGrid extends StatelessWidget {
     );
   }
 
-  String _getEmptyMessage(String category) {
+  // ✅ ONLY TRANSLATION FIX
+  String _getEmptyMessage(String category, LanguageService lang) {
     switch (category) {
       case "courses":
-        return "No courses available for Algo 2";
+        return lang.t("Aucun cours disponible", "No courses available");
       case "tds":
-        return "No TD's available for Algo 2";
+        return lang.t("Aucun TD disponible", "No TDs available");
       case "examen":
-        return "No exams available for Algo 2";
+        return lang.t("Aucun examen disponible", "No exams available");
       case "sheatsheet":
-        return "No sheatsheets available for Algo 2";
+        return lang.t("Aucune fiche disponible", "No cheat sheets available");
       default:
-        return "No files available for Algo 2";
+        return lang.t("Aucun fichier disponible", "No files available");
     }
   }
 }

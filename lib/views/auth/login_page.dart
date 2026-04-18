@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';                    // ← Ajouté
-import '../../service/language_service.dart';             // ← Ajouté
-
+import 'package:provider/provider.dart';
+import '../../service/language_service.dart';
 import '../../controllers/auth/login_controller.dart';
 import 'create_account_page.dart';
 import 'dart:ui';
@@ -17,10 +16,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final LoginController _controller = LoginController();
-  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _emailCtrl    = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
 
-  bool _isLoading = false;
+  bool _isLoading       = false;
   bool _obscurePassword = true;
   String? _errorMessage;
 
@@ -32,48 +31,35 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _handleLogin() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
+    setState(() { _isLoading = true; _errorMessage = null; });
 
-    final error = await _controller.login(_emailCtrl.text, _passwordCtrl.text);
+    final error = await _controller.login(
+        _emailCtrl.text, _passwordCtrl.text);
 
     if (!mounted) return;
-
-    setState(() {
-      _isLoading = false;
-      _errorMessage = error;
-    });
+    setState(() { _isLoading = false; _errorMessage = error; });
 
     if (error == null) {
       final role = LoginController.currentUser?.role ?? 'etudiant';
-
       if (role == 'admin') {
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const AdminWelcomePage(),
-            transitionsBuilder: (_, anim, __, child) =>
-                FadeTransition(opacity: anim, child: child),
-            transitionDuration: const Duration(milliseconds: 400),
-          ),
-        );
+        Navigator.pushReplacement(context, PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const AdminWelcomePage(),
+          transitionsBuilder: (_, anim, __, child) =>
+              FadeTransition(opacity: anim, child: child),
+          transitionDuration: const Duration(milliseconds: 400),
+        ));
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const DashboardPage()),
-        );
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => const DashboardPage()));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final lang = context.watch<LanguageService>();   // ← CORRIGÉ
-
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    final lang = context.watch<LanguageService>(); // ✅ écoute les changements
+    final h    = MediaQuery.of(context).size.height;
+    final w    = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Stack(
@@ -90,6 +76,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+
+          // ✅ Combo box langue — coin supérieur droit
+          Positioned(
+            top: h * 0.02,
+            right: w * 0.02,
+            child: _buildLanguageSelector(lang, h),
+          ),
+
           Center(
             child: SingleChildScrollView(
               child: ConstrainedBox(
@@ -100,31 +94,29 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(top: h * 0.0),
-                        child: Image.asset(
-                          "assets/images/logo1_login.png",
-                          width: h * 0.15,
-                          height: h * 0.15,
-                        ),
+                        child: Image.asset("assets/images/logo1_login.png",
+                            width: h * 0.15, height: h * 0.15),
                       ),
                       SizedBox(height: h * 0.005),
-                      Text(
-                        "Let'sAllgo",
-                        style: TextStyle(
-                          fontSize: h * 0.035,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      Text("Let'sAllgo",
+                          style: TextStyle(
+                              fontSize: h * 0.035,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       SizedBox(height: h * 0.01),
                       Text(
-                        "learn algorithms in a fun way step by step with us to become a pro",
+                        lang.t(
+                          "Apprenez les algorithmes étape par étape",
+                          "Learn algorithms step by step with us",
+                        ),
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: h * 0.016,
-                          color: const Color.fromARGB(246, 255, 255, 255),
-                        ),
+                            fontSize: h * 0.016,
+                            color: const Color.fromARGB(246, 255, 255, 255)),
                       ),
                       SizedBox(height: h * 0.025),
+
+                      // ── Carte login
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
@@ -148,47 +140,48 @@ class _LoginPageState extends State<LoginPage> {
                                     size: h * 0.06, color: Colors.blue),
                                 SizedBox(height: h * 0.02),
                                 Text(
-                                  "Login",
+                                  lang.t("Connexion", "Login"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: h * 0.03,
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color.fromARGB(255, 52, 52, 90),
-                                  ),
+                                      fontSize: h * 0.03,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color.fromARGB(
+                                          255, 52, 52, 90)),
                                 ),
                                 SizedBox(height: h * 0.01),
-
-                                // ← Texte de bienvenue corrigé
                                 Text(
-                                  lang.t('welcome_back',
-                                      fallback: 'hi, welcome back please login to your account'),
+                                  lang.t(
+                                    "Bonjour, bienvenue ! Connectez-vous à votre compte.",
+                                    "Hi, welcome back! Please login to your account.",
+                                  ),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: const Color.fromARGB(255, 249, 249, 250),
-                                    fontSize: h * 0.014,
-                                  ),
+                                      color: const Color.fromARGB(
+                                          255, 249, 249, 250),
+                                      fontSize: h * 0.014),
                                 ),
-
                                 SizedBox(height: h * 0.03),
+
+                                // ── Email
                                 TextField(
                                   controller: _emailCtrl,
                                   style: TextStyle(
-                                      color: const Color.fromARGB(255, 254, 254, 254),
+                                      color: Colors.white,
                                       fontSize: h * 0.016),
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
                                     labelText: "Email",
                                     labelStyle: TextStyle(
-                                        color: const Color.fromARGB(255, 254, 254, 254),
+                                        color: Colors.white,
                                         fontSize: h * 0.016),
                                     hintText: "exemple@mail.com",
                                     hintStyle: TextStyle(
-                                        color: const Color.fromARGB(255, 148, 144, 227),
+                                        color: const Color.fromARGB(
+                                            255, 148, 144, 227),
                                         fontSize: h * 0.015),
                                     prefixIcon: Icon(Icons.email_outlined,
                                         size: h * 0.025),
-                                    prefixIconColor:
-                                        const Color.fromARGB(255, 254, 254, 254),
+                                    prefixIconColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -202,25 +195,30 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(height: h * 0.02),
+
+                                // ── Mot de passe
                                 TextField(
                                   controller: _passwordCtrl,
                                   style: TextStyle(
-                                      color: const Color.fromARGB(255, 254, 254, 254),
+                                      color: Colors.white,
                                       fontSize: h * 0.016),
                                   obscureText: _obscurePassword,
                                   decoration: InputDecoration(
-                                    labelText: lang.t('password', fallback: 'Password'),
+                                    labelText: lang.t(
+                                        "Mot de passe", "Password"),
                                     labelStyle: TextStyle(
-                                        color: const Color.fromARGB(255, 254, 254, 254),
+                                        color: Colors.white,
                                         fontSize: h * 0.016),
-                                    hintText: "Entre your password",
+                                    hintText: lang.t(
+                                        "Entrez votre mot de passe",
+                                        "Enter your password"),
                                     hintStyle: TextStyle(
-                                        color: const Color.fromARGB(255, 148, 144, 227),
+                                        color: const Color.fromARGB(
+                                            255, 148, 144, 227),
                                         fontSize: h * 0.015),
                                     prefixIcon: Icon(Icons.lock_outline,
                                         size: h * 0.025),
-                                    prefixIconColor:
-                                        const Color.fromARGB(255, 254, 254, 254),
+                                    prefixIconColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -244,19 +242,22 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(height: h * 0.015),
+
                                 if (_errorMessage != null)
-                                  Text(
-                                    _errorMessage!,
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: h * 0.014),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  Text(_errorMessage!,
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: h * 0.014),
+                                      textAlign: TextAlign.center),
+
                                 SizedBox(height: h * 0.025),
+
+                                // ── Bouton login
                                 SizedBox(
                                   height: h * 0.06,
                                   child: ElevatedButton(
-                                    onPressed: _isLoading ? null : _handleLogin,
+                                    onPressed:
+                                        _isLoading ? null : _handleLogin,
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,
                                       shape: RoundedRectangleBorder(
@@ -265,9 +266,10 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     child: _isLoading
                                         ? const CircularProgressIndicator(
-                                            color: Color.fromARGB(255, 7, 36, 117))
+                                            color: Color.fromARGB(
+                                                255, 7, 36, 117))
                                         : Text(
-                                            lang.t('login', fallback: 'Login'),
+                                            lang.t("Se connecter", "Login"),
                                             style: TextStyle(
                                                 fontSize: h * 0.02,
                                                 color: const Color.fromARGB(
@@ -275,12 +277,16 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(height: h * 0.02),
+
+                                // ── Lien créer un compte
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      lang.t('dont_have_account',
-                                          fallback: "Don't have an account ? "),
+                                      lang.t(
+                                        "Pas encore de compte ? ",
+                                        "Don't have an account? ",
+                                      ),
                                       style: TextStyle(
                                           color: const Color.fromARGB(
                                               255, 2, 17, 102),
@@ -288,14 +294,13 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (_) =>
-                                                const CreateAccountPage()),
-                                      ),
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  const CreateAccountPage())),
                                       child: Text(
-                                        lang.t('create_account',
-                                            fallback: 'Create an account'),
+                                        lang.t("Créer un compte",
+                                            "Create an account"),
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold,
@@ -317,6 +322,97 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // ══════════════════════════════════════════
+  // ✅ COMBO BOX LANGUE ANIMÉ
+  // ══════════════════════════════════════════
+  Widget _buildLanguageSelector(LanguageService lang, double h) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+                color: Colors.white.withOpacity(0.3), width: 1.5),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // ── Bouton Français
+              _langButton(
+                flag: "🇫🇷",
+                label: "FR",
+                isSelected: lang.isFrench,
+                h: h,
+                onTap: () => context.read<LanguageService>().setFrench(),
+              ),
+              const SizedBox(width: 4),
+              // ── Séparateur
+              Container(
+                width: 1,
+                height: h * 0.03,
+                color: Colors.white.withOpacity(0.3),
+              ),
+              const SizedBox(width: 4),
+              // ── Bouton Anglais
+              _langButton(
+                flag: "🇬🇧",
+                label: "EN",
+                isSelected: !lang.isFrench,
+                h: h,
+                onTap: () => context.read<LanguageService>().setEnglish(),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _langButton({
+    required String flag,
+    required String label,
+    required bool isSelected,
+    required double h,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        padding: EdgeInsets.symmetric(
+            horizontal: h * 0.015, vertical: h * 0.008),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Colors.white.withOpacity(0.3)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(flag, style: TextStyle(fontSize: h * 0.022)),
+            SizedBox(width: h * 0.006),
+            AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 250),
+              style: TextStyle(
+                color: isSelected ? Colors.white : Colors.white60,
+                fontSize: h * 0.015,
+                fontWeight: isSelected
+                    ? FontWeight.bold
+                    : FontWeight.normal,
+              ),
+              child: Text(label),
+            ),
+          ],
+        ),
       ),
     );
   }

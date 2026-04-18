@@ -141,7 +141,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Create Account",
+              lang.t('Créer un compte',  'Create Account'),
               style: TextStyle(
                 fontSize: h * 0.04,
                 fontWeight: FontWeight.bold,
@@ -155,7 +155,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Expanded(
                   child: _buildField(
                     controller: _firstNameCtrl,
-                    label: lang.t('first_name', fallback: 'First Name'),
+                    label: lang.t('Nom',  'First Name'),
                     h: h,
                   ),
                 ),
@@ -163,7 +163,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Expanded(
                   child: _buildField(
                     controller: _lastNameCtrl,
-                    label: lang.t('last_name', fallback: 'Last Name'),
+                    label: lang.t('Prénom',  'Last Name'),
                     h: h,
                   ),
                 ),
@@ -173,7 +173,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
             _buildField(
               controller: _emailCtrl,
-              label: lang.t('email', fallback: 'Email'),
+              label: lang.t('Email',  'Email'),
               h: h,
               keyboardType: TextInputType.emailAddress,
             ),
@@ -184,7 +184,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               obscureText: _obscurePassword,
               style: TextStyle(fontSize: h * 0.018),
               decoration: InputDecoration(
-                labelText: lang.t('password', fallback: 'Password'),
+                labelText: lang.t('Mot De Passe',  'Password'),
                 labelStyle: TextStyle(fontSize: h * 0.016),
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
@@ -204,7 +204,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               value: _selectedGender,
               style: TextStyle(fontSize: h * 0.018, color: Colors.black87),
               decoration: InputDecoration(
-                labelText: lang.t('gender', fallback: 'Gender'),
+                labelText: lang.t('Genre', 'Gender'),
                 labelStyle: TextStyle(fontSize: h * 0.016),
                 border: const OutlineInputBorder(),
               ),
@@ -235,7 +235,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : Text(
-                        lang.t('create_account', fallback: 'Create Account'),
+                        lang.t('Créer un compte', 'Create Account'),
                         style: TextStyle(fontSize: h * 0.02, color: Colors.white),
                       ),
               ),
@@ -246,7 +246,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  lang.t('already_have_account', fallback: 'Already have an account ? '),
+                  lang.t('Vous avez déja un compte',  'Already have an account ? '),
                   style: TextStyle(color: Colors.grey, fontSize: h * 0.015),
                 ),
                 GestureDetector(
@@ -255,7 +255,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     MaterialPageRoute(builder: (_) => const LoginPage()),
                   ),
                   child: Text(
-                    lang.t('login', fallback: 'Login'),
+                    lang.t(' Connexion', ' Login'),
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
@@ -299,13 +299,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
             SizedBox(height: h * 0.03),
 
             Text(
-              lang.t('verify_account', fallback: 'Verify Account'),
+              lang.t('Compte Vérifié',  'Verify Account'),
               style: TextStyle(fontSize: h * 0.04, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
             SizedBox(height: h * 0.015),
 
             Text(
-              lang.t('pin_sent', fallback: 'A 6-digit PIN code has been sent to your email address.'),
+              lang.t('Un code de vérification a été envoyé a votre adresse Email', 'A 6-digit PIN code has been sent to your email address.'),
               style: TextStyle(fontSize: h * 0.016, color: Colors.black54),
             ),
             SizedBox(height: h * 0.04),
@@ -316,7 +316,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               maxLength: 6,
               style: TextStyle(fontSize: h * 0.022, letterSpacing: h * 0.01),
               decoration: InputDecoration(
-                labelText: lang.t('enter_pin', fallback: 'Enter your PIN code'),
+                labelText: lang.t('Enter your PIN code' , 'Enter the code pin' ),
                 labelStyle: TextStyle(fontSize: h * 0.016),
                 border: const OutlineInputBorder(),
                 counterText: '',
@@ -336,7 +336,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   const Icon(Icons.verified, color: Colors.green, size: 18),
                   const SizedBox(width: 6),
                   Text(
-                    lang.t('verified_success', fallback: 'Verified successfully !'),
+                    lang.t('verification reussie' , 'Verified successfully !'),
                     style: TextStyle(color: Colors.green, fontSize: h * 0.016, fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -356,7 +356,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          lang.t('verify', fallback: 'Verify'),
+                          lang.t('verifier' , 'Verify'),
                           style: TextStyle(fontSize: h * 0.02, color: Colors.white),
                         ),
                 ),
@@ -373,7 +373,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   ),
                   icon: const Icon(Icons.arrow_forward, color: Colors.white),
                   label: Text(
-                    lang.t('next', fallback: 'Next'),
+                    lang.t('Suivant', 'Next'),
                     style: TextStyle(fontSize: h * 0.02, color: Colors.white),
                   ),
                   style: ElevatedButton.styleFrom(

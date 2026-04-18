@@ -1,5 +1,9 @@
+// lib/views/welcome/welcome_page.dart
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';                    // ← AJOUTÉ
+import '../../../service/language_service.dart';             // ← AJOUTÉ (adapte le chemin si besoin)
+
 import '../../dashboard/dashboard_page.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -15,19 +19,9 @@ class _WelcomePageState extends State<WelcomePage>
   late AnimationController _controller;
   late Animation<double> _floatAnimation;
 
-  final List<String> _lines = [
-    '> Initializing LetsAllgo...',
-    '> Loading modules...',
-    '',
-    '> Welcome to LetsAllgo 🐺',
-    '',
-    '> We help you learn algorithms',
-    '> step by step, in a fun way.',
-    '',
-    '> Learn. Practice. Master.',
-    '',
-    '> Ready ? Let\'s go ! 🚀',
-  ];
+  late LanguageService _languageService;        // ← AJOUTÉ
+  Timer? _typingTimer;                          // ← AJOUTÉ (pour pouvoir annuler le timer)
+  late List<String> _lines;                     // ← MODIFIÉ (plus statique)
 
   final List<String> _displayedLines = [];
   int _currentLine = 0;
@@ -47,11 +41,62 @@ class _WelcomePageState extends State<WelcomePage>
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 
+    // Initialisation du LanguageService + chargement des textes selon la langue
+    _languageService = Provider.of<LanguageService>(context, listen: false);
+    _languageService.addListener(_onLanguageChanged);   // ← permet le changement de langue en live
+    _loadLines();
+    _startTyping();
+  }
+
+  // Charge les lignes selon la langue actuelle (FR ou EN)
+  void _loadLines() {
+    _lines = _languageService.isFrench
+        ? [
+            '> Initialisation de LetsAllgo...',
+            '> Chargement des modules...',
+            '',
+            '> Bienvenue sur LetsAllgo 🐺',
+            '',
+            '> Nous vous aidons à apprendre les algorithmes',
+            '> étape par étape, de façon amusante.',
+            '',
+            '> Apprendre. Pratiquer. Maîtriser.',
+            '',
+            '> Prêt ? Allons-y ! 🚀',
+          ]
+        : [
+            '> Initializing LetsAllgo...',
+            '> Loading modules...',
+            '',
+            '> Welcome to LetsAllgo 🐺',
+            '',
+            '> We help you learn algorithms',
+            '> step by step, in a fun way.',
+            '',
+            '> Learn. Practice. Master.',
+            '',
+            '> Ready ? Let\'s go ! 🚀',
+          ];
+  }
+
+  // Redémarre tout le terminal quand la langue change
+  void _onLanguageChanged() {
+    if (!mounted) return;
+    _typingTimer?.cancel();
+    setState(() {
+      _displayedLines.clear();
+      _currentLine = 0;
+      _currentText = '';
+      _currentChar = 0;
+      _showButton = false;
+    });
+    _loadLines();
     _startTyping();
   }
 
   void _startTyping() {
-    Timer.periodic(const Duration(milliseconds: 40), (timer) {
+    _typingTimer?.cancel();                     // ← annule l'ancien timer si changement de langue
+    _typingTimer = Timer.periodic(const Duration(milliseconds: 40), (timer) {
       if (!mounted) {
         timer.cancel();
         return;
@@ -93,6 +138,8 @@ class _WelcomePageState extends State<WelcomePage>
 
   @override
   void dispose() {
+    _typingTimer?.cancel();
+    _languageService.removeListener(_onLanguageChanged);
     _controller.dispose();
     super.dispose();
   }
@@ -214,7 +261,7 @@ class _WelcomePageState extends State<WelcomePage>
                           ),
                         ),
                         child: Text(
-                          "> Get Started",
+                          _languageService.t('> Commencer', '> Get Started'),   // ← traduit
                           style: TextStyle(
                             fontSize: h * 0.02,
                             color: Colors.white,
@@ -235,8 +282,8 @@ class _WelcomePageState extends State<WelcomePage>
 
   Color _getColor(String line) {
     if (line.startsWith('>')) return Colors.greenAccent;
-    if (line.contains('Welcome')) return Colors.cyanAccent;
-    if (line.contains('Ready')) return Colors.yellowAccent;
+    if (line.contains('Welcome') || line.contains('Bienvenue')) return Colors.cyanAccent;
+    if (line.contains('Ready') || line.contains('Prêt')) return Colors.yellowAccent;
     return Colors.white70;
   }
 
