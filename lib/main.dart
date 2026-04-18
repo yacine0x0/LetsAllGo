@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_1/views/dashboard/dashboard_page.dart';
-
-import 'views/admin/users_page.dart';
+import 'package:provider/provider.dart';
+import 'service/language_service.dart';
 import 'views/auth/login_page.dart';
-import 'views/admin/analytics.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LanguageService().loadTranslations(); // ✅ charger les traductions
+  runApp(
+    ChangeNotifierProvider<LanguageService>.value(
+      value: LanguageService(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,13 +20,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mon Application',
+      title: 'LetsAllGo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-
       home: const LoginPage(),
     );
   }

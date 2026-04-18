@@ -4,30 +4,30 @@
   <question id="c2_q1" type="multipleChoice">
     <enonce>What does an "if-else" statement do?</enonce>
     <choices>
-      <choice id="A">Loop execution</choice>
-      <choice id="B">Conditional execution</choice>
-      <choice id="C">Function definition</choice>
-      <choice id="D">Variable declaration</choice>
+      <choice id="A">Variable declaration</choice>
+      <choice id="B">Function definition</choice>
+      <choice id="C">Conditional execution</choice>
+      <choice id="D">Loop execution</choice>
     </choices>
-    <bonneReponse>B</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
   <question id="c2_q2" type="multipleChoice">
     <enonce>Which keyword is used for multiple conditions?</enonce>
     <choices>
-      <choice id="A">switch</choice>
-      <choice id="B">while</choice>
-      <choice id="C">for</choice>
-      <choice id="D">foreach</choice>
+      <choice id="A">while</choice>
+      <choice id="B">for</choice>
+      <choice id="C">foreach</choice>
+      <choice id="D">switch</choice>
     </choices>
-    <bonneReponse>A</bonneReponse>
+    <bonneReponse>D</bonneReponse>
   </question>
 
   <question id="c2_q3" type="multipleChoice">
     <enonce>What is the logical operator for AND?</enonce>
     <choices>
-      <choice id="A">|</choice>
-      <choice id="B">||</choice>
+      <choice id="A">||</choice>
+      <choice id="B">|</choice>
       <choice id="C">&amp;&amp;</choice>
       <choice id="D">&amp;</choice>
     </choices>
@@ -39,8 +39,8 @@
     <choices>
       <choice id="A">&amp;&amp;</choice>
       <choice id="B">||</choice>
-      <choice id="C">&amp;</choice>
-      <choice id="D">!</choice>
+      <choice id="C">!</choice>
+      <choice id="D">&amp;</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
@@ -48,52 +48,52 @@
   <question id="c2_q5" type="multipleChoice">
     <enonce>What does the NOT operator (!) do?</enonce>
     <choices>
-      <choice id="A">Inverts a boolean value</choice>
-      <choice id="B">Adds two numbers</choice>
+      <choice id="A">Adds two numbers</choice>
+      <choice id="B">Inverts a boolean value</choice>
       <choice id="C">Compares two values</choice>
       <choice id="D">Declares a variable</choice>
     </choices>
-    <bonneReponse>A</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
   <question id="c2_q6" type="multipleChoice">
     <enonce>What is the result of (true &amp;&amp; false)?</enonce>
     <choices>
       <choice id="A">true</choice>
-      <choice id="B">false</choice>
-      <choice id="C">null</choice>
+      <choice id="B">null</choice>
+      <choice id="C">false</choice>
       <choice id="D">error</choice>
     </choices>
-    <bonneReponse>B</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
   <question id="c2_q7" type="multipleChoice">
     <enonce>What is the result of (false || true)?</enonce>
     <choices>
       <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">true</choice>
+      <choice id="B">true</choice>
+      <choice id="C">null</choice>
       <choice id="D">error</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
   <question id="c2_q8" type="multipleChoice">
     <enonce>Which statement executes a block of code if the condition is false?</enonce>
     <choices>
       <choice id="A">if</choice>
-      <choice id="B">else</choice>
-      <choice id="C">switch</choice>
-      <choice id="D">for</choice>
+      <choice id="B">for</choice>
+      <choice id="C">else</choice>
+      <choice id="D">switch</choice>
     </choices>
-    <bonneReponse>B</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
   <question id="c2_q9" type="multipleChoice">
     <enonce>What is the ternary operator used for?</enonce>
     <choices>
-      <choice id="A">Looping through arrays</choice>
-      <choice id="B">Defining functions</choice>
+      <choice id="A">Defining functions</choice>
+      <choice id="B">Looping through arrays</choice>
       <choice id="C">A shorthand for if-else in a single line</choice>
       <choice id="D">Declaring variables</choice>
     </choices>
@@ -126,9 +126,9 @@
     <enonce>In a switch statement, what happens if no case matches and there is no default?</enonce>
     <choices>
       <choice id="A">An error is thrown</choice>
-      <choice id="B">The first case executes</choice>
+      <choice id="B">The program stops</choice>
       <choice id="C">Nothing happens, execution continues after the switch</choice>
-      <choice id="D">The program stops</choice>
+      <choice id="D">The first case executes</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
@@ -136,10 +136,10 @@
   <question id="c2_q13" type="multipleChoice">
     <enonce>What is short-circuit evaluation?</enonce>
     <choices>
-      <choice id="A">A way to shorten code by removing conditions</choice>
+      <choice id="A">Evaluating all conditions regardless of the result</choice>
       <choice id="B">Stopping evaluation of a logical expression as soon as the result is determined</choice>
-      <choice id="C">Using ternary operators instead of if-else</choice>
-      <choice id="D">Evaluating all conditions regardless of the result</choice>
+      <choice id="C">A way to shorten code by removing conditions</choice>
+      <choice id="D">Using ternary operators instead of if-else</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
@@ -147,10 +147,10 @@
   <question id="c2_q14" type="multipleChoice">
     <enonce>What does "else if" allow you to do?</enonce>
     <choices>
-      <choice id="A">Loop through multiple values</choice>
+      <choice id="A">Declare multiple variables</choice>
       <choice id="B">Check multiple conditions sequentially</choice>
-      <choice id="C">Define a function with conditions</choice>
-      <choice id="D">Declare multiple variables</choice>
+      <choice id="C">Loop through multiple values</choice>
+      <choice id="D">Define a function with conditions</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
@@ -159,11 +159,11 @@
     <enonce>What is the result of (false &amp;&amp; false)?</enonce>
     <choices>
       <choice id="A">true</choice>
-      <choice id="B">false</choice>
-      <choice id="C">null</choice>
-      <choice id="D">undefined</choice>
+      <choice id="B">undefined</choice>
+      <choice id="C">false</choice>
+      <choice id="D">null</choice>
     </choices>
-    <bonneReponse>B</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
   <question id="c2_q16" type="multipleChoice">
@@ -181,11 +181,11 @@
     <enonce>What is a boolean expression?</enonce>
     <choices>
       <choice id="A">An expression that returns a number</choice>
-      <choice id="B">An expression that evaluates to true or false</choice>
-      <choice id="C">An expression used only in loops</choice>
+      <choice id="B">An expression used only in loops</choice>
+      <choice id="C">An expression that evaluates to true or false</choice>
       <choice id="D">An expression that defines a variable</choice>
     </choices>
-    <bonneReponse>B</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
   <question id="c2_q18" type="multipleChoice">
@@ -202,9 +202,9 @@
   <question id="c2_q19" type="multipleChoice">
     <enonce>In a switch statement, what is the purpose of "break"?</enonce>
     <choices>
-      <choice id="A">To exit the program</choice>
+      <choice id="A">To skip the current case</choice>
       <choice id="B">To stop execution and exit the switch block</choice>
-      <choice id="C">To skip the current case</choice>
+      <choice id="C">To exit the program</choice>
       <choice id="D">To restart the switch</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
@@ -225,11 +225,11 @@
     <enonce>What is the result of (!(false || false))?</enonce>
     <choices>
       <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">true</choice>
+      <choice id="B">true</choice>
+      <choice id="C">null</choice>
       <choice id="D">error</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
   <question id="c2_q22" type="multipleChoice">
@@ -246,9 +246,9 @@
   <question id="c2_q23" type="multipleChoice">
     <enonce>What is "fall-through" in a switch statement?</enonce>
     <choices>
-      <choice id="A">When no case matches</choice>
+      <choice id="A">When the default case runs first</choice>
       <choice id="B">When execution continues to the next case without a break</choice>
-      <choice id="C">When the default case runs first</choice>
+      <choice id="C">When no case matches</choice>
       <choice id="D">When the switch crashes</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
@@ -258,20 +258,20 @@
     <enonce>What condition must be true to enter an "if" block?</enonce>
     <choices>
       <choice id="A">The condition evaluates to false</choice>
-      <choice id="B">The condition evaluates to null</choice>
-      <choice id="C">The condition evaluates to true</choice>
-      <choice id="D">The condition evaluates to zero</choice>
+      <choice id="B">The condition evaluates to true</choice>
+      <choice id="C">The condition evaluates to zero</choice>
+      <choice id="D">The condition evaluates to null</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
   <question id="c2_q25" type="multipleChoice">
     <enonce>What does a nested if statement mean?</enonce>
     <choices>
-      <choice id="A">An if statement inside a loop</choice>
+      <choice id="A">An if statement without an else</choice>
       <choice id="B">An if statement inside another if statement</choice>
-      <choice id="C">An if statement with multiple conditions</choice>
-      <choice id="D">An if statement without an else</choice>
+      <choice id="C">An if statement inside a loop</choice>
+      <choice id="D">An if statement with multiple conditions</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
@@ -280,11 +280,11 @@
     <enonce>What is the result of (true &amp;&amp; true)?</enonce>
     <choices>
       <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">error</choice>
-      <choice id="D">true</choice>
+      <choice id="B">error</choice>
+      <choice id="C">true</choice>
+      <choice id="D">null</choice>
     </choices>
-    <bonneReponse>D</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
   <question id="c2_q27" type="multipleChoice">
@@ -322,9 +322,9 @@
   <question id="c2_q30" type="multipleChoice">
     <enonce>What is the purpose of the "default" case in a switch statement?</enonce>
     <choices>
-      <choice id="A">It runs before all other cases</choice>
+      <choice id="A">It is required in every switch statement</choice>
       <choice id="B">It runs when no other case matches</choice>
-      <choice id="C">It is required in every switch statement</choice>
+      <choice id="C">It runs before all other cases</choice>
       <choice id="D">It replaces the break statement</choice>
     </choices>
     <bonneReponse>B</bonneReponse>

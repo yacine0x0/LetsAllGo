@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';                    // ← Ajouté
+import '../../service/language_service.dart';             // ← Ajouté
+
 import '../../controllers/auth/login_controller.dart';
 import 'create_account_page.dart';
 import 'dart:ui';
@@ -47,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
       final role = LoginController.currentUser?.role ?? 'etudiant';
 
       if (role == 'admin') {
-        // ── Admin → page d'accueil avec les flèches animées
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
@@ -58,7 +60,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } else {
-        // ── Étudiant → dashboard normal
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const DashboardPage()),
@@ -69,6 +70,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.watch<LanguageService>();   // ← CORRIGÉ
+
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
@@ -154,14 +157,18 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                                 SizedBox(height: h * 0.01),
+
+                                // ← Texte de bienvenue corrigé
                                 Text(
-                                  "hi, welcome back please login to your account",
+                                  lang.t('welcome_back',
+                                      fallback: 'hi, welcome back please login to your account'),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: const Color.fromARGB(255, 249, 249, 250),
                                     fontSize: h * 0.014,
                                   ),
                                 ),
+
                                 SizedBox(height: h * 0.03),
                                 TextField(
                                   controller: _emailCtrl,
@@ -202,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                                       fontSize: h * 0.016),
                                   obscureText: _obscurePassword,
                                   decoration: InputDecoration(
-                                    labelText: "password",
+                                    labelText: lang.t('password', fallback: 'Password'),
                                     labelStyle: TextStyle(
                                         color: const Color.fromARGB(255, 254, 254, 254),
                                         fontSize: h * 0.016),
@@ -259,7 +266,8 @@ class _LoginPageState extends State<LoginPage> {
                                     child: _isLoading
                                         ? const CircularProgressIndicator(
                                             color: Color.fromARGB(255, 7, 36, 117))
-                                        : Text("Login",
+                                        : Text(
+                                            lang.t('login', fallback: 'Login'),
                                             style: TextStyle(
                                                 fontSize: h * 0.02,
                                                 color: const Color.fromARGB(
@@ -271,7 +279,8 @@ class _LoginPageState extends State<LoginPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      "Don't have an account ? ",
+                                      lang.t('dont_have_account',
+                                          fallback: "Don't have an account ? "),
                                       style: TextStyle(
                                           color: const Color.fromARGB(
                                               255, 2, 17, 102),
@@ -285,7 +294,8 @@ class _LoginPageState extends State<LoginPage> {
                                                 const CreateAccountPage()),
                                       ),
                                       child: Text(
-                                        "Create an account",
+                                        lang.t('create_account',
+                                            fallback: 'Create an account'),
                                         style: TextStyle(
                                             color: Colors.blue,
                                             fontWeight: FontWeight.bold,

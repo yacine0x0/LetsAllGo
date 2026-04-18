@@ -46,6 +46,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   pin_code_fields: ^9.3.0        # ← Best OTP field
   fluttertoast: ^8.2.8
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_test:
@@ -122,4 +123,4 @@ flutter:
     - assets/data/algo1/quiz/
     - assets/images/background_admin.png
     - assets/data/algo2/quiz/
-
+    - assets/lang/

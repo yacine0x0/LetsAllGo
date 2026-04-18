@@ -8,6 +8,8 @@ import 'dart:ui';
 import '../../controllers/profil/profil_controller.dart';
 import '../auth/login_page.dart';
 import '../dashboard/dashboard_page.dart';
+import 'package:provider/provider.dart';
+import '../../service/language_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -647,6 +649,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<LanguageService>(); 
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
@@ -1078,113 +1081,114 @@ class _ProfilePageState extends State<ProfilePage> {
   // SECTION PARAMÈTRES
   // ══════════════════════════════════════════
   Widget _buildSettingsSection(double h, double w) {
-    final m = _controller.model;
+  final lang = LanguageService(); // ✅ singleton
+  final m = _controller.model;
 
-    return Column(
-      children: [
-        _buildSettingsTile(
-          h: h,
-          icon: Icons.language,
-          iconColor: Colors.blue,
-          title: _controller.t("Langue", "Language"),
-          subtitle: m.isFrench ? "Français" : "English",
-          trailing: GestureDetector(
-            onTap: () => setState(() => _controller.toggleLanguage()),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: w * 0.012, vertical: h * 0.010),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: m.isFrench
-                      ? [Colors.blue.withValues(alpha: 0.6), Colors.blue.withValues(alpha: 0.3)]
-                      : [Colors.purple.withValues(alpha: 0.6), Colors.purple.withValues(alpha: 0.3)],
+  return Column(
+    children: [
+      _buildSettingsTile(
+        h: h,
+        icon: Icons.language,
+        iconColor: Colors.blue,
+        title: lang.t('language', fallback: 'Langue'),
+        subtitle: lang.isFrench ? "Français" : "English",
+        trailing: GestureDetector(
+          onTap: () {
+            // ✅ Toggle global — persiste entre les pages
+            context.read<LanguageService>().toggleLanguage();
+            setState(() {}); // refresh la page profil
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: w * 0.012, vertical: h * 0.010),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: lang.isFrench
+                    ? [Colors.blue.withValues(alpha: 0.6),
+                       Colors.blue.withValues(alpha: 0.3)]
+                    : [Colors.purple.withValues(alpha: 0.6),
+                       Colors.purple.withValues(alpha: 0.3)],
+              ),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                  color: lang.isFrench
+                      ? Colors.blue.withValues(alpha: 0.5)
+                      : Colors.purple.withValues(alpha: 0.5)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(lang.isFrench ? "🇫🇷" : "🇬🇧",
+                    style: TextStyle(fontSize: h * 0.022)),
+                const SizedBox(width: 8),
+                Text(
+                  lang.isFrench
+                      ? lang.t('switch_to_english', fallback: 'Passer en Anglais')
+                      : lang.t('switch_to_french', fallback: 'Passer en Français'),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: h * 0.015,
+                      fontWeight: FontWeight.bold),
                 ),
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                    color: m.isFrench
-                        ? Colors.blue.withValues(alpha: 0.5)
-                        : Colors.purple.withValues(alpha: 0.5)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(m.isFrench ? "🇫🇷" : "🇬🇧",
-                      style: TextStyle(fontSize: h * 0.022)),
-                  const SizedBox(width: 8),
-                  Text(
-                    m.isFrench
-                        ? _controller.t("Passer en Anglais", "Switch to English")
-                        : _controller.t("Passer en Français", "Switch to French"),
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: h * 0.015,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
-        SizedBox(height: h * 0.02),
-        _buildSettingsTile(
-          h: h,
-          icon: m.soundEffects ? Icons.volume_up : Icons.volume_off,
-          iconColor:
-              m.soundEffects ? const Color(0xFF00E5FF) : Colors.white38,
-          title: _controller.t("Effets sonores", "Sound Effects"),
-          subtitle: m.soundEffects
-              ? _controller.t("Activés", "Enabled")
-              : _controller.t("Désactivés", "Disabled"),
-          trailing: GestureDetector(
-            onTap: () => setState(() => _controller.toggleSound()),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              width: w * 0.06,
-              height: h * 0.035,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: m.soundEffects
-                    ? const Color(0xFF00E5FF).withValues(alpha: 0.3)
-                    : Colors.white12,
-                border: Border.all(
-                    color: m.soundEffects
-                        ? const Color(0xFF00E5FF)
-                        : Colors.white24,
-                    width: 1.5),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  AnimatedAlign(
-                    duration: const Duration(milliseconds: 300),
-                    alignment: m.soundEffects
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 3),
-                      width: h * 0.028,
-                      height: h * 0.028,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: m.soundEffects
-                            ? const Color(0xFF00E5FF)
-                            : Colors.white38,
-                        boxShadow: m.soundEffects
-                            ? [BoxShadow(
-                                color: const Color(0xFF00E5FF).withValues(alpha: 0.6),
-                                blurRadius: 8)]
-                            : [],
-                      ),
+      ),
+      SizedBox(height: h * 0.02),
+      _buildSettingsTile(
+        h: h,
+        icon: m.soundEffects ? Icons.volume_up : Icons.volume_off,
+        iconColor: m.soundEffects ? const Color(0xFF00E5FF) : Colors.white38,
+        title: lang.t('sound_effects', fallback: 'Effets sonores'),
+        subtitle: m.soundEffects
+            ? lang.t('enabled', fallback: 'Activés')
+            : lang.t('disabled', fallback: 'Désactivés'),
+        trailing: GestureDetector(
+          onTap: () => setState(() => _controller.toggleSound()),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: w * 0.06,
+            height: h * 0.035,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: m.soundEffects
+                  ? const Color(0xFF00E5FF).withValues(alpha: 0.3)
+                  : Colors.white12,
+              border: Border.all(
+                  color: m.soundEffects
+                      ? const Color(0xFF00E5FF)
+                      : Colors.white24,
+                  width: 1.5),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                AnimatedAlign(
+                  duration: const Duration(milliseconds: 300),
+                  alignment: m.soundEffects
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                    width: h * 0.028,
+                    height: h * 0.028,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: m.soundEffects
+                          ? const Color(0xFF00E5FF)
+                          : Colors.white38,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 
   Widget _buildSettingsTile({
     required double h,
