@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
-import '../models/courses_study/courses_study_model.dart';
+import '../../models/courses_study/courses_study_model.dart';
 
 class XmlService {
 

@@ -1,19 +1,39 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../models/admin_models/profil_admin_model.dart';
+import '../../service/auth/LoginService.dart';
 
 class ProfileController {
-  late ProfileModel model;
+  static const String _baseUrl = 'http://localhost:3000/api';
 
-  ProfileController() {
-    model = ProfileModel(
-      firstName: "Zakaria",
-      lastName: "Laadj",
-      email: "zakaria.laadj@gmail.com",
-    );
+  AdminProfilModel _model = AdminProfilModel.mock();
+  AdminProfilModel get model => _model;
+
+  // ── Charger les infos admin depuis la BDD
+  Future<void> loadProfile() async {
+    final token = LoginService.getToken();
+    if (token == null) return;
+
+    try {
+      final response = await http.get(
+        Uri.parse('$_baseUrl/admin/me'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        _model = AdminProfilModel.fromApi(data['data']);
+        print(' Admin chargé: ${_model.firstName} ${_model.lastName}');
+      }
+    } catch (e) {
+      print(' Erreur: $e');
+    }
   }
 
-  void updateFirstName(String value) => model.firstName = value;
-  void updateLastName(String value) => model.lastName = value;
-  void updateEmail(String value) => model.email = value;
-  void toggleDarkMode(bool value) => model.isDarkMode = value;
-  void updateLanguage(String value) => model.language = value;
+  void toggleDarkMode(bool value) => _model.isDarkMode = value;
+  void updateLanguage(String lang) => _model.language = lang;
 }

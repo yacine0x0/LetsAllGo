@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'LoginService.dart';
 
 class AuthService {
   static const String _baseUrl = 'http://localhost:3000/api/auth';
 
-  // ── POST /api/auth/register
   static Future<String?> register({
     required String firstName,
     required String lastName,
@@ -22,11 +22,9 @@ class AuthService {
           'password': password,
         }),
       );
-
       final data = jsonDecode(response.body);
-
       if (response.statusCode == 200) {
-        return null; // success
+        return null;
       } else {
         return data['message'] ?? 'Erreur lors de l\'inscription';
       }
@@ -35,7 +33,6 @@ class AuthService {
     }
   }
 
-  // ── POST /api/auth/verify-email
   static Future<String?> verifyEmail({
     required String email,
     required String code,
@@ -49,11 +46,16 @@ class AuthService {
           'code':  code.trim(),
         }),
       );
-
       final data = jsonDecode(response.body);
-
       if (response.statusCode == 201) {
-        return null; // success
+        LoginService.saveToken(data['token']);
+        LoginService.saveUser(
+          userId: data['userId'].toString(),
+          nom:    data['nom'],
+          prenom: data['prenom'],
+          role:   data['role'] ?? 'etudiant',
+        );
+        return null;
       } else {
         return data['message'] ?? 'Code invalide';
       }

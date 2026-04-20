@@ -1,7 +1,7 @@
 // lib/service/quiz_score_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'LoginService.dart';
+import '../auth/LoginService.dart';
 
 class QuizScoreService {
   static const String _baseUrl = 'http://localhost:3000/api';

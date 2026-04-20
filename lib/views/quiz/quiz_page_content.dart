@@ -7,7 +7,7 @@ import '../leaderboard/leaderboard_page.dart';
 import 'quiz_selection_page.dart';
 import '../../controllers/quiz/base_quiz_controller.dart';
 import '../../controllers/auth/login_controller.dart';
-import '../../service/quiz_score_service.dart';
+import '../../service/quiz/quiz_score_service.dart';
 
 class QuizPageContent extends StatefulWidget {
   final BaseQuizController controller;

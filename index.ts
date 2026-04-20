@@ -4,6 +4,7 @@ import cors from 'cors';
 import authRoutes        from './lib/routes/authroutes';
 import userRoutes        from './lib/routes/user.routes';
 import leaderboardRoutes from './lib/routes/leaderboard.routes';
+import adminRoutes from './lib/routes/admin.routes'; 
 
 import quizRoutes        from './lib/routes/quiz.routes';
 
@@ -12,7 +13,7 @@ const PORT = process.env.PORT ?? 3000;
 
 
 app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE'], allowedHeaders: ['Content-Type', 'Authorization'] }));
-
+app.use('/api/admin', adminRoutes);              
 app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], allowedHeaders: ['Content-Type', 'Authorization'] }));
 
 app.use(express.json());

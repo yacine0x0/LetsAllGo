@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../models/leaderboard/leaderboard_model.dart';
-import '../../service/LoginService.dart';
+import '../../service/auth/LoginService.dart';
 
 class LeaderboardController {
   static const String _baseUrl = 'http://localhost:3000/api';

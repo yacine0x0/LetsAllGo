@@ -172,8 +172,8 @@ class _AdminPageState extends State<AdminPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const LoginPage(),
-                      transitionsBuilder: (_, anim, __, child) =>
+                      pageBuilder: (_, _, _) => const LoginPage(),
+                      transitionsBuilder: (_, anim, _, child) =>
                           FadeTransition(opacity: anim, child: child),
                       transitionDuration: const Duration(milliseconds: 400),
                     ),
@@ -407,6 +407,9 @@ class _AdminPageState extends State<AdminPage> {
     );
   }
 
+  // ═══════════════════════════════════════
+  // USER ROW (CORRIGÉ)
+  // ═══════════════════════════════════════
   Widget _buildUserRow(UserItem user, double h, double w) {
     final isTop3 = user.rank <= 3;
 
@@ -470,17 +473,17 @@ class _AdminPageState extends State<AdminPage> {
             width: w * 0.15,
             child: Row(
               children: [
+                // Bouton Supprimer
                 GestureDetector(
                   onTap: () {
-                    setState(() => _controller.deleteUser(user.rank));
+                    setState(() => _controller.deleteUser(user.id));   // Correction : user.id au lieu de user.rank
                   },
                   child: Container(
                     padding: EdgeInsets.all(h * 0.010),
                     decoration: BoxDecoration(
                       color: Colors.red.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
-                      border:
-                          Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                     ),
                     child: Icon(
                       Icons.delete_outline,
@@ -490,9 +493,11 @@ class _AdminPageState extends State<AdminPage> {
                   ),
                 ),
                 SizedBox(width: w * 0.01),
+
+                // Bouton Bloquer / Débloquer
                 GestureDetector(
                   onTap: () {
-                    setState(() => _controller.toggleBlock(user.rank));
+                    setState(() => _controller.toggleBlock(user.id));   // Correction : user.id au lieu de user.rank
                   },
                   child: Container(
                     padding: EdgeInsets.all(h * 0.010),

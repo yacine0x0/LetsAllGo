@@ -1,196 +1,196 @@
-generator client {
-  provider = "prisma-client-js"
-}
+  generator client {
+    provider = "prisma-client-js"
+  }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model chapitre {
-  id_chapitre         String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  titre               String
-  termine             Boolean?          @default(false)
-  pointsobtenus       Int?              @default(0)
-  pourcentagechapitre Int?              @default(0)
-  id_module           String?           @db.Uuid
-  id_progression      String?           @db.Uuid
-  id_quiz             String?           @db.Uuid
-  module              module?           @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
-  progression         progression?      @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
-  quiz                quizz?            @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
-  section             section[]
-  selectionne         selectionne[]
-  suividuchapitre     suividuchapitre[]
-}
+  /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+  model chapitre {
+    id_chapitre         String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    titre               String
+    termine             Boolean?          @default(false)
+    pointsobtenus       Int?              @default(0)
+    pourcentagechapitre Int?              @default(0)
+    id_module           String?           @db.Uuid
+    id_progression      String?           @db.Uuid
+    id_quiz             String?           @db.Uuid
+    module              module?           @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
+    progression         progression?      @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
+    quiz                quizz?            @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
+    section             section[]
+    selectionne         selectionne[]
+    suividuchapitre     suividuchapitre[]
+  }
 
-model concernem {
-  id_module      String      @db.Uuid
-  id_progression String      @db.Uuid
-  module         module      @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
-  progression    progression @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
+  model concernem {
+    id_module      String      @db.Uuid
+    id_progression String      @db.Uuid
+    module         module      @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
+    progression    progression @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([id_module, id_progression])
-}
+    @@id([id_module, id_progression])
+  }
 
-model etudie {
-  id_etudiant String      @db.Uuid
-  id_module   String      @db.Uuid
-  utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  module      module      @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
+  model etudie {
+    id_etudiant String      @db.Uuid
+    id_module   String      @db.Uuid
+    utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    module      module      @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([id_etudiant, id_module])
-}
+    @@id([id_etudiant, id_module])
+  }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model module {
-  id_module         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nom               String
-  description       String?
-  progressionmodule Int?        @default(0)
-  chapitre          chapitre[]
-  concernem         concernem[]
-  etudie            etudie[]
-  fichier           fichier[]
-}
+  /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+  model module {
+    id_module         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    nom               String
+    description       String?
+    progressionmodule Int?        @default(0)
+    chapitre          chapitre[]
+    concernem         concernem[]
+    etudie            etudie[]
+    fichier           fichier[]
+  }
 
-model obtient {
-  id_etudiant      String          @db.Uuid
-  id_suivichapitre String          @db.Uuid
-  utilisateur      utilisateur     @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  suividuchapitre  suividuchapitre @relation(fields: [id_suivichapitre], references: [id_s], onDelete: NoAction, onUpdate: NoAction)
+  model obtient {
+    id_etudiant      String          @db.Uuid
+    id_suivichapitre String          @db.Uuid
+    utilisateur      utilisateur     @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    suividuchapitre  suividuchapitre @relation(fields: [id_suivichapitre], references: [id_s], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([id_etudiant, id_suivichapitre])
-}
+    @@id([id_etudiant, id_suivichapitre])
+  }
 
-model passe {
-  id_etudiant String      @db.Uuid
-  id_quiz     String      @db.Uuid
-  utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  quiz        quizz       @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
+  model passe {
+    id_etudiant String      @db.Uuid
+    id_quiz     String      @db.Uuid
+    utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    quiz        quizz       @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([id_etudiant, id_quiz])
-}
+    @@id([id_etudiant, id_quiz])
+  }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model progression {
-  id_progression    String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  pourcentage       Int?        @default(0)
-  progressiontotale Int?        @default(0)
-  chapitre          chapitre[]
-  concernem         concernem[]
-  suit              suit[]
-}
+  /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+  model progression {
+    id_progression    String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    pourcentage       Int?        @default(0)
+    progressiontotale Int?        @default(0)
+    chapitre          chapitre[]
+    concernem         concernem[]
+    suit              suit[]
+  }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model question {
-  id_question     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  enonce          String
-  reponsecorrecte String
-  id_quiz         String? @db.Uuid
-  quiz            quizz?  @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
-}
+  /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+  model question {
+    id_question     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    enonce          String
+    reponsecorrecte String
+    id_quiz         String? @db.Uuid
+    quiz            quizz?  @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-model section {
-  id_section  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  titre       String
-  id_chapitre String?   @db.Uuid
-  chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: NoAction, onUpdate: NoAction)
-}
+  model section {
+    id_section  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    titre       String
+    id_chapitre String?   @db.Uuid
+    chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-model selectionne {
-  id_quiz     String   @db.Uuid
-  id_chapitre String   @db.Uuid
-  chapitre    chapitre @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: NoAction, onUpdate: NoAction)
-  quiz        quizz    @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
+  model selectionne {
+    id_quiz     String   @db.Uuid
+    id_chapitre String   @db.Uuid
+    chapitre    chapitre @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: NoAction, onUpdate: NoAction)
+    quiz        quizz    @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([id_quiz, id_chapitre])
-}
+    @@id([id_quiz, id_chapitre])
+  }
 
-model statistiquescours {
-  id_sc               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  dategeneration      DateTime?    @default(now()) @db.Timestamp(6)
-  nombreconsultations Int?         @default(0)
-  coursleplusconsulte String?
-  id_admin            String?      @db.Uuid
-  utilisateur         utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
+  model statistiquescours {
+    id_sc               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    dategeneration      DateTime?    @default(now()) @db.Timestamp(6)
+    nombreconsultations Int?         @default(0)
+    coursleplusconsulte String?
+    id_admin            String?      @db.Uuid
+    utilisateur         utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-model statistiquesetudiant {
-  id_se          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  dategeneration DateTime?    @default(now()) @db.Timestamp(6)
-  nombreinscrits Int?         @default(0)
-  nombreactifs   Int?         @default(0)
-  id_admin       String?      @db.Uuid
-  utilisateur    utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
+  model statistiquesetudiant {
+    id_se          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    dategeneration DateTime?    @default(now()) @db.Timestamp(6)
+    nombreinscrits Int?         @default(0)
+    nombreactifs   Int?         @default(0)
+    id_admin       String?      @db.Uuid
+    utilisateur    utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-model statistiquesquiz {
-  id_sq            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  dategeneration   DateTime?    @default(now()) @db.Timestamp(6)
-  moyennescores    Int?         @default(0)
-  nombretentatives Int?         @default(0)
-  id_admin         String?      @db.Uuid
-  utilisateur      utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
+  model statistiquesquiz {
+    id_sq            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    dategeneration   DateTime?    @default(now()) @db.Timestamp(6)
+    moyennescores    Int?         @default(0)
+    nombretentatives Int?         @default(0)
+    id_admin         String?      @db.Uuid
+    utilisateur      utilisateur? @relation(fields: [id_admin], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-model suit {
-  id_etudiant    String      @db.Uuid
-  id_progression String      @db.Uuid
-  utilisateur    utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  progression    progression @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
+  model suit {
+    id_etudiant    String      @db.Uuid
+    id_progression String      @db.Uuid
+    utilisateur    utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    progression    progression @relation(fields: [id_progression], references: [id_progression], onDelete: NoAction, onUpdate: NoAction)
 
-  @@id([id_etudiant, id_progression])
-}
+    @@id([id_etudiant, id_progression])
+  }
 
-model suividuchapitre {
-  id_s        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  datepassage DateTime? @default(now()) @db.Timestamp(6)
-  complete    Boolean?  @default(false)
-  id_chapitre String?   @db.Uuid
-  obtient     obtient[]
-  chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: NoAction, onUpdate: NoAction)
-}
+  model suividuchapitre {
+    id_s        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    datepassage DateTime? @default(now()) @db.Timestamp(6)
+    complete    Boolean?  @default(false)
+    id_chapitre String?   @db.Uuid
+    obtient     obtient[]
+    chapitre    chapitre? @relation(fields: [id_chapitre], references: [id_chapitre], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model utilisateur {
-  id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nom                  String
-  prenom               String
-  email                String                 @unique
-  role                 String?
-  motdepasse           String
-  dateinscription      DateTime?              @default(now()) @db.Timestamp(6)
-  scoretotal           Int?                   @default(0)
-  rang                 Int?                   @unique
-  etudie               etudie[]
-  obtient              obtient[]
-  passe                passe[]
-  statistiquescours    statistiquescours[]
-  statistiquesetudiant statistiquesetudiant[]
-  statistiquesquiz     statistiquesquiz[]
-  suit                 suit[]
-}
+  /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+  model utilisateur {
+    id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    nom                  String
+    prenom               String
+    email                String                 @unique
+    role                 String?
+    motdepasse           String
+    dateinscription      DateTime?              @default(now()) @db.Timestamp(6)
+    scoretotal           Int?                   @default(0)
+    rang                 Int?                   @unique
+    etudie               etudie[]
+    obtient              obtient[]
+    passe                passe[]
+    statistiquescours    statistiquescours[]
+    statistiquesetudiant statistiquesetudiant[]
+    statistiquesquiz     statistiquesquiz[]
+    suit                 suit[]
+  }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model fichier {
-  id_f      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  path      String
-  type      String?
-  id_module String? @db.Uuid
-  module    module? @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
-}
+  /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+  model fichier {
+    id_f      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    path      String
+    type      String?
+    id_module String? @db.Uuid
+    module    module? @relation(fields: [id_module], references: [id_module], onDelete: NoAction, onUpdate: NoAction)
+  }
 
-model quizz {
-  id_quiz                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  score                  Int?          @default(0)
-  nombrequestionstotal   Int?          @default(0)
-  nombrequestionsfaites  Int?          @default(0)
-  chapitresselectionnees String?
-  intensite              String?
-  chapitre               chapitre[]
-  passe                  passe[]
-  question               question[]
-  selectionne            selectionne[]
-}
+  model quizz {
+    id_quiz                String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    score                  Int?          @default(0)
+    nombrequestionstotal   Int?          @default(0)
+    nombrequestionsfaites  Int?          @default(0)
+    chapitresselectionnees String?
+    intensite              String?
+    chapitre               chapitre[]
+    passe                  passe[]
+    question               question[]
+    selectionne            selectionne[]
+  }

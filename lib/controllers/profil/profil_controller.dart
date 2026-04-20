@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../models/profil/profil_model.dart';
-import '../../service/LoginService.dart';
+import '../../service/auth/LoginService.dart';
 import '../auth/login_controller.dart';
 
 class ProfileController {

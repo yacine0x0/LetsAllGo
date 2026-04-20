@@ -191,8 +191,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const LoginPage(),
-                      transitionsBuilder: (_, anim, __, child) =>
+                      pageBuilder: (_, _, _) => const LoginPage(),
+                      transitionsBuilder: (_, anim, _, child) =>
                           FadeTransition(opacity: anim, child: child),
                       transitionDuration: const Duration(milliseconds: 400),
                     ),

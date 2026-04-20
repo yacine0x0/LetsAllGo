@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthRequest } from '../../middlewares/auth.middleware';
-import { getLeaderboardWithUser } from '../../service/leaderboard.service';
+import { getLeaderboardWithUser } from '../../service/leaderboard/leaderboard.service';
 
 export async function getLeaderboardData(
   req: AuthRequest,

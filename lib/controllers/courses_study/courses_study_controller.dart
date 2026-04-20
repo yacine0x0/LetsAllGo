@@ -1,5 +1,5 @@
 import '../../models/courses_study/courses_study_model.dart';
-import '../../service/serviceXML.dart';
+import '../../service/files/serviceXML.dart';
 
 class CourseStudyController {
   CourseStudyModel? model;

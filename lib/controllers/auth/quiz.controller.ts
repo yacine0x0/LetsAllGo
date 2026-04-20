@@ -4,8 +4,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// Algo 1 → 250 Go Points / bonne réponse
-// Algo 2 → 500 Go Points / bonne réponse
 const GO_POINTS: Record<string, number> = {
   algo1: 250,
   algo2: 500,
@@ -25,45 +23,34 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
     }
 
     const pointsParReponse = GO_POINTS[algoType] ?? 250;
-    const pointsGagnes     = correctAnswers * pointsParReponse;
+    const pointsGagnes = correctAnswers * pointsParReponse;
 
-    // Récupère le score actuel
-    const user = await prisma.utilisateur.findUnique({
-      where:  { id: userId },
-      select: { scoretotal: true },
-    });
-    if (!user) {
-      res.status(404).json({ success: false, message: 'Utilisateur introuvable' });
-      return;
-    }
-
-    const newScore = (user.scoretotal ?? 0) + pointsGagnes;
-
-    await prisma.utilisateur.update({
+    // Mise à jour simple du score uniquement
+    const updatedUser = await prisma.utilisateur.update({
       where: { id: userId },
-      data:  { scoretotal: newScore },
+      data: {
+        scoretotal: {
+          increment: pointsGagnes,   // + les points gagnés
+        },
+      },
+      select: {
+        id: true,
+        scoretotal: true,
+        rang: true,
+      },
     });
-
-    // Recalcule les rangs
-    const allUsers = await prisma.utilisateur.findMany({
-      select:  { id: true, scoretotal: true },
-      orderBy: { scoretotal: 'desc' },
-    });
-    for (let i = 0; i < allUsers.length; i++) {
-      await prisma.utilisateur.update({
-        where: { id: allUsers[i].id },
-        data:  { rang: i + 1 },
-      });
-    }
 
     res.status(200).json({
-      success:          true,
+      success: true,
       pointsGagnes,
       pointsParReponse,
-      newScore,
+      newScore: updatedUser.scoretotal,
+      currentRank: updatedUser.rang,
       message: `+${pointsGagnes} Go Points !`,
     });
-  } catch (error) {
+
+  } catch (error: any) {
+    console.error('Erreur submitQuiz:', error);
     res.status(500).json({
       success: false,
       message: error instanceof Error ? error.message : 'Erreur serveur',

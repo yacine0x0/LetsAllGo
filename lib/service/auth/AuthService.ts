@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { LoginInput, RegisterInput, AuthResponse, VerifyEmailInput } from '../models/auth/auth.model';
-import { savePendingRegistration, getPendingRegistration, incrementAttempts, deletePendingRegistration } from '../utils/verificationStore';
+import { LoginInput, RegisterInput, AuthResponse, VerifyEmailInput } from '../../models/auth/auth.model';
+import { savePendingRegistration, getPendingRegistration, incrementAttempts, deletePendingRegistration } from '../../utils/verificationStore';
 import { sendVerificationEmail } from './email.service';
 
 const prisma = new PrismaClient();
