@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
+import 'package:provider/provider.dart';
 
+import '../../service/language_service.dart';
 import '../admin/admin_page.dart';
 import '../auth/login_page.dart';
 
@@ -13,16 +15,13 @@ class AdminWelcomePage extends StatefulWidget {
   State<AdminWelcomePage> createState() => _AdminWelcomePageState();
 }
 
-class _AdminWelcomePageState extends State<AdminWelcomePage>
-    with TickerProviderStateMixin {
-
+class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProviderStateMixin {
   late AnimationController _arrowCtrl;
   late AnimationController _pulseCtrl;
   late AnimationController _successCtrl;
   late AnimationController _shakeCtrl;
   late FocusNode _focusNode;
 
-  // ── Code secret : ↑ ↓ → ← ↑  (invisible pour l'utilisateur)
   final List<LogicalKeyboardKey> _secretCode = [
     LogicalKeyboardKey.arrowUp,
     LogicalKeyboardKey.arrowDown,
@@ -34,32 +33,18 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
   List<LogicalKeyboardKey> _currentInput = [];
   bool _codeSuccess = false;
   bool _codeError = false;
-  String _statusMessage = "Enter the secret sequence using arrow keys";
+  String _statusMessage = "";
 
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    _statusMessage = "Utilisez les flèches du clavier pour entrer la séquence secrète";
 
-    _arrowCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 700),
-    )..repeat(reverse: true);
-
-    _pulseCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    )..repeat(reverse: true);
-
-    _successCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-
-    _shakeCtrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
+    _arrowCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 700))..repeat(reverse: true);
+    _pulseCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat(reverse: true);
+    _successCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _shakeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
   }
 
   @override
@@ -72,21 +57,12 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
     super.dispose();
   }
 
-  // ─── Gestion du code secret (clavier uniquement) ────────────────────────
   void _onKeyEvent(KeyEvent event) {
     if (event is! KeyDownEvent || _codeSuccess) return;
-
     final key = event.logicalKey;
 
-    // On accepte uniquement les flèches
-    final arrowKeys = [
-      LogicalKeyboardKey.arrowUp,
-      LogicalKeyboardKey.arrowDown,
-      LogicalKeyboardKey.arrowLeft,
-      LogicalKeyboardKey.arrowRight,
-    ];
-
-    if (!arrowKeys.contains(key)) return;
+    if (![LogicalKeyboardKey.arrowUp, LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowLeft, LogicalKeyboardKey.arrowRight]
+        .contains(key)) return;
 
     _handleKeyInput(key);
   }
@@ -95,20 +71,14 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
     setState(() {
       _codeError = false;
       _currentInput.add(key);
+      if (_currentInput.length > _secretCode.length) _currentInput.removeAt(0);
 
-      // On garde seulement les 5 dernières touches
-      if (_currentInput.length > _secretCode.length) {
-        _currentInput.removeAt(0);
-      }
-
-      // Vérification quand on a 5 touches
       if (_currentInput.length == _secretCode.length) {
-        final isCorrect = _currentInput.asMap().entries
-            .every((e) => e.value == _secretCode[e.key]);
+        final isCorrect = _currentInput.asMap().entries.every((e) => e.value == _secretCode[e.key]);
 
         if (isCorrect) {
           _codeSuccess = true;
-          _statusMessage = "✓ Access granted — Welcome, Administrator";
+          _statusMessage = "✓ Accès autorisé — Bienvenue Administrateur";
           _successCtrl.forward();
 
           Future.delayed(const Duration(milliseconds: 1200), () {
@@ -116,7 +86,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
           });
         } else {
           _codeError = true;
-          _statusMessage = "✗ Wrong sequence — Try again";
+          _statusMessage = "✗ Séquence incorrecte — Veuillez réessayer";
           _shakeCtrl.forward(from: 0);
 
           Future.delayed(const Duration(milliseconds: 1000), () {
@@ -124,7 +94,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
               setState(() {
                 _currentInput.clear();
                 _codeError = false;
-                _statusMessage = "Enter the secret sequence using arrow keys";
+                _statusMessage = "Utilisez les flèches du clavier pour entrer la séquence secrète";
               });
             }
           });
@@ -138,23 +108,18 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
       context,
       PageRouteBuilder(
         pageBuilder: (_, __, ___) => const AdminPage(),
-        transitionsBuilder: (_, anim, __, child) =>
-            FadeTransition(opacity: anim, child: child),
-        transitionDuration: const Duration(milliseconds: 500),
+        transitionsBuilder: (_, anim, __, child) => FadeTransition(opacity: anim, child: child),
       ),
     );
   }
 
   void _goBack() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => const LoginPage()),
-    );
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
   }
 
-  // ─── Build ────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
+    final lang = context.watch<LanguageService>();
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
@@ -169,7 +134,6 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
           color: const Color(0xFF0D0D2B),
           child: Stack(
             children: [
-              // Background
               Opacity(
                 opacity: 0.55,
                 child: Container(
@@ -182,15 +146,14 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                 ),
               ),
 
-              // Bouton Back
+              // Bouton Retour
               Positioned(
                 top: h * 0.04,
                 left: w * 0.03,
                 child: GestureDetector(
                   onTap: _goBack,
                   child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: w * 0.015, vertical: h * 0.012),
+                    padding: EdgeInsets.symmetric(horizontal: w * 0.015, vertical: h * 0.012),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(10),
@@ -199,29 +162,22 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.arrow_back_ios_new,
-                            color: Colors.white70, size: h * 0.022),
+                        Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: h * 0.022),
                         const SizedBox(width: 6),
-                        Text("Back",
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: h * 0.018)),
+                        Text(lang.t("Retour", "Back"),
+                            style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
                       ],
                     ),
                   ),
                 ),
               ),
 
-              // Contenu principal
               Center(
                 child: AnimatedBuilder(
                   animation: _shakeCtrl,
                   builder: (_, child) {
-                    final shake = math.sin(_shakeCtrl.value * math.pi * 6) *
-                        12 *
-                        (1 - _shakeCtrl.value);
-                    return Transform.translate(
-                        offset: Offset(shake, 0), child: child);
+                    final shake = math.sin(_shakeCtrl.value * math.pi * 6) * 12 * (1 - _shakeCtrl.value);
+                    return Transform.translate(offset: Offset(shake, 0), child: child);
                   },
                   child: Container(
                     width: w * 0.52,
@@ -237,21 +193,10 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                                 : Colors.white.withValues(alpha: 0.15),
                         width: 1.8,
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: _codeSuccess
-                              ? const Color(0xFF00FF9D).withValues(alpha: 0.15)
-                              : _codeError
-                                  ? Colors.red.withValues(alpha: 0.1)
-                                  : Colors.black.withValues(alpha: 0.4),
-                          blurRadius: 40,
-                        ),
-                      ],
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Icône admin
                         AnimatedBuilder(
                           animation: _pulseCtrl,
                           builder: (_, __) {
@@ -276,19 +221,14 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                               child: Icon(
                                 Icons.admin_panel_settings_rounded,
                                 size: h * 0.09,
-                                color: _codeSuccess
-                                    ? const Color(0xFF00FF9D)
-                                    : Colors.white70,
+                                color: _codeSuccess ? const Color(0xFF00FF9D) : Colors.white70,
                               ),
                             );
                           },
                         ),
-
                         SizedBox(height: h * 0.04),
-
-                        // Titre
                         Text(
-                          "ADMIN VERIFICATION",
+                          lang.t("VÉRIFICATION ADMINISTRATEUR", "ADMIN VERIFICATION"),
                           style: TextStyle(
                             fontSize: h * 0.032,
                             fontWeight: FontWeight.bold,
@@ -296,10 +236,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                             letterSpacing: 5,
                           ),
                         ),
-
                         SizedBox(height: h * 0.02),
-
-                        // Message
                         Text(
                           _statusMessage,
                           style: TextStyle(
@@ -309,22 +246,14 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
                                 : _codeError
                                     ? Colors.red.shade300
                                     : Colors.white54,
-                            fontWeight: _codeSuccess
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                            fontWeight: _codeSuccess ? FontWeight.bold : FontWeight.normal,
                           ),
                           textAlign: TextAlign.center,
                         ),
-
                         SizedBox(height: h * 0.06),
-
-                        // Indicateurs discrets (petits cercles sans flèches)
                         _buildProgressIndicators(h),
-
                         SizedBox(height: h * 0.08),
-
-                        // Bouton principal (seulement actif en cas de succès)
-                        _buildActionButton(h),
+                        _buildActionButton(h, lang),
                       ],
                     ),
                   ),
@@ -337,24 +266,18 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
     );
   }
 
-  // ─── Indicateurs de progression (petits cercles neutres) ─────────────────
   Widget _buildProgressIndicators(double h) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(_secretCode.length, (i) {
+      children: List.generate(5, (i) {
         final isEntered = i < _currentInput.length;
         final isCorrectSoFar = isEntered && _currentInput[i] == _secretCode[i];
         final isWrong = isEntered && !isCorrectSoFar;
 
         Color color = Colors.white24;
-
-        if (_codeSuccess) {
-          color = const Color(0xFF00FF9D);
-        } else if (isWrong || (_codeError && isEntered)) {
-          color = Colors.red.shade400;
-        } else if (isEntered) {
-          color = Colors.blue;
-        }
+        if (_codeSuccess) color = const Color(0xFF00FF9D);
+        else if (isWrong || (_codeError && isEntered)) color = Colors.red.shade400;
+        else if (isEntered) color = Colors.blue;
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: h * 0.008),
@@ -365,10 +288,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: color.withValues(alpha: 0.8),
-              border: Border.all(
-                color: color,
-                width: 1.5,
-              ),
+              border: Border.all(color: color, width: 1.5),
             ),
           ),
         );
@@ -376,37 +296,30 @@ class _AdminWelcomePageState extends State<AdminWelcomePage>
     );
   }
 
-  // ─── Bouton principal ─────────────────────────────────────────────────────
-  Widget _buildActionButton(double h) {
+  Widget _buildActionButton(double h, LanguageService lang) {
     return AnimatedBuilder(
       animation: _pulseCtrl,
       builder: (_, __) {
-        final scale = _codeSuccess ? 1.02 : 1.0;
         return Transform.scale(
-          scale: scale,
+          scale: _codeSuccess ? 1.02 : 1.0,
           child: GestureDetector(
             onTap: _codeSuccess ? _navigateToAdmin : null,
             child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: h * 0.10, vertical: h * 0.028),
+              padding: EdgeInsets.symmetric(horizontal: h * 0.10, vertical: h * 0.028),
               decoration: BoxDecoration(
-                color: _codeSuccess
-                    ? const Color(0xFF00FF9D).withValues(alpha: 0.25)
-                    : Colors.transparent,
+                color: _codeSuccess ? const Color(0xFF00FF9D).withValues(alpha: 0.25) : Colors.transparent,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: _codeSuccess
-                      ? const Color(0xFF00FF9D)
-                      : Colors.white.withValues(alpha: 0.1),
+                  color: _codeSuccess ? const Color(0xFF00FF9D) : Colors.white.withValues(alpha: 0.1),
                   width: 1.5,
                 ),
               ),
               child: Text(
-                _codeSuccess ? "ENTER ADMIN PANEL" : "WAITING FOR SEQUENCE...",
+                _codeSuccess
+                    ? lang.t("ENTRER DANS LE PANEL ADMIN", "ENTER ADMIN PANEL")
+                    : lang.t("EN ATTENTE DE LA SÉQUENCE...", "WAITING FOR SEQUENCE..."),
                 style: TextStyle(
-                  color: _codeSuccess
-                      ? const Color(0xFF00FF9D)
-                      : Colors.white38,
+                  color: _codeSuccess ? const Color(0xFF00FF9D) : Colors.white38,
                   fontSize: h * 0.019,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 3,

@@ -1,11 +1,16 @@
+// lib/views/admin/profil_admin_page.dart
+
 import 'package:flutter/material.dart';
-import 'package:flutter_project_1/views/admin/analytics.dart';
+import 'package:provider/provider.dart';
 import 'dart:ui';
-import 'package:shared_preferences/shared_preferences.dart'; // ← Ajouté pour logout
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controllers/admin_controllers/admin_profil_controller.dart';
-import '../admin/users_page.dart';
-import '../auth/login_page.dart'; // Assure-toi que ce chemin est correct
+import '../../service/language_service.dart';
+
+import '../admin/admin_page.dart';      // ← Corrigé
+import '../admin/analytics.dart';      // ← Corrigé
+import '../auth/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -21,25 +26,26 @@ class _ProfilePageState extends State<ProfilePage> {
   late TextEditingController _lastNameCtrl;
   late TextEditingController _emailCtrl;
 
-  int _selectedSidebarIndex = 2; // Profile actif par défaut
-
+  int _selectedSidebarIndex = 2;
 
   @override
-void initState() {
-  super.initState();
-  // ✅ Charger les vraies données depuis la BDD
-  _controller.loadProfile().then((_) {
-    setState(() {
-      _firstNameCtrl.text = _controller.model.firstName;
-      _lastNameCtrl.text  = _controller.model.lastName;
-      _emailCtrl.text     = _controller.model.email;
-    });
-  });
+  void initState() {
+    super.initState();
+    _firstNameCtrl = TextEditingController();
+    _lastNameCtrl = TextEditingController();
+    _emailCtrl = TextEditingController();
 
-  _firstNameCtrl = TextEditingController(text: _controller.model.firstName);
-  _lastNameCtrl  = TextEditingController(text: _controller.model.lastName);
-  _emailCtrl     = TextEditingController(text: _controller.model.email);
-}
+    _controller.loadProfile().then((_) {
+      if (mounted) {
+        setState(() {
+          _firstNameCtrl.text = _controller.model.firstName;
+          _lastNameCtrl.text = _controller.model.lastName;
+          _emailCtrl.text = _controller.model.email;
+        });
+      }
+    });
+  }
+
   @override
   void dispose() {
     _firstNameCtrl.dispose();
@@ -48,48 +54,28 @@ void initState() {
     super.dispose();
   }
 
-  // ====================== LOGOUT FUNCTION ======================
   Future<void> _logout() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      
-      // Supprime le token (adapte la clé selon ton code de login)
-      await prefs.remove('auth_token');
-      await prefs.remove('user_token');
-      // Si tu veux tout supprimer :
-      // await prefs.clear();
-
-      if (mounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const LoginPage()),
-          (route) => false, // Efface tout l'historique de navigation
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Erreur lors de la déconnexion'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+        (route) => false,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final lang = context.watch<LanguageService>();
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Stack(
         children: [
-          // Background couleur
           Container(color: const Color(0xFF0D0D2B)),
-
-          // Background image
           Opacity(
             opacity: 0.60,
             child: Container(
@@ -101,42 +87,31 @@ void initState() {
               ),
             ),
           ),
-
-          // Contenu
           Row(
             children: [
-              // Sidebar
-              _buildSidebar(h, w),
-
-              // Contenu principal
+              _buildSidebar(h, w, lang),
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.all(h * 0.04),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildPersonalInfo(h, w),
+                      _buildPersonalInfo(h, w, lang),
                       SizedBox(height: h * 0.04),
-
                       Text(
-                        "Paramètres",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: h * 0.04,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        lang.t("Paramètres", "Settings"),
+                        style: TextStyle(color: Colors.white, fontSize: h * 0.04, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: h * 0.008),
                       Text(
-                        "Personnalisez votre expérience et gérez votre compte.",
-                        style: TextStyle(
-                          color: Colors.white54,
-                          fontSize: h * 0.016,
+                        lang.t(
+                          "Personnalisez votre expérience et gérez votre compte.",
+                          "Customize your experience and manage your account.",
                         ),
+                        style: TextStyle(color: Colors.white54, fontSize: h * 0.016),
                       ),
                       SizedBox(height: h * 0.03),
-
-                      _buildAppearanceSection(h, w),
+                      _buildAppearanceSection(h, w, lang),
                     ],
                   ),
                 ),
@@ -148,12 +123,12 @@ void initState() {
     );
   }
 
-  // ── SIDEBAR ─────────────────────────────────────
-  Widget _buildSidebar(double h, double w) {
+  // ==================== SIDEBAR ====================
+  Widget _buildSidebar(double h, double w, LanguageService lang) {
     final items = [
-      {"icon": Icons.people, "label": "Users"},
-      {"icon": Icons.bar_chart, "label": "Analytics"},
-      {"icon": Icons.person, "label": "Profile"},
+      {"icon": Icons.people, "label": lang.t("Utilisateurs", "Users")},
+      {"icon": Icons.bar_chart, "label": lang.t("Analyses", "Analytics")},
+      {"icon": Icons.person, "label": lang.t("Profil", "Profile")},
     ];
 
     return ClipRRect(
@@ -165,88 +140,45 @@ void initState() {
           child: Column(
             children: [
               SizedBox(height: h * 0.02),
-
-              // Logo
-              Image.asset(
-                "assets/images/icone_dash.png",
-                width: h * 0.13,
-                height: h * 0.13,
-                errorBuilder: (_, __, ___) => const Icon(
-                  Icons.school,
-                  color: Colors.blue,
-                  size: 40,
-                ),
-              ),
+              Image.asset("assets/images/icone_dash.png", width: h * 0.13, height: h * 0.13),
               SizedBox(height: h * 0.04),
 
-              // Menu Items
               ...items.asMap().entries.map(
-                (entry) => GestureDetector(
-                  onTap: () {
-                    setState(() => _selectedSidebarIndex = entry.key);
-
-                    if (entry.key == 0) {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) => const AdminPage(),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(0.0, -1.0);
-                            const end = Offset.zero;
-                            const curve = Curves.easeInOut;
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-                            return SlideTransition(
-                              position: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    } else if (entry.key == 1) {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder: (context, animation, secondaryAnimation) => const AnalyticsPage(),
-                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                            const begin = Offset(0.0, -1.0);
-                            const end = Offset.zero;
-                            const curve = Curves.easeInOut;
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-                            return SlideTransition(
-                              position: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                  child: _buildSidebarItem(
-                    icon: entry.value["icon"] as IconData,
-                    label: entry.value["label"] as String,
-                    h: h,
-                    isActive: _selectedSidebarIndex == entry.key,
+                    (entry) => GestureDetector(
+                      onTap: () {
+                        setState(() => _selectedSidebarIndex = entry.key);
+                        if (entry.key == 0) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (_) => const AdminPage()),
+                          );
+                        } else if (entry.key == 1) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (_) => const AnalyticsPage()),
+                          );
+                        }
+                      },
+                      child: _buildSidebarItem(
+                        icon: entry.value["icon"] as IconData,
+                        label: entry.value["label"] as String,
+                        h: h,
+                        isActive: _selectedSidebarIndex == entry.key,
+                      ),
+                    ),
                   ),
-                ),
-              ),
 
               const Spacer(),
 
-              // Bouton Logout
+              // Logout
               GestureDetector(
                 onTap: _logout,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: h * 0.03),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.redAccent,
-                        size: h * 0.042,
-                      ),
+                      Icon(Icons.logout, color: Colors.redAccent, size: h * 0.042),
                       SizedBox(height: h * 0.006),
                       Text(
-                        "Logout",
+                        lang.t("Déconnexion", "Logout"),
                         style: TextStyle(
                           color: Colors.redAccent,
                           fontSize: h * 0.015,
@@ -264,7 +196,6 @@ void initState() {
     );
   }
 
-  // ── Sidebar Item
   Widget _buildSidebarItem({
     required IconData icon,
     required String label,
@@ -286,11 +217,7 @@ void initState() {
             padding: EdgeInsets.symmetric(vertical: h * 0.02),
             child: Column(
               children: [
-                Icon(
-                  icon,
-                  color: isActive ? Colors.greenAccent : Colors.white38,
-                  size: h * 0.04,
-                ),
+                Icon(icon, color: isActive ? Colors.greenAccent : Colors.white38, size: h * 0.04),
                 SizedBox(height: h * 0.005),
                 Text(
                   label,
@@ -308,8 +235,8 @@ void initState() {
     );
   }
 
-  // ── INFORMATIONS PERSONNELLES
-  Widget _buildPersonalInfo(double h, double w) {
+  // ==================== PERSONAL INFO ====================
+  Widget _buildPersonalInfo(double h, double w, LanguageService lang) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: BackdropFilter(
@@ -329,27 +256,18 @@ void initState() {
                   const Text("📝", style: TextStyle(fontSize: 20)),
                   SizedBox(width: w * 0.01),
                   Text(
-                    "Informations personnelles",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: h * 0.022,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(width: w * 0.01),
-                  Expanded(
-                    child: Container(height: 1, color: Colors.white24),
+                    lang.t("Informations personnelles", "Personal Information"),
+                    style: TextStyle(color: Colors.white, fontSize: h * 0.022, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               SizedBox(height: h * 0.03),
-
               Row(
                 children: [
                   Expanded(
                     child: _buildInputField(
                       value: _controller.model.firstName,
-                      label: "PRÉNOM",
+                      label: lang.t("PRÉNOM", "FIRST NAME"),
                       icon: Icons.person_outline,
                       h: h,
                     ),
@@ -358,7 +276,7 @@ void initState() {
                   Expanded(
                     child: _buildInputField(
                       value: _controller.model.lastName,
-                      label: "NOM",
+                      label: lang.t("NOM", "LAST NAME"),
                       icon: Icons.person_outline,
                       h: h,
                     ),
@@ -366,10 +284,9 @@ void initState() {
                 ],
               ),
               SizedBox(height: h * 0.025),
-
               _buildInputField(
                 value: _controller.model.email,
-                label: "ADRESSE EMAIL",
+                label: lang.t("ADRESSE EMAIL", "EMAIL ADDRESS"),
                 icon: Icons.email_outlined,
                 h: h,
               ),
@@ -407,10 +324,7 @@ void initState() {
         SizedBox(height: h * 0.008),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            horizontal: h * 0.015,
-            vertical: h * 0.015,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: h * 0.015, vertical: h * 0.015),
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 0, 0, 0).withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
@@ -418,18 +332,15 @@ void initState() {
           ),
           child: Text(
             value.isNotEmpty ? value : "—",
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: h * 0.018,
-            ),
+            style: TextStyle(color: Colors.white70, fontSize: h * 0.018),
           ),
         ),
       ],
     );
   }
 
-  // ── APPARENCE & LANGUE
-  Widget _buildAppearanceSection(double h, double w) {
+  // ==================== APPEARANCE & LANGUAGE ====================
+  Widget _buildAppearanceSection(double h, double w, LanguageService lang) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: BackdropFilter(
@@ -449,102 +360,49 @@ void initState() {
                   const Text("🎨", style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 8),
                   Text(
-                    "Apparence & Langue",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: h * 0.022,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    lang.t("Apparence & Langue", "Appearance & Language"),
+                    style: TextStyle(color: Colors.white, fontSize: h * 0.022, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               SizedBox(height: h * 0.03),
 
+              // Dark Mode
               Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Mode sombre",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: h * 0.018,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        "Passer entre le thème sombre et clair",
-                        style: TextStyle(
-                          color: Colors.white54,
-                          fontSize: h * 0.014,
-                        ),
-                      ),
-                    ],
-                  ),
+                  Text(lang.t("Mode sombre", "Dark Mode"), style: TextStyle(color: Colors.white, fontSize: h * 0.018)),
                   const Spacer(),
                   Switch(
                     value: _controller.model.isDarkMode,
-                    onChanged: (value) {
-                      setState(() => _controller.toggleDarkMode(value));
-                    },
-                    activeColor: Colors.blue,
+                    onChanged: (value) => setState(() => _controller.toggleDarkMode(value)),
                   ),
                 ],
               ),
-              SizedBox(height: h * 0.025),
-              Container(height: 1, color: Colors.white12),
-              SizedBox(height: h * 0.025),
+              const Divider(color: Colors.white12, height: 30),
 
+              // Langue
               Row(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Langue",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: h * 0.018,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        "Choisissez votre langue préférée",
-                        style: TextStyle(
-                          color: Colors.white54,
-                          fontSize: h * 0.014,
-                        ),
-                      ),
-                    ],
-                  ),
+                  Text(lang.t("Langue", "Language"), style: TextStyle(color: Colors.white, fontSize: h * 0.018)),
                   const Spacer(),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: h * 0.02,
-                      vertical: h * 0.010,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white24),
-                    ),
-                    child: DropdownButton<String>(
-                      value: _controller.model.language,
-                      dropdownColor: const Color(0xFF1A1A2E),
-                      underline: const SizedBox(),
-                      style: TextStyle(color: Colors.white, fontSize: h * 0.016),
-                      icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
-                      items: const [
-                        DropdownMenuItem(value: "Français", child: Text("Français")),
-                        DropdownMenuItem(value: "English", child: Text("English")),
-                      ],
-                      onChanged: (value) {
-                        if (value != null) {
-                          setState(() => _controller.updateLanguage(value));
-                        }
-                      },
-                    ),
+                  DropdownButton<String>(
+                    value: lang.isFrench ? "Français" : "English",
+                    dropdownColor: const Color(0xFF1A1A2E),
+                    underline: const SizedBox(),
+                    style: const TextStyle(color: Colors.white),
+                    icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                    items: const [
+                      DropdownMenuItem(value: "Français", child: Text("Français")),
+                      DropdownMenuItem(value: "English", child: Text("English")),
+                    ],
+                    onChanged: (value) {
+                      final languageService = context.read<LanguageService>();
+                      if (value == "Français") {
+                        languageService.setFrench();
+                      } else {
+                        languageService.setEnglish();
+                      }
+                    },
                   ),
                 ],
               ),
