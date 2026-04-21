@@ -100,3 +100,56 @@ function buildEmailTemplate(nom: string, code: string): string {
     </html>
   `;
 }
+
+// Ajouter à ton email.service.ts existant
+
+// Store séparé pour le reset password
+const resetStore = new Map<string, { code: string; expiresAt: Date; email: string }>();
+
+export async function sendResetPasswordEmail(
+  userId: string,
+  email: string,
+  prenom: string
+): Promise<void> {
+  const code      = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+
+  resetStore.set(userId, { code, expiresAt, email });
+
+  await brevo.transactionalEmails.sendTransacEmail({
+  subject: '🔑 Réinitialisation de mot de passe LetsAllGo',
+  htmlContent: `
+    <div style="font-family: Arial; max-width: 500px; margin: 0 auto;
+                padding: 20px; background: #0D0D2B; color: white; border-radius: 12px;">
+      <h2 style="color: #2196F3; text-align: center;">LetsAllGo 🚀</h2>
+      <p>Bonjour <strong>${prenom}</strong>,</p>
+      <p>Voici ton code pour réinitialiser ton mot de passe :</p>
+      <div style="text-align: center; margin: 30px 0;">
+        <span style="font-size: 40px; font-weight: bold; letter-spacing: 10px;
+                     color: #2196F3; background: rgba(33,150,243,0.1);
+                     padding: 15px 30px; border-radius: 8px;
+                     border: 2px solid #2196F3;">
+          ${code}
+        </span>
+      </div>
+      <p style="color: #888;">Ce code expire dans <strong>10 minutes</strong>.</p>
+    </div>
+  `,
+  sender: {
+    name: 'LetsAllGo',
+    email: 'no.reply.letsallgo@gmail.com',
+  },
+  to: [{ email, name: prenom }],
+});
+
+  console.log(`✅ Reset password OTP envoyé à ${email}: ${code}`);
+}
+
+export function verifyResetOTP(userId: string, code: string): boolean {
+  const stored = resetStore.get(userId);
+  if (!stored)                       return false;
+  if (new Date() > stored.expiresAt) { resetStore.delete(userId); return false; }
+  if (stored.code !== code)          return false;
+  resetStore.delete(userId);
+  return true;
+}
