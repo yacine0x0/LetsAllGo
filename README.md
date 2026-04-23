@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- @format -->
 
 # LetsAllGo 🦊
@@ -8,10 +9,21 @@
 
 ## What's included ?
 
+=======
+# LetsAllGo 🦊
+
+## An interactive platforme to learn and practice Algorithmics and Data-Structures "all in one place to Go !" 
+
+#### Developed to target mainly CS students and coding beginners, LetsAllGO is a project launched by us, the 7 main members of the group, as a university graduation project. The idea behind this creation was to join scattered knowledge, that students usually struggle to collect, all in one place where you can study, practice and read legit academic files of different universities around the country.  
+
+
+## What's included ?
+>>>>>>> a46d65ca388964e5c58d3b81464aa8945e3e4fe3
 - Algorithemics 1 and 2 Courses
 - Randomized Quizes with adjustable intensity
 - Academic files (exams + TD)
 
+<<<<<<< HEAD
 ## Special features
 
 - Gamified reward system for an effective learning
@@ -714,3 +726,10 @@ letsallgo
       └─ win32_window.h
 
 ```
+=======
+
+
+## Special features
+- Gamified reward system for an effective learning
+- Leaderboard + Dashboard to track your progress
+>>>>>>> a46d65ca388964e5c58d3b81464aa8945e3e4fe3
