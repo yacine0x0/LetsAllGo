@@ -1,331 +1,367 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_02" title="Conditions - Structures conditionnelles">
+<chapter id="Chapitre_02_Quiz" title="Quiz – Instructions conditionnelles">
 
-  <question id="c2_q1" type="multipleChoice">
-    <enonce>What does an "if-else" statement do?</enonce>
+  <!-- ==================== QUESTIONS PAGE 17 (TEST) ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>L'instruction conditionnelle simple est basée sur une seule condition.</enonce>
     <choices>
-      <choice id="A">Loop execution</choice>
-      <choice id="B">Conditional execution</choice>
-      <choice id="C">Function definition</choice>
-      <choice id="D">Variable declaration</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q2" type="multipleChoice">
-    <enonce>Which keyword is used for multiple conditions?</enonce>
-    <choices>
-      <choice id="A">switch</choice>
-      <choice id="B">while</choice>
-      <choice id="C">for</choice>
-      <choice id="D">foreach</choice>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
     </choices>
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c2_q3" type="multipleChoice">
-    <enonce>What is the logical operator for AND?</enonce>
+  <question id="q2" type="multipleChoice">
+    <enonce>Dans l'instruction conditionnelle simple, le traitement à l'intérieur de la condition est effectué si la condition n'est pas vérifiée.</enonce>
     <choices>
-      <choice id="A">|</choice>
-      <choice id="B">||</choice>
-      <choice id="C">&amp;&amp;</choice>
-      <choice id="D">&amp;</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q4" type="multipleChoice">
-    <enonce>What is the logical operator for OR?</enonce>
-    <choices>
-      <choice id="A">&amp;&amp;</choice>
-      <choice id="B">||</choice>
-      <choice id="C">&amp;</choice>
-      <choice id="D">!</choice>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q5" type="multipleChoice">
-    <enonce>What does the NOT operator (!) do?</enonce>
+  <question id="q3" type="multipleChoice">
+    <enonce>L'instruction conditionnelle complète impose un choix entre deux traitements différents en se basant sur trois conditions.</enonce>
     <choices>
-      <choice id="A">Inverts a boolean value</choice>
-      <choice id="B">Adds two numbers</choice>
-      <choice id="C">Compares two values</choice>
-      <choice id="D">Declares a variable</choice>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTION PAGE 18 ==================== -->
+  <question id="q4" type="multipleChoice">
+    <enonce>La condition "3 &lt; X &lt; 6" est mal formée. Quelle(s) forme(s) est/sont correcte(s) ?</enonce>
+    <choices>
+      <choice id="A">(3&lt;X) ou &lt;6</choice>
+      <choice id="B">3&lt;X et X&lt;6</choice>
+      <choice id="C">(3&lt;X) ou (X&lt;6)</choice>
+      <choice id="D">(3&lt;X) et (X&lt;6)</choice>
+      <choice id="E">(X&gt;3) et (X&lt;6)</choice>
+    </choices>
+    <bonneReponse>D,E</bonneReponse>
+  </question>
+
+  <question id="q5" type="multipleChoice">
+    <enonce>Quelle(s) affirmation(s) concernant SELON...FAIRE est/sont correcte(s) ?</enonce>
+    <choices>
+      <choice id="A">Elle est basée sur une condition</choice>
+      <choice id="B">Elle est basée sur une expression</choice>
+      <choice id="C">Elle sélectionne entre plusieurs choix à la fois</choice>
+      <choice id="D">Elle sélectionne entre deux choix alternatifs</choice>
+      <choice id="E">Elle peut être imbriquée dans une instruction conditionnelle</choice>
+    </choices>
+    <bonneReponse>B,C,E</bonneReponse>
+  </question>
+
+  <!-- ==================== ALGORITHME ALG1 (PAGE 15) ==================== -->
+  <question id="q6" type="multipleChoice">
+    <enonce>Que doit afficher l'algorithme suivant ?<br/>
+ALGORITHME Alg1 ;<br/>
+VAR X, Y : Entier ;<br/>
+DÉBUT<br/>
+  X ← 3 ; Y ← 2 ;<br/>
+  SI (X&lt;Y) ALORS<br/>
+    ÉCRIRE(Y, " est supérieur à", X) ;<br/>
+  SINON<br/>
+    SI (Y &gt; 0) ALORS<br/>
+      ÉCRIRE(Y, " est strictement positif") ;<br/>
+    SINON<br/>
+      ÉCRIRE(Y, " est inférieur ou égal à 0") ;<br/>
+    FIN SI ;<br/>
+  FIN SI ;<br/>
+FIN.</enonce>
+    <choices>
+      <choice id="A">2 est supérieur à 3</choice>
+      <choice id="B">2 est strictement positif</choice>
+      <choice id="C">2 est inférieur ou égal à 0</choice>
+      <choice id="D">3 est strictement positif</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ALGORITHME ALG2 (PAGE 16) ==================== -->
+  <question id="q7" type="multipleChoice">
+    <enonce>Que doit afficher l'algorithme suivant ?<br/>
+ALGORITHME Alg2 ;<br/>
+VAR X, Y : Entier ;<br/>
+DÉBUT<br/>
+  X ← 3 ; Y ← 2 ;<br/>
+  SELON (X+Y-1) FAIRE<br/>
+    CAS 3 : ÉCRIRE("Premier CAS") ;<br/>
+    CAS 5 : ÉCRIRE("Deuxième CAS") ;<br/>
+    CAS 7 : ÉCRIRE("Troisième CAS") ;<br/>
+    CAS AUTRE : ÉCRIRE("CAS AUTRE") ;<br/>
+  FIN SELON ;<br/>
+FIN.</enonce>
+    <choices>
+      <choice id="A">Premier CAS</choice>
+      <choice id="B">Deuxième CAS</choice>
+      <choice id="C">Troisième CAS</choice>
+      <choice id="D">CAS AUTRE</choice>
     </choices>
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c2_q6" type="multipleChoice">
-    <enonce>What is the result of (true &amp;&amp; false)?</enonce>
+  <!-- ==================== QUESTIONS SUPPLÉMENTAIRES (PETITS AJOUTS) ==================== -->
+  <question id="q8" type="multipleChoice">
+    <enonce>Une condition en algorithmique retourne toujours un résultat de type :</enonce>
     <choices>
-      <choice id="A">true</choice>
-      <choice id="B">false</choice>
-      <choice id="C">null</choice>
-      <choice id="D">error</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q7" type="multipleChoice">
-    <enonce>What is the result of (false || true)?</enonce>
-    <choices>
-      <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">true</choice>
-      <choice id="D">error</choice>
+      <choice id="A">Entier</choice>
+      <choice id="B">Réel</choice>
+      <choice id="C">Booléen</choice>
+      <choice id="D">Caractère</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q8" type="multipleChoice">
-    <enonce>Which statement executes a block of code if the condition is false?</enonce>
+  <question id="q9" type="multipleChoice">
+    <enonce>L'instruction SI ... ALORS sans SINON est appelée :</enonce>
     <choices>
-      <choice id="A">if</choice>
-      <choice id="B">else</choice>
-      <choice id="C">switch</choice>
-      <choice id="D">for</choice>
+      <choice id="A">Alternative complète</choice>
+      <choice id="B">Alternative simple</choice>
+      <choice id="C">Alternative multiple</choice>
+      <choice id="D">Sélection</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q9" type="multipleChoice">
-    <enonce>What is the ternary operator used for?</enonce>
+  <question id="q10" type="multipleChoice">
+    <enonce>L'instruction SI ... ALORS ... SINON est appelée :</enonce>
     <choices>
-      <choice id="A">Looping through arrays</choice>
-      <choice id="B">Defining functions</choice>
-      <choice id="C">A shorthand for if-else in a single line</choice>
-      <choice id="D">Declaring variables</choice>
+      <choice id="A">Alternative simple</choice>
+      <choice id="B">Alternative multiple</choice>
+      <choice id="C">Alternative complète</choice>
+      <choice id="D">Boucle conditionnelle</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q10" type="ordering">
-    <enonce>Order the steps of an if-else execution:</enonce>
-    <bonneReponse>Evaluate condition|Check if true|Execute if block|Execute else block</bonneReponse>
-    <codeLines>
-      <line>Execute if block</line>
-      <line>Evaluate condition</line>
-      <line>Execute else block</line>
-      <line>Check if true</line>
-    </codeLines>
+  <question id="q11" type="multipleChoice">
+    <enonce>Quel mot clé termine une instruction conditionnelle ?</enonce>
+    <choices>
+      <choice id="A">FIN</choice>
+      <choice id="B">FIN SI</choice>
+      <choice id="C">TERMINER</choice>
+      <choice id="D">STOP</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q11" type="multipleChoice">
-    <enonce>What is the result of (!true)?</enonce>
+  <question id="q12" type="multipleChoice">
+    <enonce>L'instruction SELON ... FAIRE utilise :</enonce>
     <choices>
-      <choice id="A">true</choice>
-      <choice id="B">1</choice>
-      <choice id="C">false</choice>
-      <choice id="D">null</choice>
+      <choice id="A">Une condition booléenne</choice>
+      <choice id="B">Une expression arithmétique</choice>
+      <choice id="C">Une variable seule</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>Que fait "SI (nombre = 0) ALORS" ?</enonce>
+    <choices>
+      <choice id="A">Exécute le traitement si nombre est différent de 0</choice>
+      <choice id="B">Exécute le traitement si nombre est égal à 0</choice>
+      <choice id="C">Exécute le traitement si nombre est positif</choice>
+      <choice id="D">Exécute le traitement si nombre est négatif</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q14" type="multipleChoice">
+    <enonce>Dans l'algorithme de la valeur absolue, si nombre = -5, que vaut nombre après exécution ?</enonce>
+    <choices>
+      <choice id="A">-5</choice>
+      <choice id="B">0</choice>
+      <choice id="C">5</choice>
+      <choice id="D">10</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q12" type="multipleChoice">
-    <enonce>In a switch statement, what happens if no case matches and there is no default?</enonce>
+  <question id="q15" type="multipleChoice">
+    <enonce>Pour l'inverse d'un nombre, que doit-on vérifier pour éviter une erreur ?</enonce>
     <choices>
-      <choice id="A">An error is thrown</choice>
-      <choice id="B">The first case executes</choice>
-      <choice id="C">Nothing happens, execution continues after the switch</choice>
-      <choice id="D">The program stops</choice>
+      <choice id="A">nombre = 0</choice>
+      <choice id="B">nombre ≠ 0</choice>
+      <choice id="C">nombre &gt; 0</choice>
+      <choice id="D">nombre &lt; 0</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>Laquelle de ces conditions est correctement écrite ?</enonce>
+    <choices>
+      <choice id="A">4 &lt; a &lt; 8</choice>
+      <choice id="B">a &gt; 4 et a &lt; 8</choice>
+      <choice id="C">4 &lt; a et a &gt; 8</choice>
+      <choice id="D">(a &gt; 4) ou (a &gt; 8)</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q17" type="multipleChoice">
+    <enonce>Quel est l'opérateur de comparaison "différent de" ?</enonce>
+    <choices>
+      <choice id="A">=</choice>
+      <choice id="B">==</choice>
+      <choice id="C">&lt;&gt;</choice>
+      <choice id="D">!=</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q13" type="multipleChoice">
-    <enonce>What is short-circuit evaluation?</enonce>
+  <question id="q18" type="multipleChoice">
+    <enonce>Dans l'exemple "Observation selon la moyenne", un étudiant avec moyenne 9.5 aura :</enonce>
     <choices>
-      <choice id="A">A way to shorten code by removing conditions</choice>
-      <choice id="B">Stopping evaluation of a logical expression as soon as the result is determined</choice>
-      <choice id="C">Using ternary operators instead of if-else</choice>
-      <choice id="D">Evaluating all conditions regardless of the result</choice>
+      <choice id="A">Admis</choice>
+      <choice id="B">Racheté</choice>
+      <choice id="C">Ajourné</choice>
+      <choice id="D">Refusé</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q14" type="multipleChoice">
-    <enonce>What does "else if" allow you to do?</enonce>
+  <question id="q19" type="multipleChoice">
+    <enonce>Dans l'exemple "Observation selon la moyenne", un étudiant avec moyenne 8.5 aura :</enonce>
     <choices>
-      <choice id="A">Loop through multiple values</choice>
-      <choice id="B">Check multiple conditions sequentially</choice>
-      <choice id="C">Define a function with conditions</choice>
-      <choice id="D">Declare multiple variables</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q15" type="multipleChoice">
-    <enonce>What is the result of (false &amp;&amp; false)?</enonce>
-    <choices>
-      <choice id="A">true</choice>
-      <choice id="B">false</choice>
-      <choice id="C">null</choice>
-      <choice id="D">undefined</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q16" type="multipleChoice">
-    <enonce>Which operator checks both value and type equality?</enonce>
-    <choices>
-      <choice id="A">==</choice>
-      <choice id="B">!=</choice>
-      <choice id="C">===</choice>
-      <choice id="D">=</choice>
+      <choice id="A">Admis</choice>
+      <choice id="B">Racheté</choice>
+      <choice id="C">Ajourné</choice>
+      <choice id="D">Refusé</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q17" type="multipleChoice">
-    <enonce>What is a boolean expression?</enonce>
+  <question id="q20" type="multipleChoice">
+    <enonce>Dans l'exemple des jours d'un mois, le mois 2 affiche :</enonce>
     <choices>
-      <choice id="A">An expression that returns a number</choice>
-      <choice id="B">An expression that evaluates to true or false</choice>
-      <choice id="C">An expression used only in loops</choice>
-      <choice id="D">An expression that defines a variable</choice>
+      <choice id="A">31 jours</choice>
+      <choice id="B">30 jours</choice>
+      <choice id="C">28 ou 29 jours</choice>
+      <choice id="D">Mois inexistant</choice>
     </choices>
-    <bonneReponse>B</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q18" type="multipleChoice">
-    <enonce>What is the result of (true || false)?</enonce>
+  <question id="q21" type="multipleChoice">
+    <enonce>Dans l'exemple des jours d'un mois, le mois 13 affiche :</enonce>
     <choices>
-      <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">error</choice>
-      <choice id="D">true</choice>
+      <choice id="A">31 jours</choice>
+      <choice id="B">30 jours</choice>
+      <choice id="C">28 ou 29 jours</choice>
+      <choice id="D">Mois inexistant</choice>
     </choices>
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c2_q19" type="multipleChoice">
-    <enonce>In a switch statement, what is the purpose of "break"?</enonce>
+  <question id="q22" type="multipleChoice">
+    <enonce>L'imbrication de conditions permet :</enonce>
     <choices>
-      <choice id="A">To exit the program</choice>
-      <choice id="B">To stop execution and exit the switch block</choice>
-      <choice id="C">To skip the current case</choice>
-      <choice id="D">To restart the switch</choice>
+      <choice id="A">Exécuter des boucles</choice>
+      <choice id="B">Créer des choix multiples</choice>
+      <choice id="C">Déclarer des variables</choice>
+      <choice id="D">Lire des données</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q20" type="ordering">
-    <enonce>Order the steps of a switch statement execution:</enonce>
-    <bonneReponse>Evaluate expression|Compare to first case|Match found: execute case|Break: exit switch</bonneReponse>
+  <question id="q23" type="multipleChoice">
+    <enonce>Que signifie l'opérateur logique "ET" ?</enonce>
+    <choices>
+      <choice id="A">Vrai si au moins une condition est vraie</choice>
+      <choice id="B">Vrai si toutes les conditions sont vraies</choice>
+      <choice id="C">Faux si toutes les conditions sont fausses</choice>
+      <choice id="D">Inverse le résultat</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q24" type="multipleChoice">
+    <enonce>Que signifie l'opérateur logique "OU" ?</enonce>
+    <choices>
+      <choice id="A">Vrai si toutes les conditions sont vraies</choice>
+      <choice id="B">Vrai si au moins une condition est vraie</choice>
+      <choice id="C">Faux si une condition est vraie</choice>
+      <choice id="D">Inverse le résultat</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q25" type="ordering">
+    <enonce>Remettez dans l'ordre les mots pour former la syntaxe correcte d'une alternative simple :</enonce>
+    <bonneReponse>SI|(condition)|ALORS|Traitement|FIN SI</bonneReponse>
     <codeLines>
-      <line>Break: exit switch</line>
-      <line>Compare to first case</line>
-      <line>Evaluate expression</line>
-      <line>Match found: execute case</line>
+      <line>Traitement</line>
+      <line>(condition)</line>
+      <line>FIN SI</line>
+      <line>ALORS</line>
+      <line>SI</line>
     </codeLines>
   </question>
 
-  <question id="c2_q21" type="multipleChoice">
-    <enonce>What is the result of (!(false || false))?</enonce>
-    <choices>
-      <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">true</choice>
-      <choice id="D">error</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q22" type="multipleChoice">
-    <enonce>Which comparison operator means "not equal to"?</enonce>
-    <choices>
-      <choice id="A">==</choice>
-      <choice id="B">&gt;=</choice>
-      <choice id="C">!=</choice>
-      <choice id="D">&lt;=</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q23" type="multipleChoice">
-    <enonce>What is "fall-through" in a switch statement?</enonce>
-    <choices>
-      <choice id="A">When no case matches</choice>
-      <choice id="B">When execution continues to the next case without a break</choice>
-      <choice id="C">When the default case runs first</choice>
-      <choice id="D">When the switch crashes</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q24" type="multipleChoice">
-    <enonce>What condition must be true to enter an "if" block?</enonce>
-    <choices>
-      <choice id="A">The condition evaluates to false</choice>
-      <choice id="B">The condition evaluates to null</choice>
-      <choice id="C">The condition evaluates to true</choice>
-      <choice id="D">The condition evaluates to zero</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q25" type="multipleChoice">
-    <enonce>What does a nested if statement mean?</enonce>
-    <choices>
-      <choice id="A">An if statement inside a loop</choice>
-      <choice id="B">An if statement inside another if statement</choice>
-      <choice id="C">An if statement with multiple conditions</choice>
-      <choice id="D">An if statement without an else</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q26" type="multipleChoice">
-    <enonce>What is the result of (true &amp;&amp; true)?</enonce>
-    <choices>
-      <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">error</choice>
-      <choice id="D">true</choice>
-    </choices>
-    <bonneReponse>D</bonneReponse>
-  </question>
-
-  <question id="c2_q27" type="multipleChoice">
-    <enonce>Which of the following is a relational operator?</enonce>
-    <choices>
-      <choice id="A">&amp;&amp;</choice>
-      <choice id="B">||</choice>
-      <choice id="C">&gt;</choice>
-      <choice id="D">!</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q28" type="multipleChoice">
-    <enonce>What happens if the condition in an "if" statement is always true?</enonce>
-    <choices>
-      <choice id="A">The else block always runs</choice>
-      <choice id="B">The if block always runs and the else block never runs</choice>
-      <choice id="C">A compile error occurs</choice>
-      <choice id="D">The program crashes</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q29" type="ordering">
-    <enonce>Order the logical operators by precedence (highest first):</enonce>
-    <bonneReponse>NOT (!)|AND (&amp;&amp;)|OR (||)</bonneReponse>
+  <question id="q26" type="ordering">
+    <enonce>Remettez dans l'ordre les mots pour former la syntaxe correcte d'une alternative complète :</enonce>
+    <bonneReponse>SI|(condition)|ALORS|Traitement1|SINON|Traitement2|FIN SI</bonneReponse>
     <codeLines>
-      <line>AND (&amp;&amp;)</line>
-      <line>OR (||)</line>
-      <line>NOT (!)</line>
+      <line>SINON</line>
+      <line>Traitement1</line>
+      <line>FIN SI</line>
+      <line>SI</line>
+      <line>(condition)</line>
+      <line>ALORS</line>
+      <line>Traitement2</line>
     </codeLines>
   </question>
 
-  <question id="c2_q30" type="multipleChoice">
-    <enonce>What is the purpose of the "default" case in a switch statement?</enonce>
+  <question id="q27" type="ordering">
+    <enonce>Remettez dans l'ordre les mots pour former la syntaxe correcte de SELON...FAIRE :</enonce>
+    <bonneReponse>SELON|(expression)|FAIRE|CAS|Valeur|Traitement|FIN SELON</bonneReponse>
+    <codeLines>
+      <line>FAIRE</line>
+      <line>SELON</line>
+      <line>Traitement</line>
+      <line>CAS</line>
+      <line>(expression)</line>
+      <line>FIN SELON</line>
+      <line>Valeur</line>
+    </codeLines>
+  </question>
+
+  <!-- ==================== QUESTIONS DE TRACE ==================== -->
+  <question id="q28" type="multipleChoice">
+    <enonce>Si X=3, Y=2, et que l'on exécute SI (X&gt;Y) ALORS Z←X SINON Z←Y. Que vaut Z ?</enonce>
     <choices>
-      <choice id="A">It runs before all other cases</choice>
-      <choice id="B">It runs when no other case matches</choice>
-      <choice id="C">It is required in every switch statement</choice>
-      <choice id="D">It replaces the break statement</choice>
+      <choice id="A">2</choice>
+      <choice id="B">3</choice>
+      <choice id="C">5</choice>
+      <choice id="D">1</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q29" type="multipleChoice">
+    <enonce>L'instruction conditionnelle permet de :</enonce>
+    <choices>
+      <choice id="A">Répéter des instructions</choice>
+      <choice id="B">Choisir entre différents traitements</choice>
+      <choice id="C">Déclarer des constantes</choice>
+      <choice id="D">Lire des données</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q30" type="multipleChoice">
+    <enonce>Le mot clé "CAS AUTRE" dans SELON...FAIRE correspond à :</enonce>
+    <choices>
+      <choice id="A">Un cas obligatoire</choice>
+      <choice id="B">Le traitement par défaut si aucune valeur ne correspond</choice>
+      <choice id="C">Le premier cas exécuté</choice>
+      <choice id="D">Une erreur de syntaxe</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>

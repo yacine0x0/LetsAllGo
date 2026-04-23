@@ -1,333 +1,346 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_03" title="Loops - Structures itératives">
+<chapter id="Chapitre_03_Quiz" title="Quiz – Structures répétitives (boucles)">
 
-  <question id="c3_q1" type="ordering">
-    <enonce>Order the steps for a for loop:</enonce>
-    <bonneReponse>Initialization|Condition|Body|Increment</bonneReponse>
-    <codeLines>
-      <line>Body</line>
-      <line>Initialization</line>
-      <line>Increment</line>
-      <line>Condition</line>
-    </codeLines>
-  </question>
-
-  <question id="c3_q2" type="multipleChoice">
-    <enonce>What is the purpose of a while loop?</enonce>
+  <!-- ==================== EXERCICE PAGE 8 ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>On peut utiliser la boucle POUR ... FAIRE pour afficher la table de multiplication d'un entier introduit par l'utilisateur.</enonce>
     <choices>
-      <choice id="A">Execute code a fixed number of times</choice>
-      <choice id="B">Execute code while a condition is true</choice>
-      <choice id="C">Define a function</choice>
-      <choice id="D">Create an array</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q3" type="multipleChoice">
-    <enonce>What is the key difference between for and while loops?</enonce>
-    <choices>
-      <choice id="A">for is faster</choice>
-      <choice id="B">while cannot iterate</choice>
-      <choice id="C">for has a predefined iteration count</choice>
-      <choice id="D">They are identical</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c3_q4" type="multipleChoice">
-    <enonce>What does "break" statement do in a loop?</enonce>
-    <choices>
-      <choice id="A">Pauses the loop</choice>
-      <choice id="B">Exits the loop immediately</choice>
-      <choice id="C">Restarts the loop</choice>
-      <choice id="D">Increases the iteration</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q5" type="multipleChoice">
-    <enonce>What does "continue" statement do?</enonce>
-    <choices>
-      <choice id="A">Exits the loop</choice>
-      <choice id="B">Pauses the execution</choice>
-      <choice id="C">Skips to the next iteration</choice>
-      <choice id="D">Repeats the current iteration</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c3_q6" type="multipleChoice">
-    <enonce>What is a do-while loop?</enonce>
-    <choices>
-      <choice id="A">A loop that never executes</choice>
-      <choice id="B">A loop that executes at least once before checking the condition</choice>
-      <choice id="C">A loop with no condition</choice>
-      <choice id="D">A loop that runs a fixed number of times</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q7" type="multipleChoice">
-    <enonce>What is an infinite loop?</enonce>
-    <choices>
-      <choice id="A">A loop that runs exactly once</choice>
-      <choice id="B">A loop with no body</choice>
-      <choice id="C">A loop whose condition never becomes false</choice>
-      <choice id="D">A loop that skips every iteration</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c3_q8" type="multipleChoice">
-    <enonce>Which loop is best when the number of iterations is known in advance?</enonce>
-    <choices>
-      <choice id="A">while</choice>
-      <choice id="B">do-while</choice>
-      <choice id="C">for</choice>
-      <choice id="D">foreach</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c3_q9" type="multipleChoice">
-    <enonce>What is a nested loop?</enonce>
-    <choices>
-      <choice id="A">A loop inside another loop</choice>
-      <choice id="B">A loop with multiple conditions</choice>
-      <choice id="C">A loop that calls a function</choice>
-      <choice id="D">A loop without a counter</choice>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
     </choices>
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c3_q10" type="ordering">
-    <enonce>Order the steps of a while loop execution:</enonce>
-    <bonneReponse>Check condition|Execute body|Update variable|Check condition again</bonneReponse>
-    <codeLines>
-      <line>Execute body</line>
-      <line>Check condition again</line>
-      <line>Check condition</line>
-      <line>Update variable</line>
-    </codeLines>
+  <!-- ==================== EXERCICE PAGE 9 ==================== -->
+  <question id="q2" type="multipleChoice">
+    <enonce>On peut calculer la somme d'une succession d'entiers introduits progressivement (un par un) à chaque tour de boucle.</enonce>
+    <choices>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c3_q11" type="multipleChoice">
-    <enonce>What is the time complexity of a single loop iterating n times?</enonce>
+  <!-- ==================== EXERCICE PAGE 13 ==================== -->
+  <question id="q3" type="multipleChoice">
+    <enonce>La boucle TANT QUE ... FAIRE se base sur une condition d'entrée, et une mise à jour automatique de la condition. La boucle s'arrête lorsque la condition n'est plus vérifiée.</enonce>
     <choices>
-      <choice id="A">O(1)</choice>
-      <choice id="B">O(log n)</choice>
-      <choice id="C">O(n)</choice>
-      <choice id="D">O(n²)</choice>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== EXERCICE PAGE 17 ==================== -->
+  <question id="q4" type="multipleChoice">
+    <enonce>Choisir la(les) bonne(s) réponse(s) concernant la boucle RÉPÉTER ... JUSQU'À :</enonce>
+    <choices>
+      <choice id="A">Elle est basée sur le nombre de tours de boucle</choice>
+      <choice id="B">Elle est basée sur une condition de sortie</choice>
+      <choice id="C">Elle est similaire à la boucle POUR ... FAIRE</choice>
+      <choice id="D">Contrairement à TANT QUE, elle doit boucler au moins une fois</choice>
+    </choices>
+    <bonneReponse>B,D</bonneReponse>
+  </question>
+
+  <!-- ==================== EXERCICE PAGE 19 ==================== -->
+  <question id="q5" type="multipleChoice">
+    <enonce>Tous les types de boucles sont des instructions de contrôle.</enonce>
+    <choices>
+      <choice id="A">Vrai</choice>
+      <choice id="B">Faux</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q6" type="multipleChoice">
+    <enonce>Que permet de faire une boucle ?</enonce>
+    <choices>
+      <choice id="A">Attribuer une valeur à une variable</choice>
+      <choice id="B">Répéter certaines actions plusieurs fois</choice>
+      <choice id="C">Initialiser les constantes d'un algorithme</choice>
+      <choice id="D">Réduire la longueur d'un algorithme en évitant la réécriture d'instructions</choice>
+    </choices>
+    <bonneReponse>B,D</bonneReponse>
+  </question>
+
+  <question id="q7" type="multipleChoice">
+    <enonce>Peut-on insérer une boucle dans une autre ?</enonce>
+    <choices>
+      <choice id="A">Oui</choice>
+      <choice id="B">Non</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUPPLÉMENTAIRES (PETITS AJOUTS) ==================== -->
+  <question id="q8" type="multipleChoice">
+    <enonce>La boucle POUR ... FAIRE est particulièrement adaptée quand :</enonce>
+    <choices>
+      <choice id="A">Le nombre d'itérations est inconnu</choice>
+      <choice id="B">Le nombre d'itérations est connu à l'avance</choice>
+      <choice id="C">On doit exécuter la boucle au moins une fois</choice>
+      <choice id="D">La condition est complexe</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q9" type="multipleChoice">
+    <enonce>Dans une boucle TANT QUE, si la condition est fausse dès le départ :</enonce>
+    <choices>
+      <choice id="A">La boucle s'exécute une fois</choice>
+      <choice id="B">La boucle s'exécute indéfiniment</choice>
+      <choice id="C">On n'entre pas dans la boucle</choice>
+      <choice id="D">Il y a une erreur de syntaxe</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c3_q12" type="multipleChoice">
-    <enonce>What is the time complexity of two nested loops each iterating n times?</enonce>
+  <question id="q10" type="multipleChoice">
+    <enonce>Que se passe-t-il si on oublie la mise à jour de la condition dans une boucle TANT QUE ?</enonce>
     <choices>
-      <choice id="A">O(n)</choice>
-      <choice id="B">O(2n)</choice>
-      <choice id="C">O(n²)</choice>
-      <choice id="D">O(log n)</choice>
+      <choice id="A">La boucle s'arrête normalement</choice>
+      <choice id="B">La boucle devient infinie</choice>
+      <choice id="C">Le programme plante immédiatement</choice>
+      <choice id="D">La condition devient automatiquement fausse</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q11" type="multipleChoice">
+    <enonce>La boucle RÉPÉTER ... JUSQU'À garantit que le traitement est exécuté :</enonce>
+    <choices>
+      <choice id="A">0 fois</choice>
+      <choice id="B">Au moins 1 fois</choice>
+      <choice id="C">Au moins 2 fois</choice>
+      <choice id="D">Un nombre connu de fois</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q12" type="multipleChoice">
+    <enonce>Dans RÉPÉTER ... JUSQU'À, on sort de la boucle quand :</enonce>
+    <choices>
+      <choice id="A">La condition est vraie</choice>
+      <choice id="B">La condition est fausse</choice>
+      <choice id="C">Le compteur dépasse la valeur finale</choice>
+      <choice id="D">On atteint le nombre d'itérations</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>Quel type de boucle est le plus approprié pour afficher les nombres de 1 à 10 ?</enonce>
+    <choices>
+      <choice id="A">POUR</choice>
+      <choice id="B">TANT QUE</choice>
+      <choice id="C">RÉPÉTER...JUSQU'À</choice>
+      <choice id="D">Les trois sont possibles</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q14" type="multipleChoice">
+    <enonce>Quel type de boucle est le plus approprié pour contrôler la saisie d'une note entre 0 et 20 ?</enonce>
+    <choices>
+      <choice id="A">POUR</choice>
+      <choice id="B">TANT QUE</choice>
+      <choice id="C">RÉPÉTER...JUSQU'À</choice>
+      <choice id="D">Aucune</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c3_q13" type="multipleChoice">
-    <enonce>What is the difference between while and do-while?</enonce>
-    <choices>
-      <choice id="A">while is faster</choice>
-      <choice id="B">do-while checks the condition after executing the body at least once</choice>
-      <choice id="C">do-while cannot use break</choice>
-      <choice id="D">while always runs at least once</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q14" type="multipleChoice">
-    <enonce>What happens when "break" is used inside a nested loop?</enonce>
-    <choices>
-      <choice id="A">All loops exit immediately</choice>
-      <choice id="B">Only the innermost loop exits</choice>
-      <choice id="C">The program terminates</choice>
-      <choice id="D">The outer loop restarts</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q15" type="multipleChoice">
-    <enonce>What is loop unrolling?</enonce>
-    <choices>
-      <choice id="A">Removing a loop from the code</choice>
-      <choice id="B">An optimization that reduces loop overhead by repeating the body multiple times</choice>
-      <choice id="C">Converting a for loop to a while loop</choice>
-      <choice id="D">Adding more iterations to a loop</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q16" type="multipleChoice">
-    <enonce>How many times does the body of "for(i=0; i&lt;5; i++)" execute?</enonce>
+  <question id="q15" type="multipleChoice">
+    <enonce>Soit l'algorithme : i ← 1 ; TANT QUE (i &lt;= 5) FAIRE ÉCRIRE(i) ; i ← i+1 ; FIN TANT QUE. Combien de nombres sont affichés ?</enonce>
     <choices>
       <choice id="A">4</choice>
-      <choice id="B">6</choice>
-      <choice id="C">5</choice>
-      <choice id="D">Infinite</choice>
+      <choice id="B">5</choice>
+      <choice id="C">6</choice>
+      <choice id="D">0</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>Soit l'algorithme : i ← 1 ; TANT QUE (i &gt; 5) FAIRE ÉCRIRE(i) ; i ← i+1 ; FIN TANT QUE. Combien de nombres sont affichés ?</enonce>
+    <choices>
+      <choice id="A">5</choice>
+      <choice id="B">1</choice>
+      <choice id="C">0</choice>
+      <choice id="D">Infini</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c3_q17" type="multipleChoice">
-    <enonce>What is a loop counter?</enonce>
+  <question id="q17" type="multipleChoice">
+    <enonce>Quelle est la valeur de S après : S←0 ; POUR i ALLANT DE 1 A 3 FAIRE S←S+i ; FIN POUR ?</enonce>
     <choices>
-      <choice id="A">A variable that tracks how many times a loop has executed</choice>
-      <choice id="B">A function that counts loop iterations</choice>
-      <choice id="C">A condition that stops the loop</choice>
-      <choice id="D">A timer that measures loop speed</choice>
+      <choice id="A">3</choice>
+      <choice id="B">5</choice>
+      <choice id="C">6</choice>
+      <choice id="D">7</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q18" type="multipleChoice">
+    <enonce>Une boucle infinie est une boucle :</enonce>
+    <choices>
+      <choice id="A">Qui ne s'exécute jamais</choice>
+      <choice id="B">Qui s'exécute un nombre très grand de fois</choice>
+      <choice id="C">Dont la condition d'arrêt n'est jamais atteinte</choice>
+      <choice id="D">Qui contient une erreur de syntaxe</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q19" type="multipleChoice">
+    <enonce>Dans une boucle POUR, le compteur est automatiquement :</enonce>
+    <choices>
+      <choice id="A">Incrémenté de 1</choice>
+      <choice id="B">Incrémenté de la valeur choisie par l'utilisateur</choice>
+      <choice id="C">Décrémenté de 1</choice>
+      <choice id="D">Mis à jour manuellement</choice>
     </choices>
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c3_q18" type="multipleChoice">
-    <enonce>What is an off-by-one error in a loop?</enonce>
+  <question id="q20" type="multipleChoice">
+    <enonce>Les boucles sont également appelées :</enonce>
     <choices>
-      <choice id="A">Using the wrong variable in the loop body</choice>
-      <choice id="B">A mistake causing the loop to execute one too many or one too few times</choice>
-      <choice id="C">Forgetting to initialize the loop counter</choice>
-      <choice id="D">Using break instead of continue</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q19" type="multipleChoice">
-    <enonce>Which loop type guarantees execution of the body at least once?</enonce>
-    <choices>
-      <choice id="A">for</choice>
-      <choice id="B">while</choice>
-      <choice id="C">do-while</choice>
-      <choice id="D">foreach</choice>
+      <choice id="A">Instructions conditionnelles</choice>
+      <choice id="B">Structures séquentielles</choice>
+      <choice id="C">Structures répétitives</choice>
+      <choice id="D">Instructions d'affectation</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c3_q20" type="ordering">
-    <enonce>Order the steps of a do-while loop execution:</enonce>
-    <bonneReponse>Execute body|Check condition|If true: repeat body|If false: exit loop</bonneReponse>
+  <question id="q21" type="multipleChoice">
+    <enonce>Peut-on transformer une boucle POUR en boucle TANT QUE ?</enonce>
+    <choices>
+      <choice id="A">Oui, toujours</choice>
+      <choice id="B">Non, jamais</choice>
+      <choice id="C">Parfois, selon le contexte</choice>
+      <choice id="D">Uniquement pour les nombres pairs</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q22" type="multipleChoice">
+    <enonce>Lequel de ces énoncés est vrai concernant la boucle POUR ?</enonce>
+    <choices>
+      <choice id="A">On doit initialiser le compteur manuellement avant la boucle</choice>
+      <choice id="B">Le compteur s'incrémente automatiquement</choice>
+      <choice id="C">La condition est vérifiée à la sortie</choice>
+      <choice id="D">La boucle s'exécute au moins une fois</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q23" type="multipleChoice">
+    <enonce>Lequel de ces énoncés est vrai concernant la boucle TANT QUE ?</enonce>
+    <choices>
+      <choice id="A">Le compteur s'incrémente automatiquement</choice>
+      <choice id="B">La condition est vérifiée à la sortie</choice>
+      <choice id="C">On peut ne jamais entrer dans la boucle</choice>
+      <choice id="D">La boucle s'exécute toujours au moins une fois</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q24" type="multipleChoice">
+    <enonce>Lequel de ces énoncés est vrai concernant la boucle RÉPÉTER...JUSQU'À ?</enonce>
+    <choices>
+      <choice id="A">On peut ne jamais entrer dans la boucle</choice>
+      <choice id="B">La condition est vérifiée à l'entrée</choice>
+      <choice id="C">La boucle s'exécute au moins une fois</choice>
+      <choice id="D">Le compteur s'incrémente automatiquement</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q25" type="ordering">
+    <enonce>Remettez dans l'ordre les mots pour former la syntaxe correcte de POUR ... FAIRE :</enonce>
+    <bonneReponse>POUR|compteur|ALLANT DE|valeur_initiale|A|valeur_finale|FAIRE|Traitement|FIN POUR</bonneReponse>
     <codeLines>
-      <line>If false: exit loop</line>
-      <line>Execute body</line>
-      <line>If true: repeat body</line>
-      <line>Check condition</line>
+      <line>FAIRE</line>
+      <line>A</line>
+      <line>ALLANT DE</line>
+      <line>Traitement</line>
+      <line>compteur</line>
+      <line>FIN POUR</line>
+      <line>POUR</line>
+      <line>valeur_initiale</line>
+      <line>valeur_finale</line>
     </codeLines>
   </question>
 
-  <question id="c3_q21" type="multipleChoice">
-    <enonce>What is the purpose of the loop variable "i" in "for(i=0; i&lt;n; i++)"?</enonce>
-    <choices>
-      <choice id="A">To store the loop result</choice>
-      <choice id="B">To count iterations and control loop termination</choice>
-      <choice id="C">To define the loop body</choice>
-      <choice id="D">To increase loop speed</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
+  <question id="q26" type="ordering">
+    <enonce>Remettez dans l'ordre les mots pour former la syntaxe correcte de TANT QUE :</enonce>
+    <bonneReponse>TANT QUE|(condition)|FAIRE|Traitement|FIN TANT QUE</bonneReponse>
+    <codeLines>
+      <line>FIN TANT QUE</line>
+      <line>(condition)</line>
+      <line>FAIRE</line>
+      <line>Traitement</line>
+      <line>TANT QUE</line>
+    </codeLines>
   </question>
 
-  <question id="c3_q22" type="multipleChoice">
-    <enonce>What is an accumulator in a loop?</enonce>
-    <choices>
-      <choice id="A">A loop that runs indefinitely</choice>
-      <choice id="B">A variable that collects values across iterations (e.g., sum)</choice>
-      <choice id="C">A counter that decreases each iteration</choice>
-      <choice id="D">A condition that stops the loop</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
+  <question id="q27" type="ordering">
+    <enonce>Remettez dans l'ordre les mots pour former la syntaxe correcte de RÉPÉTER...JUSQU'À :</enonce>
+    <bonneReponse>RÉPÉTER|Traitement|JUSQU'À|(condition)</bonneReponse>
+    <codeLines>
+      <line>Traitement</line>
+      <line>(condition)</line>
+      <line>RÉPÉTER</line>
+      <line>JUSQU'À</line>
+    </codeLines>
   </question>
 
-  <question id="c3_q23" type="multipleChoice">
-    <enonce>Which statement is true about the "continue" statement?</enonce>
+  <!-- ==================== QUESTIONS DE TRACE ==================== -->
+  <question id="q28" type="multipleChoice">
+    <enonce>Qu'affiche l'algorithme suivant ?<br/>
+i ← 1<br/>
+TANT QUE (i &lt; 3) FAIRE<br/>
+  ÉCRIRE(i)<br/>
+  i ← i + 1<br/>
+FIN TANT QUE</enonce>
     <choices>
-      <choice id="A">It exits the loop entirely</choice>
-      <choice id="B">It restarts the loop from the beginning</choice>
-      <choice id="C">It skips the rest of the current iteration and moves to the next</choice>
-      <choice id="D">It pauses the loop for one iteration</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c3_q24" type="multipleChoice">
-    <enonce>What is the output of "for(i=1; i&lt;=3; i++) print(i)"?</enonce>
-    <choices>
-      <choice id="A">0 1 2</choice>
-      <choice id="B">1 2 3 4</choice>
+      <choice id="A">1</choice>
+      <choice id="B">1 2</choice>
       <choice id="C">1 2 3</choice>
-      <choice id="D">0 1 2 3</choice>
+      <choice id="D">Rien</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q29" type="multipleChoice">
+    <enonce>Qu'affiche l'algorithme suivant ?<br/>
+i ← 1<br/>
+RÉPÉTER<br/>
+  ÉCRIRE(i)<br/>
+  i ← i + 1<br/>
+JUSQU'À (i &gt; 3)</enonce>
+    <choices>
+      <choice id="A">1</choice>
+      <choice id="B">1 2</choice>
+      <choice id="C">1 2 3</choice>
+      <choice id="D">1 2 3 4</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c3_q25" type="multipleChoice">
-    <enonce>What causes an infinite loop?</enonce>
+  <question id="q30" type="multipleChoice">
+    <enonce>Une boucle POUR i ALLANT DE 1 A n FAIRE ... FIN POUR effectue combien d'itérations ?</enonce>
     <choices>
-      <choice id="A">Using break inside the loop</choice>
-      <choice id="B">A condition that is never false</choice>
-      <choice id="C">Using continue inside the loop</choice>
-      <choice id="D">Having too many nested loops</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q26" type="multipleChoice">
-    <enonce>In "for(i=10; i&gt;0; i--)", what does "i--" do?</enonce>
-    <choices>
-      <choice id="A">Increases i by 1</choice>
-      <choice id="B">Resets i to 0</choice>
-      <choice id="C">Decreases i by 1</choice>
-      <choice id="D">Multiplies i by -1</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c3_q27" type="multipleChoice">
-    <enonce>What is the purpose of a sentinel value in a loop?</enonce>
-    <choices>
-      <choice id="A">To count iterations</choice>
-      <choice id="B">A special value used as a signal to terminate the loop</choice>
-      <choice id="C">To initialize the loop counter</choice>
-      <choice id="D">To skip certain iterations</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q28" type="multipleChoice">
-    <enonce>How can you convert a for loop to a while loop?</enonce>
-    <choices>
-      <choice id="A">You cannot convert between loop types</choice>
-      <choice id="B">Move the initialization before the while, and the increment to the end of the body</choice>
-      <choice id="C">Replace "for" with "while" without any other changes</choice>
-      <choice id="D">Add a break statement at the end</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c3_q29" type="ordering">
-    <enonce>Order the steps to compute the sum of an array using a loop:</enonce>
-    <bonneReponse>Initialize sum to 0|Start loop at index 0|Add array[i] to sum|Increment index|Return sum</bonneReponse>
-    <codeLines>
-      <line>Add array[i] to sum</line>
-      <line>Return sum</line>
-      <line>Initialize sum to 0</line>
-      <line>Increment index</line>
-      <line>Start loop at index 0</line>
-    </codeLines>
-  </question>
-
-  <question id="c3_q30" type="multipleChoice">
-    <enonce>What is the scope of a loop variable declared inside "for(int i=0; ...)"?</enonce>
-    <choices>
-      <choice id="A">The entire program</choice>
-      <choice id="B">Only within the for loop block</choice>
-      <choice id="C">The function containing the loop</choice>
-      <choice id="D">Only on the first iteration</choice>
+      <choice id="A">n-1</choice>
+      <choice id="B">n</choice>
+      <choice id="C">n+1</choice>
+      <choice id="D">2n</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_4_Quiz" title="Quiz – Les listes chaînées (Partie II)">
+
+  <!-- ==================== QUESTIONS SUR LA DÉFINITION ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>Qu'est-ce qu'une Liste Linéaire Chaînée (LLC) ?</enonce>
+    <choices>
+      <choice id="A">Un tableau d'enregistrements</choice>
+      <choice id="B">Un ensemble d'éléments appelés cellules, chaque cellule possède un pointeur vers la suivante</choice>
+      <choice id="C">Une variable simple</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q2" type="multipleChoice">
+    <enonce>Que contient le pointeur de la dernière cellule d'une liste chaînée ?</enonce>
+    <choices>
+      <choice id="A">L'adresse de la première cellule</choice>
+      <choice id="B">NIL</choice>
+      <choice id="C">L'adresse de la cellule précédente</choice>
+      <choice id="D">0</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q3" type="multipleChoice">
+    <enonce>Dans une cellule d'une liste chaînée, que représente le champ "Suivant" ?</enonce>
+    <choices>
+      <choice id="A">La valeur de la cellule</choice>
+      <choice id="B">L'adresse de la cellule suivante</choice>
+      <choice id="C">Le type de la cellule</choice>
+      <choice id="D">Le nom de la cellule</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q4" type="multipleChoice">
+    <enonce>Dans l'exemple du cours, quels sont les champs d'information de la cellule "vehicule" ?</enonce>
+    <choices>
+      <choice id="A">Nom et Prénom</choice>
+      <choice id="B">No_serie et Prix</choice>
+      <choice id="C">Marque et Modèle</choice>
+      <choice id="D">Couleur et Puissance</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA GESTION DYNAMIQUE ==================== -->
+  <question id="q5" type="multipleChoice">
+    <enonce>Quel est l'avantage principal d'une liste chaînée par rapport à un tableau d'enregistrements ?</enonce>
+    <choices>
+      <choice id="A">Elle est plus rapide</choice>
+      <choice id="B">Elle n'est pas limitée à un nombre fixe d'éléments (gestion dynamique)</choice>
+      <choice id="C">Elle utilise moins de mémoire</choice>
+      <choice id="D">Elle est plus simple à programmer</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q6" type="multipleChoice">
+    <enonce>Quelles fonctions permettent la gestion dynamique de la mémoire pour les listes chaînées ?</enonce>
+    <choices>
+      <choice id="A">LIRE et ECRIRE</choice>
+      <choice id="B">ALLOUER et LIBERER</choice>
+      <choice id="C">ASSOCIER et FERMER</choice>
+      <choice id="D">OUVRIR et FERMER</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q7" type="multipleChoice">
+    <enonce>Que fait la fonction ALLOUER() ?</enonce>
+    <choices>
+      <choice id="A">Elle libère un espace mémoire</choice>
+      <choice id="B">Elle alloue un espace mémoire et fournit son adresse</choice>
+      <choice id="C">Elle lit une valeur dans un fichier</choice>
+      <choice id="D">Elle écrit une valeur dans un fichier</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q8" type="multipleChoice">
+    <enonce>Que fait la fonction LIBERER() ?</enonce>
+    <choices>
+      <choice id="A">Elle alloue un espace mémoire</choice>
+      <choice id="B">Elle libère un espace mémoire alloué</choice>
+      <choice id="C">Elle crée une nouvelle cellule</choice>
+      <choice id="D">Elle initialise un pointeur à NIL</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA CRÉATION ==================== -->
+  <question id="q9" type="multipleChoice">
+    <enonce>Dans l'algorithme de création d'une liste chaînée, à quoi sert la variable "Tête" ?</enonce>
+    <choices>
+      <choice id="A">Elle pointe vers la dernière cellule</choice>
+      <choice id="B">Elle pointe vers la première cellule de la liste</choice>
+      <choice id="C">Elle contient la valeur de la première cellule</choice>
+      <choice id="D">Elle compte le nombre de cellules</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q10" type="multipleChoice">
+    <enonce>Dans l'algorithme de création, que vaut le pointeur "Suivant" de la dernière cellule ?</enonce>
+    <choices>
+      <choice id="A">L'adresse de la première cellule</choice>
+      <choice id="B">NIL</choice>
+      <choice id="C">L'adresse de la cellule précédente</choice>
+      <choice id="D">Tête</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA CONSULTATION ==================== -->
+  <question id="q11" type="multipleChoice">
+    <enonce>Comment parcourt-on une liste chaînée pour la consulter ?</enonce>
+    <choices>
+      <choice id="A">Avec une boucle POUR</choice>
+      <choice id="B">Avec une boucle TANT QUE qui s'arrête quand le pointeur courant vaut NIL</choice>
+      <choice id="C">Avec une boucle REPETER</choice>
+      <choice id="D">Avec un appel récursif</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR L'INSERTION ==================== -->
+  <question id="q12" type="multipleChoice">
+    <enonce>Quels sont les trois cas possibles pour l'insertion d'une cellule dans une liste chaînée ?</enonce>
+    <choices>
+      <choice id="A">Insertion au début, au milieu, à la fin</choice>
+      <choice id="B">Insertion avant, après, entre</choice>
+      <choice id="C">Insertion simple, double, triple</choice>
+      <choice id="D">Insertion horizontale, verticale, diagonale</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>Pour insérer une cellule à la tête d'une liste chaînée, que faut-il faire ?</enonce>
+    <choices>
+      <choice id="A">Nouveau^.Suivant &lt;- NIL puis Tête &lt;- Nouveau</choice>
+      <choice id="B">Nouveau^.Suivant &lt;- Tête puis Tête &lt;- Nouveau</choice>
+      <choice id="C">Tête^.Suivant &lt;- Nouveau puis Nouveau &lt;- Tête</choice>
+      <choice id="D">Nouveau &lt;- Tête puis Tête^.Suivant &lt;- Nouveau</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q14" type="multipleChoice">
+    <enonce>Pour insérer une cellule à la fin d'une liste chaînée, que faut-il faire après avoir alloué la nouvelle cellule ?</enonce>
+    <choices>
+      <choice id="A">Nouveau^.Suivant &lt;- Tête</choice>
+      <choice id="B">Nouveau^.Suivant &lt;- NIL puis trouver la dernière cellule et mettre son Suivant à Nouveau</choice>
+      <choice id="C">Tête &lt;- Nouveau</choice>
+      <choice id="D">Nouveau &lt;- NIL</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q15" type="multipleChoice">
+    <enonce>Dans l'insertion au milieu, comment trouve-t-on la cellule après laquelle insérer ?</enonce>
+    <choices>
+      <choice id="A">En parcourant la liste et en comparant un champ (ex: No_serie) avec une valeur donnée</choice>
+      <choice id="B">En utilisant un tableau d'indices</choice>
+      <choice id="C">En allant directement à l'indice N/2</choice>
+      <choice id="D">En prenant la cellule Tête</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA SUPPRESSION ==================== -->
+  <question id="q16" type="multipleChoice">
+    <enonce>Quels sont les trois cas possibles pour la suppression d'une cellule dans une liste chaînée ?</enonce>
+    <choices>
+      <choice id="A">Suppression simple, double, triple</choice>
+      <choice id="B">Suppression au début, au milieu, à la fin</choice>
+      <choice id="C">Suppression avant, après, entre</choice>
+      <choice id="D">Suppression horizontale, verticale, diagonale</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q17" type="multipleChoice">
+    <enonce>Pour supprimer la tête d'une liste chaînée, que faut-il faire ?</enonce>
+    <choices>
+      <choice id="A">Tête &lt;- NIL</choice>
+      <choice id="B">Temp &lt;- Tête puis Tête &lt;- Tête^.Suivant puis LIBERER(Temp)</choice>
+      <choice id="C">Tête &lt;- Tête^.Suivant puis LIBERER(Tête)</choice>
+      <choice id="D">LIBERER(Tête) puis Tête &lt;- NIL</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q18" type="multipleChoice">
+    <enonce>Dans la suppression d'une cellule au milieu, que doit-on faire avec le pointeur de la cellule précédente ?</enonce>
+    <choices>
+      <choice id="A">Le mettre à NIL</choice>
+      <choice id="B">Le mettre à l'adresse de la cellule suivante de la cellule à supprimer</choice>
+      <choice id="C">Le mettre à l'adresse de la cellule à supprimer</choice>
+      <choice id="D">Le laisser inchangé</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q19" type="multipleChoice">
+    <enonce>Pour supprimer toutes les cellules d'une liste chaînée, il faut :</enonce>
+    <choices>
+      <choice id="A">Mettre Tête à NIL</choice>
+      <choice id="B">Libérer chaque cellule une par une dans le bon ordre</choice>
+      <choice id="C">Appeler LIBERER une seule fois</choice>
+      <choice id="D">Ne rien faire, la mémoire se libère automatiquement</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES TYPES DE LISTES ==================== -->
+  <question id="q20" type="multipleChoice">
+    <enonce>Qu'est-ce qu'une liste doublement chaînée ?</enonce>
+    <choices>
+      <choice id="A">Une liste avec deux fois plus de cellules</choice>
+      <choice id="B">Une liste où chaque cellule a deux pointeurs (un vers la précédente et un vers la suivante)</choice>
+      <choice id="C">Une liste avec deux têtes</choice>
+      <choice id="D">Une liste qui ne peut contenir que deux éléments</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q21" type="multipleChoice">
+    <enonce>Que signifie LIFO ?</enonce>
+    <choices>
+      <choice id="A">Last In First Out (dernier entré, premier sorti) - Principe de la Pile</choice>
+      <choice id="B">First In First Out (premier entré, premier sorti) - Principe de la File</choice>
+      <choice id="C">Last In Last Out</choice>
+      <choice id="D">First In Last Out</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q22" type="multipleChoice">
+    <enonce>Que signifie FIFO ?</enonce>
+    <choices>
+      <choice id="A">Last In First Out (principe de la Pile)</choice>
+      <choice id="B">First In First Out (principe de la File)</choice>
+      <choice id="C">File In File Out</choice>
+      <choice id="D">Fast In Fast Out</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q23" type="multipleChoice">
+    <enonce>Qu'est-ce qu'un anneau (liste circulaire) ?</enonce>
+    <choices>
+      <choice id="A">Une liste vide</choice>
+      <choice id="B">Une liste où la dernière cellule pointe vers la première</choice>
+      <choice id="C">Une liste avec deux têtes</choice>
+      <choice id="D">Une liste sans pointeurs</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS DE SYNTAXE ==================== -->
+  <question id="q24" type="multipleChoice">
+    <enonce>Comment accède-t-on au champ "No_serie" d'une cellule pointée par "Courant" ?</enonce>
+    <choices>
+      <choice id="A">Courant.No_serie</choice>
+      <choice id="B">Courant^.No_serie</choice>
+      <choice id="C">Courant-&gt;No_serie</choice>
+      <choice id="D">^Courant.No_serie</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q25" type="multipleChoice">
+    <enonce>Comment accède-t-on au champ "No_serie" de la cellule pointée par "Courant" en langage C ?</enonce>
+    <choices>
+      <choice id="A">Courant.No_serie</choice>
+      <choice id="B">Courant-&gt;No_serie</choice>
+      <choice id="C">Courant^.No_serie</choice>
+      <choice id="D">&amp;Courant.No_serie</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES POINTEURS ==================== -->
+  <question id="q26" type="multipleChoice">
+    <enonce>Que représente "Courant" dans l'instruction "Courant &lt;- Courant^.Suivant" ?</enonce>
+    <choices>
+      <choice id="A">On avance d'une cellule dans la liste</choice>
+      <choice id="B">On recule d'une cellule dans la liste</choice>
+      <choice id="C">On supprime la cellule courante</choice>
+      <choice id="D">On crée une nouvelle cellule</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q27" type="multipleChoice">
+    <enonce>Pour tester si on a atteint la fin d'une liste chaînée, on vérifie que :</enonce>
+    <choices>
+      <choice id="A">Courant = 0</choice>
+      <choice id="B">Courant = NIL</choice>
+      <choice id="C">Courant^.Suivant = NIL</choice>
+      <choice id="D">Courant = Tête</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q28" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes d'insertion d'une nouvelle cellule en tête d'une liste chaînée :</enonce>
+    <bonneReponse>ALLOUER(Nouveau)|Lire les valeurs|Nouveau^.Suivant &lt;- Tête|Tête &lt;- Nouveau</bonneReponse>
+    <codeLines>
+      <line>Nouveau^.Suivant &lt;- Tête</line>
+      <line>Tête &lt;- Nouveau</line>
+      <line>ALLOUER(Nouveau)</line>
+      <line>Lire les valeurs</line>
+    </codeLines>
+  </question>
+
+  <question id="q29" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes de suppression de la tête d'une liste chaînée :</enonce>
+    <bonneReponse>Temp &lt;- Tête|Tête &lt;- Tête^.Suivant|LIBERER(Temp)</bonneReponse>
+    <codeLines>
+      <line>LIBERER(Temp)</line>
+      <line>Tête &lt;- Tête^.Suivant</line>
+      <line>Temp &lt;- Tête</line>
+    </codeLines>
+  </question>
+
+  <!-- ==================== QUESTION DE RÉFLEXION ==================== -->
+  <question id="q30" type="multipleChoice">
+    <enonce>Quelle est la principale différence entre une liste chaînée et un tableau ?</enonce>
+    <choices>
+      <choice id="A">Le tableau est dynamique, la liste est statique</choice>
+      <choice id="B">La liste permet un accès direct par indice, le tableau non</choice>
+      <choice id="C">Le tableau a une taille fixe, la liste peut grandir/shrinker dynamiquement</choice>
+      <choice id="D">La liste utilise moins de mémoire que le tableau</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+</chapter>

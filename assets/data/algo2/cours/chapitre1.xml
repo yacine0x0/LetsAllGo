@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_1" title="Les enregistrements">
+
+  <!-- ==================== OBJECTIFS DU CHAPITRE ==================== -->
+  <section id="0" title="Contenu du chapitre">
+    <bulletPoints>
+      <point>1. Définition d'un enregistrement</point>
+      <point>2. Manipulation des variables de type enregistrement</point>
+      <point>3. Tableau d'enregistrements</point>
+      <point>4. Enregistrement membre d'un autre enregistrement</point>
+      <point>5. La structure AVEC - FAIRE</point>
+      <point>6. Passage d'un enregistrement à une procédure ou fonction</point>
+      <point>7. Exercices</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 1. DÉFINITION ==================== -->
+  <section id="1" title="Définition d'un enregistrement">
+    <content>Un enregistrement est un ensemble de variables (de champs) de types différents constituant une entité.</content>
+    
+    <subsection title="Syntaxe de déclaration">
+      <content><strong>Syntaxe algorithmique :</strong><br/>
+TYPE nom_type_enregistrement = ENREGISTREMENT<br/>
+  Champ1 : Type1 ;<br/>
+  Champ2 : Type2 ;<br/>
+  ...<br/>
+  ChampN : TypeN ;<br/>
+FIN ;</content>
+      
+      <content><strong>En langage C :</strong><br/>
+STRUCT nom_type_enregistrement<br/>
+{<br/>
+  Type1 Champ1 ;<br/>
+  Type2 Champ2 ;<br/>
+  ...<br/>
+  TypeN ChampN ;<br/>
+} ;</content>
+    </subsection>
+
+    <subsection title="Exemple de définition d'enregistrement">
+      <content>TYPE Facture = Enregistrement<br/>
+  NoFacture : Entier ;<br/>
+  Montant : Réel ;<br/>
+FIN ;</content>
+      <content>Une fois l'enregistrement défini, on peut déclarer des variables de type de cet enregistrement.</content>
+      <content><strong>Exemple :</strong><br/>
+VAR Facture1, Facture2 : Facture ;</content>
+      <content>Il est à noter que « Facture1 » et « Facture2 » sont deux variables de type « Facture ». Chacune de ces variables contient un numéro de facture et un montant.</content>
+    </subsection>
+
+    <subsection title="Réutilisation des identificateurs de champ">
+      <content>Dans un enregistrement, chaque champ doit avoir un identificateur unique. Mais, pour des enregistrements différents, on peut réutiliser le même identificateur de champ avec un type différent ou identique.</content>
+      <content><strong>Exemple :</strong><br/>
+TYPE Enregistrement1 = ENREGISTREMENT<br/>
+  a : Entier ;<br/>
+  b : Réel ;<br/>
+  c : Char ;<br/>
+FIN ;<br/><br/>
+TYPE Enregistrement2 = ENREGISTREMENT<br/>
+  a : Char ;<br/>
+  b, c : Réel ;<br/>
+FIN ;</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 2. MANIPULATION DES VARIABLES ==================== -->
+  <section id="2" title="Manipulation des variables de type enregistrement">
+    <content>La manipulation des variables de type enregistrement se fait champ par champ. Et l'accès à un champ donné se fait comme suit : « Variable_enregistrement.champ ».</content>
+    
+    <subsection title="Exemple complet">
+      <content>ALGORITHME exemple1 ;<br/>
+TYPE Compte = ENREGISTREMENT<br/>
+  NoCompte : Entier ;<br/>
+  Nom : Chaîne de caractères ;<br/>
+FIN ;<br/>
+VAR Client : Compte ;<br/>
+DÉBUT<br/>
+  ÉCRIRE('Entrez le numéro de compte et nom du client');<br/>
+  LIRE(Client.NoCompte) ;<br/>
+  LIRE(Client.Nom) ;<br/>
+  ÉCRIRE('Le numéro de compte du client est : ', Client.NoCompte);<br/>
+  ÉCRIRE('Le nom du Client est : ', Client.Nom);<br/>
+FIN.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 3. TABLEAU D'ENREGISTREMENTS ==================== -->
+  <section id="3" title="Tableau d'enregistrements">
+    <content>Il est possible de déclarer un tableau de sort que chaque case du tableau est un élément de type enregistrement.</content>
+    
+    <subsection title="Syntaxe de déclaration">
+      <content>VAR Nom_tableau : Tableau [1 .. dimension] DE Nom_type_enregistrement ;</content>
+      <content>L'accès à un champ d'un tableau d'enregistrements se fait comme suit : « Nom_tableau[indice].Champ ». Où « indice » désigne l'indice du ième élément du tableau.</content>
+    </subsection>
+
+    <subsection title="Exemple complet">
+      <content>ALGORITHME exemple2 ;<br/>
+CONST dim = 3 ;<br/>
+TYPE Compte = ENREGISTREMENT<br/>
+  NoCompte : Entier ;<br/>
+  Nom : Chaîne de caractères ;<br/>
+FIN ;<br/>
+VAR C : Tableau [1..dim] DE Compte ;<br/>
+i : Entier ;<br/>
+DÉBUT<br/>
+  POUR i ALLANT DE 1 A dim FAIRE<br/>
+    ÉCRIRE('Entrez le numéro de compte du client') ;<br/>
+    LIRE(C[i].NoCompte) ;<br/>
+    ÉCRIRE('Entrez le nom du client') ;<br/>
+    LIRE(C[i].Nom) ;<br/>
+  FIN POUR ;<br/>
+  ÉCRIRE('Voici le tableau d'enregistrements saisi : ');<br/>
+  POUR i ALLANT DE 1 A dim FAIRE<br/>
+    ÉCRIRE('Numéro de compte du client ', i, ' est : ', C[i].NoCompte) ;<br/>
+    ÉCRIRE('Le nom du client ', i, ' est : ', C[i].Nom) ;<br/>
+  FIN POUR ;<br/>
+FIN.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 4. ENREGISTREMENT MEMBRE D'UN AUTRE ==================== -->
+  <section id="4" title="Enregistrement membre d'un autre enregistrement">
+    <content>Un champ d'un enregistrement peut lui-même être de type enregistrement. Dans ce cas, le type de l'enregistrement champ doit être déclaré avant le type de l'enregistrement qui le contient.</content>
+    <content>De plus, on accède à un membre de sous-enregistrement comme suit : « variable_enregistrement.variable_sous_enregistrement.Champ ».</content>
+    
+    <subsection title="Exemple complet">
+      <content>Algorithme qui permet de saisir une variable de type enregistrement, puis l'affiche. L'enregistrement utilisé contient lui-même un champ de type enregistrement.</content>
+      <content>ALGORITHME exemple3 ;<br/>
+TYPE Date = ENREGISTREMENT<br/>
+  Jour : 1 .. 31 ;<br/>
+  Mois : 1 .. 12 ;<br/>
+  Année : 2000 .. 2021 ;<br/>
+FIN ;<br/><br/>
+TYPE Compte = ENREGISTREMENT<br/>
+  NoCompte : Entier ;<br/>
+  Nom : Chaîne de caractères ;<br/>
+  DateOuverture : Date ;<br/>
+FIN ;<br/>
+VAR Client : Compte ;<br/>
+DÉBUT<br/>
+  ÉCRIRE('Entrez le numéro de compte du client') ;<br/>
+  LIRE(Client.NoCompte) ;<br/>
+  ÉCRIRE('Entrez le nom du client') ;<br/>
+  LIRE(Client.Nom) ;<br/>
+  ÉCRIRE('Entrez le jour d'ouverture du compte') ;<br/>
+  LIRE(Client.DateOuverture.Jour) ;<br/>
+  ÉCRIRE('Entrez le mois d'ouverture du compte') ;<br/>
+  LIRE(Client.DateOuverture.Mois) ;<br/>
+  ÉCRIRE('Entrez l'année d'ouverture du compte') ;<br/>
+  LIRE(Client.DateOuverture.Année) ;<br/>
+  ÉCRIRE('Voici l'enregistrement saisi') ;<br/>
+  ÉCRIRE(Client.NoCompte, ' ', Client.Nom) ;<br/>
+  ÉCRIRE(Client.DateOuverture.Jour, ' / ', Client.DateOuverture.Mois, ' / ', Client.DateOuverture.Année) ;<br/>
+FIN.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 5. LA STRUCTURE AVEC - FAIRE ==================== -->
+  <section id="5" title="La structure AVEC - FAIRE">
+    <content>La structure AVEC-FAIRE est utilisée pour parcourir les champs d'un enregistrement d'une manière automatique.</content>
+    
+    <subsection title="Syntaxe de déclaration">
+      <content>AVEC enregistrement FAIRE<br/>
+  instruction(s) ;<br/>
+FIN AVEC ;</content>
+    </subsection>
+
+    <subsection title="Exemple">
+      <content>AVEC Client FAIRE<br/>
+  ÉCRIRE(NoCompte) ;<br/>
+  ÉCRIRE(Nom) ;<br/>
+  ÉCRIRE(DateOuverture.Jour, '/', DateOuverture.Mois, '/', DateOuverture.Année) ;<br/>
+FIN AVEC ;</content>
+      <content><strong>Remarque :</strong> Il est à noter que la structure AVEC-FAIRE n'existe pas en langage C.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 6. PASSAGE À UNE PROCÉDURE OU FONCTION ==================== -->
+  <section id="6" title="Passage d'un enregistrement à une procédure ou fonction">
+    <content>Une procédure ou une fonction peut recevoir une variable de type enregistrement comme paramètre.</content>
+    
+    <subsection title="Syntaxe de déclaration">
+      <content>TYPE Nom_type_enregistrement = ENREGISTREMENT<br/>
+  Champ1 : Type1 ;<br/>
+  Champ2 : Type2 ;<br/>
+  ...<br/>
+  ChampN : TypeN ;<br/>
+FIN ;<br/><br/>
+PROCÉDURE nom_procedure (nom_variable : Nom_type_enregistrement);<br/>
+(OU FONCTION nom_fonction (nom_variable : Nom_type_enregistrement) : Type ;)<br/>
+DÉBUT<br/>
+  Instruction(s) ;<br/>
+FIN ;</content>
+    </subsection>
+
+    <subsection title="Exemple complet">
+      <content>ALGORITHME exemple4 ;<br/>
+TYPE Compte = ENREGISTREMENT<br/>
+  NoCompte : Entier ;<br/>
+  Nom : Chaîne de caractères ;<br/>
+  Solde : Réel ;<br/>
+FIN ;<br/>
+VAR Client : Compte ;<br/><br/>
+PROCÉDURE Proc_affichage (x : Compte) ;<br/>
+DÉBUT<br/>
+  ÉCRIRE('Affichage dans la procédure : ');<br/>
+  ÉCRIRE('Le numéro de compte du client : ', x.NoCompte);<br/>
+  ÉCRIRE('Le nom du client : ', x.Nom);<br/>
+  ÉCRIRE('Le solde du client : ', x.Solde);<br/>
+FIN ;<br/><br/>
+DÉBUT<br/>
+  ÉCRIRE('Affichage dans l'algorithme principal');<br/>
+  AVEC Client FAIRE<br/>
+    LIRE(NoCompte);<br/>
+    LIRE(Nom);<br/>
+    LIRE(Solde);<br/>
+  FIN AVEC ;<br/>
+  Proc_affichage(Client);<br/>
+FIN.</content>
+      <content>La procédure « proc_affichage » reçoit la variable « Client » de type Compte, la copie dans sa variable locale « x », puis l'affiche.</content>
+      <content><strong>Remarque :</strong> On ne peut pas retourner une variable de type enregistrement à l'aide d'une fonction, autrement que par adresse. Ce point sera abordé en détails dans le chapitre des pointeurs.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 7. EXERCICES ==================== -->
+  <section id="7" title="Exercices">
+    <subsection title="Exercice A">
+      <content>Soit un enregistrement « Client » contenant les champs suivants : Nom, Prénom, et Téléphone. Écrire un algorithme qui permet de saisir et d'afficher un client.</content>
+    </subsection>
+    
+    <subsection title="Exercice B">
+      <content>Soit un enregistrement « Étudiant » contenant les champs suivants : Nom, Prénom, et Moyenne (comprise entre 0 et 20), et Adresse. L'enregistrement « Adresse » contient les champs suivants : Numéro de rue, Nom de rue, et Code postal. Écrire un algorithme qui permet de saisir et d'afficher un tableau d'étudiants de dimension 3. L'affichage doit se faire en utilisant un sous-algorithme.</content>
+    </subsection>
+
+    <subsection title="Orientation et remédiation">
+      <bulletPoints>
+        <point>Si l'étudiant n'arrive pas à faire la partie « A » de l'exercice, il est conseillé de refaire la lecture et analyse de la partie « Types composés » et les Sections 1 et 2 de la partie « Enregistrements » de ce chapitre.</point>
+        <point>Si l'étudiant n'arrive pas à faire la partie « B » de l'exercice, il est conseillé de refaire la lecture et analyse des Sections 3, 4, 5, et 6 de la partie « Enregistrements » de ce chapitre.</point>
+        <point>Si l'étudiant a pu terminer l'exercice, il est conseillé de passer au chapitre suivant.</point>
+      </bulletPoints>
+    </subsection>
+  </section>
+
+</chapter>

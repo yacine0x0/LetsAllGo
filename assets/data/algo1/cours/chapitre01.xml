@@ -1,104 +1,253 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_01" title="Introduction à l'algorithmique">
+<chapter id="Chapitre_01" title="Éléments de base d'algorithmique">
 
-  <section id="1" title="Définition de l'algorithmique">
-    <content>L'algorithmique est la science qui étudie la conception, l'analyse et l'implémentation des algorithmes. Un algorithme est une suite finie et ordonnée d'instructions claires permettant de résoudre un problème. On peut le comparer à une recette de cuisine.</content>
+  <!-- ==================== OBJECTIFS ==================== -->
+  <section id="0" title="Objectifs du chapitre">
+    <content>A l'issue de ce chapitre, vous serez capable de :</content>
     <bulletPoints>
-      <point>Suite d'instructions ordonnées</point>
-      <point>Résout un problème précis</point>
-      <point>Représentable en pseudo-code ou code</point>
-      <point>Même entrée donne toujours la même sortie</point>
+      <point>Identifier une donnée.</point>
+      <point>Expliquer le rôle de chaque instruction de base.</point>
+      <point>Intégrer des entrées simples et des opérations primitives dans un algorithme.</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Caractéristiques d'un algorithme">
-    <content>Un algorithme doit respecter plusieurs propriétés pour être correct et utilisable.</content>
+  <!-- ==================== INTRODUCTION ==================== -->
+  <section id="1" title="Introduction">
+    <content>L'algorithmique est la science de la conception et de l'étude des algorithmes. Concevoir un algorithme de résolution d'un problème est synonyme de proposer une méthode de résolution automatique dudit problème. De ce fait, l'algorithmique est considérée comme l'un des éléments essentiels de l'informatique, car le traitement automatique de l'information ne pourra pas exister sans l'algorithmique.</content>
+    <content>Dans ce chapitre, nous exhibons les éléments de base d'algorithmique, principalement, la notion d'algorithme, les types et les formes de données simples utilisées dans un algorithme, ainsi que les instructions primitives qui permettent de manipuler ces données.</content>
+  </section>
+
+  <!-- ==================== ÉTAPES DE LA RÉSOLUTION AUTOMATIQUE ==================== -->
+  <section id="2" title="Étapes de la résolution automatique d'un problème">
+    <content>En informatique, la résolution automatique d'un problème s'effectue en suivant les 4 étapes essentielles suivantes :</content>
     <bulletPoints>
-      <point>Finitude : se termine après un nombre fini d'étapes</point>
-      <point>Précision : instructions claires et non ambiguës</point>
-      <point>Entrées : peut recevoir des données</point>
-      <point>Sorties : produit un résultat</point>
-      <point>Efficacité : optimise temps et mémoire</point>
-      <point>Généralité : fonctionne pour plusieurs cas</point>
+      <point><strong>Analyse</strong> : sert comme une étape d'étude dans laquelle le problème soulevé est analysé dans le but de sa compréhension. Ceci est fait souvent en répondant à 3 questions :<br/>
+        - Question 1 : Qu'est-ce que nous avons comme données à traiter (les entrées) ?<br/>
+        - Question 2 : Que devons-nous avoir après le traitement des données (Les résultats ou sorties) ?<br/>
+        - Question 3 : Que devons-nous faire aux données pour avoir les résultats voulus ?
+      </point>
+      <point><strong>Algorithme</strong> : nous écrivons un algorithme qui présente une solution au problème soulevé.</point>
+      <point><strong>Programmation</strong> : nous traduisons l'algorithme en un programme exécutable sur ordinateur en utilisant un langage spécifique que la machine comprend appelé langage de programmation.</point>
+      <point><strong>Édition</strong> : nous introduisons le programme dans l'ordinateur pour voir les résultats de son exécution sur des données réelles du problème.</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Types d'algorithmes">
-    <content>Les algorithmes se classent selon leur structure.</content>
-    <bulletPoints>
-      <point>Séquentiel : instructions dans l'ordre</point>
-      <point>Conditionnel : utilise des conditions</point>
-      <point>Itératif : utilise des boucles</point>
-      <point>Récursif : fonction qui s'appelle elle-même</point>
-    </bulletPoints>
+  <!-- ==================== NOTION D'ALGORITHME ==================== -->
+  <section id="3" title="Notion d'algorithme">
+    <content>L'appellation algorithme est inspirée du nom du mathématicien musulman ouzbek Abou Jaafar Mohamed Ibn Moussa Al Khawarizmi. Un algorithme est une liste (ou ensemble) ordonnée d'opérations primitives, appelées instructions, réalisant un traitement spécifique pour la résolution d'un problème.</content>
+    
+    <subsection title="Définition : Instruction">
+      <content>Une instruction est une action appliquant une opération définie sur une ou plusieurs données. En algorithmique, nous trouvons diverses formes et types de données. De ce fait, différents types d'instructions doivent exister aussi pour traiter ces données.</content>
+    </subsection>
+
+    <subsection title="Structure d'un algorithme">
+      <content>Un algorithme de base comprend généralement 4 parties, et sa syntaxe globale est la suivante :</content>
+      <content><strong>Syntaxe :</strong><br/>
+1 ALGORITHME Algo1 ; {1} En-tête de l'algorithme<br/>
+2 CONSTANTE {2} Déclaration des constantes<br/>
+3 {3} Déclaration des constantes<br/>
+4 VARIABLE {3} Déclaration des variables<br/>
+5 {3} Déclaration des variables<br/>
+6 DÉBUT {4} Le corps de l'algorithme<br/>
+7 {On trouve ici la liste des instructions de l'algorithme}<br/>
+8 FIN.</content>
+      <bulletPoints>
+        <point>(1) L'en-tête de l'algorithme : commence par le mot ALGORITHME, suivie du nom de l'algorithme.</point>
+        <point>(2) La définition des constantes de l'algorithme : commence par le mot clé CONSTANTE (ou CONST).</point>
+        <point>(3) La définition des variables de l'algorithme : commence par le mot clé VARIABLE (ou VAR).</point>
+        <point>(4) Le corps de l'algorithme : cette partie est comprise entre deux mots clés : DÉBUT et FIN. Le corps de l'algorithme contient l'ensemble des instructions, qui sont écrites selon un ordre bien défini. Chaque instruction se termine par un caractère spécial, le point-virgule (;). Les instructions d'un algorithme sont exécutées séquentiellement. Explicitement, en commençant par l'instruction qui vient juste après le mot clé DÉBUT jusqu'à la dernière instruction qui précède le mot clé FIN.</point>
+      </bulletPoints>
+    </subsection>
   </section>
 
-  <section id="4" title="Variables, types et constantes">
-    <content>Les données sont stockées dans des variables ou constantes. Une variable peut changer, une constante reste fixe.</content>
-    <bulletPoints>
-      <point>Variable : espace mémoire avec une valeur modifiable</point>
-      <point>Constante : valeur fixe</point>
-      <point>Types : entier, réel, caractère, chaîne, booléen</point>
-      <point>Exemple : a ← 5 ; b ← 7 ; somme ← a + b</point>
-      <point>Constantes : PI = 3.14, MAX = 30</point>
-    </bulletPoints>
+  <!-- ==================== TYPES DE DONNÉES SIMPLES ==================== -->
+  <section id="4" title="Types de données simples d'algorithmique">
+    <content>Un type détermine l'ensemble des valeurs que peut prendre une donnée. Un type est caractérisé par ses valeurs et les opérations que nous pouvons effectuer sur les données ayant ce type. Les types des données simples d'algorithmique sont : Entier, Réel, Caractère, Chaîne de caractères, et Booléen.</content>
+
+    <subsection title="1. Le type Entier (Int pour integer)">
+      <content>Une donnée de type Entier désigne une quantité indivisible (en mathématiques : Z, l'ensemble des entiers). Un entier est représenté sur 16 bits (2 octets).</content>
+    </subsection>
+
+    <subsection title="2. Le type Réel (Float ou Double)">
+      <content>Une donnée est réelle si sa valeur est fractionnaire (en mathématiques : R, l'ensemble des réels). Un réel est représenté sur 4 ou 6 octets.</content>
+    </subsection>
+
+    <subsection title="3. Le type Caractère (Char)">
+      <content>Une donnée de type Caractère peut avoir tous les symboles que nous trouvons sur le clavier d'un ordinateur : espace, lettres, chiffres, signes de ponctuation et caractères spéciaux (#, @, &amp;, etc.). Un caractère est représenté sur un octet.</content>
+      <content><strong>Remarque :</strong> Une donnée de type Caractère doit être entre apostrophes. Ainsi, dans un algorithme :<br/>
+- A : désigne un nom d'une donnée.<br/>
+- 'A' : désigne une valeur (la lettre A majuscule) d'une donnée.</content>
+    </subsection>
+
+    <subsection title="4. Le type Chaîne de caractères (String)">
+      <content>Une donnée de type Chaîne de caractères est une suite de caractères.</content>
+      <content><strong>Exemple :</strong> 'LICENCE INFORMATIQUE' est une chaîne de caractères, elle est représentée sur 20 octets. Le blanc (espace) est un caractère.</content>
+    </subsection>
+
+    <subsection title="5. Le type Booléen (Bool)">
+      <content>Une donnée de type Booléen représente uniquement deux valeurs logiques : VRAI ou FAUX.</content>
+    </subsection>
   </section>
 
-  <section id="5" title="Opérateurs et expressions">
-    <content>Les expressions combinent des variables et des opérateurs pour produire une valeur.</content>
-    <bulletPoints>
-      <point>Opérateurs arithmétiques : + - * / %</point>
-      <point>Opérateurs relationnels : == != &lt; &gt; &lt;= &gt;=</point>
-      <point>Opérateurs logiques : ET, OU, NON</point>
-      <point>Exemple : moyenne ← (a + b + c) / 3</point>
-      <point>Exemple : age &gt;= 18</point>
-    </bulletPoints>
+  <!-- ==================== FORMES DE DONNÉES ==================== -->
+  <section id="5" title="Formes de données simples d'algorithmique">
+    <content>Une donnée (simple) à traiter par les instructions d'un algorithme peut être : une constante, une variable, ou une expression.</content>
+
+    <subsection title="1. Présentation d'une constante">
+      <content>Une constante est la forme d'une donnée caractérisée par un nom fixe, un type fixe, et une valeur fixe. La valeur d'une constante, une fois déclarée dans un algorithme, ne peut en aucun cas être modifiée lors du déroulement de l'algorithme. De ce fait, elle est conservée jusqu'à la terminaison de son déroulement.</content>
+      <content><strong>Exemple : La constante Pi</strong><br/>
+Pi = 3,14 est caractérisée par :<br/>
+- Nom : Pi.<br/>
+- Type : Réel.<br/>
+- Valeur : 3.14.</content>
+      <content><strong>Syntaxe de déclaration d'une constante :</strong><br/>
+CONSTANTE (ou CONST) identificateur = Valeur ;</content>
+    </subsection>
+
+    <subsection title="2. Présentation d'une variable">
+      <content>Contrairement à une constante, une variable est la forme d'une donnée dont la valeur peut être redéfinie à tout moment lors du déroulement de l'algorithme dans lequel elle est déclarée.</content>
+      <content><strong>Exemple : La note d'un examen</strong><br/>
+La note d'un examen peut être vue comme une variable qui peut avoir différentes valeurs possibles comprises entre 0 et 20 :<br/>
+- Nom : Note.<br/>
+- Type : Réel.<br/>
+- Valeur : 12, 10.25, 18.5, etc.</content>
+      <content><strong>Syntaxe de déclaration d'une variable :</strong><br/>
+VARIABLE (ou VAR) liste d'identificateurs : TYPE ;</content>
+      <content><strong>Exemple de déclaration de quelques variables :</strong><br/>
+VARIABLE Age, Som, Nombre : Entier ;<br/>
+Prix, Moyenne : Réel ;<br/>
+Chiffre : Caractère ;<br/>
+Chaine : Chaîne de caractères ;<br/>
+Gagner : Booléen ;</content>
+    </subsection>
+
+    <subsection title="Identificateur d'une constante ou variable">
+      <content>Le nom d'une constante ou d'une variable est appelé un identificateur. Un bon identificateur de constante ou de variable doit satisfaire certains critères, essentiellement :</content>
+      <bulletPoints>
+        <point>Il doit être alphanumérique commençant obligatoirement par une lettre et ne contenant pas de caractères spéciaux (&gt;, &lt;, +, -, etc.).</point>
+        <point>Il doit être compréhensible (significatif) et facilement mémorable.</point>
+        <point>Il doit être unique dans l'algorithme et différent des mots clés.</point>
+      </bulletPoints>
+    </subsection>
+
+    <subsection title="3. Présentation d'une expression">
+      <content>Une expression présente un calcul arithmétique ou booléen.</content>
+      
+      <subsubsection title="3.1. Expression arithmétique">
+        <content>Une expression arithmétique est donnée sous la forme X OP Y, où :<br/>
+- X et Y sont des opérandes qui peuvent être des constantes ou des variables.<br/>
+- OP est un opérateur arithmétique (+ , -, *, DIV, MOD, /).<br/>
+En plus de ces éléments, une expression arithmétique peut contenir des parenthèses.</content>
+        <content><strong>Exemples :</strong><br/>
+- 2 * X + Y.<br/>
+- (-4 DIV 2) * 5 + (1 / 2) MOD 3.</content>
+      </subsubsection>
+
+      <subsubsection title="3.2. Expression booléenne">
+        <content>Une expression logique contient des opérandes, et des opérateurs de comparaison ou des opérateurs booléens. Elle peut être une expression de relation ou une expression logique.</content>
+        <bulletPoints>
+          <point>Expression de relation (comparaison) : c'est une expression composée d'opérandes (qui peuvent être des variables ou des constantes) ayant des valeurs numériques, et des opérations de comparaison (&gt;, &lt;, ≥, ≤, =, ≠).</point>
+          <point>Expression logique : c'est une expression qui contient des opérandes de type booléen et des opérateurs logiques (ET, OU, NON).</point>
+        </bulletPoints>
+      </subsubsection>
+
+      <subsubsection title="3.3. Les opérations permises sur les types de bases">
+        <content>Chaque type de base possède un ensemble d'opérations qui peuvent être appliquées aux données de ce type.</content>
+        <content><strong>Type Entier :</strong> +, -, *, DIV, MOD, et les comparaisons (&lt;, ≤, &gt;, ≥, =, ≠).</content>
+        <content><strong>Type Réel :</strong> +, -, *, /, et les comparaisons (&lt;, ≤, &gt;, ≥, =, ≠).</content>
+        <content><strong>Type Caractère :</strong> comparaisons (&lt;, ≤, &gt;, ≥, =, ≠) et concaténation (+).</content>
+        <content><strong>Type Chaîne de caractères :</strong> comparaisons (&lt;, ≤, &gt;, ≥, =, ≠) et concaténation (+).</content>
+        <content><strong>Type Booléen :</strong> ET, OU, NON, et les comparaisons (&lt;, ≤, &gt;, ≥, =, ≠).</content>
+      </subsubsection>
+
+      <subsubsection title="3.4. Évaluation des expressions">
+        <content>L'ordre des opérations constituant une expression obéit aux règles suivantes :</content>
+        <bulletPoints>
+          <point>Les opérations entre parenthèses sont évaluées les premières.</point>
+          <point>Les opérations sont évaluées de gauche à droite lorsqu'elles ont des priorités égales. Sinon, de la plus prioritaire à la moins prioritaire lorsqu'elles ont des priorités inégales.</point>
+        </bulletPoints>
+        <content><strong>Priorités des opérateurs (de la plus haute à la plus basse) :</strong><br/>
+1. NON, - (unitaire)<br/>
+2. *, /, DIV, MOD, ET<br/>
+3. +, - (binaire), OU<br/>
+4. &lt;, &lt;=, =, &gt;, &gt;=, ≠ (comparaisons)</content>
+      </subsubsection>
+    </subsection>
   </section>
 
-  <section id="6" title="Structures conditionnelles">
-    <content>Les conditions permettent de prendre des décisions dans un algorithme.</content>
-    <bulletPoints>
-      <point>Si condition alors instruction</point>
-      <point>Si condition alors ... sinon ...</point>
-      <point>Selon (switch) pour plusieurs cas</point>
-      <point>Exemple : si age &gt;= 18 afficher "Majeur" sinon "Mineur"</point>
-      <point>Conditions combinées : age &gt;= 18 ET age &lt;= 25</point>
-    </bulletPoints>
+  <!-- ==================== INSTRUCTIONS DE BASE ==================== -->
+  <section id="6" title="Les instructions de base d'un algorithme">
+    <content>Dans un algorithme, on distingue principalement deux sortes d'instructions : les instructions de traitement (pour effectuer des opérations), et les instructions de contrôle (pour indiquer la manière dont les opérations sont effectuées). Dans le cadre de ce chapitre, nous illustrons les instructions de traitement uniquement.</content>
+    <content>Il existe trois instructions de traitements de base : la lecture, l'écriture, et l'affectation.</content>
+
+    <subsection title="1. L'instruction LIRE (READ / scanf)">
+      <content>Elle est utilisée pour attribuer une valeur à une variable. Dans le cas d'un programme, la valeur est lue à partir du clavier de l'ordinateur lors de l'exécution du programme. Ensuite, elle est stockée dans la zone mémoire réservée pour la variable.</content>
+      <content><strong>Syntaxe :</strong><br/>
+LIRE(v1, v2, ..., vn) ;</content>
+      <content>Où : v1, v2, ..., vn sont des identificateurs de variables de même type. Les n valeurs introduites au clavier sont affectées dans l'ordre aux variables v1, v2, ..., vn (la première à v1, la deuxième à v2, etc.).</content>
+      <content><strong>Attention :</strong><br/>
+- Il est impossible de lire la valeur d'une constante par l'instruction LIRE.<br/>
+- Il est interdit de lire une expression arithmétique ou logique ; LIRE(a+b) est impossible.</content>
+    </subsection>
+
+    <subsection title="2. L'instruction ÉCRIRE (WRITE / printf)">
+      <content>Elle permet d'écrire (afficher) les résultats sur l'écran.</content>
+      <content><strong>Syntaxe :</strong><br/>
+ÉCRIRE(v1, v2, ..., vn) ;</content>
+      <content>Les valeurs des variables : v1, v2, ..., vn sont affichées à l'écran.</content>
+      <content><strong>Remarque :</strong> L'instruction ÉCRIRE permet aussi d'afficher des constantes (en général des textes) et des valeurs d'expressions. On peut par exemple avoir :<br/>
+- Si nous avons a = 3 et b = 1, ÉCRIRE(a, 'plus', b, '=', a+b) ; affichera sur l'écran : 3 plus 1 = 4.<br/>
+- ÉCRIRE('Bonjour, ceci est un texte à afficher') ; affichera sur l'écran le texte : Bonjour, ceci est un texte à afficher.</content>
+    </subsection>
+
+    <subsection title="3. L'instruction d'affectation">
+      <content>Elle permet de donner une valeur déjà existante en mémoire centrale à une variable.</content>
+      <content><strong>Syntaxe :</strong><br/>
+Nom_de_variable &lt;- valeur ;</content>
+      <content>Où valeur peut être une constante, une autre variable, ou une expression.</content>
+      <content><strong>Exemples :</strong><br/>
+Nombre &lt;- 5 ;<br/>
+Som &lt;- Nombre ;<br/>
+Moyenne &lt;- (note1 + note2)/2 ;</content>
+      <content><strong>Attention :</strong><br/>
+- Tout comme l'instruction LIRE, nous ne pouvons pas affecter une valeur à une constante.<br/>
+- Réel &lt;- Entier est autorisé.<br/>
+- Entier &lt;- Réel n'est pas autorisé.<br/>
+- Chaîne de caractères &lt;- Caractère est autorisé.<br/>
+- Caractère &lt;- Chaîne de caractères n'est pas autorisé.</content>
+    </subsection>
   </section>
 
-  <section id="7" title="Structures itératives (boucles)">
-    <content>Les boucles permettent de répéter des instructions plusieurs fois.</content>
+  <!-- ==================== TRACE D'EXÉCUTION ==================== -->
+  <section id="7" title="La trace d'exécution d'un algorithme">
+    <content>Elle permet de suivre le déroulement (l'exécution manuelle) d'un algorithme pas à pas (instruction après instruction) afin de s'assurer de son bon fonctionnement. La trace d'exécution permet de :</content>
     <bulletPoints>
-      <point>Tant que (while) : répète tant que condition vraie</point>
-      <point>Répéter jusqu'à (do while) : exécute au moins une fois</point>
-      <point>Pour (for) : nombre d'itérations connu</point>
-      <point>Exemple : pour i de 1 à 10 afficher i</point>
-      <point>Exemple : somme des N nombres avec une boucle</point>
-      <point>Attention aux boucles infinies</point>
+      <point>Vérifier les valeurs des variables après exécution de chaque instruction.</point>
+      <point>S'assurer de la validité de l'algorithme. Essentiellement, s'assurer que l'algorithme se termine, et que son résultat est correct.</point>
     </bulletPoints>
-  </section>
 
-  <section id="8" title="Représentation d'un algorithme">
-    <content>Un algorithme peut être représenté de plusieurs façons.</content>
-    <bulletPoints>
-      <point>Langage naturel</point>
-      <point>Pseudo-code</point>
-      <point>Organigramme</point>
-      <point>Code (Java, Python, Dart...)</point>
-      <point>Exemple : lire a, b puis afficher a + b</point>
-    </bulletPoints>
-  </section>
-
-  <section id="9" title="Bonnes pratiques en algorithmique">
-    <content>Quelques règles permettent d'écrire de meilleurs algorithmes.</content>
-    <bulletPoints>
-      <point>Utiliser des noms de variables clairs</point>
-      <point>Commenter les parties importantes</point>
-      <point>Bien structurer avec indentation</point>
-      <point>Découper en fonctions</point>
-      <point>Tester avec plusieurs cas</point>
-      <point>Valider les entrées utilisateur</point>
-    </bulletPoints>
+    <subsection title="Exemple de trace d'un algorithme">
+      <content>Que sera-t-il affiché à l'écran par l'algorithme suivant :</content>
+      <content>ALGORITHME Trace ;<br/>
+VAR X, Y, Z : Entier ;<br/>
+DÉBUT<br/>
+  X &lt;- 3 ;<br/>
+  Y &lt;- 7 ;<br/>
+  Z &lt;- X ;<br/>
+  X &lt;- Y ;<br/>
+  Z &lt;- Z + 1 ;<br/>
+  ÉCRIRE(2, X, Y) ;<br/>
+  ÉCRIRE(X + 1 / 2) ;<br/>
+FIN.</content>
+      <content><strong>Trace d'exécution :</strong><br/>
+- Après X&lt;-3 : X=3, Y=?, Z=?<br/>
+- Après Y&lt;-7 : X=3, Y=7, Z=?<br/>
+- Après Z&lt;-X : X=3, Y=7, Z=3<br/>
+- Après X&lt;-Y : X=7, Y=7, Z=3<br/>
+- Après Z&lt;-Z+1 : X=7, Y=7, Z=4<br/>
+- ÉCRIRE(2, X, Y) affiche : 2 7 7<br/>
+- ÉCRIRE(X+1/2) affiche : 7.5</content>
+    </subsection>
   </section>
 
 </chapter>

@@ -1,245 +1,274 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_04" title="Structures de données – Vecteurs et Matrices">
+<chapter id="Chapitre_04" title="Vecteurs et matrices">
 
-  <section id="1" title="Introduction aux structures de données">
-    <content>
-Les structures de données permettent d'organiser et de stocker des données de manière structurée pour faciliter leur manipulation. Jusqu'à présent, nous avons manipulé des variables simples (entiers, réels, booléens). Mais comment stocker une liste de 100 notes ? Ou une table de multiplication ? C'est là qu'interviennent les vecteurs et les matrices (appelés aussi tableaux).
-    </content>
-    <bulletPoints>
-      <point>Une structure de données est un conteneur qui regroupe plusieurs valeurs.</point>
-      <point>Les vecteurs (tableaux 1D) stockent une séquence d'éléments de même type.</point>
-      <point>Les matrices (tableaux 2D) stockent des données sous forme de lignes et colonnes.</point>
-      <point>Elles permettent d'accéder rapidement à chaque élément via son indice.</point>
-      <point>Exemple : un vecteur de 5 notes peut être représenté par notes = [12, 15, 8, 19, 10].</point>
-    </bulletPoints>
+  <!-- ==================== INTRODUCTION ==================== -->
+  <section id="1" title="Introduction">
+    <content>Jusqu'à présent, nous avons utilisé des variables de types simples qui peuvent mémoriser une seule valeur à la fois. Imaginons que dans un algorithme, nous avons besoin simultanément de quinze valeurs. Par exemple, quinze notes pour calculer une moyenne d'un étudiant.</content>
+    <content>La seule solution dont nous disposons à l'état actuel de nos connaissances, consiste à déclarer quinze variables, appelées par exemple : N1, N2, ..., N15. En arrivant au calcul, et après une succession de quinze instructions « LIRE » distinctes, l'unique moyen pour calculer la moyenne est de faire l'opération suivante :</content>
+    <content>Moyenne &lt;- (N1+N2+N3+N4+N5+N6+N7+N8+N9+N10+N11+N12+N13+N14+N15)/15 ;</content>
+    <content>Ce qui nous donne un algorithme, de mauvaise qualité, plein de variables et d'opérations longues. C'est pourquoi l'algorithmique nous fournit un outil qui nous permet de rassembler toutes ces variables en une seule, au sein de laquelle chaque valeur sera désignée par un numéro. Ce type de structures de données est appelé un tableau.</content>
   </section>
 
-  <section id="2" title="Vecteurs (tableaux unidimensionnels)">
-    <content>
-Un vecteur est une collection ordonnée d'éléments de même type, stockés dans des cases mémoire contiguës. Chaque élément est repéré par son indice (ou position).
-    </content>
-    <bulletPoints>
-      <point>
-Déclaration :
-Variables notes : Tableau[1..5] d'Entiers
-ou : int notes[5];
-      </point>
-      <point>Accès à un élément : notes[indice]. Exemple : notes[3] = 14.</point>
-      <point>Les indices commencent généralement à 0 en programmation.</point>
-      <point>Longueur du vecteur : nombre total d'éléments.</point>
-      <point>
-Exemple :
-Variables temp : Tableau[1..7] de Réels
-temp[1] ← 22.5 ; temp[2] ← 23.0 ; ...
-      </point>
-    </bulletPoints>
+  <!-- ==================== DÉFINITION D'UNE STRUCTURE DE DONNÉES ==================== -->
+  <section id="2" title="Définition d'une structure de données">
+    <content>Une structure de données est une manière d'organiser les données pour les traiter plus facilement. En organisant d'une certaine manière les données, on permet un traitement automatique plus efficace et plus rapide de ces dernières.</content>
+    
+    <subsection title="Allocation statique">
+      <content>L'allocation statique désigne une réservation inchangeable de l'espace mémoire. Explicitement, la taille à réserver est fixée lors de la déclaration de la variable qui est associée à cet espace mémoire, et ne change pas tout au long de l'exécution du programme utilisant la variable. La taille réservée est considérée gaspillée si elle n'est pas totalement exploitée à un moment donné lors de l'exécution.</content>
+    </subsection>
+    
+    <subsection title="Allocation dynamique">
+      <content>L'allocation dynamique décrit une réservation souple qui permet d'allouer et de libérer au besoin un espace mémoire lors de l'exécution d'un programme. De ce fait, l'allocation dynamique garantit une utilisation plus optimale de la mémoire centrale.</content>
+    </subsection>
   </section>
 
-  <section id="3" title="Matrices (tableaux bidimensionnels)">
-    <content>
-Une matrice est un tableau à deux dimensions, organisé en lignes et colonnes.
-    </content>
-    <bulletPoints>
-      <point>
-Déclaration :
-Variables mat : Tableau[1..L][1..C] d'Entiers
-      </point>
-      <point>Accès : mat[ligne][colonne]. Exemple : mat[2][3].</point>
-      <point>Indices commencent souvent à 0 en programmation.</point>
-      <point>
-Représentation :
-[ [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9] ]
-      </point>
-      <point>Utilité : grilles, images, données tabulaires.</point>
-      <point>
-Exemple matrice identité :
-Pour i de 1 à 3 faire
-  Pour j de 1 à 3 faire
-    Si i = j alors identite[i][j] ← 1 Sinon identite[i][j] ← 0
-  FinPour
-FinPour.
-      </point>
-    </bulletPoints>
+  <!-- ==================== TABLEAU À UNE DIMENSION (VECTEUR) ==================== -->
+  <section id="3" title="Tableau à une dimension (vecteur)">
+    <content>Un tableau à une dimension (ou un vecteur) d'ordre (de cardinalité) « n » est un ensemble de « n » valeurs de même type et portant le même nom de variable. Ces valeurs sont identifiées grâce à un nombre appelé indice qui sert à repérer chaque valeur du vecteur séparément.</content>
+    <content>De ce fait, à chaque fois que nous devons désigner un élément du vecteur, nous faisons figurer le nom du vecteur, suivi de l'indice de l'élément entre deux crochets.</content>
+
+    <subsection title="Syntaxe de déclaration d'un vecteur">
+      <content><strong>Syntaxe algorithmique :</strong><br/>
+VAR<br/>
+  Nom_tableau : TABLEAU [indice_minimum .. indice_maximum] DE type_des_éléments ;</content>
+      <content><strong>En langage C :</strong><br/>
+type_des_éléments Nom_tableau [nombre_d'éléments] ;</content>
+      <content><strong>Exemple :</strong><br/>
+Tab : TABLEAU [1 .. 100] D'Entier ;<br/>
+Note : TABLEAU [1 .. 10] DE Réel ;</content>
+      <content>Pour la variable Tab déclarée ci-dessus :<br/>
+- Le nom de la variable est Tab, il est fixe.<br/>
+- La taille de la variable est 100. Elle est fixe car la réservation utilisée est statique.<br/>
+- Le type des valeurs que contiendra la variable est Entier.</content>
+    </subsection>
+
+    <subsection title="Compléments sur les vecteurs">
+      <bulletPoints>
+        <point>Lorsque nous déclarons un vecteur, nous déclarons aussi de façon implicite toutes les variables indicées qui le constituent.</point>
+        <point>En règle générale, l'indice minimum vaut 1. Mais dans certains langages de programmation, on utilise l'indice 0, comme indice minimum. Lorsque l'indice minimum est 1, la taille du vecteur (nombre d'éléments) est égale à la valeur de l'indice maximum.</point>
+        <point>Le type de l'indice doit être un type ordinal (i.e. Entier mais jamais Réel).</point>
+      </bulletPoints>
+    </subsection>
+
+    <subsection title="Manipulation d'un vecteur">
+      <content>Les éléments d'un vecteur sont des variables indicées qui sont utilisées exactement comme n'importe quelles autres variables classiques. Autrement dit :</content>
+      <bulletPoints>
+        <point>Elles peuvent faire l'objet d'une affectation.</point>
+        <point>Elles peuvent figurer dans une expression arithmétique ou dans une comparaison.</point>
+        <point>Elles peuvent être affichées et saisies.</point>
+      </bulletPoints>
+      <content>Nous accédons aux éléments d'un tableau en utilisant la syntaxe suivante : Nom_tableau [indice]</content>
+      <content><strong>Exemples d'illustration :</strong><br/>
+- Tab1[2] &lt;- 5 permet de mettre la valeur 5 dans la deuxième case du vecteur.<br/>
+- A &lt;- Tab1[2] permet de mettre la valeur de la deuxième case du vecteur dans A (i.e. A &lt;- 5).<br/>
+- LIRE(Tab1[1]) permet de mettre l'entier saisi par l'utilisateur dans la première case du vecteur.<br/>
+- ÉCRIRE(Tab1[2]) permet d'afficher sur l'écran la valeur de la deuxième case du tableau.</content>
+    </subsection>
+
+    <subsection title="Remarques importantes">
+      <bulletPoints>
+        <point>Il ne faut pas confondre l'indice d'un élément et la valeur de cet élément. En d'autres termes, il ne faut pas confondre « i » avec « Tab[i] ».</point>
+        <point>De même qu'une variable possède toujours une valeur (qui peut être indéterminée), un tableau peut très bien posséder des éléments dont la valeur est indéterminée. Donc avant d'utiliser un tableau, il est nécessaire de l'initialiser.</point>
+      </bulletPoints>
+    </subsection>
+
+    <subsection title="Exemple 1 : Remplir et afficher un vecteur">
+      <content>Écrire un algorithme permettant de remplir un tableau de 10 cases d'entiers, ensuite d'afficher le contenu des cases.</content>
+      <content><strong>Algorithme :</strong><br/>
+ALGORITHME Lecture_Affichage ;<br/>
+CONST N = 10 ;<br/>
+VAR<br/>
+  Tab : TABLEAU [1..N] d'Entier ;<br/>
+  i : Entier ;<br/>
+DÉBUT<br/>
+  POUR i ALLANT DE 1 A N FAIRE<br/>
+    LIRE(Tab[i]) ;<br/>
+  FIN POUR ;<br/>
+  POUR i ALLANT DE 1 A N FAIRE<br/>
+    ÉCRIRE(Tab[i]) ;<br/>
+  FIN POUR ;<br/>
+FIN.</content>
+    </subsection>
+
+    <subsection title="Exemple 2 : Additionner les éléments de deux vecteurs">
+      <content>Nous disposons de deux vecteurs T1 et T2 et nous voulons réaliser la somme élément par élément des deux vecteurs. Ça consiste à additionner les éléments de même indice et les mémoriser dans un vecteur T3.</content>
+      <content><strong>Algorithme :</strong><br/>
+ALGORITHME Add_Tab ;<br/>
+CONST M = 100 ;<br/>
+VAR<br/>
+  T1, T2, T3 : TABLEAU [1..M] d'Entier ;<br/>
+  i, N : Entier ;<br/>
+DÉBUT<br/>
+  RÉPÉTER<br/>
+    ÉCRIRE("Donnez la taille des vecteurs");<br/>
+    LIRE(N);<br/>
+  JUSQU'À (N &lt;= M) ET (N&gt;0);<br/>
+  POUR i ALLANT DE 1 À N FAIRE<br/>
+    LIRE(T1[i]);<br/>
+  FIN POUR;<br/>
+  POUR i ALLANT DE 1 À N FAIRE<br/>
+    LIRE(T2[i]);<br/>
+  FIN POUR;<br/>
+  POUR i ALLANT DE 1 À N FAIRE<br/>
+    T3[i] &lt;- T1[i] + T2[i];<br/>
+  FIN POUR;<br/>
+  POUR i ALLANT DE 1 À N FAIRE<br/>
+    ÉCRIRE(T3[i]);<br/>
+  FIN POUR;<br/>
+FIN.</content>
+    </subsection>
+
+    <subsection title="Exemple 3 : Recherche séquentielle dans un vecteur">
+      <content>Écrire un algorithme qui recherche une valeur, lue à partir du clavier, dans un vecteur. L'algorithme doit renvoyer la position de la valeur recherchée si elle existe.</content>
+      <content><strong>Algorithme :</strong><br/>
+ALGORITHME Recherche;<br/>
+CONST M = 20;<br/>
+VAR<br/>
+  V : TABLEAU[1..M] D'Entier;<br/>
+  D, i: Entier;<br/>
+  Trouve : Booléen;<br/>
+DÉBUT<br/>
+  (* remplir le vecteur V *)<br/>
+  POUR i ALLANT DE 1 à M FAIRE<br/>
+    LIRE(V[i]);<br/>
+  FIN POUR;<br/>
+  (* lire la valeur recherchée *)<br/>
+  ÉCRIRE("Veuillez saisir la valeur recherchée");<br/>
+  LIRE(D);<br/>
+  (* vérifier si la valeur recherchée existe dans le vecteur *)<br/>
+  i &lt;- 1;<br/>
+  Trouve &lt;- Faux;<br/>
+  TANT QUE (i &lt;= M) ET (NON Trouve) FAIRE<br/>
+    SI (V[i] = D) ALORS<br/>
+      Trouve &lt;- Vrai;<br/>
+    SINON<br/>
+      i &lt;- i + 1;<br/>
+    FIN SI;<br/>
+  FIN TANT QUE;<br/>
+  (* afficher la position de la valeur recherchée si elle existe *)<br/>
+  SI (Trouve = Vrai) ALORS<br/>
+    ÉCRIRE("La position de la valeur recherchée est : ", i);<br/>
+  SINON<br/>
+    ÉCRIRE("La valeur recherchée n'existe pas dans le tableau");<br/>
+  FIN SI;<br/>
+FIN.</content>
+    </subsection>
   </section>
 
-  <section id="4" title="Opérations de base sur les vecteurs">
-    <content>
-Manipuler un vecteur nécessite souvent de parcourir ses éléments.
-    </content>
-    <bulletPoints>
-      <point>
-Parcours :
-Pour i de 1 à N faire
-  Traiter vecteur[i]
-FinPour.
-      </point>
-      <point>
-Remplissage :
-Pour i de 1 à N faire
-  Lire(vecteur[i])
-FinPour.
-      </point>
-      <point>
-Recherche :
-i ← 1 ; Trouvé ← faux
-Tant que i &lt;= N ET non Trouvé faire
-  Si vecteur[i] = valeur_cherchée alors Trouvé ← vrai
-  i ← i + 1
-FinTantQue.
-      </point>
-      <point>
-Somme / moyenne :
-somme ← 0
-Pour i de 1 à N faire somme ← somme + vecteur[i] FinPour
-moyenne ← somme / N.
-      </point>
-      <point>
-Maximum :
-max ← vecteur[1]
-Pour i de 2 à N faire
-  Si vecteur[i] > max alors max ← vecteur[i]
-FinPour.
-      </point>
-    </bulletPoints>
+  <!-- ==================== TABLEAU À DEUX DIMENSIONS (MATRICE) ==================== -->
+  <section id="4" title="Tableau à deux dimensions (matrice)">
+    <content>Nous appelons tableau à deux dimensions (ou matrice) d'ordre « (m × n) » un ensemble de « m × n » éléments rangés dans des cases disposées en « m » lignes et « n » colonnes. Dans ce type de tableaux, les valeurs ne sont pas repérées par un seul indice comme dans les vecteurs, mais par deux indices (coordonnées). Le premier indice sert à représenter les lignes et le second indice sert à représenter les colonnes.</content>
+
+    <subsection title="Syntaxe de déclaration d'une matrice">
+      <content><strong>Syntaxe algorithmique :</strong><br/>
+VAR<br/>
+  Nom_matrice : TABLEAU [inf_ligne .. max_ligne, inf_colonne .. max_colonne] DE type_des_éléments ;</content>
+      <content><strong>En langage C :</strong><br/>
+type_des_éléments Nom_matrice [nombre_lignes] [nombre_colonnes] ;</content>
+      <content><strong>Exemple :</strong><br/>
+Achat : TABLEAU [1 .. 100, 1 .. 100] d'Entier ;<br/>
+Vente : TABLEAU [1 .. 10, 1 .. 47] de Réel ;</content>
+      <content>Pour la variable Achat déclarée ci-dessus :<br/>
+- Le nom de la variable est Achat, il est fixe.<br/>
+- La taille de la variable est (100 x 100). Elle est fixe car la réservation utilisée est statique.<br/>
+- Le type des valeurs que contiendra la variable est Entier.</content>
+    </subsection>
+
+    <subsection title="Compléments sur les matrices">
+      <bulletPoints>
+        <point>À la déclaration d'une matrice, il faut ajouter la déclaration de deux indices qui doivent être d'un type ordinal.</point>
+        <point>Tous les éléments de la matrice doivent être de même type.</point>
+        <point>Chaque élément de la matrice est repéré par le nom de la matrice et les numéros des indices de ligne et de colonnes, on le note M[i, j].</point>
+        <point>Lorsque m = n, alors la matrice est dite carrée.</point>
+        <point>Lorsque la matrice est carrée et si i = j, alors l'élément se trouve sur la diagonale principale de la matrice.</point>
+        <point>La saisie et l'affichage des éléments de la matrice sont effectuées par les instructions de lecture et d'écriture.</point>
+      </bulletPoints>
+    </subsection>
+
+    <subsection title="Manipulation d'une matrice">
+      <content>Pour insérer (ou afficher) des données dans (à partir) une (d'une) matrice à (n × m) cases, il faut utiliser une boucle qui parcourt les lignes et une autre imbriquée qui parcourt les colonnes, puisqu'une case d'une matrice est au croisement d'une ligne et d'une colonne.</content>
+
+      <subsection title="Exemple 1 : Remplir et afficher les éléments d'une matrice">
+        <content>Pour remplir une matrice Mate de (3×4) cases (12 cases) :</content>
+        <content><strong>Algorithme de lecture :</strong><br/>
+ALGORITHME Lectur_Mat ;<br/>
+CONST N = 3 ; M = 4 ;<br/>
+VAR<br/>
+  Mate : TABLEAU [1 .. N, 1 .. M] d'Entier ;<br/>
+  i, j : Entier ;<br/>
+DÉBUT<br/>
+  POUR i ALLANT DE 1 A N FAIRE<br/>
+    POUR j ALLANT DE 1 A M FAIRE<br/>
+      LIRE(Mate[i, j]);<br/>
+    FIN POUR ;<br/>
+  FIN POUR ;<br/>
+FIN.</content>
+        <content>Pour afficher le contenu des cases d'une matrice, on utilise la même structure :</content>
+        <content><strong>Algorithme d'écriture :</strong><br/>
+ALGORITHME Ecriture_Mat ;<br/>
+VAR<br/>
+  Mate : TABLEAU [1 .. 3, 1 .. 4] d'Entier ;<br/>
+  i, j : Entier ;<br/>
+DÉBUT<br/>
+  POUR i ALLANT DE 1 A N FAIRE<br/>
+    POUR j ALLANT DE 1 A M FAIRE<br/>
+      ÉCRIRE(Mate[i, j]);<br/>
+    FIN POUR ;<br/>
+  FIN POUR ;<br/>
+FIN.</content>
+      </subsection>
+
+      <subsection title="Exemple 2 : Additionner les éléments de deux matrices">
+        <content>On dispose de deux matrices M1 et M2 et on veut réaliser la somme élément par élément des deux matrices. Ça consiste à additionner les éléments de mêmes indices et les mémoriser dans une matrice M3.</content>
+        <content><strong>Algorithme :</strong><br/>
+ALGORITHME ADD_Mat ;<br/>
+CONST NL = 10 ; NC = 20 ;<br/>
+VAR<br/>
+  Mat1, Mat2 : TABLEAU [1..NL,1..NC] d'Entier ;<br/>
+  i, j : Entier ;<br/>
+DÉBUT<br/>
+  (* remplir la matrice Mat1 *)<br/>
+  POUR i ALLANT DE 1 à NL FAIRE<br/>
+    POUR j ALLANT DE 1 à NC FAIRE<br/>
+      LIRE(Mat1[i, j]);<br/>
+    FIN POUR ;<br/>
+  FIN POUR ;<br/>
+  (* remplir la matrice Mat2 *)<br/>
+  POUR i ALLANT DE 1 à NL FAIRE<br/>
+    POUR j ALLANT DE 1 à NC FAIRE<br/>
+      LIRE(Mat2[i, j]);<br/>
+    FIN POUR ;<br/>
+  FIN POUR ;<br/>
+  (* additionner les deux matrices *)<br/>
+  POUR i ALLANT DE 1 à NL FAIRE<br/>
+    POUR j ALLANT DE 1 à NC FAIRE<br/>
+      Mat3[i, j] &lt;- Mat1[i,j] + Mat2[i,j];<br/>
+    FIN POUR ;<br/>
+  FIN POUR ;<br/>
+  (* afficher la matrice résultante Mat3 *)<br/>
+  POUR i ALLANT DE 1 à NL FAIRE<br/>
+    POUR j ALLANT DE 1 à NC FAIRE<br/>
+      ÉCRIRE(Mat3[i, j]);<br/>
+    FIN POUR ;<br/>
+  FIN POUR ;<br/>
+FIN.</content>
+      </subsection>
+    </subsection>
   </section>
 
-  <section id="5" title="Opérations de base sur les matrices">
-    <content>
-Les matrices nécessitent des boucles imbriquées.
-    </content>
+  <!-- ==================== SYNTHÈSE ET BONNES PRATIQUES ==================== -->
+  <section id="5" title="Synthèse et bonnes pratiques">
+    <content>Points essentiels à retenir sur les vecteurs et matrices :</content>
     <bulletPoints>
-      <point>
-Parcours :
-Pour i de 1 à L faire
-  Pour j de 1 à C faire
-    Traiter mat[i][j]
-  FinPour
-FinPour.
-      </point>
-      <point>
-Remplissage :
-Pour i de 1 à L faire
-  Pour j de 1 à C faire
-    Lire(mat[i][j])
-  FinPour
-FinPour.
-      </point>
-      <point>Recherche d'une valeur dans toute la matrice.</point>
-      <point>
-Somme :
-somme ← 0
-Pour i de 1 à L faire
-  Pour j de 1 à C faire
-    somme ← somme + mat[i][j]
-  FinPour
-FinPour.
-      </point>
-      <point>
-Diagonales :
-principale : mat[i][i]
-secondaire : mat[i][C-i+1]
-      </point>
-    </bulletPoints>
-  </section>
-
-  <section id="6" title="Opérations courantes sur les matrices">
-    <content>
-Les matrices permettent des opérations mathématiques importantes.
-    </content>
-    <bulletPoints>
-      <point>
-Addition :
-C[i][j] ← A[i][j] + B[i][j]
-      </point>
-      <point>
-Multiplication :
-Pour i de 1 à L faire
-  Pour j de 1 à N faire
-    C[i][j] ← 0
-    Pour k de 1 à M faire
-      C[i][j] ← C[i][j] + A[i][k] * B[k][j]
-    FinPour
-  FinPour
-FinPour.
-      </point>
-      <point>
-Transposition :
-Transposee[j][i] ← Mat[i][j]
-      </point>
-      <point>Utilisation : graphisme, IA, calcul scientifique.</point>
-    </bulletPoints>
-  </section>
-
-  <section id="7" title="Algorithmes de tri sur vecteurs">
-    <content>
-Trier un vecteur est une opération fondamentale.
-    </content>
-    <bulletPoints>
-      <point>
-Tri par sélection :
-Pour i de 1 à N-1 faire
-  minPos ← i
-  Pour j de i+1 à N faire
-    Si tab[j] &lt; tab[minPos] alors minPos ← j
-  FinPour
-  Échanger tab[i] et tab[minPos]
-FinPour.
-      </point>
-      <point>
-Tri à bulles :
-Répéter
-  echange ← faux
-  Pour i de 1 à N-1 faire
-    Si tab[i] > tab[i+1] alors
-      Échanger tab[i] et tab[i+1]
-      echange ← vrai
-    FinSi
-  FinPour
-Jusqu'à non echange.
-      </point>
-      <point>Ces tris sont simples mais peu performants.</point>
-    </bulletPoints>
-  </section>
-
-  <section id="8" title="Exemples complets d'algorithmes">
-    <content>
-Exemples combinant vecteurs et matrices.
-    </content>
-    <bulletPoints>
-      <point>
-Gestion des notes :
-Lire(n)
-Pour i de 1 à n faire Lire(notes[i]) FinPour
-somme ← 0
-Pour i de 1 à n faire somme ← somme + notes[i] FinPour
-moyenne ← somme / n
-      </point>
-      <point>
-Produit de matrices :
-Pour i de 1 à L faire
-  Pour j de 1 à N faire
-    C[i][j] ← 0
-    Pour k de 1 à M faire
-      C[i][j] ← C[i][j] + A[i][k] * B[k][j]
-    FinPour
-  FinPour
-FinPour.
-      </point>
-    </bulletPoints>
-  </section>
-
-  <section id="9" title="Bonnes pratiques et conseils">
-    <content>
-Bonnes pratiques pour vecteurs et matrices.
-    </content>
-    <bulletPoints>
-      <point>Choisir la bonne taille.</point>
-      <point>Utiliser des noms explicites.</point>
-      <point>Faire attention aux indices.</point>
-      <point>Vérifier les dimensions.</point>
-      <point>Factoriser le code.</point>
+      <point>Un vecteur est une variable qui peut stocker plusieurs valeurs simultanément.</point>
+      <point>Une matrice est une structure de données statique composée de lignes et de colonnes.</point>
+      <point>Nous avons besoin de deux boucles imbriquées pour lire et afficher une matrice.</point>
+      <point>Dans un vecteur V de N cases, la première case a pour indice 1 (en algorithmique classique).</point>
+      <point>Le contenu de la première case est accessible en utilisant l'instruction V[1].</point>
+      <point>Pour copier le contenu d'un tableau T2 dans T1, il faut le faire élément par élément à l'aide d'une boucle si la taille de T1 est supérieure ou égale à la taille de T2.</point>
+      <point>Une déclaration correcte pour une matrice de N lignes et M colonnes est : TABLEAU [1..N, 1..M] DE type.</point>
+      <point>La recherche séquentielle dans un vecteur non trié a une complexité linéaire O(n).</point>
+      <point>L'utilisation de constantes pour la taille des tableaux (comme CONST N = 10) facilite la maintenance et la lisibilité du code.</point>
     </bulletPoints>
   </section>
 

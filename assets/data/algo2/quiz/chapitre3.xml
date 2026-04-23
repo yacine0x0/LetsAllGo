@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_3_Quiz" title="Quiz – Les pointeurs (Partie 1)">
+
+  <!-- ==================== QUESTIONS SUR LA NOTION D'ADRESSE ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>Qu'est-ce qu'une adresse mémoire ?</enonce>
+    <choices>
+      <choice id="A">La valeur stockée dans une variable</choice>
+      <choice id="B">Un numéro séquentiel identifiant chaque octet de la mémoire</choice>
+      <choice id="C">Le nom d'une variable</choice>
+      <choice id="D">Le type d'une variable</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q2" type="multipleChoice">
+    <enonce>Par convention, une adresse mémoire est notée en :</enonce>
+    <choices>
+      <choice id="A">Binaire et précédée par 0b</choice>
+      <choice id="B">Hexadécimal et précédée par 0x</choice>
+      <choice id="C">Décimal et précédée par 0d</choice>
+      <choice id="D">Octal et précédée par 0o</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q3" type="multipleChoice">
+    <enonce>Déclarer une variable, c'est :</enonce>
+    <choices>
+      <choice id="A">Attribuer une valeur à une zone mémoire</choice>
+      <choice id="B">Attribuer un nom (identificateur) à une zone de la mémoire centrale</choice>
+      <choice id="C">Créer un pointeur</choice>
+      <choice id="D">Libérer de la mémoire</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA DÉFINITION D'UN POINTEUR ==================== -->
+  <question id="q4" type="multipleChoice">
+    <enonce>Qu'est-ce qu'un pointeur ?</enonce>
+    <choices>
+      <choice id="A">Une variable qui contient une valeur numérique</choice>
+      <choice id="B">Une variable qui contient l'adresse d'une autre variable</choice>
+      <choice id="C">Une constante</choice>
+      <choice id="D">Un type de donnée simple</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q5" type="multipleChoice">
+    <enonce>Quel est le but principal d'utiliser un pointeur ?</enonce>
+    <choices>
+      <choice id="A">Ralentir l'exécution du programme</choice>
+      <choice id="B">Accéder directement à la mémoire et faire référence à une entité sans la nommer</choice>
+      <choice id="C">Déclarer des constantes</choice>
+      <choice id="D">Créer des boucles</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA DÉCLARATION ==================== -->
+  <question id="q6" type="multipleChoice">
+    <enonce>Comment déclare-t-on un pointeur sur entier ?</enonce>
+    <choices>
+      <choice id="A">P : entier ;</choice>
+      <choice id="B">P : ^ entier ;</choice>
+      <choice id="C">P : &amp;entier ;</choice>
+      <choice id="D">P : *entier ;</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR NIL ==================== -->
+  <question id="q7" type="multipleChoice">
+    <enonce>Que signifie NIL ?</enonce>
+    <choices>
+      <choice id="A">Not Identified Link, un pointeur qui ne pointe sur rien</choice>
+      <choice id="B">Null Integer Link</choice>
+      <choice id="C">Une valeur entière</choice>
+      <choice id="D">Une adresse valide</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q8" type="multipleChoice">
+    <enonce>Un pointeur non initialisé est appelé :</enonce>
+    <choices>
+      <choice id="A">Pointeur valide</choice>
+      <choice id="B">Pointeur pendant</choice>
+      <choice id="C">Pointeur constant</choice>
+      <choice id="D">Pointeur nul</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q9" type="multipleChoice">
+    <enonce>Que risque-t-on en déréférençant un pointeur pendant ?</enonce>
+    <choices>
+      <choice id="A">Rien, c'est sans danger</choice>
+      <choice id="B">Écraser un emplacement mémoire quelconque et faire planter le programme</choice>
+      <choice id="C">Créer un nouveau pointeur</choice>
+      <choice id="D">Initialiser automatiquement le pointeur</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR L'OPÉRATEUR & ==================== -->
+  <question id="q10" type="multipleChoice">
+    <enonce>Que fait l'opérateur &amp; ?</enonce>
+    <choices>
+      <choice id="A">Il donne la valeur pointée</choice>
+      <choice id="B">Il donne l'adresse d'une variable</choice>
+      <choice id="C">Il alloue de la mémoire</choice>
+      <choice id="D">Il libère de la mémoire</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q11" type="multipleChoice">
+    <enonce>Dans "P &lt;- &amp;X", que contient P ?</enonce>
+    <choices>
+      <choice id="A">La valeur de X</choice>
+      <choice id="B">L'adresse de X</choice>
+      <choice id="C">Le type de X</choice>
+      <choice id="D">NIL</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR L'OPÉRATEUR ^ ==================== -->
+  <question id="q12" type="multipleChoice">
+    <enonce>Que fait l'opérateur ^ (chapeau) sur un pointeur ?</enonce>
+    <choices>
+      <choice id="A">Il donne l'adresse de la variable pointée</choice>
+      <choice id="B">Il donne la valeur de la variable pointée (déréférenciation)</choice>
+      <choice id="C">Il alloue de la mémoire</choice>
+      <choice id="D">Il libère de la mémoire</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>Si P pointe sur X, que fait l'instruction "P^ &lt;- 34" ?</enonce>
+    <choices>
+      <choice id="A">Elle modifie P</choice>
+      <choice id="B">Elle modifie la valeur de X (la variable pointée) à 34</choice>
+      <choice id="C">Elle crée une nouvelle variable</choice>
+      <choice id="D">Elle affiche 34</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR L'ALLOCATION DYNAMIQUE ==================== -->
+  <question id="q14" type="multipleChoice">
+    <enonce>Quelle instruction permet d'allouer dynamiquement de la mémoire dans le TAS ?</enonce>
+    <choices>
+      <choice id="A">LIBÉRER</choice>
+      <choice id="B">ALLOUER</choice>
+      <choice id="C">NOUVEAU</choice>
+      <choice id="D">CREER</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q15" type="multipleChoice">
+    <enonce>Quelle instruction permet de libérer la mémoire allouée dynamiquement ?</enonce>
+    <choices>
+      <choice id="A">LIBÉRER</choice>
+      <choice id="B">SUPPRIMER</choice>
+      <choice id="C">DETRUIRE</choice>
+      <choice id="D">EFFACER</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>La zone mémoire allouée dynamiquement s'appelle :</enonce>
+    <choices>
+      <choice id="A">La pile</choice>
+      <choice id="B">Le TAS (Heap)</choice>
+      <choice id="C">La mémoire statique</choice>
+      <choice id="D">Le cache</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q17" type="multipleChoice">
+    <enonce>Que se passe-t-il si on ne libère pas la mémoire allouée dynamiquement ?</enonce>
+    <choices>
+      <choice id="A">Le programme fonctionne mieux</choice>
+      <choice id="B">La mémoire peut être saturée et le programme peut planter</choice>
+      <choice id="C">La mémoire se libère automatiquement</choice>
+      <choice id="D">Rien de particulier</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES TYPES DE MÉMOIRE ==================== -->
+  <question id="q18" type="multipleChoice">
+    <enonce>Quelle mémoire stocke les variables globales ?</enonce>
+    <choices>
+      <choice id="A">Mémoire dynamique (TAS)</choice>
+      <choice id="B">Mémoire statique</choice>
+      <choice id="C">Mémoire automatique (Pile)</choice>
+      <choice id="D">Mémoire cache</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q19" type="multipleChoice">
+    <enonce>Quelle mémoire stocke les paramètres et variables locales des fonctions ?</enonce>
+    <choices>
+      <choice id="A">Mémoire dynamique (TAS)</choice>
+      <choice id="B">Mémoire statique</choice>
+      <choice id="C">Mémoire automatique (Pile)</choice>
+      <choice id="D">Mémoire virtuelle</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR L'ARITHMÉTIQUE ==================== -->
+  <question id="q20" type="multipleChoice">
+    <enonce>Quelles opérations arithmétiques sont valides sur les pointeurs ?</enonce>
+    <choices>
+      <choice id="A">Multiplication et division</choice>
+      <choice id="B">Addition et soustraction d'un entier</choice>
+      <choice id="C">Modulo</choice>
+      <choice id="D">Aucune opération</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES POINTEURS VERS ENREGISTREMENT ==================== -->
+  <question id="q21" type="multipleChoice">
+    <enonce>Comment accède-t-on au champ "Nom" d'un enregistrement pointé par "Pointpers" ?</enonce>
+    <choices>
+      <choice id="A">Pointpers.Nom</choice>
+      <choice id="B">Pointpers^.Nom</choice>
+      <choice id="C">Pointpers-&gt;Nom</choice>
+      <choice id="D">^Pointpers.Nom</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES POINTEURS ET TABLEAUX ==================== -->
+  <question id="q22" type="multipleChoice">
+    <enonce>Un tableau est en fait :</enonce>
+    <choices>
+      <choice id="A">Une variable simple</choice>
+      <choice id="B">Un pointeur constant</choice>
+      <choice id="C">Un enregistrement</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q23" type="multipleChoice">
+    <enonce>Si T est un tableau, que contient T^ ?</enonce>
+    <choices>
+      <choice id="A">L'adresse du premier élément</choice>
+      <choice id="B">La valeur du premier élément T[1]</choice>
+      <choice id="C">La taille du tableau</choice>
+      <choice id="D">Le dernier élément du tableau</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q24" type="multipleChoice">
+    <enonce>Si T est un tableau, que contient (T+1)^ ?</enonce>
+    <choices>
+      <choice id="A">La valeur de T[1]</choice>
+      <choice id="B">La valeur de T[2]</choice>
+      <choice id="C">L'adresse de T[2]</choice>
+      <choice id="D">La taille du tableau</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS INTERDITES ==================== -->
+  <question id="q25" type="multipleChoice">
+    <enonce>Laquelle de ces actions est interdite ?</enonce>
+    <choices>
+      <choice id="A">Libérer un pointeur de valeur NIL</choice>
+      <choice id="B">Libérer une zone mémoire déjà libérée</choice>
+      <choice id="C">Accéder à une zone mémoire libérée</choice>
+      <choice id="D">Toutes ces actions sont interdites</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA TRACE ==================== -->
+  <question id="q26" type="multipleChoice">
+    <enonce>Dans l'exemple de trace, après "N &lt;- 20" et "P &lt;- &amp;N", que vaut P ?</enonce>
+    <choices>
+      <choice id="A">20</choice>
+      <choice id="B">L'adresse de N</choice>
+      <choice id="C">NIL</choice>
+      <choice id="D">0</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q27" type="multipleChoice">
+    <enonce>Dans l'exemple de trace, après "P^ &lt;- 30", que vaut N ?</enonce>
+    <choices>
+      <choice id="A">20</choice>
+      <choice id="B">30</choice>
+      <choice id="C">NIL</choice>
+      <choice id="D">Indéfini</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q28" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes d'utilisation d'un pointeur avec allocation dynamique :</enonce>
+    <bonneReponse>Déclarer le pointeur|ALLOUER|Utiliser le pointeur|LIBÉRER</bonneReponse>
+    <codeLines>
+      <line>Deuxième</line>
+      <line>Déclarer le pointeur</line>
+      <line>ALLOUER</line>
+      <line>Utiliser le pointeur</line>
+      <line>LIBÉRER</line>
+    </codeLines>
+  </question>
+
+  <question id="q29" type="ordering">
+    <enonce>Remettez dans l'ordre les types de mémoire de la plus rapide à la plus lente :</enonce>
+    <bonneReponse>Mémoire statique|Mémoire automatique|Mémoire dynamique</bonneReponse>
+    <codeLines>
+      <line>Mémoire dynamique</line>
+      <line>Mémoire statique</line>
+      <line>Mémoire automatique</line>
+    </codeLines>
+  </question>
+
+  <!-- ==================== QUESTION DE RÉFLEXION ==================== -->
+  <question id="q30" type="multipleChoice">
+    <enonce>Un pointeur sur entier peut-il pointer sur une variable réelle ?</enonce>
+    <choices>
+      <choice id="A">Oui, toujours</choice>
+      <choice id="B">Non, un pointeur ne peut pointer que sur des variables du type pour lequel il a été déclaré</choice>
+      <choice id="C">Oui, après conversion</choice>
+      <choice id="D">Uniquement si la variable réelle est entière</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+</chapter>

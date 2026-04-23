@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_2_Quiz" title="Quiz – Les fichiers">
+
+  <!-- ==================== QUESTIONS SUR LA DÉFINITION ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>Qu'est-ce qu'un fichier ?</enonce>
+    <choices>
+      <choice id="A">Une variable simple</choice>
+      <choice id="B">Une collection de données de même type stockée sur un support externe</choice>
+      <choice id="C">Une constante</choice>
+      <choice id="D">Un tableau à deux dimensions</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q2" type="multipleChoice">
+    <enonce>Quels sont les deux types de fichiers mentionnés dans le cours ?</enonce>
+    <choices>
+      <choice id="A">Fichier binaire et fichier source</choice>
+      <choice id="B">Fichier typé et fichier texte</choice>
+      <choice id="C">Fichier exécutable et fichier objet</choice>
+      <choice id="D">Fichier temporaire et fichier permanent</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q3" type="multipleChoice">
+    <enonce>Quels mots clés sont utilisés pour déclarer un fichier typé ?</enonce>
+    <choices>
+      <choice id="A">FICHIER TEXTE</choice>
+      <choice id="B">FICHIER DE</choice>
+      <choice id="C">FICHIER ENREGISTREMENT</choice>
+      <choice id="D">FICHIER TYPE</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q4" type="multipleChoice">
+    <enonce>Quel mot clé est utilisé pour déclarer un fichier texte ?</enonce>
+    <choices>
+      <choice id="A">FICHIER DE</choice>
+      <choice id="B">TEXTE</choice>
+      <choice id="C">FICHIER TEXTE</choice>
+      <choice id="D">TXT</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q5" type="multipleChoice">
+    <enonce>C'est quoi le nom logique d'un fichier ?</enonce>
+    <choices>
+      <choice id="A">Le nom stocké sur le disque</choice>
+      <choice id="B">Le nom utilisé dans le programme</choice>
+      <choice id="C">Le chemin d'accès complet</choice>
+      <choice id="D">L'extension du fichier</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q6" type="multipleChoice">
+    <enonce>C'est quoi le nom physique d'un fichier ?</enonce>
+    <choices>
+      <choice id="A">Le nom utilisé dans le programme</choice>
+      <choice id="B">Le nom stocké sur le disque</choice>
+      <choice id="C">Le nom de la variable</choice>
+      <choice id="D">Le type du fichier</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES OPÉRATIONS ==================== -->
+  <question id="q7" type="multipleChoice">
+    <enonce>Quelle instruction permet d'associer un nom logique à un nom physique ?</enonce>
+    <choices>
+      <choice id="A">ASSOCIER</choice>
+      <choice id="B">LIER</choice>
+      <choice id="C">ATTACHER</choice>
+      <choice id="D">CONNECTER</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q8" type="multipleChoice">
+    <enonce>Que fait l'instruction REECRIRE ?</enonce>
+    <choices>
+      <choice id="A">Elle lit le fichier</choice>
+      <choice id="B">Elle ouvre un fichier en écriture et crée le fichier (efface s'il existe)</choice>
+      <choice id="C">Elle ferme le fichier</choice>
+      <choice id="D">Elle renvoie le pointeur au début du fichier</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q9" type="multipleChoice">
+    <enonce>Que fait l'instruction RELIRE ?</enonce>
+    <choices>
+      <choice id="A">Elle ferme le fichier</choice>
+      <choice id="B">Elle renvoie le pointeur au début du fichier</choice>
+      <choice id="C">Elle crée un nouveau fichier</choice>
+      <choice id="D">Elle supprime le fichier</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q10" type="multipleChoice">
+    <enonce>Quelle instruction permet d'écrire dans un fichier ?</enonce>
+    <choices>
+      <choice id="A">LIRE</choice>
+      <choice id="B">ECRIRE</choice>
+      <choice id="C">AFFICHER</choice>
+      <choice id="D">SORTIR</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q11" type="multipleChoice">
+    <enonce>Quelle instruction permet de lire depuis un fichier ?</enonce>
+    <choices>
+      <choice id="A">ECRIRE</choice>
+      <choice id="B">LIRE</choice>
+      <choice id="C">AFFICHER</choice>
+      <choice id="D">ENTRER</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q12" type="multipleChoice">
+    <enonce>Quelle instruction permet de fermer un fichier ?</enonce>
+    <choices>
+      <choice id="A">FERMER</choice>
+      <choice id="B">CLOSE</choice>
+      <choice id="C">FIN</choice>
+      <choice id="D">TERMINER</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR FDF ==================== -->
+  <question id="q13" type="multipleChoice">
+    <enonce>Que signifie FDF ?</enonce>
+    <choices>
+      <choice id="A">Fin De Fichier</choice>
+      <choice id="B">Fichier De Fonction</choice>
+      <choice id="C">Format De Fichier</choice>
+      <choice id="D">Fonction De Fichier</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q14" type="multipleChoice">
+    <enonce>Que retourne la fonction FDF quand on atteint la fin du fichier ?</enonce>
+    <choices>
+      <choice id="A">FAUX</choice>
+      <choice id="B">0</choice>
+      <choice id="C">VRAI</choice>
+      <choice id="D">Erreur</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q15" type="multipleChoice">
+    <enonce>Quel type de valeur retourne la fonction FDF ?</enonce>
+    <choices>
+      <choice id="A">Entier</choice>
+      <choice id="B">Réel</choice>
+      <choice id="C">Caractère</choice>
+      <choice id="D">Booléen</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES EXEMPLES ==================== -->
+  <question id="q16" type="multipleChoice">
+    <enonce>Dans l'exemple d'écriture, quel type d'enregistrement est utilisé ?</enonce>
+    <choices>
+      <choice id="A">eleve avec Nom et Prénom</choice>
+      <choice id="B">eleve avec Nom et Age</choice>
+      <choice id="C">eleve avec Numéro et Note</choice>
+      <choice id="D">eleve avec Adresse et Téléphone</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q17" type="multipleChoice">
+    <enonce>Dans l'exemple d'écriture, quelle est l'extension du fichier physique ?</enonce>
+    <choices>
+      <choice id="A">.txt</choice>
+      <choice id="B">.doc</choice>
+      <choice id="C">.dat</choice>
+      <choice id="D">.exe</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q18" type="multipleChoice">
+    <enonce>Dans l'exemple de lecture d'un fichier typé, quelle instruction est utilisée pour se positionner au début ?</enonce>
+    <choices>
+      <choice id="A">REECRIRE</choice>
+      <choice id="B">FERMER</choice>
+      <choice id="C">RELIRE</choice>
+      <choice id="D">ASSOCIER</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q19" type="multipleChoice">
+    <enonce>Dans l'exemple de lecture d'un fichier typé, quelle est la condition d'arrêt de la boucle TANT QUE ?</enonce>
+    <choices>
+      <choice id="A">FDF(Fichier_eleves)</choice>
+      <choice id="B">NON FDF(Fichier_eleves)</choice>
+      <choice id="C">Choix = 2</choice>
+      <choice id="D">Enreg.Nom = ""</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES FICHIERS TEXTE ==================== -->
+  <question id="q20" type="multipleChoice">
+    <enonce>Comment se termine chaque ligne dans un fichier texte ?</enonce>
+    <choices>
+      <choice id="A">Par un espace</choice>
+      <choice id="B">Par une marque de fin de ligne (caractère 10 du code ASCII)</choice>
+      <choice id="C">Par un point-virgule</choice>
+      <choice id="D">Par une virgule</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q21" type="multipleChoice">
+    <enonce>Comment se termine un fichier texte ?</enonce>
+    <choices>
+      <choice id="A">Par un espace</choice>
+      <choice id="B">Par une marque de fin de fichier (caractère 13 du code ASCII)</choice>
+      <choice id="C">Par un point</choice>
+      <choice id="D">Par une ligne vide</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q22" type="multipleChoice">
+    <enonce>Dans un fichier texte, comment sont stockées les valeurs numériques ?</enonce>
+    <choices>
+      <choice id="A">En format binaire</choice>
+      <choice id="B">En format décimal</choice>
+      <choice id="C">Comme des chaînes de caractères</choice>
+      <choice id="D">En format hexadécimal</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q23" type="multipleChoice">
+    <enonce>Dans l'exemple du fichier texte, que lit-on avec LIRE(F, S) ?</enonce>
+    <choices>
+      <choice id="A">Un caractère</choice>
+      <choice id="B">Un mot</choice>
+      <choice id="C">Une ligne complète</choice>
+      <choice id="D">Un entier</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q24" type="multipleChoice">
+    <enonce>Selon le cours, le clavier et l'écran sont considérés comme :</enonce>
+    <choices>
+      <choice id="A">Des périphériques externes</choice>
+      <choice id="B">Des fichiers texte</choice>
+      <choice id="C">Des fichiers typés</choice>
+      <choice id="D">Des enregistrements</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q25" type="multipleChoice">
+    <enonce>Les fichiers typés stockent les données généralement sous quel format ?</enonce>
+    <choices>
+      <choice id="A">Texte</choice>
+      <choice id="B">Binaire</choice>
+      <choice id="C">ASCII</choice>
+      <choice id="D">XML</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR L'EXERCICE ==================== -->
+  <question id="q26" type="multipleChoice">
+    <enonce>Dans l'exercice, le fichier « étudiants » contient quels champs ?</enonce>
+    <choices>
+      <choice id="A">Nom, Prénom, Age</choice>
+      <choice id="B">Numéro d'identification, Nom, Moyenne</choice>
+      <choice id="C">Numéro, Note, Année</choice>
+      <choice id="D">Nom, Moyenne, Classe</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q27" type="multipleChoice">
+    <enonce>Dans l'exercice, la création du fichier doit se faire dans :</enonce>
+    <choices>
+      <choice id="A">Une fonction</choice>
+      <choice id="B">Une procédure</choice>
+      <choice id="C">L'algorithme principal</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q28" type="multipleChoice">
+    <enonce>Dans l'exercice, la consultation de la moyenne se fait par :</enonce>
+    <choices>
+      <choice id="A">Une procédure</choice>
+      <choice id="B">Une fonction</choice>
+      <choice id="C">Une variable globale</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q29" type="multipleChoice">
+    <enonce>Pour résoudre l'exercice, l'étudiant a besoin des notions de quel chapitre ?</enonce>
+    <choices>
+      <choice id="A">Chapitre 4 (Vecteurs et matrices)</choice>
+      <choice id="B">Chapitre 5 (Sous-algorithmes)</choice>
+      <choice id="C">Chapitre 6 (Enregistrements)</choice>
+      <choice id="D">Chapitre 3 (Boucles)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q30" type="multipleChoice">
+    <enonce>Si l'étudiant n'arrive pas à faire la partie B (consultation de la moyenne), quelles sous-sections doit-il refaire ?</enonce>
+    <choices>
+      <choice id="A">2.1, 2.2, 2.3</choice>
+      <choice id="B">2.4 et 2.5</choice>
+      <choice id="C">1 et 2</choice>
+      <choice id="D">4.6 et 4.7</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+</chapter>

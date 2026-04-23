@@ -1,334 +1,340 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_05" title="Functions - Fonctions et récursivité">
+<chapter id="Chapitre_05_Quiz" title="Quiz – Sous-algorithmes (fonctions et procédures)">
 
-  <question id="c5_q1" type="multipleChoice">
-    <enonce>What is a function?</enonce>
+  <!-- ==================== QUESTIONS SUR LES FONCTIONS ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>Qu'est-ce qu'une fonction ?</enonce>
     <choices>
-      <choice id="A">A variable</choice>
-      <choice id="B">A reusable block of code that performs a task</choice>
-      <choice id="C">A loop</choice>
-      <choice id="D">A data type</choice>
+      <choice id="A">Un sous-algorithme qui ne retourne aucune valeur</choice>
+      <choice id="B">Un sous-algorithme qui retourne une valeur unique</choice>
+      <choice id="C">Une variable globale</choice>
+      <choice id="D">Une boucle particulière</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c5_q2" type="multipleChoice">
-    <enonce>What are parameters in a function?</enonce>
+  <question id="q2" type="multipleChoice">
+    <enonce>Qu'est-ce qu'une procédure ?</enonce>
     <choices>
-      <choice id="A">The function name</choice>
-      <choice id="B">Input values passed to the function</choice>
-      <choice id="C">The function body</choice>
-      <choice id="D">The return type</choice>
+      <choice id="A">Un sous-algorithme qui retourne une valeur</choice>
+      <choice id="B">Un sous-algorithme qui ne retourne aucune valeur</choice>
+      <choice id="C">Une constante</choice>
+      <choice id="D">Un type de donnée</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c5_q3" type="multipleChoice">
-    <enonce>What is recursion?</enonce>
+  <question id="q3" type="multipleChoice">
+    <enonce>Dans une fonction, le résultat est affecté à :</enonce>
     <choices>
-      <choice id="A">A loop</choice>
-      <choice id="B">A function calling itself</choice>
-      <choice id="C">A data structure</choice>
-      <choice id="D">An array operation</choice>
+      <choice id="A">Une variable locale</choice>
+      <choice id="B">L'identifiant de la fonction</choice>
+      <choice id="C">Un paramètre</choice>
+      <choice id="D">Une constante</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c5_q4" type="multipleChoice">
-    <enonce>What is the base case in recursion?</enonce>
+  <question id="q4" type="multipleChoice">
+    <enonce>Une variable globale est définie :</enonce>
     <choices>
-      <choice id="A">The first function call</choice>
-      <choice id="B">The condition to stop recursion</choice>
-      <choice id="C">The return value</choice>
-      <choice id="D">The function parameters</choice>
+      <choice id="A">Dans le corps d'un sous-algorithme</choice>
+      <choice id="B">Au niveau de l'algorithme principal (dans VAR)</choice>
+      <choice id="C">Dans la partie CONSTANTE</choice>
+      <choice id="D">Dans un paramètre</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c5_q5" type="ordering">
-    <enonce>Order the function execution steps:</enonce>
-    <bonneReponse>Function declaration|Function call|Parameter passing|Function execution|Return value</bonneReponse>
+  <question id="q5" type="multipleChoice">
+    <enonce>Une variable locale est :</enonce>
+    <choices>
+      <choice id="A">Accessible partout dans l'algorithme</choice>
+      <choice id="B">Définie au sein d'un sous-algorithme</choice>
+      <choice id="C">Une constante</choice>
+      <choice id="D">Un paramètre en sortie</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q6" type="multipleChoice">
+    <enonce>Que se passe-t-il si une variable locale a le même nom qu'une variable globale ?</enonce>
+    <choices>
+      <choice id="A">Erreur de compilation</choice>
+      <choice id="B">La variable globale masque la variable locale</choice>
+      <choice id="C">La variable locale masque la variable globale</choice>
+      <choice id="D">Les deux variables sont fusionnées</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q7" type="multipleChoice">
+    <enonce>Quel est l'avantage principal des sous-algorithmes ?</enonce>
+    <choices>
+      <choice id="A">Ralentir l'exécution</choice>
+      <choice id="B">Réutiliser le code et améliorer la lisibilité</choice>
+      <choice id="C">Augmenter le nombre de variables</choice>
+      <choice id="D">Rendre l'algorithme plus complexe</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q8" type="multipleChoice">
+    <enonce>Dans un passage de paramètre en entrée (E) :</enonce>
+    <choices>
+      <choice id="A">Le sous-algorithme peut modifier la variable appelante</choice>
+      <choice id="B">Une copie de la valeur est passée au sous-algorithme</choice>
+      <choice id="C">La variable appelante est directement liée au paramètre</choice>
+      <choice id="D">On ne peut pas utiliser de constantes</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q9" type="multipleChoice">
+    <enonce>Dans un passage de paramètre en sortie (S) :</enonce>
+    <choices>
+      <choice id="A">La valeur du paramètre est copiée dans la variable appelante à la fin</choice>
+      <choice id="B">Le paramètre ne peut pas être modifié</choice>
+      <choice id="C">On peut passer une constante</choice>
+      <choice id="D">La variable appelante n'est pas affectée</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q10" type="multipleChoice">
+    <enonce>Dans un passage de paramètre en entrée/sortie (E/S) :</enonce>
+    <choices>
+      <choice id="A">Le paramètre est en lecture seule</choice>
+      <choice id="B">Le paramètre est en écriture seule</choice>
+      <choice id="C">Le paramètre peut être lu et modifié, et les modifications affectent la variable appelante</choice>
+      <choice id="D">Une copie est faite sans retour</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q11" type="multipleChoice">
+    <enonce>L'instruction LIRE() en algorithmique peut être vue comme :</enonce>
+    <choices>
+      <choice id="A">Une fonction</choice>
+      <choice id="B">Une procédure avec paramètres en sortie</choice>
+      <choice id="C">Une constante</choice>
+      <choice id="D">Une variable globale</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q12" type="multipleChoice">
+    <enonce>Où doit-on déclarer un sous-algorithme ?</enonce>
+    <choices>
+      <choice id="A">Dans le corps de l'algorithme après DÉBUT</choice>
+      <choice id="B">Dans la partie déclaration de l'algorithme, avant DÉBUT</choice>
+      <choice id="C">Après FIN de l'algorithme</choice>
+      <choice id="D">Dans un fichier séparé</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>Quelle est la différence fondamentale entre une fonction et une procédure ?</enonce>
+    <choices>
+      <choice id="A">La fonction retourne une valeur, la procédure non</choice>
+      <choice id="B">La procédure retourne une valeur, la fonction non</choice>
+      <choice id="C">La fonction a des paramètres, la procédure non</choice>
+      <choice id="D">Il n'y a pas de différence</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q14" type="multipleChoice">
+    <enonce>Dans l'exemple de la permutation, le passage des paramètres est :</enonce>
+    <choices>
+      <choice id="A">En entrée</choice>
+      <choice id="B">En sortie</choice>
+      <choice id="C">En entrée/sortie</choice>
+      <choice id="D">Par valeur</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q15" type="multipleChoice">
+    <enonce>La fonction Fact(x) dans l'exemple de combinaison calcule :</enonce>
+    <choices>
+      <choice id="A">La somme des entiers de 1 à x</choice>
+      <choice id="B">La factorielle de x (x! = 1*2*...*x)</choice>
+      <choice id="C">Le carré de x</choice>
+      <choice id="D">La racine carrée de x</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>Dans l'appel Max(x, y, grand), le paramètre grand est passé :</enonce>
+    <choices>
+      <choice id="A">En entrée</choice>
+      <choice id="B">En sortie</choice>
+      <choice id="C">En entrée/sortie</choice>
+      <choice id="D">Par valeur</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q17" type="multipleChoice">
+    <enonce>La structuration d'un algorithme par modules est la base de :</enonce>
+    <choices>
+      <choice id="A">La programmation séquentielle</choice>
+      <choice id="B">La programmation structurée et modulaire</choice>
+      <choice id="C">La programmation linéaire</choice>
+      <choice id="D">La programmation récursive</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q18" type="multipleChoice">
+    <enonce>Un paramètre formel est :</enonce>
+    <choices>
+      <choice id="A">Une variable passée lors de l'appel</choice>
+      <choice id="B">Une variable déclarée dans la définition du sous-algorithme</choice>
+      <choice id="C">Une constante globale</choice>
+      <choice id="D">Le résultat de la fonction</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q19" type="multipleChoice">
+    <enonce>Un paramètre effectif est :</enonce>
+    <choices>
+      <choice id="A">La variable ou valeur passée lors de l'appel</choice>
+      <choice id="B">La variable déclarée dans la définition</choice>
+      <choice id="C">Le résultat de la fonction</choice>
+      <choice id="D">Une constante locale</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q20" type="multipleChoice">
+    <enonce>L'appel à une fonction peut être utilisé :</enonce>
+    <choices>
+      <choice id="A">Comme une instruction seule</choice>
+      <choice id="B">Dans une expression</choice>
+      <choice id="C">Uniquement comme paramètre</choice>
+      <choice id="D">Uniquement comme condition</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q21" type="multipleChoice">
+    <enonce>L'appel à une procédure s'utilise :</enonce>
+    <choices>
+      <choice id="A">Comme une instruction seule</choice>
+      <choice id="B">Dans une expression</choice>
+      <choice id="C">Uniquement comme paramètre</choice>
+      <choice id="D">Avec return</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q22" type="multipleChoice">
+    <enonce>Quel est l'intérêt de la fonction factorielle dans l'exemple combinaison ?</enonce>
+    <choices>
+      <choice id="A">Éviter la répétition du code de calcul de factorielle</choice>
+      <choice id="B">Ralentir l'exécution</choice>
+      <choice id="C">Utiliser plus de variables</choice>
+      <choice id="D">Rendre l'algorithme plus long</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q23" type="multipleChoice">
+    <enonce>Une variable déclarée à l'intérieur d'une procédure est :</enonce>
+    <choices>
+      <choice id="A">Globale</choice>
+      <choice id="B">Locale à la procédure</choice>
+      <choice id="C">Accessible depuis l'algorithme principal</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q24" type="ordering">
+    <enonce>Remettez dans l'ordre les parties d'un algorithme avec sous-algorithmes :</enonce>
+    <bonneReponse>ALGORITHME|CONSTANTE|VARIABLE|FONCTION/PROCÉDURE|DÉBUT|FIN</bonneReponse>
     <codeLines>
-      <line>Function execution</line>
-      <line>Function declaration</line>
-      <line>Return value</line>
-      <line>Function call</line>
-      <line>Parameter passing</line>
+      <line>VARIABLE</line>
+      <line>FONCTION/PROCÉDURE</line>
+      <line>ALGORITHME</line>
+      <line>FIN</line>
+      <line>CONSTANTE</line>
+      <line>DÉBUT</line>
     </codeLines>
   </question>
 
-  <question id="c5_q6" type="multipleChoice">
-    <enonce>What is a void function?</enonce>
-    <choices>
-      <choice id="A">A function that takes no parameters</choice>
-      <choice id="B">A function that returns no value</choice>
-      <choice id="C">A function that is never called</choice>
-      <choice id="D">A function with infinite loops</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q7" type="multipleChoice">
-    <enonce>What is function overloading?</enonce>
-    <choices>
-      <choice id="A">Calling a function multiple times</choice>
-      <choice id="B">A function that calls itself</choice>
-      <choice id="C">Defining multiple functions with the same name but different parameters</choice>
-      <choice id="D">A function inside another function</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c5_q8" type="multipleChoice">
-    <enonce>What is the scope of a local variable?</enonce>
-    <choices>
-      <choice id="A">Accessible everywhere in the program</choice>
-      <choice id="B">Accessible only within the function it is declared in</choice>
-      <choice id="C">Accessible in all functions of the same file</choice>
-      <choice id="D">Accessible only in loops</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q9" type="multipleChoice">
-    <enonce>What keyword is used to return a value from a function?</enonce>
-    <choices>
-      <choice id="A">yield</choice>
-      <choice id="B">output</choice>
-      <choice id="C">return</choice>
-      <choice id="D">send</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c5_q10" type="ordering">
-    <enonce>Order the steps of a recursive function:</enonce>
-    <bonneReponse>Check base case|Return if base case met|Call function recursively|Return recursive result</bonneReponse>
+  <question id="q25" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes d'appel d'une fonction :</enonce>
+    <bonneReponse>Appel de la fonction|Passage des paramètres|Exécution du corps|Retour du résultat|Utilisation du résultat</bonneReponse>
     <codeLines>
-      <line>Call function recursively</line>
-      <line>Check base case</line>
-      <line>Return recursive result</line>
-      <line>Return if base case met</line>
+      <line>Passage des paramètres</line>
+      <line>Retour du résultat</line>
+      <line>Utilisation du résultat</line>
+      <line>Exécution du corps</line>
+      <line>Appel de la fonction</line>
     </codeLines>
   </question>
 
-  <question id="c5_q11" type="multipleChoice">
-    <enonce>What happens if a recursive function has no base case?</enonce>
-    <choices>
-      <choice id="A">It returns 0</choice>
-      <choice id="B">It runs forever causing a stack overflow</choice>
-      <choice id="C">It returns null</choice>
-      <choice id="D">It automatically stops after 100 calls</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
+  <question id="q26" type="ordering">
+    <enonce>Remettez dans l'ordre la déclaration correcte d'une fonction :</enonce>
+    <bonneReponse>FONCTION|Nom|(paramètres)|: Type|DÉBUT|FIN</bonneReponse>
+    <codeLines>
+      <line>FIN</line>
+      <line>DÉBUT</line>
+      <line>FONCTION</line>
+      <line>Nom</line>
+      <line>: Type</line>
+      <line>(paramètres)</line>
+    </codeLines>
   </question>
 
-  <question id="c5_q12" type="multipleChoice">
-    <enonce>What is the call stack?</enonce>
+  <!-- ==================== QUESTIONS SUR L'EXEMPLE COMBINAISON ==================== -->
+  <question id="q27" type="multipleChoice">
+    <enonce>Dans l'algorithme combinaison amélioré, combien de fois la fonction Fact est-elle appelée ?</enonce>
     <choices>
-      <choice id="A">A list of all declared variables</choice>
-      <choice id="B">A data structure that tracks active function calls</choice>
-      <choice id="C">A type of recursive function</choice>
-      <choice id="D">A memory area for storing arrays</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q13" type="multipleChoice">
-    <enonce>What is "pass by value"?</enonce>
-    <choices>
-      <choice id="A">Passing the memory address of a variable</choice>
-      <choice id="B">Passing a copy of the variable's value to the function</choice>
-      <choice id="C">Returning a value from a function</choice>
-      <choice id="D">Declaring a global variable</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q14" type="multipleChoice">
-    <enonce>What is "pass by reference"?</enonce>
-    <choices>
-      <choice id="A">Passing a copy of the variable</choice>
-      <choice id="B">Passing the memory address so the function can modify the original</choice>
-      <choice id="C">Returning multiple values</choice>
-      <choice id="D">Declaring a local variable</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q15" type="multipleChoice">
-    <enonce>What is a global variable?</enonce>
-    <choices>
-      <choice id="A">A variable declared inside a function</choice>
-      <choice id="B">A variable accessible only in loops</choice>
-      <choice id="C">A variable declared outside all functions, accessible everywhere</choice>
-      <choice id="D">A variable that cannot be modified</choice>
+      <choice id="A">1 fois</choice>
+      <choice id="B">2 fois</choice>
+      <choice id="C">3 fois</choice>
+      <choice id="D">4 fois</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c5_q16" type="multipleChoice">
-    <enonce>What is a function prototype (declaration)?</enonce>
-    <choices>
-      <choice id="A">The implementation of a function</choice>
-      <choice id="B">A statement that declares the function signature before its full definition</choice>
-      <choice id="C">A function that has no body</choice>
-      <choice id="D">A recursive call</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q17" type="multipleChoice">
-    <enonce>What is tail recursion?</enonce>
-    <choices>
-      <choice id="A">Recursion with multiple base cases</choice>
-      <choice id="B">Recursion where the recursive call is the last operation in the function</choice>
-      <choice id="C">Recursion that always causes a stack overflow</choice>
-      <choice id="D">Recursion with no return value</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q18" type="multipleChoice">
-    <enonce>What is the result of factorial(0) in a standard recursive implementation?</enonce>
+  <question id="q28" type="multipleChoice">
+    <enonce>Dans la fonction Fact, la variable r est initialisée à :</enonce>
     <choices>
       <choice id="A">0</choice>
-      <choice id="B">Undefined</choice>
-      <choice id="C">1</choice>
-      <choice id="D">Infinite loop</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c5_q19" type="multipleChoice">
-    <enonce>What is a lambda function (anonymous function)?</enonce>
-    <choices>
-      <choice id="A">A function with no parameters</choice>
-      <choice id="B">A recursive function</choice>
-      <choice id="C">A small unnamed function defined inline</choice>
-      <choice id="D">A function that returns void</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c5_q20" type="ordering">
-    <enonce>Order the steps to compute factorial(n) recursively:</enonce>
-    <bonneReponse>Check if n equals 0|Return 1 if base case|Return n * factorial(n-1)|Receive final result</bonneReponse>
-    <codeLines>
-      <line>Return n * factorial(n-1)</line>
-      <line>Check if n equals 0</line>
-      <line>Receive final result</line>
-      <line>Return 1 if base case</line>
-    </codeLines>
-  </question>
-
-  <question id="c5_q21" type="multipleChoice">
-    <enonce>What does "return" do in the middle of a function?</enonce>
-    <choices>
-      <choice id="A">Pauses the function temporarily</choice>
-      <choice id="B">Exits the function immediately and returns the specified value</choice>
-      <choice id="C">Restarts the function</choice>
-      <choice id="D">Jumps to the next function</choice>
+      <choice id="B">1</choice>
+      <choice id="C">x</choice>
+      <choice id="D">n</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c5_q22" type="multipleChoice">
-    <enonce>What is mutual recursion?</enonce>
+  <question id="q29" type="multipleChoice">
+    <enonce>Le passage de paramètres en entrée est aussi appelé :</enonce>
     <choices>
-      <choice id="A">A function calling itself twice</choice>
-      <choice id="B">Two functions that call each other recursively</choice>
-      <choice id="C">A recursive function with two base cases</choice>
-      <choice id="D">A function shared between two programs</choice>
+      <choice id="A">Passage par référence</choice>
+      <choice id="B">Passage par valeur</choice>
+      <choice id="C">Passage par adresse</choice>
+      <choice id="D">Passage par pointeur</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c5_q23" type="multipleChoice">
-    <enonce>What is a default parameter in a function?</enonce>
+  <question id="q30" type="multipleChoice">
+    <enonce>Le passage de paramètres en entrée/sortie est aussi appelé :</enonce>
     <choices>
-      <choice id="A">A parameter that is always required</choice>
-      <choice id="B">A parameter with a predefined value used if no argument is passed</choice>
-      <choice id="C">A parameter of type void</choice>
-      <choice id="D">A parameter that cannot be changed</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q24" type="multipleChoice">
-    <enonce>What is the difference between a function and a procedure?</enonce>
-    <choices>
-      <choice id="A">A procedure runs faster</choice>
-      <choice id="B">A function returns a value; a procedure does not</choice>
-      <choice id="C">A function cannot have parameters</choice>
-      <choice id="D">There is no difference</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q25" type="multipleChoice">
-    <enonce>What is stack overflow in recursion?</enonce>
-    <choices>
-      <choice id="A">When the function returns too many values</choice>
-      <choice id="B">When too many recursive calls fill the call stack beyond its limit</choice>
-      <choice id="C">When a function is called with wrong parameters</choice>
-      <choice id="D">When a function has no return statement</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q26" type="multipleChoice">
-    <enonce>What is memoization in recursion?</enonce>
-    <choices>
-      <choice id="A">Adding comments to recursive functions</choice>
-      <choice id="B">Storing the results of recursive calls to avoid recomputation</choice>
-      <choice id="C">Using global variables inside recursive functions</choice>
-      <choice id="D">Converting recursion to iteration</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q27" type="multipleChoice">
-    <enonce>What is the time complexity of a naive recursive Fibonacci implementation?</enonce>
-    <choices>
-      <choice id="A">O(n)</choice>
-      <choice id="B">O(n log n)</choice>
-      <choice id="C">O(2^n)</choice>
-      <choice id="D">O(log n)</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c5_q28" type="multipleChoice">
-    <enonce>What is a higher-order function?</enonce>
-    <choices>
-      <choice id="A">A function that runs faster than normal</choice>
-      <choice id="B">A function that takes other functions as parameters or returns a function</choice>
-      <choice id="C">A function declared at the top of the file</choice>
-      <choice id="D">A function with more than 5 parameters</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c5_q29" type="ordering">
-    <enonce>Order the steps to compute Fibonacci(n) with memoization:</enonce>
-    <bonneReponse>Check if n is in cache|Return cached value if found|Compute Fibonacci(n-1) + Fibonacci(n-2)|Store result in cache|Return result</bonneReponse>
-    <codeLines>
-      <line>Store result in cache</line>
-      <line>Return cached value if found</line>
-      <line>Return result</line>
-      <line>Check if n is in cache</line>
-      <line>Compute Fibonacci(n-1) + Fibonacci(n-2)</line>
-    </codeLines>
-  </question>
-
-  <question id="c5_q30" type="multipleChoice">
-    <enonce>When should you prefer iteration over recursion?</enonce>
-    <choices>
-      <choice id="A">When the problem is naturally tree-shaped</choice>
-      <choice id="B">When the recursive depth could be very large, risking stack overflow</choice>
-      <choice id="C">When the code needs to be shorter</choice>
-      <choice id="D">When the function has no return value</choice>
+      <choice id="A">Passage par valeur</choice>
+      <choice id="B">Passage par référence</choice>
+      <choice id="C">Passage par copie</choice>
+      <choice id="D">Passage par constante</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
   </question>

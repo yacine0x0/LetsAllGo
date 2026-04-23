@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_1_Quiz" title="Quiz – Les enregistrements">
+
+  <!-- ==================== QUESTIONS SUR LA DÉFINITION ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>Qu'est-ce qu'un enregistrement ?</enonce>
+    <choices>
+      <choice id="A">Un ensemble de variables de même type</choice>
+      <choice id="B">Un ensemble de variables (champs) de types différents constituant une entité</choice>
+      <choice id="C">Une variable simple de type Entier</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q2" type="multipleChoice">
+    <enonce>Quel mot clé est utilisé pour définir un enregistrement en algorithmique ?</enonce>
+    <choices>
+      <choice id="A">RECORD</choice>
+      <choice id="B">STRUCT</choice>
+      <choice id="C">ENREGISTREMENT</choice>
+      <choice id="D">TYPE</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q3" type="multipleChoice">
+    <enonce>En langage C, quel mot clé permet de définir une structure (équivalent de l'enregistrement) ?</enonce>
+    <choices>
+      <choice id="A">ENREGISTREMENT</choice>
+      <choice id="B">RECORD</choice>
+      <choice id="C">STRUCT</choice>
+      <choice id="D">TYPE</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q4" type="multipleChoice">
+    <enonce>Comment accède-t-on à un champ d'un enregistrement ?</enonce>
+    <choices>
+      <choice id="A">Variable_enregistrement-&gt;champ</choice>
+      <choice id="B">Variable_enregistrement.champ</choice>
+      <choice id="C">champ[Variable_enregistrement]</choice>
+      <choice id="D">Variable_enregistrement[champ]</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q5" type="multipleChoice">
+    <enonce>Dans la déclaration "TYPE Facture = ENREGISTREMENT NoFacture : Entier ; Montant : Réel ; FIN ;", combien de champs contient cet enregistrement ?</enonce>
+    <choices>
+      <choice id="A">1</choice>
+      <choice id="B">2</choice>
+      <choice id="C">3</choice>
+      <choice id="D">4</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA MANIPULATION ==================== -->
+  <question id="q6" type="multipleChoice">
+    <enonce>La manipulation des variables de type enregistrement se fait :</enonce>
+    <choices>
+      <choice id="A">En bloc (tout l'enregistrement d'un coup)</choice>
+      <choice id="B">Champ par champ</choice>
+      <choice id="C">En utilisant des boucles uniquement</choice>
+      <choice id="D">Par des constantes</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q7" type="multipleChoice">
+    <enonce>Dans l'exemple "Client.NoCompte", que représente "NoCompte" ?</enonce>
+    <choices>
+      <choice id="A">Le nom de l'enregistrement</choice>
+      <choice id="B">Le nom d'un champ de l'enregistrement</choice>
+      <choice id="C">Le type de l'enregistrement</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES TABLEAUX D'ENREGISTREMENTS ==================== -->
+  <question id="q8" type="multipleChoice">
+    <enonce>Comment déclare-t-on un tableau d'enregistrements ?</enonce>
+    <choices>
+      <choice id="A">VAR Nom_tableau : ENREGISTREMENT DE Type</choice>
+      <choice id="B">VAR Nom_tableau : Tableau [1..dim] DE Nom_type_enregistrement</choice>
+      <choice id="C">VAR Nom_tableau : ENREGISTREMENT [1..dim]</choice>
+      <choice id="D">VAR Nom_tableau : Tableau DE ENREGISTREMENT</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q9" type="multipleChoice">
+    <enonce>Comment accède-t-on au champ "Nom" du ième élément d'un tableau d'enregistrements "C" ?</enonce>
+    <choices>
+      <choice id="A">C[i].Nom</choice>
+      <choice id="B">C.Nom[i]</choice>
+      <choice id="C">Nom.C[i]</choice>
+      <choice id="D">C[i]-&gt;Nom</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES ENREGISTREMENTS MEMBRES ==================== -->
+  <question id="q10" type="multipleChoice">
+    <enonce>Quand un champ d'un enregistrement est lui-même de type enregistrement, le type du sous-enregistrement doit être déclaré :</enonce>
+    <choices>
+      <choice id="A">Après l'enregistrement qui le contient</choice>
+      <choice id="B">Avant l'enregistrement qui le contient</choice>
+      <choice id="C">Dans un fichier séparé</choice>
+      <choice id="D">Dans le corps de l'algorithme</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q11" type="multipleChoice">
+    <enonce>Comment accède-t-on au champ "Jour" d'un sous-enregistrement "DateOuverture" contenu dans l'enregistrement "Client" ?</enonce>
+    <choices>
+      <choice id="A">Client.Jour.DateOuverture</choice>
+      <choice id="B">DateOuverture.Client.Jour</choice>
+      <choice id="C">Client.DateOuverture.Jour</choice>
+      <choice id="D">Jour.Client.DateOuverture</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA STRUCTURE AVEC-FAIRE ==================== -->
+  <question id="q12" type="multipleChoice">
+    <enonce>À quoi sert la structure AVEC-FAIRE ?</enonce>
+    <choices>
+      <choice id="A">À parcourir les champs d'un enregistrement d'une manière automatique</choice>
+      <choice id="B">À déclarer un enregistrement</choice>
+      <choice id="C">À supprimer un enregistrement</choice>
+      <choice id="D">À copier un enregistrement</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>La structure AVEC-FAIRE existe-t-elle en langage C ?</enonce>
+    <choices>
+      <choice id="A">Oui, elle existe sous le nom "WITH"</choice>
+      <choice id="B">Oui, elle existe sous le nom "STRUCT"</choice>
+      <choice id="C">Non, elle n'existe pas en langage C</choice>
+      <choice id="D">Oui, elle existe sous le nom "AVEC"</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LE PASSAGE DE PARAMÈTRES ==================== -->
+  <question id="q14" type="multipleChoice">
+    <enonce>Une procédure peut-elle recevoir une variable de type enregistrement comme paramètre ?</enonce>
+    <choices>
+      <choice id="A">Oui</choice>
+      <choice id="B">Non, jamais</choice>
+      <choice id="C">Uniquement pour les enregistrements simples</choice>
+      <choice id="D">Uniquement pour les enregistrements avec 2 champs</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q15" type="multipleChoice">
+    <enonce>Dans l'exemple de la procédure Proc_affichage, le paramètre "x" reçoit :</enonce>
+    <choices>
+      <choice id="A">Une copie de la variable Client</choice>
+      <choice id="B">L'adresse de la variable Client</choice>
+      <choice id="C">Le nom de la variable Client</choice>
+      <choice id="D">Le type de la variable Client</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>Peut-on retourner une variable de type enregistrement à l'aide d'une fonction classique (sans pointeur) ?</enonce>
+    <choices>
+      <choice id="A">Oui, toujours</choice>
+      <choice id="B">Non, jamais</choice>
+      <choice id="C">Uniquement pour les petits enregistrements</choice>
+      <choice id="D">Uniquement avec la structure AVEC-FAIRE</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES IDENTIFICATEURS ==================== -->
+  <question id="q17" type="multipleChoice">
+    <enonce>Dans deux enregistrements différents, peut-on réutiliser le même identificateur de champ avec un type différent ?</enonce>
+    <choices>
+      <choice id="A">Oui, c'est permis</choice>
+      <choice id="B">Non, interdit</choice>
+      <choice id="C">Uniquement si les types sont identiques</choice>
+      <choice id="D">Uniquement si les noms des enregistrements sont différents</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q18" type="multipleChoice">
+    <enonce>Dans un même enregistrement, peut-on avoir deux champs avec le même identificateur ?</enonce>
+    <choices>
+      <choice id="A">Oui</choice>
+      <choice id="B">Non, chaque champ doit avoir un identificateur unique dans l'enregistrement</choice>
+      <choice id="C">Uniquement si les types sont différents</choice>
+      <choice id="D">Uniquement si les types sont identiques</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES EXERCICES ==================== -->
+  <question id="q19" type="multipleChoice">
+    <enonce>Dans l'exercice A, l'enregistrement « Client » contient les champs :</enonce>
+    <choices>
+      <choice id="A">Nom, Prénom, Adresse</choice>
+      <choice id="B">Nom, Prénom, Téléphone</choice>
+      <choice id="C">Nom, Age, Téléphone</choice>
+      <choice id="D">Prénom, Age, Adresse</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q20" type="multipleChoice">
+    <enonce>Dans l'exercice B, l'enregistrement « Adresse » contient les champs :</enonce>
+    <choices>
+      <choice id="A">Numéro de rue, Nom de rue, Code postal</choice>
+      <choice id="B">Ville, Code postal, Pays</choice>
+      <choice id="C">Numéro de rue, Ville, Pays</choice>
+      <choice id="D">Nom de rue, Ville, Code postal</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q21" type="multipleChoice">
+    <enonce>Dans l'exercice B, la dimension du tableau d'étudiants est :</enonce>
+    <choices>
+      <choice id="A">2</choice>
+      <choice id="B">3</choice>
+      <choice id="C">4</choice>
+      <choice id="D">5</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q22" type="multipleChoice">
+    <enonce>Dans l'exercice B, l'affichage doit se faire en utilisant :</enonce>
+    <choices>
+      <choice id="A">Une boucle simple</choice>
+      <choice id="B">Un sous-algorithme</choice>
+      <choice id="C">Une variable globale</choice>
+      <choice id="D">Une constante</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LA SYNTAXE ==================== -->
+  <question id="q23" type="multipleChoice">
+    <enonce>Le mot clé qui termine la déclaration d'un enregistrement en algorithmique est :</enonce>
+    <choices>
+      <choice id="A">END</choice>
+      <choice id="B">FIN</choice>
+      <choice id="C">STOP</choice>
+      <choice id="D">TERMINE</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q24" type="multipleChoice">
+    <enonce>Dans la déclaration "Jour : 1 .. 31", quel type de contrainte est utilisé ?</enonce>
+    <choices>
+      <choice id="A">Type énuméré</choice>
+      <choice id="B">Sous-type intervalle</choice>
+      <choice id="C">Type réel</choice>
+      <choice id="D">Tableau</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q25" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes pour déclarer et utiliser un enregistrement :</enonce>
+    <bonneReponse>Définir le TYPE|Déclarer la variable|Accéder aux champs|Manipuler les champs</bonneReponse>
+    <codeLines>
+      <line>Accéder aux champs</line>
+      <line>Manipuler les champs</line>
+      <line>Définir le TYPE</line>
+      <line>Déclarer la variable</line>
+    </codeLines>
+  </question>
+
+  <question id="q26" type="ordering">
+    <enonce>Remettez dans l'ordre la déclaration correcte d'un enregistrement :</enonce>
+    <bonneReponse>TYPE|Nom|ENREGISTREMENT|Champ:Type|FIN</bonneReponse>
+    <codeLines>
+      <line>Nom</line>
+      <line>Champ:Type</line>
+      <line>TYPE</line>
+      <line>FIN</line>
+      <line>ENREGISTREMENT</line>
+    </codeLines>
+  </question>
+
+  <question id="q27" type="ordering">
+    <enonce>Remettez dans l'ordre la déclaration d'un tableau d'enregistrements :</enonce>
+    <bonneReponse>VAR|Nom|TABLEAU|DE|Type_enregistrement</bonneReponse>
+    <codeLines>
+      <line>VAR</line>
+      <line>Nom</line>
+      <line>TABLEAU</line>
+      <line>DE</line>
+      <line>Type_enregistrement</line>
+    </codeLines>
+  </question>
+
+  <!-- ==================== QUESTIONS DE COMPRÉHENSION ==================== -->
+  <question id="q28" type="multipleChoice">
+    <enonce>L'enregistrement permet de regrouper des données de :</enonce>
+    <choices>
+      <choice id="A">Types identiques uniquement</choice>
+      <choice id="B">Types différents</choice>
+      <choice id="C">Types numériques uniquement</choice>
+      <choice id="D">Types caractères uniquement</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q29" type="multipleChoice">
+    <enonce>Si un étudiant n'arrive pas à faire l'exercice A, que doit-il faire selon l'orientation pédagogique ?</enonce>
+    <choices>
+      <choice id="A">Passer au chapitre suivant</choice>
+      <choice id="B">Refaire la lecture des Sections 1 et 2 du chapitre</choice>
+      <choice id="C">Refaire la lecture des Sections 3,4,5,6</choice>
+      <choice id="D">Ignorer l'exercice</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q30" type="multipleChoice">
+    <enonce>Si un étudiant réussit l'exercice, que doit-il faire selon l'orientation ?</enonce>
+    <choices>
+      <choice id="A">Recommencer l'exercice</choice>
+      <choice id="B">Passer au chapitre suivant</choice>
+      <choice id="C">Revoir toute la théorie</choice>
+      <choice id="D">Faire plus d'exercices du même type</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+</chapter>

@@ -1,182 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_02" title="Conditions">
+<chapter id="Chapitre_02" title="Instructions conditionnelles">
 
-  <section id="1" title="Introduction aux conditions">
-    <content>
-Les conditions sont la base de la prise de décision en algorithmique. Elles permettent à un algorithme de choisir entre plusieurs chemins d'exécution en fonction de l'évaluation d'une expression logique (vrai ou faux). Sans les conditions, un algorithme serait purement séquentiel et ne pourrait pas s'adapter aux différentes situations.
-    </content>
-    <bulletPoints>
-      <point>Une condition est une expression qui retourne un booléen (vrai ou faux).</point>
-      <point>Elle permet de contrôler le flux d'exécution (branchements conditionnels).</point>
-      <point>Les structures conditionnelles incluent : if, if-else, switch, et les conditions imbriquées.</point>
-      <point>Exemple concret : "Si l'utilisateur est majeur, alors il peut voter ; sinon, il ne peut pas."</point>
-    </bulletPoints>
+  <!-- ==================== INTRODUCTION ==================== -->
+  <section id="1" title="Introduction">
+    <content>L'ordre dans lequel les instructions sont arrangées dans un algorithme est très important. Car, ces instructions sont effectuées une à une suivant l'ordre dans lequel elles y figurent. Cela veut dire qu'une instruction d'un algorithme ne peut être effectuée qu'après avoir effectué l'instruction qui lui est précédente, si elle existe. Mais parfois, certaines situations exigent qu'une ou plusieurs instructions soient négligées (ignorées ou sautées) dans une séquence d'instructions. Ce traitement est possible grâce aux instructions conditionnelles.</content>
+    <content>Ce chapitre porte sur les différentes instructions conditionnelles existantes. De ce fait, chaque instruction est décrite tout en donnant sa syntaxe, sa représentation en organigramme, et un exemple illustratif de son utilisation.</content>
   </section>
 
-  <section id="2" title="Opérateurs de comparaison et logiques">
-    <content>
-Pour écrire des conditions, on utilise des opérateurs de comparaison (relationnels) et des opérateurs logiques. Ces opérateurs permettent de construire des expressions complexes.
-    </content>
-    <bulletPoints>
-      <point>Opérateurs de comparaison : == (égal), != (différent), &lt; (inférieur), &gt; (supérieur), &lt;= (inférieur ou égal), &gt;= (supérieur ou égal).</point>
-      <point>Opérateurs logiques : ET (and), OU (or), NON (not). Ils combinent plusieurs conditions.</point>
-      <point>Exemple : (age &gt;= 18) ET (age &lt;= 65) → vérifie si la personne est en âge de travailler.</point>
-      <point>Exemple : (x == 0) OU (y == 0) → vérifie si l'un des deux est nul.</point>
-      <point>Priorité : d'abord les comparaisons, puis NON, puis ET, puis OU. Les parenthèses permettent de modifier l'ordre.</point>
-    </bulletPoints>
+  <!-- ==================== INTÉRÊT DES INSTRUCTIONS CONDITIONNELLES ==================== -->
+  <section id="2" title="Intérêt des instructions conditionnelles">
+    <content>Pour illustrer l'importance des instructions conditionnelles, nous donnons l'algorithme ci-dessous qui calcule l'inverse d'un nombre :</content>
+    <content>ALGORITHME Inverse ;<br/>
+VAR nombre : Réel ;<br/>
+DÉBUT<br/>
+  ÉCRIRE('Donner un nombre : ');<br/>
+  LIRE(nombre) ;<br/>
+  ÉCRIRE('L'inverse du nombre : ', nombre, 'est : ', 1/nombre) ;<br/>
+FIN.</content>
+    <content>Le programme associé à cet algorithme causera une fin anormale si le nombre tapé est nul (zéro). Dans cet exemple, l'ordinateur ne doit calculer l'inverse d'un nombre sauf si ce nombre n'est pas nul.</content>
+    <content>Les instructions de base vues jusqu'à présent : l'affectation, la lecture et l'écriture ne peuvent pas répondre à ce besoin, ce sont des instructions impératives.</content>
+    <content>Donc, nous avons besoin de nouvelles instructions, qui peuvent gérer de telles situations, qui sont les instructions conditionnelles.</content>
   </section>
 
-  <section id="3" title="Structure If / Else">
-    <content>
-La structure if-else est la plus courante. Elle permet d'exécuter un bloc d'instructions si la condition est vraie, et un autre bloc (optionnel) si elle est fausse.
-    </content>
-    <bulletPoints>
-      <point>
-If simple :
-Si condition Alors instructions FinSi.
-Exemple : Si note &gt;= 10 Alors Afficher("Admis") FinSi.
-      </point>
-      <point>
-If-else :
-Si condition Alors instructions1 Sinon instructions2 FinSi.
-Exemple : Si note &gt;= 10 Alors Afficher("Admis") Sinon Afficher("Refusé") FinSi.
-      </point>
-      <point>Le bloc else peut être omis si on n'a besoin que d'une action conditionnelle.</point>
-      <point>
-Exemple avec plusieurs instructions :
-Si solde &gt;= montant Alors
-  solde ← solde - montant
-  Afficher("Retrait effectué")
-Sinon
-  Afficher("Fonds insuffisants")
-FinSi.
-      </point>
-    </bulletPoints>
+  <!-- ==================== PRÉSENTATION D'UNE CONDITION ==================== -->
+  <section id="3" title="Présentation d'une condition">
+    <content>Une condition est une expression logique de relation ou booléenne. De ce fait, une condition retourne toujours un résultat de type Booléen (Vrai ou Faux).</content>
+    <content><strong>Remarque : Enchaînement d'opérateurs de comparaison</strong><br/>
+En algorithmique, une condition ne peut pas avoir 2 opérateurs de comparaison (&gt;, &lt;, ≥, ≤, =, ≠) enchaînés. Par exemple, la condition (4&lt;a&lt;8) est incorrecte. Car, la première condition simple (4&lt;a) donne un booléen que nous comparons à un entier avec l'opérateur inférieur (&lt;). La forme algorithmique correcte de la condition est : (a&gt;4) et (a&lt;8).</content>
   </section>
 
-  <section id="4" title="Structure Switch / Case">
-    <content>
-Lorsque l'on doit tester une même expression pour plusieurs valeurs possibles, le switch-case offre une alternative plus lisible qu'une cascade de if-else.
-    </content>
-    <bulletPoints>
-      <point>
-Syntaxe :
-Selon expression faire
-  cas valeur1 : instructions1
-  cas valeur2 : instructions2
-  ...
-  sinon : instructions par défaut
-FinSelon.
-      </point>
-      <point>L'expression est généralement une variable de type discret (entier, caractère, chaîne).</point>
-      <point>Chaque cas correspond à une valeur possible. Le bloc correspondant est exécuté si l'expression égale cette valeur.</point>
-      <point>Le cas "sinon" est facultatif, mais recommandé pour gérer les valeurs inattendues.</point>
-      <point>
-Exemple :
-Selon jour faire
-  cas 1 : Afficher("Lundi")
-  cas 2 : Afficher("Mardi")
-  cas 3 : Afficher("Mercredi")
-  cas 4 : Afficher("Jeudi")
-  cas 5 : Afficher("Vendredi")
-  cas 6 : Afficher("Samedi")
-  cas 7 : Afficher("Dimanche")
-  sinon : Afficher("Numéro invalide")
-FinSelon.
-      </point>
-    </bulletPoints>
+  <!-- ==================== ALTERNATIVE SIMPLE ==================== -->
+  <section id="4" title="L'alternative simple : SI ... ALORS">
+    <content>L'alternative simple (appelée aussi instruction conditionnelle SI ... ALORS) est une instruction que nous utilisons lorsque nous voulons effectuer un traitement spécifique si une condition est vraie, et ne rien faire si la condition est fausse. Souvent la condition utilisée dans l'instruction SI ... ALORS est de comparaison.</content>
+    
+    <subsection title="Syntaxe de l'instruction SI ... ALORS">
+      <content>SI (condition) ALORS<br/>
+  Traitement ;<br/>
+FIN SI ;</content>
+      <content><strong>En langage C :</strong><br/>
+if (condition)<br/>
+{<br/>
+  Traitement ;<br/>
+}</content>
+    </subsection>
+
+    <subsection title="Exemple 1 : La valeur absolue d'un entier">
+      <content>Écrire un algorithme qui calcule la valeur absolue d'un entier.</content>
+      <content>ALGORITHME valeur_absolue ;<br/>
+VAR Nombre : Entier ;<br/>
+DÉBUT<br/>
+  LIRE(nombre) ;<br/>
+  SI (nombre &lt; 0) ALORS<br/>
+    nombre &lt;- -(nombre) ;<br/>
+  FIN SI ;<br/>
+  ÉCRIRE('La valeur absolue est ', nombre) ;<br/>
+FIN.</content>
+    </subsection>
+
+    <subsection title="Exemple 2 : L'inverse d'un nombre (algorithme plus complet)">
+      <content>Améliorer l'algorithme "Inverse" pour prendre en considération le cas de la division par zéro.</content>
+      <content>ALGORITHME InverseComplet ;<br/>
+VAR nombre : Réel ;<br/>
+DÉBUT<br/>
+  ÉCRIRE('Donner un nombre ') ;<br/>
+  LIRE(nombre) ;<br/>
+  SI (nombre &lt;&gt; 0) ALORS<br/>
+    ÉCRIRE('L'inverse du nombre : ', nombre, ' est : ', 1/nombre) ;<br/>
+  FIN SI ;<br/>
+  SI (nombre = 0) ALORS<br/>
+    ÉCRIRE('Le nombre tapé est nul') ;<br/>
+  FIN SI ;<br/>
+FIN.</content>
+    </subsection>
   </section>
 
-  <section id="5" title="Conditions imbriquées">
-    <content>
-On peut placer une structure conditionnelle à l'intérieur d'une autre pour traiter des cas plus fins. C'est ce qu'on appelle l'imbrication.
-    </content>
-    <bulletPoints>
-      <point>L'imbrication permet de créer des arbres de décision.</point>
-      <point>
-Exemple : classer une note en fonction de son niveau.
-Si note &gt;= 10 Alors
-  Si note &gt;= 18 Alors Afficher("Très bien")
-  Sinon Si note &gt;= 14 Alors Afficher("Bien")
-  Sinon Afficher("Passable")
-Sinon
-  Si note &gt;= 5 Alors Afficher("Insuffisant")
-  Sinon Afficher("Nul")
-FinSi.
-      </point>
-      <point>Attention à l'indentation : chaque niveau doit être clairement indenté pour rester lisible.</point>
-      <point>Une alternative plus propre pour les chaînes de conditions est d'utiliser "Sinon Si" (else if).</point>
-    </bulletPoints>
+  <!-- ==================== ALTERNATIVE COMPLÈTE ==================== -->
+  <section id="5" title="L'alternative complète : SI ... ALORS ... SINON">
+    <content>L'alternative complète (également appelée instruction conditionnelle SI ... ALORS ... SINON) exprime un choix entre deux traitements : Traitement 1 et Traitement 2. Lorsque la condition de l'instruction est satisfaite (retourne VRAI), nous effectuons directement Traitement 1. Lorsque la condition n'est pas satisfaite (retourne FAUX), nous ignorons Traitement 1 et nous effectuons Traitement 2.</content>
+    
+    <subsection title="Syntaxe de l'instruction SI ... ALORS ... SINON">
+      <content>SI (condition) ALORS<br/>
+  Traitement 1 ;<br/>
+SINON<br/>
+  Traitement 2 ;<br/>
+FIN SI ;</content>
+      <content><strong>En langage C :</strong><br/>
+if (condition)<br/>
+{<br/>
+  Traitement 1 ;<br/>
+}<br/>
+else<br/>
+{<br/>
+  Traitement 2 ;<br/>
+}</content>
+    </subsection>
+
+    <subsection title="Exemple : L'inverse d'un nombre avec l'alternative complète">
+      <content>Écrire un algorithme qui calcule l'inverse d'un nombre en utilisant l'alternative complète.</content>
+      <content>ALGORITHME InverseAltComp ;<br/>
+VAR nombre : Réel ;<br/>
+DÉBUT<br/>
+  LIRE(nombre) ;<br/>
+  SI (nombre &lt;&gt; 0) ALORS<br/>
+    ÉCRIRE('L'inverse du nombre : ', nombre, ' est : ', 1/nombre) ;<br/>
+  SINON<br/>
+    ÉCRIRE('Le nombre introduit est nul') ;<br/>
+  FIN SI ;<br/>
+FIN.</content>
+    </subsection>
   </section>
 
-  <section id="6" title="Opérateur ternaire">
-    <content>
-L'opérateur ternaire (présent dans de nombreux langages) est une forme raccourcie du if-else lorsqu'on doit affecter une valeur selon une condition.
-    </content>
-    <bulletPoints>
-      <point>Syntaxe : variable ← condition ? valeur_si_vrai : valeur_si_faux.</point>
-      <point>Exemple : statut ← (age &gt;= 18) ? "Majeur" : "Mineur".</point>
-      <point>C'est utile pour des affectations simples mais peut nuire à la lisibilité si utilisé abusivement.</point>
-      <point>En pseudo-code : statut ← Si age &gt;= 18 Alors "Majeur" Sinon "Mineur".</point>
-    </bulletPoints>
+  <!-- ==================== ALTERNATIVE À PLUSIEURS CHOIX ==================== -->
+  <section id="6" title="Alternative à plusieurs choix (imbrication)">
+    <content>Dans le cas d'un choix multiple, il est possible d'imbriquer plusieurs instructions conditionnelles simples ou complètes pour former une structure plus complexe capable de supporter le nombre de choix nécessaires.</content>
+    
+    <subsection title="Exemple : L'observation selon la moyenne d'un étudiant">
+      <content>Écrire un algorithme qui lit la moyenne d'un étudiant et lui affiche une observation. L'observation est :<br/>
+- Admis si la moyenne est supérieure ou égale à 10.<br/>
+- Racheté si la moyenne est strictement inférieure à 10 et supérieure ou égale à 9.5.<br/>
+- Ajourné si la moyenne est strictement inférieure à 9.5.</content>
+      <content>ALGORITHME Observation ;<br/>
+VAR Moyenne : Réel ;<br/>
+DÉBUT<br/>
+  LIRE(Moyenne) ;<br/>
+  SI (Moyenne &gt;= 10) ALORS<br/>
+    ÉCRIRE('Admis') ;<br/>
+  SINON<br/>
+    SI (Moyenne &gt;= 9.5) ALORS<br/>
+      ÉCRIRE('Racheté') ;<br/>
+    SINON<br/>
+      ÉCRIRE('Ajourné') ;<br/>
+    FIN SI ;<br/>
+  FIN SI ;<br/>
+FIN.</content>
+    </subsection>
   </section>
 
-  <section id="7" title="Bonnes pratiques et pièges à éviter">
-    <content>
-Pour écrire des conditions claires et sans erreurs, quelques règles sont à respecter.
-    </content>
-    <bulletPoints>
-      <point>Clarté : utilisez des parenthèses pour grouper les expressions.</point>
-      <point>Éviter trop d'imbrication : préférez des conditions combinées ou switch-case.</point>
-      <point>Ne pas confondre = et ==.</point>
-      <point>Tester les cas limites.</point>
-      <point>Utiliser des noms de variables explicites.</point>
-      <point>Tester avec des exemples.</point>
-    </bulletPoints>
+  <!-- ==================== INSTRUCTION SELON ... FAIRE ==================== -->
+  <section id="7" title="L'instruction SELON ... FAIRE (CASE ... OF)">
+    <content>Cette instruction conditionnelle est appelée aussi condition à choix sélectif. Car, elle sélectionne entre plusieurs choix à la fois, et non entre deux choix alternatifs. La particularité de cette instruction est l'utilisation d'une expression arithmétique, contrairement aux instructions précédentes qui utilisent une ou plusieurs conditions.</content>
+    
+    <subsection title="Syntaxe de l'instruction SELON ... FAIRE">
+      <content>SELON (expression) FAIRE<br/>
+  CAS C1 : Traitement 1 ;<br/>
+  CAS C2 : Traitement 2 ;<br/>
+  CAS C3 : Traitement 3 ;<br/>
+  ...<br/>
+  CAS CN : Traitement N ;<br/>
+  CAS AUTRE Traitement (N+1) ;<br/>
+FIN SELON ;</content>
+      <content><strong>En langage C :</strong><br/>
+switch (expression)<br/>
+{<br/>
+  case C1 : Traitement 1 ; break ;<br/>
+  case C2 : Traitement 2 ; break ;<br/>
+  ...<br/>
+  default : Traitement (N+1) ;<br/>
+}</content>
+    </subsection>
+
+    <subsection title="Exemple : Le nombre de jours d'un mois">
+      <content>Écrire un algorithme qui affiche le nombre de jours d'un mois donné par l'utilisateur.</content>
+      <content>ALGORITHME jours_mois ;<br/>
+VAR mois : Entier ;<br/>
+DÉBUT<br/>
+  ÉCRIRE('De quel mois s'agit-il ?');<br/>
+  LIRE(mois) ;<br/>
+  SELON (mois) FAIRE<br/>
+    CAS 1, 3, 5, 7, 8, 10, 12 : ÉCRIRE('Nombre de jours : 31') ;<br/>
+    CAS 4, 6, 9, 11 : ÉCRIRE('Nombre de jours : 30') ;<br/>
+    CAS 2 : ÉCRIRE('Nombre de jours : 28 ou 29') ;<br/>
+    CAS AUTRE : ÉCRIRE('Ce mois n'existe pas') ;<br/>
+  FIN SELON ;<br/>
+FIN.</content>
+    </subsection>
   </section>
 
-  <section id="8" title="Exemples complets">
-    <content>
-Voici deux exemples d'algorithmes utilisant différentes structures conditionnelles.
-    </content>
-    <bulletPoints>
-      <point>
-Exemple 1 : Calcul de la mention selon la note
-Algorithme Mention
-Variables note : Réel
-Début
-  Lire(note)
-  Si note &lt; 0 OU note &gt; 20 Alors
-    Afficher("Note invalide")
-  Sinon
-    Si note &gt;= 16 Alors Afficher("Très bien")
-    Sinon Si note &gt;= 14 Alors Afficher("Bien")
-    Sinon Si note &gt;= 12 Alors Afficher("Assez bien")
-    Sinon Si note &gt;= 10 Alors Afficher("Passable")
-    Sinon Afficher("Insuffisant")
-  FinSi
-Fin.
-      </point>
-      <point>
-Exemple 2 : Menu interactif avec switch
-Algorithme Menu
-Variables choix : Entier
-Début
-  Afficher("1: Addition")
-  Afficher("2: Soustraction")
-  Afficher("3: Multiplication")
-  Afficher("4: Quitter")
-  Lire(choix)
-  Selon choix faire
-    cas 1 : Afficher("Addition")
-    cas 2 : Afficher("Soustraction")
-    cas 3 : Afficher("Multiplication")
-    cas 4 : Afficher("Au revoir")
-    sinon : Afficher("Choix invalide")
-  FinSelon
-Fin.
-      </point>
-    </bulletPoints>
+  <!-- ==================== EXERCICES CORRIGÉS DU COURS ==================== -->
+  <section id="8" title="Exercices résolus">
+    <subsection title="Exercice 1 : Algorithme Alg1 (page 15)">
+      <content>Que doit afficher l'algorithme suivant ?</content>
+      <content>ALGORITHME Alg1 ;<br/>
+VAR X, Y : Entier ;<br/>
+DÉBUT<br/>
+  X &lt;- 3 ;<br/>
+  Y &lt;- 2 ;<br/>
+  SI (X&lt;Y) ALORS<br/>
+    ÉCRIRE(Y, ' est supérieur à', X) ;<br/>
+  SINON<br/>
+    SI (Y &gt; 0) ALORS<br/>
+      ÉCRIRE(Y, ' est strictement positif') ;<br/>
+    SINON<br/>
+      ÉCRIRE(Y, ' est inférieur ou égal à 0') ;<br/>
+    FIN SI ;<br/>
+  FIN SI ;<br/>
+FIN.</content>
+      <content><strong>Solution :</strong> L'algorithme affiche "2 est strictement positif" car X=3 et Y=2, donc X&lt;Y est faux, on va dans le SINON, puis Y&gt;0 est vrai, donc on affiche "2 est strictement positif".</content>
+    </subsection>
+
+    <subsection title="Exercice 2 : Algorithme Alg2 (page 16)">
+      <content>Que doit afficher l'algorithme suivant ?</content>
+      <content>ALGORITHME Alg2 ;<br/>
+VAR X, Y : Entier ;<br/>
+DÉBUT<br/>
+  X &lt;- 3 ;<br/>
+  Y &lt;- 2 ;<br/>
+  SELON (X+Y-1) FAIRE<br/>
+    CAS 3 : ÉCRIRE('Premier CAS') ;<br/>
+    CAS 5 : ÉCRIRE('Deuxième CAS') ;<br/>
+    CAS 7 : ÉCRIRE('Troisième CAS') ;<br/>
+    CAS AUTRE : ÉCRIRE('CAS AUTRE') ;<br/>
+  FIN SELON ;<br/>
+FIN.</content>
+      <content><strong>Solution :</strong> X+Y-1 = 3+2-1 = 4. La valeur 4 ne correspond à aucun CAS (3,5,7), donc on exécute CAS AUTRE. L'algorithme affiche "CAS AUTRE".</content>
+    </subsection>
   </section>
 
 </chapter>

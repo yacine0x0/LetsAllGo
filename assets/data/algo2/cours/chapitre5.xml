@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_5" title="Files et Piles (Partie III)">
+
+  <!-- ==================== CONTENU DU CHAPITRE ==================== -->
+  <section id="0" title="Contenu du chapitre">
+    <bulletPoints>
+      <point>1. Définition d'une file</point>
+      <point>2. Opérations possibles sur une file</point>
+      <point>3. Définition d'une pile</point>
+      <point>4. Opérations possibles sur une pile</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 1. DÉFINITION D'UNE FILE ==================== -->
+  <section id="1" title="Définition d'une file">
+    <content>Les files servent à traiter les données dans l'ordre où on les a reçues et permettent de :</content>
+    <bulletPoints>
+      <point>Gérer des processus en attente d'une ressource système. Par exemple : la liste des travaux à éditer par une imprimante.</point>
+      <point>Construire des systèmes de réservation.</point>
+      <point>Etc.</point>
+    </bulletPoints>
+    <content>Pour ne pas avoir à parcourir toute la liste au moment d'ajouter un élément en queue, on maintient un pointeur de queue.</content>
+    <content><strong>Attention :</strong> Une file peut très bien être simplement (ou doublement) chaînée même s'il y a un pointeur de queue.</content>
+  </section>
+
+  <!-- ==================== 2. OPÉRATIONS SUR UNE FILE ==================== -->
+  <section id="2" title="Opérations possibles sur une file">
+    <content>On peut effectuer trois opérations de base sur une file :</content>
+    <bulletPoints>
+      <point>Vérifier si une file est vide : Tester si Tête = NIL.</point>
+      <point>Ajouter un élément dans une file : Enfiler toujours à la queue et jusqu'à la limite de la mémoire.</point>
+      <point>Retirer un élément d'une file : Défiler toujours à la tête si la file n'est pas vide.</point>
+    </bulletPoints>
+
+    <!-- ==================== 2.1 ENFILER ==================== -->
+    <subsection title="2.1 Enfiler un élément">
+      <content>Soit la déclaration suivante :</content>
+      <content>TYPE File = ^ Élément ;<br/>
+Élément = ENREGISTREMENT<br/>
+  Info : Entier ;<br/>
+  Suivant : File ;<br/>
+FIN ;</content>
+      <content>Enfiler un élément consiste à l'ajouter en queue de liste. Il faut envisager le cas particulier où la file est vide. En effet, dans ce cas, le pointeur de tête doit être modifié.</content>
+      
+      <content><strong>Procédure Enfiler :</strong><br/>
+PROCÉDURE Enfiler(E/S Tête, Queue : File ; E Valeur : Entier)<br/>
+VAR Nouveau : File ;<br/>
+DÉBUT<br/>
+  ALLOUER(Nouveau) ;<br/>
+  Nouveau^.Info &lt;- Valeur ;<br/>
+  Nouveau^.Suivant &lt;- NIL ;<br/>
+  SI (Tête = NIL) ALORS<br/>
+    Tête &lt;- Nouveau ;<br/>
+  SINON<br/>
+    Queue^.Suivant &lt;- Nouveau ;<br/>
+  FIN SI ;<br/>
+  Queue &lt;- Nouveau ;<br/>
+FIN ;</content>
+    </subsection>
+
+    <!-- ==================== 2.2 DÉFILER ==================== -->
+    <subsection title="2.2 Défiler un élément">
+      <content>Défiler est équivalent à dépiler et consiste à supprimer l'élément de tête si la file n'est pas vide. Si la file a un seul élément, il faut mettre à jour le pointeur de queue car on vide la file. Il faut conserver l'adresse de l'élément qu'on supprime pour libérer sa place.</content>
+      
+      <content><strong>Procédure Défiler :</strong><br/>
+PROCÉDURE Défiler(E/S Tête, Queue : File ; S Valeur : Entier) ;<br/>
+VAR Temp : Liste ;<br/>
+DÉBUT<br/>
+  SI (Tête &lt;&gt; NIL) ALORS<br/>
+    Valeur &lt;- Tête^.Info ;<br/>
+    Temp &lt;- Tête ;<br/>
+    Tête &lt;- Tête^.Suivant ;<br/>
+    LIBÉRER(Temp) ;<br/>
+    SI (Tête = NIL) ALORS<br/>
+      Queue &lt;- NIL ;<br/>
+    FIN SI ;<br/>
+  FIN SI ;<br/>
+FIN ;</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 3. DÉFINITION D'UNE PILE ==================== -->
+  <section id="3" title="Définition d'une pile">
+    <content>Une « pile » est une liste d'éléments particulière. Un élément ne peut être ajouté à une pile ou retiré d'une pile que par une extrémité appelée « sommet ». Cela signifie, en particulier, que les éléments sont retirés d'une pile dans l'ordre inverse dans lequel ils ont été ajoutés à celle-ci : dernier entré, premier sorti (LIFO : Last In First Out).</content>
+    
+    <content><strong>Figure 2 :</strong> Représentation d'une pile.</content>
+    
+    <content>Les piles servent à revenir à un état précédent et sont utilisées pour :</content>
+    <bulletPoints>
+      <point>Implanter les appels de procédures (pour revenir à l'état avant l'appel).</point>
+      <point>Annuler une commande.</point>
+      <point>Évaluer des expressions arithmétiques.</point>
+      <point>Etc.</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 4. OPÉRATIONS SUR UNE PILE ==================== -->
+  <section id="4" title="Opérations possibles sur une pile">
+    <content>On peut effectuer deux opérations de base sur une pile :</content>
+    <bulletPoints>
+      <point>Vérifier si la pile est vide : Tester si Sommet = NIL.</point>
+      <point>Ajouter un élément dans la pile : Empiler, toujours au sommet, et jusqu'à la limite de la mémoire.</point>
+      <point>Retirer un élément de la pile : Dépiler, toujours au sommet, si la pile n'est pas vide.</point>
+    </bulletPoints>
+
+    <!-- ==================== 4.1 EMPILER ==================== -->
+    <subsection title="4.1 Empiler un élément">
+      <content>Soit la déclaration suivante :</content>
+      <content>TYPE Pile = ^ Élément<br/>
+Élément = ENREGISTREMENT<br/>
+  Info : Entier ;<br/>
+  Suivant : Pile ;<br/>
+FIN ;</content>
+      <content>Empiler un élément revient à faire une insertion en tête dans la liste chaînée.</content>
+      
+      <content><strong>Procédure Empiler :</strong><br/>
+PROCÉDURE Empiler(E/S Sommet : Pile ; E Valeur : Entier) ;<br/>
+VAR Nouveau : Pile ;<br/>
+DÉBUT<br/>
+  ALLOUER(Nouveau) ;<br/>
+  Nouveau^.Info &lt;- Valeur ;<br/>
+  Nouveau^.Suivant &lt;- Sommet ;<br/>
+  Sommet &lt;- Nouveau ;<br/>
+FIN ;</content>
+    </subsection>
+
+    <!-- ==================== 4.2 DÉPILER ==================== -->
+    <subsection title="4.2 Dépiler un élément">
+      <content>Dépiler revient à faire une suppression en tête.</content>
+      
+      <content><strong>Procédure Dépiler :</strong><br/>
+PROCÉDURE Dépiler(E/S Sommet : Pile)<br/>
+VAR Temp : Pile ;<br/>
+DÉBUT<br/>
+  SI (Sommet &lt;&gt; NIL) ALORS<br/>
+    Temp &lt;- Sommet ;<br/>
+    Sommet &lt;- Sommet^.Suivant ;<br/>
+    LIBÉRER(Temp) ;<br/>
+  FIN SI ;<br/>
+FIN ;</content>
+    </subsection>
+
+    <!-- ==================== 4.3 FONCTION SOMMET PILE ==================== -->
+    <subsection title="Fonction SommetPile">
+      <content>Renvoie la valeur du sommet si la pile n'est pas vide.</content>
+      
+      <content><strong>Fonction SommetPile :</strong><br/>
+FONCTION SommetPile(Sommet : Pile) : Entier ;<br/>
+DÉBUT<br/>
+  SI (NON (PileVide(Sommet))) ALORS<br/>
+    SommetPile &lt;- Sommet^.Info ;<br/>
+  SINON<br/>
+    SommetPile &lt;- 0 ; // Valeur particulière<br/>
+  FIN SI ;<br/>
+FIN ;</content>
+    </subsection>
+
+    <!-- ==================== 4.4 INITIALISATION PILE ==================== -->
+    <subsection title="Initialisation d'une pile">
+      <content>Initialiser la création d'une pile.</content>
+      
+      <content><strong>Procédure InitPile :</strong><br/>
+PROCÉDURE InitPile(S Sommet : Pile)<br/>
+DÉBUT<br/>
+  Sommet &lt;- NIL ;<br/>
+FIN ;</content>
+    </subsection>
+
+    <!-- ==================== 4.5 TEST PILE VIDE ==================== -->
+    <subsection title="Test si la pile est vide">
+      <content>Indiquer si la pile est vide ou non.</content>
+      
+      <content><strong>Fonction PileVide :</strong><br/>
+FONCTION PileVide(E Sommet : Pile) : Booléen<br/>
+DÉBUT<br/>
+  SI (Sommet = NIL) ALORS<br/>
+    PileVide &lt;- Vrai ;<br/>
+  SINON<br/>
+    PileVide &lt;- Faux ;<br/>
+  FIN SI ;<br/>
+FIN ;</content>
+    </subsection>
+  </section>
+
+</chapter>

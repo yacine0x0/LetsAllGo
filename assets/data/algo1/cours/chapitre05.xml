@@ -1,185 +1,218 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_05" title="Sous-programmes (Fonctions et Procédures)">
+<chapter id="Chapitre_05" title="Les sous-algorithmes (fonctions et procédures)">
 
-  <section id="1" title="Introduction aux sous-programmes">
-    <content>
-Les sous-programmes (ou sous-algorithmes) sont des blocs d instructions indépendants, identifiés par un nom, qui peuvent être appelés depuis n importe quel endroit d un algorithme. Ils constituent la pierre angulaire de la modularité : ils permettent de décomposer un problème complexe en sous-problèmes plus simples, réutilisables et faciles à maintenir.
-    </content>
-    <bulletPoints>
-      <point>Évitent la duplication de code : une même séquence d instructions peut être utilisée plusieurs fois sans être réécrite.</point>
-      <point>Améliorent la lisibilité : un algorithme bien structuré devient plus clair et plus facile à comprendre.</point>
-      <point>Facilitent la maintenance : corriger un bug dans un sous-programme corrige tous ses appels.</point>
-      <point>Deux types principaux : les fonctions (qui retournent une valeur) et les procédures (qui ne retournent rien).</point>
-      <point>Exemple : utiliser calculerMoyenne() au lieu de répéter le calcul.</point>
-    </bulletPoints>
+  <!-- ==================== INTRODUCTION ==================== -->
+  <section id="1" title="Introduction">
+    <content>Soit à écrire un algorithme qui calcule le nombre de combinaisons de n objets : C(n,p) = n! / (p! * (n-p)!).</content>
+    <content>L'algorithme "combinaison" classique répète le calcul de la factorielle d'un nombre 3 fois. L'idée est d'écrire un "sous-algorithme" spécialisé dans le calcul de la factorielle d'un nombre puis de l'appeler chaque fois que c'est nécessaire dans "l'algorithme principal".</content>
+    <content>Le sous-algorithme doit être paramétrable pour qu'il puisse calculer la factorielle de n'importe quel nombre qui lui sera passé en paramètre.</content>
   </section>
 
-  <section id="2" title="Fonctions">
-    <content>
-Une fonction est un sous-programme qui retourne une valeur.
-    </content>
-    <bulletPoints>
-      <point>
-Syntaxe :
-Fonction nomFonction(paramètres) : Type
-  Retourner valeur
-FinFonction.
-      </point>
-      <point>
-Exemple :
-Fonction somme(a, b : Entier) : Entier
-  Retourner a + b
-FinFonction.
-      </point>
-      <point>Appel : resultat ← somme(3, 4)</point>
-      <point>Peut avoir zéro paramètre.</point>
-      <point>
-Exemple puissance :
-Fonction puissance(base : Réel, exp : Entier) : Réel
-  resultat ← 1
-  Pour i de 1 à exp faire
-    resultat ← resultat * base
-  FinPour
-  Retourner resultat
-FinFonction.
-      </point>
-    </bulletPoints>
+  <!-- ==================== DÉFINITION DES SOUS-ALGORITHMES ==================== -->
+  <section id="2" title="Les sous-algorithmes">
+    <content>Un sous-algorithme est une suite d'instructions qui est écrite une seule fois, mais peut être utilisée autant de fois que nécessaire, en effectuant des appels au sous-algorithme avec des données différentes.</content>
+    <content>Lors de l'écriture des algorithmes, nous pouvons observer que certains groupes d'instructions se rapportent à des traitements précis et différents. De ce fait, il est préférable de représenter chacun d'eux dans un sous-algorithme. Nous percevons alors un algorithme comme une entité composée d'un ensemble de sous-algorithmes (ou modules). La structuration d'un algorithme par modules est la base de la programmation structurée et modulaire.</content>
+    <content>En algorithmique, il existe deux types de sous-algorithmes : les fonctions et les procédures.</content>
+
+    <subsection title="Avantages d'utilisation des sous-algorithmes">
+      <bulletPoints>
+        <point>L'amélioration de la lisibilité de l'algorithme.</point>
+        <point>L'optimisation du nombre d'instructions dans l'algorithme.</point>
+        <point>La facilité de la mise au point et de la correction des erreurs dans l'algorithme.</point>
+        <point>La décomposition du problème complet et complexe en un ensemble de sous-problèmes faciles à résoudre.</point>
+      </bulletPoints>
+    </subsection>
+
+    <subsection title="La portée d'une variable">
+      <content>La portée d'une variable est l'ensemble des sous-algorithmes où cette variable est connue. Lorsqu'une variable est connue pour un sous-algorithme, la variable peut être utilisée dans les instructions du sous-algorithme. Une variable peut être globale ou locale.</content>
+      
+      <subsubsection title="Variable globale">
+        <content>C'est une variable qui est définie au niveau de l'algorithme principal (i.e. dans la partie déclaration (ou VAR) de l'algorithme qui résout le problème initial). La portée d'une variable globale est totale. Explicitement, tout sous-algorithme de l'algorithme principal peut utiliser cette variable.</content>
+      </subsubsection>
+      
+      <subsubsection title="Variable locale">
+        <content>C'est une variable qui est définie au sein d'un sous-algorithme. La portée d'une variable locale est restreinte au sous-algorithme dans lequel elle est déclarée. Autrement dit, une variable locale ne peut être utilisée que dans des instructions du sous-algorithme qui la contient.</content>
+        <content>Dans un sous-algorithme, lorsque l'identificateur d'une variable locale est identique à celui d'une variable globale, la variable globale est localement masquée dans celui-ci. Dans ce sous-algorithme, la variable globale devient alors inaccessible.</content>
+      </subsubsection>
+    </subsection>
+
+    <subsection title="Structure générale d'un sous-algorithme">
+      <content>Un sous-algorithme possède une structure analogue à celle d'un algorithme. Cependant, chaque sous-algorithme doit être déclaré préalablement avant de pouvoir l'utiliser (l'appeler) dans le corps de l'algorithme principal. La déclaration d'un sous-algorithme se fait dans la partie déclaration de l'algorithme principal, plus exactement, juste après la déclaration des variables et avant le mot réservé DÉBUT qui marque le début du corps de l'algorithme principal.</content>
+      
+      <content><strong>Structure générale :</strong><br/>
+ALGORITHME identificateurAlgorithme ;<br/>
+CONSTANTE (ou CONST)<br/>
+  Liste des constantes<br/>
+VARIABLE (ou VAR)<br/>
+  Liste des variables<br/>
+FONCTION ou PROCEDURE<br/>
+  Liste des sous-algorithmes<br/>
+DÉBUT<br/>
+  Liste des instructions<br/>
+FIN.</content>
+      
+      <content>Un sous-algorithme peut prendre la forme d'une fonction ou d'une procédure. De plus, il est obligatoirement caractérisé par un identifiant unique qui obéit aux mêmes règles que les identifiants des constantes et des variables. Par ailleurs, lorsqu'un sous-algorithme a été explicité, son nom devient une nouvelle instruction, qui peut être utilisée dans l'algorithme principal ou dans d'autres sous-algorithmes.</content>
+      
+      <content>L'utilisation d'un sous-algorithme se fait par des instructions particulières que nous nommons appels au sous-algorithme. De ce fait, l'algorithme (ou le sous-algorithme) qui fait appel à un sous-algorithme est appelé algorithme (ou sous-algorithme) appelant.</content>
+    </subsection>
   </section>
 
-  <section id="3" title="Procédures">
-    <content>
-Une procédure exécute des actions sans retourner de valeur.
-    </content>
-    <bulletPoints>
-      <point>
-Syntaxe :
-Procédure nomProcédure(paramètres)
-FinProcédure.
-      </point>
-      <point>
-Exemple :
-Procédure afficherBienvenue(nom)
-  Afficher("Bonjour ", nom)
-FinProcédure.
-      </point>
-      <point>
-Exemple échange :
-Procédure echanger(a, b par Référence)
-  temp ← a
-  a ← b
-  b ← temp
-FinProcédure.
-      </point>
-      <point>Les procédures modifient souvent l état du programme.</point>
-    </bulletPoints>
+  <!-- ==================== LES FONCTIONS ==================== -->
+  <section id="3" title="Les fonctions">
+    <content>Une fonction est un sous-algorithme qui admet une liste de paramètres (qui peut être vide) et qui retourne une valeur unique. Le type de la valeur retournée entre dans la signature de la fonction.</content>
+
+    <subsection title="Syntaxe de déclaration d'une fonction">
+      <content><strong>Syntaxe algorithmique :</strong><br/>
+FONCTION identificateur (paramètre(s) formel(s)) : Type_du_résultat<br/>
+  VAR (déclarations locales, si nécessaires)<br/>
+DÉBUT<br/>
+  Instructions de la fonction<br/>
+  identificateur &lt;- expression<br/>
+FIN.</content>
+      <content><strong>En langage C :</strong><br/>
+type identificateur (paramètres)<br/>
+{<br/>
+  // instructions<br/>
+  return expression ;<br/>
+}</content>
+    </subsection>
+
+    <subsection title="Appel à une fonction">
+      <content>On appelle une fonction en indiquant son nom suivi des paramètres effectifs entre parenthèses. L'appel peut être utilisé dans une expression.</content>
+      
+      <subsubsection title="Exemple 1 : Maximum de deux nombres">
+        <content><strong>Algorithme :</strong><br/>
+ALGORITHME rechmax ;<br/>
+VAR x, y, grand : Entier ;<br/>
+FONCTION Max(a, b : Entier) : Entier ;<br/>
+DÉBUT<br/>
+  SI (a &gt;= b) ALORS Max &lt;- a ; SINON Max &lt;- b ;<br/>
+FIN ;<br/>
+DÉBUT<br/>
+  LIRE(x, y) ;<br/>
+  grand &lt;- Max(x, y) ;<br/>
+  ÉCRIRE("La plus grande valeur entre ", x, " et ", y, " est : ", grand) ;<br/>
+FIN.</content>
+        <content><strong>Explication :</strong> Lors de l'exécution de la fonction Max, le paramètre formel a reçoit une copie de la valeur de la variable x, et le paramètre formel b reçoit une copie de la valeur de la variable y. Le résultat est affecté à l'identifiant de la fonction qui sera utilisé dans l'algorithme principal.</content>
+      </subsubsection>
+
+      <subsubsection title="Exemple 2 : Amélioration de l'algorithme combinaison">
+        <content><strong>Algorithme avec fonction factorielle :</strong><br/>
+ALGORITHME combinaison ;<br/>
+VAR n, p : Entier ;<br/>
+FONCTION Fact(x : Entier) : Entier ;<br/>
+VAR i, r : Entier ;<br/>
+DÉBUT<br/>
+  r &lt;- 1 ;<br/>
+  POUR i ALLANT DE 2 À x FAIRE<br/>
+    r &lt;- r * i ;<br/>
+  FIN POUR ;<br/>
+  Fact &lt;- r ;<br/>
+FIN ;<br/>
+DÉBUT<br/>
+  ÉCRIRE("Valeurs de n et p ? ") ;<br/>
+  LIRE(n, p) ;<br/>
+  ÉCRIRE("Résultat = ", Fact(n) DIV (Fact(p) * Fact(n-p))) ;<br/>
+FIN.</content>
+      </subsubsection>
+    </subsection>
   </section>
 
-  <section id="4" title="Paramètres : valeur vs référence">
-    <content>
-Les paramètres peuvent être passés par valeur ou par référence.
-    </content>
-    <bulletPoints>
-      <point>
-Par valeur :
-Procédure incrementer(v)
-  v ← v + 1
-FinProcédure.
-→ ne change pas la variable originale
-      </point>
-      <point>
-Par référence :
-Procédure incrementerRef(v par Référence)
-  v ← v + 1
-FinProcédure.
-→ modifie la variable originale
-      </point>
-      <point>Choisir selon besoin (lecture vs modification).</point>
-    </bulletPoints>
+  <!-- ==================== LES PROCÉDURES ==================== -->
+  <section id="4" title="Les procédures">
+    <content>Contrairement à une fonction qui ne retourne qu'un seul résultat à la fois, une procédure est un sous-algorithme qui ne retourne aucun résultat ou retourne plusieurs résultats qui ne sont pas forcément du même type.</content>
+    <content>Une procédure peut admettre des paramètres avec différents passages.</content>
+
+    <subsection title="Types de passages de paramètres à une procédure">
+      <content>Il existe trois types d'association (que nous nommons passages de paramètres) entre les paramètres formels d'une procédure et les variables de l'algorithme appelant passées en paramètres effectifs :</content>
+      <bulletPoints>
+        <point>En entrée, préfixé par Entrée (ou E) ou aussi appelé passage par valeur.</point>
+        <point>En sortie, préfixé par Sortie (ou S).</point>
+        <point>En entrée/sortie, préfixé par Entrée/Sortie (ou E/S) ou aussi appelé passage par référence.</point>
+      </bulletPoints>
+
+      <subsubsection title="Le passage de paramètres en entrée">
+        <content>Les instructions du sous-algorithme ne peuvent pas modifier l'entité (variable ou constante) de l'algorithme appelant. En fait, c'est la valeur de l'entité de l'algorithme appelant qui est copiée dans le paramètre (à part cette copie il n'y a pas de relation entre le paramètre et l'entité de l'algorithme appelant).</content>
+      </subsubsection>
+
+      <subsubsection title="Le passage de paramètres en sortie">
+        <content>Les instructions du sous-algorithme affectent obligatoirement une valeur à ce paramètre. Cette valeur sera affectée à l'entité associée de l'algorithme appelant. Il y a donc une liaison forte entre le paramètre et l'entité de l'algorithme appelant. C'est pour cela que nous ne pouvons pas utiliser de constantes pour ce type de paramètre.</content>
+        <content>La valeur que pouvait posséder la variable associée de l'algorithme appelant n'est pas utilisée par le sous-algorithme. Par exemple, le sous-algorithme LIRE(), qui permet de mettre dans des variables des valeurs saisies par l'utilisateur, admet n paramètres en sortie.</content>
+      </subsubsection>
+
+      <subsubsection title="Le passage de paramètres en entrée/sortie">
+        <content>C'est un passage de paramètres qui combine les deux types de passages précédents. C'est le passage à utiliser lorsque le sous-algorithme doit modifier la valeur de la variable de l'algorithme appelant. De ce fait, nous ne pouvons pas faire passer une constante par un passage en entrée/sortie.</content>
+      </subsubsection>
+    </subsection>
+
+    <subsection title="Syntaxe de déclaration d'une procédure">
+      <content><strong>Syntaxe :</strong><br/>
+PROCÉDURE nom_procédure (E paramètre(s) en entrée ; S paramètre(s) en sortie ; E/S paramètre(s) en entrée/sortie) ;<br/>
+CONSTANTE (ou CONST)<br/>
+  Liste des constantes locales<br/>
+VARIABLE (ou VAR)<br/>
+  Liste des variables locales<br/>
+DÉBUT<br/>
+  Liste des instructions de la procédure<br/>
+FIN ;</content>
+    </subsection>
+
+    <subsection title="Appel à une procédure">
+      <content>Nous appelons une procédure en indiquant son nom suivi des paramètres effectifs entre parenthèses.</content>
+      <content>nom_procédure(paramètre(s) effectif(s)) ;</content>
+
+      <subsubsection title="Exemple 1 : Maximum de deux nombres avec procédure">
+        <content><strong>Algorithme :</strong><br/>
+ALGORITHME rechmaxPro ;<br/>
+VAR x, y, grand : Entier ;<br/>
+PROCÉDURE Max(E a, b : Entier ; S M : Entier) ;<br/>
+DÉBUT<br/>
+  SI (a &gt;= b) ALORS<br/>
+    M &lt;- a ;<br/>
+  SINON<br/>
+    M &lt;- b ;<br/>
+  FIN ;<br/>
+DÉBUT<br/>
+  LIRE(x, y) ;<br/>
+  Max(x, y, grand) ;<br/>
+  ÉCRIRE("La plus grande valeur entre ", x, " et ", y, " est : ", grand) ;<br/>
+FIN.</content>
+        <content><strong>Explication :</strong> Lors de l'exécution de la procédure Max, la variable x et le paramètre a sont associés par un passage de paramètre en entrée. La valeur de x est copiée dans a et la valeur de y est copiée dans b. Par contre, la variable grand est associée en paramètre de sortie avec le paramètre M. Donc c'est la valeur de M qui est copiée dans grand à la fin de l'exécution de Max.</content>
+      </subsubsection>
+
+      <subsubsection title="Exemple 2 : Permutation de deux valeurs">
+        <content><strong>Algorithme :</strong><br/>
+ALGORITHME permutation ;<br/>
+VAR a, b : Entier ;<br/>
+PROCÉDURE echanger(E/S x, y : Entier) ;<br/>
+VAR temp : Entier ;<br/>
+DÉBUT<br/>
+  temp &lt;- x ;<br/>
+  x &lt;- y ;<br/>
+  y &lt;- temp ;<br/>
+FIN ;<br/>
+DÉBUT<br/>
+  ÉCRIRE("Entrez deux entiers : ") ;<br/>
+  LIRE(a, b) ;<br/>
+  echanger(a, b) ;<br/>
+  ÉCRIRE("a = ", a, " et b = ", b) ;<br/>
+FIN.</content>
+        <content><strong>Explication :</strong> Lors de l'exécution de la procédure echanger, la variable a et le paramètre x sont associés par un passage de paramètre en entrée/sortie (même chose avec la variable b et le paramètre y). Toute modification sur x est effectuée sur a (de même pour y et b).</content>
+      </subsubsection>
+    </subsection>
   </section>
 
-  <section id="5" title="Variables locales et globales">
-    <content>
-La portée d une variable définit où elle est accessible.
-    </content>
+  <!-- ==================== SYNTHÈSE ET BONNES PRATIQUES ==================== -->
+  <section id="5" title="Synthèse et bonnes pratiques">
+    <content>Points essentiels à retenir sur les sous-algorithmes :</content>
     <bulletPoints>
-      <point>Variables locales : visibles uniquement dans le sous-programme.</point>
-      <point>Variables globales : visibles partout.</point>
-      <point>Privilégier les paramètres plutôt que globales.</point>
-      <point>
-Exemple :
-Variables x, y
-Fonction somme()
-  Retourner x + y
-FinFonction.
-      </point>
-      <point>Une variable locale masque une globale du même nom.</point>
-    </bulletPoints>
-  </section>
-
-  <section id="6" title="Récursivité">
-    <content>
-Une fonction récursive s appelle elle-même.
-    </content>
-    <bulletPoints>
-      <point>Doit avoir un cas de base.</point>
-      <point>
-Factorielle :
-Fonction fact(n)
-  Si n = 0 Alors Retourner 1
-  Sinon Retourner n * fact(n-1)
-FinFonction.
-      </point>
-      <point>
-Fibonacci :
-Fonction fib(n)
-  Si n = 0 Alors Retourner 0
-  Si n = 1 Alors Retourner 1
-  Sinon Retourner fib(n-1) + fib(n-2)
-FinFonction.
-      </point>
-      <point>Attention au stack overflow.</point>
-    </bulletPoints>
-  </section>
-
-  <section id="7" title="Exemples complets">
-    <content>
-Exemples de programmes modulaires.
-    </content>
-    <bulletPoints>
-      <point>
-Gestion des notes :
-Procédure saisirNotes(tab, n)
-  Lire(n)
-  Pour i de 1 à n faire Lire(tab[i]) FinPour
-FinProcédure
-
-Fonction moyenne(tab, n)
-  somme ← 0
-  Pour i de 1 à n faire somme ← somme + tab[i] FinPour
-  Retourner somme / n
-FinFonction
-      </point>
-      <point>
-Puissance récursive :
-Fonction puissanceRec(base, exp)
-  Si exp = 0 Alors Retourner 1
-  Sinon Retourner base * puissanceRec(base, exp-1)
-FinFonction.
-      </point>
-    </bulletPoints>
-  </section>
-
-  <section id="8" title="Bonnes pratiques">
-    <content>
-Bonnes pratiques pour les sous-programmes.
-    </content>
-    <bulletPoints>
-      <point>Noms explicites.</point>
-      <point>Une seule responsabilité.</point>
-      <point>Limiter les paramètres.</point>
-      <point>Utiliser valeur / référence correctement.</point>
-      <point>Toujours définir un cas de base en récursivité.</point>
-      <point>Éviter les effets de bord.</point>
+      <point>Une fonction retourne une valeur unique ; une procédure ne retourne aucune valeur (mais peut avoir des paramètres de sortie).</point>
+      <point>Les paramètres peuvent être passés en entrée (E), sortie (S) ou entrée/sortie (E/S).</point>
+      <point>Les variables locales ne sont accessibles que dans le sous-algorithme où elles sont déclarées.</point>
+      <point>Les variables globales sont accessibles partout mais peuvent être masquées par des variables locales de même nom.</point>
+      <point>La décomposition en sous-algorithmes améliore la lisibilité, la maintenabilité et la réutilisabilité du code.</point>
+      <point>Le passage par référence (E/S) permet de modifier directement les variables de l'algorithme appelant.</point>
+      <point>Le passage par valeur (E) protège les variables de l'appelant contre les modifications intempestives.</point>
     </bulletPoints>
   </section>
 

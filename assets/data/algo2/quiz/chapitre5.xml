@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_5_Quiz" title="Quiz – Files et Piles (Partie III)">
+
+  <!-- ==================== QUESTIONS SUR LES FILES ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>À quoi servent les files ?</enonce>
+    <choices>
+      <choice id="A">À traiter les données dans l'ordre inverse de réception</choice>
+      <choice id="B">À traiter les données dans l'ordre où on les a reçues</choice>
+      <choice id="C">À stocker des données de manière permanente</choice>
+      <choice id="D">À trier des données</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q2" type="multipleChoice">
+    <enonce>Quel est un exemple d'utilisation d'une file ?</enonce>
+    <choices>
+      <choice id="A">La gestion des appels de procédures</choice>
+      <choice id="B">La liste des travaux à éditer par une imprimante</choice>
+      <choice id="C">L'annulation d'une commande</choice>
+      <choice id="D">L'évaluation d'expressions arithmétiques</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q3" type="multipleChoice">
+    <enonce>Pourquoi maintient-on un pointeur de queue dans une file ?</enonce>
+    <choices>
+      <choice id="A">Pour pouvoir parcourir la file dans les deux sens</choice>
+      <choice id="B">Pour ne pas avoir à parcourir toute la liste au moment d'ajouter un élément en queue</choice>
+      <choice id="C">Pour pouvoir supprimer l'élément de queue</choice>
+      <choice id="D">Pour pouvoir trier la file</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q4" type="multipleChoice">
+    <enonce>Comment vérifie-t-on si une file est vide ?</enonce>
+    <choices>
+      <choice id="A">Tester si Queue = NIL</choice>
+      <choice id="B">Tester si Tête = NIL</choice>
+      <choice id="C">Tester si Tête = Queue</choice>
+      <choice id="D">Tester si l'élément est nul</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q5" type="multipleChoice">
+    <enonce>Où ajoute-t-on un élément dans une file (opération Enfiler) ?</enonce>
+    <choices>
+      <choice id="A">À la tête</choice>
+      <choice id="B">Au sommet</choice>
+      <choice id="C">À la queue</choice>
+      <choice id="D">Au milieu</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q6" type="multipleChoice">
+    <enonce>Où retire-t-on un élément dans une file (opération Défiler) ?</enonce>
+    <choices>
+      <choice id="A">À la queue</choice>
+      <choice id="B">À la tête</choice>
+      <choice id="C">Au sommet</choice>
+      <choice id="D">Au milieu</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q7" type="multipleChoice">
+    <enonce>Dans la procédure Enfiler, que doit-on faire si la file est vide ?</enonce>
+    <choices>
+      <choice id="A">Rien de spécial</choice>
+      <choice id="B">Modifier le pointeur de tête (Tête &lt;- Nouveau)</choice>
+      <choice id="C">Modifier le pointeur de queue uniquement</choice>
+      <choice id="D">Libérer la mémoire</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q8" type="multipleChoice">
+    <enonce>Dans la procédure Défiler, que doit-on faire si la file a un seul élément (après suppression la file devient vide) ?</enonce>
+    <choices>
+      <choice id="A">Rien de spécial</choice>
+      <choice id="B">Mettre Tête à NIL</choice>
+      <choice id="C">Mettre Queue à NIL</choice>
+      <choice id="D">Mettre Tête et Queue à NIL</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="q9" type="multipleChoice">
+    <enonce>Que signifie FIFO ?</enonce>
+    <choices>
+      <choice id="A">First In First Out (premier entré, premier sorti) - Principe de la File</choice>
+      <choice id="B">Last In First Out (dernier entré, premier sorti) - Principe de la Pile</choice>
+      <choice id="C">Fast In Fast Out</choice>
+      <choice id="D">File In File Out</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES PILES ==================== -->
+  <question id="q10" type="multipleChoice">
+    <enonce>Qu'est-ce qu'une pile ?</enonce>
+    <choices>
+      <choice id="A">Une liste où les éléments sont ajoutés et retirés à la queue</choice>
+      <choice id="B">Une liste où les éléments sont ajoutés et retirés par une extrémité appelée sommet</choice>
+      <choice id="C">Une liste où les éléments sont triés</choice>
+      <choice id="D">Une liste à accès aléatoire</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q11" type="multipleChoice">
+    <enonce>Que signifie LIFO ?</enonce>
+    <choices>
+      <choice id="A">First In First Out (principe de la File)</choice>
+      <choice id="B">Last In First Out (principe de la Pile)</choice>
+      <choice id="C">Last In Last Out</choice>
+      <choice id="D">First In Last Out</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q12" type="multipleChoice">
+    <enonce>Dans une pile, les éléments sont retirés dans quel ordre ?</enonce>
+    <choices>
+      <choice id="A">Dans l'ordre où ils ont été ajoutés</choice>
+      <choice id="B">Dans l'ordre inverse dans lequel ils ont été ajoutés</choice>
+      <choice id="C">De manière aléatoire</choice>
+      <choice id="D">Selon leur valeur</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q13" type="multipleChoice">
+    <enonce>Quels sont des exemples d'utilisation d'une pile ?</enonce>
+    <choices>
+      <choice id="A">Gestion des processus en attente d'une imprimante</choice>
+      <choice id="B">Implanter les appels de procédures, annuler une commande, évaluer des expressions arithmétiques</choice>
+      <choice id="C">Systèmes de réservation</choice>
+      <choice id="D">Liste des travaux à éditer</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q14" type="multipleChoice">
+    <enonce>Comment vérifie-t-on si une pile est vide ?</enonce>
+    <choices>
+      <choice id="A">Tester si Sommet = NIL</choice>
+      <choice id="B">Tester si Queue = NIL</choice>
+      <choice id="C">Tester si Pile = 0</choice>
+      <choice id="D">Tester si l'élément est nul</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="q15" type="multipleChoice">
+    <enonce>Où ajoute-t-on un élément dans une pile (opération Empiler) ?</enonce>
+    <choices>
+      <choice id="A">À la queue</choice>
+      <choice id="B">À la tête (sommet)</choice>
+      <choice id="C">Au milieu</choice>
+      <choice id="D">N'importe où</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>Où retire-t-on un élément dans une pile (opération Dépiler) ?</enonce>
+    <choices>
+      <choice id="A">À la queue</choice>
+      <choice id="B">À la tête (sommet)</choice>
+      <choice id="C">Au milieu</choice>
+      <choice id="D">N'importe où</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q17" type="multipleChoice">
+    <enonce>À quoi revient l'opération Empiler dans une pile ?</enonce>
+    <choices>
+      <choice id="A">À une insertion en queue</choice>
+      <choice id="B">À une insertion en tête dans la liste chaînée</choice>
+      <choice id="C">À une suppression en tête</choice>
+      <choice id="D">À une suppression en queue</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q18" type="multipleChoice">
+    <enonce>À quoi revient l'opération Dépiler dans une pile ?</enonce>
+    <choices>
+      <choice id="A">À une insertion en tête</choice>
+      <choice id="B">À une insertion en queue</choice>
+      <choice id="C">À une suppression en tête</choice>
+      <choice id="D">À une suppression en queue</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q19" type="multipleChoice">
+    <enonce>Dans la fonction SommetPile, que retourne-t-on si la pile est vide ?</enonce>
+    <choices>
+      <choice id="A">NIL</choice>
+      <choice id="B">Une erreur</choice>
+      <choice id="C">0 (valeur particulière)</choice>
+      <choice id="D">Rien</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="q20" type="multipleChoice">
+    <enonce>Que fait la procédure InitPile ?</enonce>
+    <choices>
+      <choice id="A">Elle alloue de la mémoire pour la pile</choice>
+      <choice id="B">Elle initialise la pile en mettant Sommet à NIL</choice>
+      <choice id="C">Elle empile un élément</choice>
+      <choice id="D">Elle dépile un élément</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q21" type="multipleChoice">
+    <enonce>Que retourne la fonction PileVide ?</enonce>
+    <choices>
+      <choice id="A">Un entier</choice>
+      <choice id="B">Un booléen (Vrai si Sommet = NIL, Faux sinon)</choice>
+      <choice id="C">Un réel</choice>
+      <choice id="D">Un caractère</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES STRUCTURES ==================== -->
+  <question id="q22" type="multipleChoice">
+    <enonce>Quelle est la structure de données qui utilise le principe FIFO ?</enonce>
+    <choices>
+      <choice id="A">La pile</choice>
+      <choice id="B">La file</choice>
+      <choice id="C">Le tableau</choice>
+      <choice id="D">L'enregistrement</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q23" type="multipleChoice">
+    <enonce>Quelle est la structure de données qui utilise le principe LIFO ?</enonce>
+    <choices>
+      <choice id="A">La file</choice>
+      <choice id="B">La pile</choice>
+      <choice id="C">Le tableau</choice>
+      <choice id="D">La liste chaînée simple</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q24" type="multipleChoice">
+    <enonce>Les piles sont utilisées pour implanter quoi ?</enonce>
+    <choices>
+      <choice id="A">Les systèmes de réservation</choice>
+      <choice id="B">Les listes d'impression</choice>
+      <choice id="C">Les appels de procédures (pour revenir à l'état avant l'appel)</choice>
+      <choice id="D">Les fichiers</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <!-- ==================== QUESTIONS SUR LES PROCÉDURES ==================== -->
+  <question id="q25" type="multipleChoice">
+    <enonce>Dans la procédure Enfiler, quel est le rôle du paramètre Queue ?</enonce>
+    <choices>
+      <choice id="A">Pointer vers le début de la file</choice>
+      <choice id="B">Pointer vers la fin de la file pour faciliter l'ajout</choice>
+      <choice id="C">Compter le nombre d'éléments</choice>
+      <choice id="D">Libérer la mémoire</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q26" type="multipleChoice">
+    <enonce>Dans la procédure Empiler, pourquoi n'a-t-on pas besoin d'un pointeur de queue ?</enonce>
+    <choices>
+      <choice id="A">Parce que les piles n'ont pas de queue</choice>
+      <choice id="B">Parce que l'insertion se fait toujours en tête (au sommet)</choice>
+      <choice id="C">Parce que les piles sont plus petites</choice>
+      <choice id="D">Parce que l'insertion se fait toujours en queue</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q27" type="multipleChoice">
+    <enonce>Dans la procédure Défiler, que doit-on faire avec l'élément supprimé ?</enonce>
+    <choices>
+      <choice id="A">Le conserver dans une variable Temp</choice>
+      <choice id="B">Le libérer avec LIBÉRER</choice>
+      <choice id="C">Le remettre dans la file</choice>
+      <choice id="D">Rien</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <!-- ==================== ORDRE ==================== -->
+  <question id="q28" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes de l'opération Enfiler dans une file :</enonce>
+    <bonneReponse>ALLOUER(Nouveau)|Nouveau^.Info &lt;- Valeur|Nouveau^.Suivant &lt;- NIL|SI Tête=NIL|Queue^.Suivant &lt;- Nouveau|Queue &lt;- Nouveau</bonneReponse>
+    <codeLines>
+      <line>Queue &lt;- Nouveau</line>
+      <line>ALLOUER(Nouveau)</line>
+      <line>Nouveau^.Suivant &lt;- NIL</line>
+      <line>SI Tête=NIL</line>
+      <line>Queue^.Suivant &lt;- Nouveau</line>
+      <line>Nouveau^.Info &lt;- Valeur</line>
+    </codeLines>
+  </question>
+
+  <question id="q29" type="ordering">
+    <enonce>Remettez dans l'ordre les étapes de l'opération Empiler dans une pile :</enonce>
+    <bonneReponse>ALLOUER(Nouveau)|Nouveau^.Info &lt;- Valeur|Nouveau^.Suivant &lt;- Sommet|Sommet &lt;- Nouveau</bonneReponse>
+    <codeLines>
+      <line>Sommet &lt;- Nouveau</line>
+      <line>ALLOUER(Nouveau)</line>
+      <line>Nouveau^.Suivant &lt;- Sommet</line>
+      <line>Nouveau^.Info &lt;- Valeur</line>
+    </codeLines>
+  </question>
+
+  <!-- ==================== QUESTION DE RÉFLEXION ==================== -->
+  <question id="q30" type="multipleChoice">
+    <enonce>Quelle est la principale différence entre une file et une pile ?</enonce>
+    <choices>
+      <choice id="A">La file utilise FIFO (premier entré, premier sorti), la pile utilise LIFO (dernier entré, premier sorti)</choice>
+      <choice id="B">La pile utilise FIFO, la file utilise LIFO</choice>
+      <choice id="C">La file a une taille fixe, la pile est dynamique</choice>
+      <choice id="D">La pile a une taille fixe, la file est dynamique</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+</chapter>

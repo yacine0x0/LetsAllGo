@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_4" title="Les listes chaînées (Partie II)">
+
+  <!-- ==================== CONTENU DU CHAPITRE ==================== -->
+  <section id="0" title="Contenu de cette partie du chapitre">
+    <bulletPoints>
+      <point>1. Définition d'une liste chaînée</point>
+      <point>2. Gestion dynamique de la mémoire</point>
+      <point>3. Listes chaînées simples</point>
+      <point>4. Exemples de listes chaînées simples</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 1. DÉFINITION ==================== -->
+  <section id="1" title="Définition d'une liste linéaire chaînée">
+    <content>Une Liste Linéaire Chaînée (LLC) est un ensemble d'éléments d'informations appelés cellules. En plus des informations dont elle est porteuse, une cellule possède un pointeur. Ce pointeur contient l'adresse de la cellule suivante dans la liste.</content>
+    
+    <content><strong>Figure 1 :</strong> Liste chaînée de 3 éléments (cellules).</content>
+    <content>Le dernier élément de la liste chaînée n'a pas de suivant. Son pointeur est donc mis à NIL.</content>
+
+    <subsection title="Syntaxe de déclaration">
+      <content>TYPE pointeur = ^ cellule ;<br/>
+cellule = ENREGISTREMENT<br/>
+  Champs 1 : Type 1 ;<br/>
+  Champs 2 : Type 2 ;<br/>
+  ...<br/>
+  Champs N : Type N ;<br/>
+  Suivant : pointeur ;<br/>
+FIN ;</content>
+      <content>Chaque variable cellule contient :<br/>
+- Une partie information, représentée par les membres de l'enregistrement, et<br/>
+- Un pointeur, appelé par exemple Suivant, contenant l'adresse de la cellule suivante de la liste chaînée.</content>
+    </subsection>
+
+    <subsection title="Exemple">
+      <content>TYPE ptr_vehicule = ^ vehicule ;<br/>
+vehicule = ENREGISTREMENT<br/>
+  No_serie : Entier ;<br/>
+  Prix : Réel ;<br/>
+  Suivant : ptr_vehicule ;<br/>
+FIN ;</content>
+      <content>« No_serie » et « Prix » représentent les informations dont une cellule est porteuse, et « Suivant » est un pointeur qui contient l'adresse de la cellule suivante dans la liste.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 2. GESTION DYNAMIQUE DE LA MÉMOIRE ==================== -->
+  <section id="2" title="Gestion dynamique de la mémoire">
+    <content>Une liste chaînée n'est pas limitée à un nombre fixe d'éléments. Elle peut être facilement étendue ou diminuée selon les besoins. C'est la gestion dynamique de la mémoire. Ceci est possible grâce aux fonctions ALLOUER() et LIBÉRER().</content>
+    <content>La gestion dynamique de la mémoire permet d'utiliser uniquement l'espace mémoire nécessaire à l'exécution d'un programme. Ce qui n'est pas le cas, lorsqu'on utilise par exemple, un tableau d'enregistrement, car il doit être déclaré avec une dimension fixe.</content>
+    
+    <subsection title="Rappel">
+      <content>La fonction ALLOUER() alloue un espace mémoire de la taille de l'enregistrement (cellule) en octets, et fournit l'adresse de cet emplacement en retour. Cette adresse est assignée au pointeur de même type spécifié entre parenthèses.</content>
+      <content>La fonction LIBÉRER() permet de libérer un emplacement alloué à une cellule lorsqu'on n'a plus besoin de cette cellule.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 3. LISTES CHAÎNÉES SIMPLES ==================== -->
+  <section id="3" title="Les listes chaînées simples">
+    <content>Une fois une liste chaînée créée, on peut la consulter bien sûr, mais aussi insérer et supprimer des éléments sans restrictions. Ce qui est l'intérêt premier des listes chaînées.</content>
+
+    <!-- ==================== 3.1 CRÉATION ==================== -->
+    <subsection title="3.1 Création d'une liste chaînée">
+      <content>On donne dans l'algorithme "Création_liste" un exemple qui permet de créer une liste chaînée simple à base du type "ptr_vehicule" décrit précédemment.</content>
+      
+      <content><strong>Algorithme Création_liste :</strong><br/>
+ALGORITHME Création_liste ;<br/>
+TYPE ptr_vehicule = ^ vehicule ;<br/>
+vehicule = ENREGISTREMENT<br/>
+  No_serie : Entier ;<br/>
+  Prix : Réel ;<br/>
+  Suivant : ptr_vehicule ;<br/>
+FIN ;<br/>
+VAR Tête, Courant : ptr_vehicule ;<br/>
+Choix : Entier ;<br/>
+DÉBUT<br/>
+  ALLOUER(Tête) ;<br/>
+  Courant &lt;- Tête ;<br/>
+  RÉPÉTER<br/>
+    ÉCRIRE('Entrez le numéro de série du véhicule :') ;<br/>
+    LIRE(Courant^.No_serie) ;<br/>
+    ÉCRIRE('Entrez le prix du véhicule :') ;<br/>
+    LIRE(Courant^.Prix) ;<br/>
+    ÉCRIRE('Autre saisie ? 1. OUI 2. NON ') ;<br/>
+    LIRE(Choix) ;<br/>
+    SI (Choix = 1) ALORS<br/>
+      ALLOUER(Courant^.Suivant) ;<br/>
+      Courant &lt;- Courant^.Suivant ;<br/>
+    SINON<br/>
+      Courant^.Suivant &lt;- NIL ;<br/>
+      Courant &lt;- NIL ;<br/>
+    FIN SI ;<br/>
+  JUSQU'À (Choix = 2) ;<br/>
+FIN.</content>
+    </subsection>
+
+    <!-- ==================== 3.2 CONSULTATION ==================== -->
+    <subsection title="3.2 Consultation d'une liste chaînée">
+      <content>Pour consulter la liste créée dans l'algorithme "Création_liste", on utilise le traitement suivant :</content>
+      
+      <content><strong>Algorithme de consultation :</strong><br/>
+VAR Tête, Courant : ptr_vehicule ;<br/>
+DÉBUT<br/>
+  Courant &lt;- Tête ;<br/>
+  TANT QUE (Courant &lt;&gt; NIL) FAIRE<br/>
+    ÉCRIRE(Courant^.No_serie, Courant^.Prix) ;<br/>
+    Courant &lt;- Courant^.Suivant ;<br/>
+  FIN TANT QUE ;<br/>
+FIN.</content>
+    </subsection>
+
+    <!-- ==================== 3.3 INSERTION ==================== -->
+    <subsection title="3.3 Insertion d'une cellule dans une LLC">
+      <content>Pour insérer un élément dans une LLC, trois cas se présentent :</content>
+      <bulletPoints>
+        <point>On insère la cellule à la tête (au début) de la LLC.</point>
+        <point>On insère la cellule au milieu de la LLC.</point>
+        <point>On insère la cellule à la queue (à la fin) de la LLC.</point>
+      </bulletPoints>
+
+      <!-- ==================== 3.3.1 INSERTION À LA TÊTE ==================== -->
+      <subsubsection title="3.3.1 Insertion à la tête de la LLC">
+        <content>VAR Tête, Nouveau : ptr_vehicule ;<br/>
+DÉBUT<br/>
+  {On suppose que la liste est créée avec l'algorithme "Création_liste"}<br/>
+  ALLOUER(Nouveau) ;<br/>
+  ÉCRIRE("Entrez le numéro de série du véhicule :") ;<br/>
+  LIRE(Nouveau^.No_serie) ;<br/>
+  ÉCRIRE("Entrez le prix du véhicule :") ;<br/>
+  LIRE(Nouveau^.Prix) ;<br/>
+  Nouveau^.Suivant &lt;- Tête ;<br/>
+  Tête &lt;- Nouveau ;<br/>
+  Nouveau &lt;- NIL ;<br/>
+FIN.</content>
+      </subsubsection>
+
+      <!-- ==================== 3.3.2 INSERTION AU MILIEU ==================== -->
+      <subsubsection title="3.3.2 Insertion au milieu de la LLC">
+        <content>Soit « Courant » la cellule après laquelle on insère la nouvelle cellule.</content>
+        <content>VAR Tête, Nouveau, Courant : ptr_vehicule ;<br/>
+X : Entier ;<br/>
+Trouve : Booléen ;<br/>
+DÉBUT<br/>
+  {On suppose que la liste est créée avec l'algorithme "Création_liste"}<br/>
+  ALLOUER(Nouveau) ;<br/>
+  ÉCRIRE("Entrez le numéro de série du véhicule :") ;<br/>
+  LIRE(Nouveau^.No_serie) ;<br/>
+  ÉCRIRE("Entrez le prix du véhicule :") ;<br/>
+  LIRE(Nouveau^.Prix) ;<br/>
+  Nouveau^.Suivant &lt;- NIL ;<br/>
+  ÉCRIRE("Donnez le numéro de série du véhicule qui précède le nouveau véhicule à insérer") ;<br/>
+  LIRE(X) ;<br/>
+  Courant &lt;- Tête ;<br/>
+  Trouve &lt;- Faux ;<br/>
+  TANT QUE (Courant &lt;&gt; NIL) ET (Trouve = Faux) FAIRE<br/>
+    SI (Courant^.No_serie = X) ALORS<br/>
+      Trouve &lt;- Vrai ;<br/>
+    SINON<br/>
+      Courant &lt;- Courant^.Suivant ;<br/>
+    FIN SI ;<br/>
+  FIN TANT QUE ;<br/>
+  SI (Courant = NIL) ALORS<br/>
+    ÉCRIRE("Le véhicule d'avant n'existe pas") ;<br/>
+  SINON<br/>
+    Nouveau^.Suivant &lt;- Courant^.Suivant ;<br/>
+    Courant^.Suivant &lt;- Nouveau ;<br/>
+    Nouveau &lt;- NIL ;<br/>
+    Courant &lt;- NIL ;<br/>
+  FIN SI ;<br/>
+FIN.</content>
+      </subsubsection>
+
+      <!-- ==================== 3.3.3 INSERTION À LA QUEUE ==================== -->
+      <subsubsection title="3.3.3 Insertion à la queue de la LLC">
+        <content>VAR Tête, Nouveau, Courant : ptr_vehicule ;<br/>
+DÉBUT<br/>
+  {On suppose que la liste est créée par l'algorithme "Création_liste"}<br/>
+  ALLOUER(Nouveau) ;<br/>
+  ÉCRIRE("Entrez le numéro de série du véhicule :") ;<br/>
+  LIRE(Nouveau^.No_serie) ;<br/>
+  ÉCRIRE("Entrez le prix du véhicule :") ;<br/>
+  LIRE(Nouveau^.Prix) ;<br/>
+  Nouveau^.Suivant &lt;- NIL ;<br/>
+  Courant &lt;- Tête ;<br/>
+  TANT QUE (Courant^.Suivant &lt;&gt; NIL) FAIRE<br/>
+    Courant &lt;- Courant^.Suivant ;<br/>
+  FIN TANT QUE ;<br/>
+  Courant^.Suivant &lt;- Nouveau ;<br/>
+  Nouveau &lt;- NIL ;<br/>
+  Courant &lt;- NIL ;<br/>
+FIN.</content>
+      </subsubsection>
+    </subsection>
+
+    <!-- ==================== 3.4 SUPPRESSION ==================== -->
+    <subsection title="3.4 Suppression d'une cellule d'une LLC">
+      <content>Dans la suppression, on peut avoir trois cas aussi :</content>
+      <bulletPoints>
+        <point>On supprime la cellule qui est en tête (au début) de la LLC.</point>
+        <point>On supprime une cellule au milieu de la LLC.</point>
+        <point>On supprime la cellule qui est en queue (à la fin) de la LLC.</point>
+      </bulletPoints>
+
+      <!-- ==================== 3.4.1 SUPPRESSION DE LA TÊTE ==================== -->
+      <subsubsection title="3.4.1 Suppression de la tête de la LLC">
+        <content>On a besoin d'une variable supplémentaire « Temp » de type pointeur.</content>
+        <content>VAR Tête, Temp : ptr_vehicule ;<br/>
+DÉBUT<br/>
+  {On suppose que la liste est créée par l'algorithme "Création_liste"}<br/>
+  Temp &lt;- Tête ; {Temp pointe vers la cellule à supprimer}<br/>
+  ÉCRIRE('Donnez le numéro de série du véhicule à supprimer') ;<br/>
+  LIRE(X) ;<br/>
+  Trouve &lt;- Faux ;<br/>
+  TANT QUE (Temp &lt;&gt; NIL) ET (Trouve = Faux) FAIRE<br/>
+    SI (Temp^.No_serie = X) ALORS<br/>
+      Trouve &lt;- Vrai ;<br/>
+    SINON<br/>
+      Temp &lt;- Temp^.Suivant ;<br/>
+    FIN SI ;<br/>
+  FIN TANT QUE ;<br/>
+  SI (Temp = NIL) ALORS<br/>
+    ÉCRIRE('Le véhicule n'existe pas') ;<br/>
+  SINON<br/>
+    Courant &lt;- Tête ; {Courant pointera sur la cellule précédente de la cellule à supprimer}<br/>
+    TANT QUE (Courant^.Suivant &lt;&gt; Temp) FAIRE<br/>
+      Courant &lt;- Courant^.Suivant ;<br/>
+    FIN TANT QUE ;<br/>
+    Courant^.Suivant &lt;- Temp^.Suivant ;<br/>
+    LIBÉRER(Temp) ;<br/>
+    Temp &lt;- NIL ;<br/>
+    Courant &lt;- NIL ;<br/>
+  FIN SI ;<br/>
+FIN.</content>
+      </subsubsection>
+
+      <!-- ==================== 3.4.3 SUPPRESSION DE LA QUEUE ==================== -->
+      <subsubsection title="3.4.3 Suppression de la queue de la LLC">
+        <content>VAR Tête, Temp, Courant : ptr_vehicule ;<br/>
+DÉBUT<br/>
+  {On suppose que la liste est créée par l'algorithme "Création_liste"}<br/>
+  Temp &lt;- Tête ; {Temp pointera sur la cellule à supprimer}<br/>
+  TANT QUE (Temp^.Suivant &lt;&gt; NIL) FAIRE<br/>
+    Temp &lt;- Temp^.Suivant ;<br/>
+  FIN TANT QUE ;<br/>
+  Courant &lt;- Tête ; {Courant pointera sur la cellule précédente de la cellule à supprimer}<br/>
+  TANT QUE (Courant^.Suivant &lt;&gt; Temp) FAIRE<br/>
+    Courant &lt;- Courant^.Suivant ;<br/>
+  FIN TANT QUE ;<br/>
+  Courant^.Suivant &lt;- NIL ;<br/>
+  LIBÉRER(Temp) ;<br/>
+  Temp &lt;- NIL ;<br/>
+  Courant &lt;- NIL ;<br/>
+FIN.</content>
+      </subsubsection>
+
+      <!-- ==================== 3.4.4 SUPPRESSION DE TOUTES LES CELLULES ==================== -->
+      <subsubsection title="3.4.4 Suppression de toutes les cellules de la LLC">
+        <content>La suppression d'une liste complète passe par la suppression de toutes ses cellules, dans le bon ordre. À l'issue de cette opération, la liste doit être vide et l'ensemble de l'espace mémoire qu'elle occupait libéré.</content>
+      </subsubsection>
+    </subsection>
+  </section>
+
+  <!-- ==================== 4. EXEMPLES DE LISTES ==================== -->
+  <section id="4" title="Exemples de listes">
+    <content>Nous avons abordé la liste simplement chaînée qui est la structure la plus simple. Mais bien d'autres existent dont certaines sont très utilisées, en voilà quelques exemples :</content>
+    <bulletPoints>
+      <point>Liste doublement chaînée (bidirectionnelle).</point>
+      <point>Pile (LIFO) : Last In First Out.</point>
+      <point>File (FIFO) : First In First Out.</point>
+      <point>Anneau (ou liste circulaire).</point>
+      <point>Arbre de calcul.</point>
+    </bulletPoints>
+    <content>L'ensemble de ces structures de données restent basées sur la notion de pointeur faisant le lien entre différents enregistrements.</content>
+  </section>
+
+</chapter>
