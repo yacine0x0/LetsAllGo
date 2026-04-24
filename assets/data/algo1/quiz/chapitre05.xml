@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_04" title="Data Structures - Structures de données">
+
+  <question id="c4_q1" type="multipleChoice">
+    <enonce>What is a vector?</enonce>
+    <choices>
+      <choice id="A">A fixed-size array</choice>
+      <choice id="B">A constant value</choice>
+      <choice id="C">A function parameter</choice>
+      <choice id="D">A dynamic array that can grow or shrink</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q2" type="multipleChoice">
+    <enonce>What is the time complexity of accessing an element in an array?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(n)</choice>
+      <choice id="C">O(1)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q3" type="multipleChoice">
+    <enonce>What is a matrix?</enonce>
+    <choices>
+      <choice id="A">A type of vector</choice>
+      <choice id="B">A two-dimensional array</choice>
+      <choice id="C">A one-dimensional array</choice>
+      <choice id="D">A dynamic array</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q4" type="ordering">
+    <enonce>Order the steps for matrix traversal:</enonce>
+    <bonneReponse>Initialize row index|Initialize column index|Access element|Move to next element</bonneReponse>
+    <codeLines>
+      <line>Access element</line>
+      <line>Initialize row index</line>
+      <line>Move to next element</line>
+      <line>Initialize column index</line>
+    </codeLines>
+  </question>
+
+  <question id="c4_q5" type="multipleChoice">
+    <enonce>What is the advantage of using vectors over arrays?</enonce>
+    <choices>
+      <choice id="A">No advantages</choice>
+      <choice id="B">Faster access</choice>
+      <choice id="C">Less memory usage</choice>
+      <choice id="D">Dynamic sizing</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q6" type="multipleChoice">
+    <enonce>What is the index of the first element in an array?</enonce>
+    <choices>
+      <choice id="A">0</choice>
+      <choice id="B">1</choice>
+      <choice id="C">-1</choice>
+      <choice id="D">Depends on the language</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c4_q7" type="multipleChoice">
+    <enonce>What happens when you access an index out of bounds in an array?</enonce>
+    <choices>
+      <choice id="A">The array resizes automatically</choice>
+      <choice id="B">Returns 0</choice>
+      <choice id="C">An error or exception is thrown</choice>
+      <choice id="D">Returns null</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c4_q8" type="multipleChoice">
+    <enonce>What is the time complexity of inserting an element at the beginning of an array?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(n)</choice>
+      <choice id="C">O(log n)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q9" type="multipleChoice">
+    <enonce>How do you calculate the number of elements in a matrix of size m x n?</enonce>
+    <choices>
+      <choice id="A">m * n</choice>
+      <choice id="B">m + n</choice>
+      <choice id="C">m / n</choice>
+      <choice id="D">m - n</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q10" type="ordering">
+    <enonce>Order the steps to insert an element into a vector:</enonce>
+    <bonneReponse>Choose insertion position|Shift elements right|Insert new element|Update size</bonneReponse>
+    <codeLines>
+      <line>Insert new element</line>
+      <line>Update size</line>
+      <line>Choose insertion position</line>
+      <line>Shift elements right</line>
+    </codeLines>
+  </question>
+
+  <question id="c4_q11" type="multipleChoice">
+    <enonce>What is the time complexity of deleting an element from the middle of an array?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(n²)</choice>
+      <choice id="C">O(log n)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q12" type="multipleChoice">
+    <enonce>How is a 2D array element accessed?</enonce>
+    <choices>
+      <choice id="A">array(i, j)</choice>
+      <choice id="B">array.get(i, j)</choice>
+      <choice id="C">array[i][j]</choice>
+      <choice id="D">array[i]</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q13" type="multipleChoice">
+    <enonce>What is the last index of an array of size n?</enonce>
+    <choices>
+      <choice id="A">n-1</choice>
+      <choice id="B">n+1</choice>
+      <choice id="C">n</choice>
+      <choice id="D">n/2</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c4_q14" type="multipleChoice">
+    <enonce>What is a sparse matrix?</enonce>
+    <choices>
+      <choice id="A">A matrix with only one row</choice>
+      <choice id="B">A matrix that cannot be traversed</choice>
+      <choice id="C">A matrix where most elements are zero</choice>
+      <choice id="D">A matrix with all elements equal to zero</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q15" type="multipleChoice">
+    <enonce>What is column-major order in matrix storage?</enonce>
+    <choices>
+      <choice id="A">Storing elements row by row</choice>
+      <choice id="B">Storing only non-zero elements</choice>
+      <choice id="C">Storing elements column by column</choice>
+      <choice id="D">Storing elements in random order</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q16" type="multipleChoice">
+    <enonce>What is the memory layout of a 1D array?</enonce>
+    <choices>
+      <choice id="A">Stored on the hard disk</choice>
+      <choice id="B">Contiguous (consecutive) memory locations</choice>
+      <choice id="C">Random locations in memory</choice>
+      <choice id="D">Linked nodes in memory</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c4_q17" type="multipleChoice">
+    <enonce>What is the time complexity of appending an element to the end of a dynamic array (vector)?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(1) amortized</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q18" type="multipleChoice">
+    <enonce>What does "row-major order" mean?</enonce>
+    <choices>
+      <choice id="A">Accessing only the first row</choice>
+      <choice id="B">Storing matrix elements row by row in memory</choice>
+      <choice id="C">Storing matrix elements column by column</choice>
+      <choice id="D">Sorting rows before storing</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c4_q19" type="multipleChoice">
+    <enonce>What is the size of a 3x4 matrix?</enonce>
+    <choices>
+      <choice id="A">12 elements</choice>
+      <choice id="B">7 elements</choice>
+      <choice id="C">3 elements</choice>
+      <choice id="D">4 elements</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q20" type="ordering">
+    <enonce>Order the steps to search for an element in an unsorted array:</enonce>
+    <bonneReponse>Start at index 0|Compare element with target|If match: return index|If not: move to next index|If end reached: return -1</bonneReponse>
+    <codeLines>
+      <line>If match: return index</line>
+      <line>Start at index 0</line>
+      <line>If end reached: return -1</line>
+      <line>If not: move to next index</line>
+      <line>Compare element with target</line>
+    </codeLines>
+  </question>
+
+  <question id="c4_q21" type="multipleChoice">
+    <enonce>What is the diagonal of a square matrix?</enonce>
+    <choices>
+      <choice id="A">Elements at even positions</choice>
+      <choice id="B">The last column of the matrix</choice>
+      <choice id="C">The first row of the matrix</choice>
+      <choice id="D">Elements where the row index equals the column index</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q22" type="multipleChoice">
+    <enonce>What happens to the size of a dynamic array when it exceeds its capacity?</enonce>
+    <choices>
+      <choice id="A">An error is thrown</choice>
+      <choice id="B">The oldest element is removed</choice>
+      <choice id="C">The array becomes fixed-size</choice>
+      <choice id="D">It reallocates with a larger capacity (typically doubles)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q23" type="multipleChoice">
+    <enonce>How do you find the transpose of a matrix?</enonce>
+    <choices>
+      <choice id="A">Reverse all rows</choice>
+      <choice id="B">Add the matrix to itself</choice>
+      <choice id="C">Multiply all elements by -1</choice>
+      <choice id="D">Swap rows and columns (matrix[i][j] becomes matrix[j][i])</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q24" type="multipleChoice">
+    <enonce>What is an identity matrix?</enonce>
+    <choices>
+      <choice id="A">A matrix filled with 1s</choice>
+      <choice id="B">A matrix with all zeros</choice>
+      <choice id="C">A matrix where all rows are equal</choice>
+      <choice id="D">A matrix with 1s on the diagonal and 0s elsewhere</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q25" type="multipleChoice">
+    <enonce>What is the time complexity of searching for an element in a sorted array using binary search?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(n²)</choice>
+      <choice id="C">O(1)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c4_q26" type="multipleChoice">
+    <enonce>What is a jagged array?</enonce>
+    <choices>
+      <choice id="A">An array that cannot be sorted</choice>
+      <choice id="B">A 2D array where each row can have a different length</choice>
+      <choice id="C">An array with all elements equal</choice>
+      <choice id="D">An array stored in non-contiguous memory</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c4_q27" type="multipleChoice">
+    <enonce>What does it mean to "flatten" a matrix?</enonce>
+    <choices>
+      <choice id="A">To transpose the matrix</choice>
+      <choice id="B">To remove all zero elements</choice>
+      <choice id="C">To sort the matrix rows</choice>
+      <choice id="D">To convert a 2D array into a 1D array</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c4_q28" type="multipleChoice">
+    <enonce>What is the index formula for element at row i, column j in a row-major matrix of width n?</enonce>
+    <choices>
+      <choice id="A">i * j</choice>
+      <choice id="B">i + j</choice>
+      <choice id="C">j * n + i</choice>
+      <choice id="D">i * n + j</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c4_q29" type="ordering">
+    <enonce>Order the steps to delete an element at position k from an array of size n:</enonce>
+    <bonneReponse>Identify position k|Shift elements left from k+1 to n-1|Decrease array size by 1</bonneReponse>
+    <codeLines>
+      <line>Shift elements left from k+1 to n-1</line>
+      <line>Identify position k</line>
+      <line>Decrease array size by 1</line>
+    </codeLines>
+  </question>
+
+  <question id="c4_q30" type="multipleChoice">
+    <enonce>What is the main disadvantage of arrays compared to linked lists?</enonce>
+    <choices>
+      <choice id="A">Slower element access</choice>
+      <choice id="B">Elements cannot be sorted</choice>
+      <choice id="C">Arrays use more memory than linked lists</choice>
+      <choice id="D">Fixed size — difficult to insert or delete elements efficiently</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+</chapter>

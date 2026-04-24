@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_03" title="Loops - Structures itératives">
+
+  <question id="c3_q1" type="ordering">
+    <enonce>Order the steps for a for loop:</enonce>
+    <bonneReponse>Initialization|Condition|Body|Increment</bonneReponse>
+    <codeLines>
+      <line>Body</line>
+      <line>Initialization</line>
+      <line>Increment</line>
+      <line>Condition</line>
+    </codeLines>
+  </question>
+
+  <question id="c3_q2" type="multipleChoice">
+    <enonce>What is the purpose of a while loop?</enonce>
+    <choices>
+      <choice id="A">Define a function</choice>
+      <choice id="B">Create an array</choice>
+      <choice id="C">Execute code a fixed number of times</choice>
+      <choice id="D">Execute code while a condition is true</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c3_q3" type="multipleChoice">
+    <enonce>What is the key difference between for and while loops?</enonce>
+    <choices>
+      <choice id="A">They are identical</choice>
+      <choice id="B">for is faster</choice>
+      <choice id="C">for has a predefined iteration count</choice>
+      <choice id="D">while cannot iterate</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q4" type="multipleChoice">
+    <enonce>What does "break" statement do in a loop?</enonce>
+    <choices>
+      <choice id="A">Increases the iteration</choice>
+      <choice id="B">Pauses the loop</choice>
+      <choice id="C">Exits the loop immediately</choice>
+      <choice id="D">Restarts the loop</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q5" type="multipleChoice">
+    <enonce>What does "continue" statement do?</enonce>
+    <choices>
+      <choice id="A">Exits the loop</choice>
+      <choice id="B">Repeats the current iteration</choice>
+      <choice id="C">Skips to the next iteration</choice>
+      <choice id="D">Pauses the execution</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q6" type="multipleChoice">
+    <enonce>What is a do-while loop?</enonce>
+    <choices>
+      <choice id="A">A loop that never executes</choice>
+      <choice id="B">A loop that runs a fixed number of times</choice>
+      <choice id="C">A loop with no condition</choice>
+      <choice id="D">A loop that executes at least once before checking the condition</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c3_q7" type="multipleChoice">
+    <enonce>What is an infinite loop?</enonce>
+    <choices>
+      <choice id="A">A loop that runs exactly once</choice>
+      <choice id="B">A loop whose condition never becomes false</choice>
+      <choice id="C">A loop with no body</choice>
+      <choice id="D">A loop that skips every iteration</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c3_q8" type="multipleChoice">
+    <enonce>Which loop is best when the number of iterations is known in advance?</enonce>
+    <choices>
+      <choice id="A">while</choice>
+      <choice id="B">do-while</choice>
+      <choice id="C">foreach</choice>
+      <choice id="D">for</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c3_q9" type="multipleChoice">
+    <enonce>What is a nested loop?</enonce>
+    <choices>
+      <choice id="A">A loop with multiple conditions</choice>
+      <choice id="B">A loop that calls a function</choice>
+      <choice id="C">A loop inside another loop</choice>
+      <choice id="D">A loop without a counter</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q10" type="ordering">
+    <enonce>Order the steps of a while loop execution:</enonce>
+    <bonneReponse>Check condition|Execute body|Update variable|Check condition again</bonneReponse>
+    <codeLines>
+      <line>Execute body</line>
+      <line>Check condition again</line>
+      <line>Check condition</line>
+      <line>Update variable</line>
+    </codeLines>
+  </question>
+
+  <question id="c3_q11" type="multipleChoice">
+    <enonce>What is the time complexity of a single loop iterating n times?</enonce>
+    <choices>
+      <choice id="A">O(log n)</choice>
+      <choice id="B">O(1)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q12" type="multipleChoice">
+    <enonce>What is the time complexity of two nested loops each iterating n times?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n²)</choice>
+      <choice id="D">O(2n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q13" type="multipleChoice">
+    <enonce>What is the difference between while and do-while?</enonce>
+    <choices>
+      <choice id="A">while is faster</choice>
+      <choice id="B">do-while checks the condition after executing the body at least once</choice>
+      <choice id="C">while always runs at least once</choice>
+      <choice id="D">do-while cannot use break</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c3_q14" type="multipleChoice">
+    <enonce>What happens when "break" is used inside a nested loop?</enonce>
+    <choices>
+      <choice id="A">All loops exit immediately</choice>
+      <choice id="B">The outer loop restarts</choice>
+      <choice id="C">Only the innermost loop exits</choice>
+      <choice id="D">The program terminates</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q15" type="multipleChoice">
+    <enonce>What is loop unrolling?</enonce>
+    <choices>
+      <choice id="A">Removing a loop from the code</choice>
+      <choice id="B">Converting a for loop to a while loop</choice>
+      <choice id="C">An optimization that reduces loop overhead by repeating the body multiple times</choice>
+      <choice id="D">Adding more iterations to a loop</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q16" type="multipleChoice">
+    <enonce>How many times does the body of "for(i=0; i&lt;5; i++)" execute?</enonce>
+    <choices>
+      <choice id="A">Infinite</choice>
+      <choice id="B">4</choice>
+      <choice id="C">5</choice>
+      <choice id="D">6</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q17" type="multipleChoice">
+    <enonce>What is a loop counter?</enonce>
+    <choices>
+      <choice id="A">A function that counts loop iterations</choice>
+      <choice id="B">A variable that tracks how many times a loop has executed</choice>
+      <choice id="C">A condition that stops the loop</choice>
+      <choice id="D">A timer that measures loop speed</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c3_q18" type="multipleChoice">
+    <enonce>What is an off-by-one error in a loop?</enonce>
+    <choices>
+      <choice id="A">Using break instead of continue</choice>
+      <choice id="B">Forgetting to initialize the loop counter</choice>
+      <choice id="C">A mistake causing the loop to execute one too many or one too few times</choice>
+      <choice id="D">Using the wrong variable in the loop body</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q19" type="multipleChoice">
+    <enonce>Which loop type guarantees execution of the body at least once?</enonce>
+    <choices>
+      <choice id="A">for</choice>
+      <choice id="B">while</choice>
+      <choice id="C">foreach</choice>
+      <choice id="D">do-while</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c3_q20" type="ordering">
+    <enonce>Order the steps of a do-while loop execution:</enonce>
+    <bonneReponse>Execute body|Check condition|If true: repeat body|If false: exit loop</bonneReponse>
+    <codeLines>
+      <line>If false: exit loop</line>
+      <line>Execute body</line>
+      <line>If true: repeat body</line>
+      <line>Check condition</line>
+    </codeLines>
+  </question>
+
+  <question id="c3_q21" type="multipleChoice">
+    <enonce>What is the purpose of the loop variable "i" in "for(i=0; i&lt;n; i++)"?</enonce>
+    <choices>
+      <choice id="A">To increase loop speed</choice>
+      <choice id="B">To store the loop result</choice>
+      <choice id="C">To count iterations and control loop termination</choice>
+      <choice id="D">To define the loop body</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q22" type="multipleChoice">
+    <enonce>What is an accumulator in a loop?</enonce>
+    <choices>
+      <choice id="A">A loop that runs indefinitely</choice>
+      <choice id="B">A condition that stops the loop</choice>
+      <choice id="C">A variable that collects values across iterations (e.g., sum)</choice>
+      <choice id="D">A counter that decreases each iteration</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q23" type="multipleChoice">
+    <enonce>Which statement is true about the "continue" statement?</enonce>
+    <choices>
+      <choice id="A">It exits the loop entirely</choice>
+      <choice id="B">It pauses the loop for one iteration</choice>
+      <choice id="C">It skips the rest of the current iteration and moves to the next</choice>
+      <choice id="D">It restarts the loop from the beginning</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q24" type="multipleChoice">
+    <enonce>What is the output of "for(i=1; i&lt;=3; i++) print(i)"?</enonce>
+    <choices>
+      <choice id="A">0 1 2</choice>
+      <choice id="B">1 2 3</choice>
+      <choice id="C">0 1 2 3</choice>
+      <choice id="D">1 2 3 4</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c3_q25" type="multipleChoice">
+    <enonce>What causes an infinite loop?</enonce>
+    <choices>
+      <choice id="A">Using break inside the loop</choice>
+      <choice id="B">Using continue inside the loop</choice>
+      <choice id="C">A condition that is never false</choice>
+      <choice id="D">Having too many nested loops</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q26" type="multipleChoice">
+    <enonce>In "for(i=10; i&gt;0; i--)", what does "i--" do?</enonce>
+    <choices>
+      <choice id="A">Increases i by 1</choice>
+      <choice id="B">Multiplies i by -1</choice>
+      <choice id="C">Decreases i by 1</choice>
+      <choice id="D">Resets i to 0</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q27" type="multipleChoice">
+    <enonce>What is the purpose of a sentinel value in a loop?</enonce>
+    <choices>
+      <choice id="A">To count iterations</choice>
+      <choice id="B">To initialize the loop counter</choice>
+      <choice id="C">A special value used as a signal to terminate the loop</choice>
+      <choice id="D">To skip certain iterations</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q28" type="multipleChoice">
+    <enonce>How can you convert a for loop to a while loop?</enonce>
+    <choices>
+      <choice id="A">Replace "for" with "while" without any other changes</choice>
+      <choice id="B">You cannot convert between loop types</choice>
+      <choice id="C">Move the initialization before the while, and the increment to the end of the body</choice>
+      <choice id="D">Add a break statement at the end</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c3_q29" type="ordering">
+    <enonce>Order the steps to compute the sum of an array using a loop:</enonce>
+    <bonneReponse>Initialize sum to 0|Start loop at index 0|Add array[i] to sum|Increment index|Return sum</bonneReponse>
+    <codeLines>
+      <line>Add array[i] to sum</line>
+      <line>Return sum</line>
+      <line>Initialize sum to 0</line>
+      <line>Increment index</line>
+      <line>Start loop at index 0</line>
+    </codeLines>
+  </question>
+
+  <question id="c3_q30" type="multipleChoice">
+    <enonce>What is the scope of a loop variable declared inside "for(int i=0; ...)"?</enonce>
+    <choices>
+      <choice id="A">The entire program</choice>
+      <choice id="B">Only on the first iteration</choice>
+      <choice id="C">Only within the for loop block</choice>
+      <choice id="D">The function containing the loop</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+</chapter>

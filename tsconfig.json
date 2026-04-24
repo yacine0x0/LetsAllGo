@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@controllers/*": ["lib/controllers/*"],
+      "@models/*": ["lib/models/*"],
+      "@services/*": ["lib/services/*"],
+      "@routes/*": ["lib/routes/*"],
+      "@middlewares/*": ["lib/middlewares/*"]
+    }
+  },
+  "include": [
+    "index.ts",
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib/**/*.dart",
+    "**/*.dart"
+  ]
+}

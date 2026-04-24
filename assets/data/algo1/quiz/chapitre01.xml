@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_01" title="Basics - Introduction à l'algorithmique">
+
+  <question id="c1_q1" type="multipleChoice">
+    <enonce>What is an algorithm?</enonce>
+    <choices>
+      <choice id="A">A step-by-step procedure for solving a problem</choice>
+      <choice id="B">A programming language</choice>
+      <choice id="C">A data structure</choice>
+      <choice id="D">A type of computer</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c1_q2" type="multipleChoice">
+    <enonce>Which of the following is NOT a characteristic of an algorithm?</enonce>
+    <choices>
+      <choice id="A">Ambiguity</choice>
+      <choice id="B">Finiteness</choice>
+      <choice id="C">Effectiveness</choice>
+      <choice id="D">Definiteness</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c1_q3" type="multipleChoice">
+    <enonce>What is the time complexity of searching in an unsorted array?</enonce>
+    <choices>
+      <choice id="A">O(log n)</choice>
+      <choice id="B">O(n²)</choice>
+      <choice id="C">O(1)</choice>
+      <choice id="D">O(n)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q4" type="multipleChoice">
+    <enonce>Which is the best time complexity for a search algorithm?</enonce>
+    <choices>
+      <choice id="A">O(n log n)</choice>
+      <choice id="B">O(n)</choice>
+      <choice id="C">O(1)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q5" type="multipleChoice">
+    <enonce>What does "Big O" notation describe?</enonce>
+    <choices>
+      <choice id="A">The number of lines of code</choice>
+      <choice id="B">CPU speed</choice>
+      <choice id="C">Memory usage</choice>
+      <choice id="D">Time complexity in worst case</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q6" type="multipleChoice">
+    <enonce>Which of the following is an example of a sorting algorithm?</enonce>
+    <choices>
+      <choice id="A">Linear Search</choice>
+      <choice id="B">Hash Table</choice>
+      <choice id="C">Bubble Sort</choice>
+      <choice id="D">Binary Search</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q7" type="multipleChoice">
+    <enonce>What is the space complexity of an algorithm?</enonce>
+    <choices>
+      <choice id="A">The amount of memory the algorithm needs to run</choice>
+      <choice id="B">The execution time of the algorithm</choice>
+      <choice id="C">The number of variables declared</choice>
+      <choice id="D">The number of loops used</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c1_q8" type="multipleChoice">
+    <enonce>What is a pseudocode?</enonce>
+    <choices>
+      <choice id="A">A compiled programming language</choice>
+      <choice id="B">A debugging tool</choice>
+      <choice id="C">A type of binary code</choice>
+      <choice id="D">An informal high-level description of an algorithm</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q9" type="multipleChoice">
+    <enonce>What does O(n²) complexity mean?</enonce>
+    <choices>
+      <choice id="A">The algorithm runs in logarithmic time</choice>
+      <choice id="B">The algorithm's time grows quadratically with input size</choice>
+      <choice id="C">The algorithm runs in constant time</choice>
+      <choice id="D">The algorithm's time grows linearly</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q10" type="ordering">
+    <enonce>Order the steps of algorithm design:</enonce>
+    <bonneReponse>Understand the problem|Design the algorithm|Write pseudocode|Implement the code</bonneReponse>
+    <codeLines>
+      <line>Write pseudocode</line>
+      <line>Understand the problem</line>
+      <line>Implement the code</line>
+      <line>Design the algorithm</line>
+    </codeLines>
+  </question>
+
+  <question id="c1_q11" type="multipleChoice">
+    <enonce>What is the time complexity of Binary Search?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q12" type="multipleChoice">
+    <enonce>Which data structure uses LIFO order?</enonce>
+    <choices>
+      <choice id="A">Array</choice>
+      <choice id="B">Tree</choice>
+      <choice id="C">Queue</choice>
+      <choice id="D">Stack</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q13" type="multipleChoice">
+    <enonce>What is the time complexity of Bubble Sort in the worst case?</enonce>
+    <choices>
+      <choice id="A">O(n log n)</choice>
+      <choice id="B">O(n)</choice>
+      <choice id="C">O(log n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q14" type="multipleChoice">
+    <enonce>What does it mean for an algorithm to be "correct"?</enonce>
+    <choices>
+      <choice id="A">It runs without errors</choice>
+      <choice id="B">It uses the least memory</choice>
+      <choice id="C">It produces the right output for every valid input</choice>
+      <choice id="D">It is written in the shortest way</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q15" type="multipleChoice">
+    <enonce>Which notation describes the best-case complexity of an algorithm?</enonce>
+    <choices>
+      <choice id="A">Big Theta</choice>
+      <choice id="B">Big O</choice>
+      <choice id="C">Little o</choice>
+      <choice id="D">Big Omega</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q16" type="multipleChoice">
+    <enonce>What is the difference between an algorithm and a program?</enonce>
+    <choices>
+      <choice id="A">An algorithm is language-independent; a program is written in a specific language</choice>
+      <choice id="B">A program is faster than an algorithm</choice>
+      <choice id="C">There is no difference</choice>
+      <choice id="D">An algorithm can only be written in pseudocode</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c1_q17" type="multipleChoice">
+    <enonce>Which of the following has O(1) time complexity?</enonce>
+    <choices>
+      <choice id="A">Accessing an array element by index</choice>
+      <choice id="B">Binary search</choice>
+      <choice id="C">Linear search</choice>
+      <choice id="D">Sorting an array</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c1_q18" type="multipleChoice">
+    <enonce>What is a flowchart used for?</enonce>
+    <choices>
+      <choice id="A">To visually represent the steps of an algorithm</choice>
+      <choice id="B">To measure execution time</choice>
+      <choice id="C">To debug programs</choice>
+      <choice id="D">To write code faster</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+  <question id="c1_q19" type="multipleChoice">
+    <enonce>What does "input" mean in the context of an algorithm?</enonce>
+    <choices>
+      <choice id="A">The code written by the programmer</choice>
+      <choice id="B">The result produced by the algorithm</choice>
+      <choice id="C">The memory used by the algorithm</choice>
+      <choice id="D">The data provided to the algorithm to process</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q20" type="multipleChoice">
+    <enonce>What is the time complexity of accessing the last element of a linked list?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(1)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q21" type="ordering">
+    <enonce>Order the steps to analyze an algorithm's complexity:</enonce>
+    <bonneReponse>Identify the input size|Count basic operations|Express as a function of n|Apply Big O notation</bonneReponse>
+    <codeLines>
+      <line>Apply Big O notation</line>
+      <line>Identify the input size</line>
+      <line>Express as a function of n</line>
+      <line>Count basic operations</line>
+    </codeLines>
+  </question>
+
+  <question id="c1_q22" type="multipleChoice">
+    <enonce>Which of the following best describes "divide and conquer"?</enonce>
+    <choices>
+      <choice id="A">Using memory to store results of subproblems</choice>
+      <choice id="B">Solving a problem by trying all possible solutions</choice>
+      <choice id="C">Breaking a problem into smaller subproblems and combining solutions</choice>
+      <choice id="D">Using a loop to repeat the same operation</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q23" type="multipleChoice">
+    <enonce>What is the worst-case time complexity of Merge Sort?</enonce>
+    <choices>
+      <choice id="A">O(log n)</choice>
+      <choice id="B">O(n log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q24" type="multipleChoice">
+    <enonce>What is a greedy algorithm?</enonce>
+    <choices>
+      <choice id="A">An algorithm that explores all possible paths</choice>
+      <choice id="B">An algorithm that always runs in O(1)</choice>
+      <choice id="C">An algorithm that makes the locally optimal choice at each step</choice>
+      <choice id="D">An algorithm that uses the most memory</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q25" type="multipleChoice">
+    <enonce>What is dynamic programming?</enonce>
+    <choices>
+      <choice id="A">Programming with dynamic typing</choice>
+      <choice id="B">A technique that stores results of subproblems to avoid recomputation</choice>
+      <choice id="C">Writing code that changes at runtime</choice>
+      <choice id="D">A method to dynamically allocate memory</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q26" type="multipleChoice">
+    <enonce>If an algorithm has O(log n) complexity, how does its runtime grow as n doubles?</enonce>
+    <choices>
+      <choice id="A">It quadruples</choice>
+      <choice id="B">It doubles</choice>
+      <choice id="C">It stays the same</choice>
+      <choice id="D">It increases by a constant amount</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q27" type="multipleChoice">
+    <enonce>What does it mean for two algorithms to have the same asymptotic complexity?</enonce>
+    <choices>
+      <choice id="A">They use the same amount of memory</choice>
+      <choice id="B">They produce identical output</choice>
+      <choice id="C">They always run in exactly the same time</choice>
+      <choice id="D">Their runtime grows at the same rate as input size increases</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q28" type="multipleChoice">
+    <enonce>Which algorithm paradigm explores all possible solutions?</enonce>
+    <choices>
+      <choice id="A">Greedy</choice>
+      <choice id="B">Dynamic programming</choice>
+      <choice id="C">Divide and conquer</choice>
+      <choice id="D">Brute force</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q29" type="ordering">
+    <enonce>Order the complexity classes from fastest to slowest:</enonce>
+    <bonneReponse>O(1)|O(log n)|O(n)|O(n log n)|O(n²)</bonneReponse>
+    <codeLines>
+      <line>O(n)</line>
+      <line>O(1)</line>
+      <line>O(n²)</line>
+      <line>O(log n)</line>
+      <line>O(n log n)</line>
+    </codeLines>
+  </question>
+
+  <question id="c1_q30" type="multipleChoice">
+    <enonce>What is the primary goal of algorithm optimization?</enonce>
+    <choices>
+      <choice id="A">To reduce time and/or space complexity</choice>
+      <choice id="B">To add more comments</choice>
+      <choice id="C">To make the code shorter</choice>
+      <choice id="D">To use more variables</choice>
+    </choices>
+    <bonneReponse>A</bonneReponse>
+  </question>
+
+</chapter>

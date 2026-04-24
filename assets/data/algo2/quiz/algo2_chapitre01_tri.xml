@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_01" title="Algorithmes de tri (Sorting Algorithms)">
+
+  <question id="c1_q1" type="multipleChoice">
+    <enonce>What is the time complexity of Bubble Sort in the worst case?</enonce>
+    <choices>
+      <choice id="A">O(n)</choice>
+      <choice id="B">O(n log n)</choice>
+      <choice id="C">O(n²)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q2" type="multipleChoice">
+    <enonce>Which sorting algorithm is based on the "divide and conquer" strategy?</enonce>
+    <choices>
+      <choice id="A">Bubble Sort</choice>
+      <choice id="B">Selection Sort</choice>
+      <choice id="C">Merge Sort</choice>
+      <choice id="D">Insertion Sort</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q3" type="multipleChoice">
+    <enonce>What is the best case time complexity of Insertion Sort?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(n log n)</choice>
+      <choice id="C">O(1)</choice>
+      <choice id="D">O(n)</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q4" type="multipleChoice">
+    <enonce>Which sorting algorithm selects the minimum element and places it at the beginning?</enonce>
+    <choices>
+      <choice id="A">Bubble Sort</choice>
+      <choice id="B">Selection Sort</choice>
+      <choice id="C">Quick Sort</choice>
+      <choice id="D">Merge Sort</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q5" type="multipleChoice">
+    <enonce>What is the average time complexity of Quick Sort?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(n)</choice>
+      <choice id="C">O(n log n)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q6" type="multipleChoice">
+    <enonce>Which sorting algorithm is stable?</enonce>
+    <choices>
+      <choice id="A">Quick Sort</choice>
+      <choice id="B">Selection Sort</choice>
+      <choice id="C">Heap Sort</choice>
+      <choice id="D">Merge Sort</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q7" type="multipleChoice">
+    <enonce>What does it mean for a sorting algorithm to be "in-place"?</enonce>
+    <choices>
+      <choice id="A">It sorts elements from left to right</choice>
+      <choice id="B">It uses no extra memory beyond the input array</choice>
+      <choice id="C">It always runs in O(n) time</choice>
+      <choice id="D">It sorts only integers</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q8" type="multipleChoice">
+    <enonce>In Bubble Sort, how many passes are needed to sort an array of n elements?</enonce>
+    <choices>
+      <choice id="A">1</choice>
+      <choice id="B">n</choice>
+      <choice id="C">n - 1</choice>
+      <choice id="D">n / 2</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q9" type="multipleChoice">
+    <enonce>Which sorting algorithm works best on nearly sorted arrays?</enonce>
+    <choices>
+      <choice id="A">Merge Sort</choice>
+      <choice id="B">Quick Sort</choice>
+      <choice id="C">Insertion Sort</choice>
+      <choice id="D">Heap Sort</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q10" type="ordering">
+    <enonce>Order the steps of Merge Sort:</enonce>
+    <bonneReponse>Divide array in half|Sort left half|Sort right half|Merge sorted halves</bonneReponse>
+    <codeLines>
+      <line>Merge sorted halves</line>
+      <line>Divide array in half</line>
+      <line>Sort right half</line>
+      <line>Sort left half</line>
+    </codeLines>
+  </question>
+
+  <question id="c1_q11" type="multipleChoice">
+    <enonce>What is the worst case time complexity of Quick Sort?</enonce>
+    <choices>
+      <choice id="A">O(n log n)</choice>
+      <choice id="B">O(n)</choice>
+      <choice id="C">O(n²)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q12" type="multipleChoice">
+    <enonce>What is the space complexity of Merge Sort?</enonce>
+    <choices>
+      <choice id="A">O(1)</choice>
+      <choice id="B">O(log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(n²)</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q13" type="multipleChoice">
+    <enonce>Which element does Quick Sort use to partition the array?</enonce>
+    <choices>
+      <choice id="A">The minimum element</choice>
+      <choice id="B">The maximum element</choice>
+      <choice id="C">A pivot element</choice>
+      <choice id="D">The middle element always</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q14" type="multipleChoice">
+    <enonce>What is the time complexity of Heap Sort in all cases?</enonce>
+    <choices>
+      <choice id="A">O(n²)</choice>
+      <choice id="B">O(n log n)</choice>
+      <choice id="C">O(n)</choice>
+      <choice id="D">O(log n)</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q15" type="multipleChoice">
+    <enonce>What does a "stable" sorting algorithm guarantee?</enonce>
+    <choices>
+      <choice id="A">It always runs in O(n log n)</choice>
+      <choice id="B">Equal elements maintain their original relative order</choice>
+      <choice id="C">It uses constant space</choice>
+      <choice id="D">It never uses recursion</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q16" type="multipleChoice">
+    <enonce>Which sorting algorithm has the best average time complexity?</enonce>
+    <choices>
+      <choice id="A">Bubble Sort</choice>
+      <choice id="B">Selection Sort</choice>
+      <choice id="C">Insertion Sort</choice>
+      <choice id="D">Merge Sort</choice>
+    </choices>
+    <bonneReponse>D</bonneReponse>
+  </question>
+
+  <question id="c1_q17" type="multipleChoice">
+    <enonce>In Selection Sort, what is done in each pass?</enonce>
+    <choices>
+      <choice id="A">Adjacent elements are swapped if out of order</choice>
+      <choice id="B">The minimum unsorted element is placed in its correct position</choice>
+      <choice id="C">The array is divided into two halves</choice>
+      <choice id="D">A pivot is selected and the array is partitioned</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="c1_q18" type="multipleChoice">
+    <enonce>What is Counting Sort best suited for?</enonce>
+    <choices>
+      <choice id="A">Sorting large floating point numbers</choice>
+      <choice id="B">Sorting strings alphabetically</choice>
+      <choice id="C">Sorting integers within a known small range</choice>
+      <choice id="D">Sorting objects by multiple keys</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+  <question id="c1_q19" type="ordering">
+    <enonce>Order the steps of Quick Sort:</enonce>
+    <bonneReponse>Choose a pivot|Partition array around pivot|Recursively sort left part|Recursively sort right part</bonneReponse>
+    <codeLines>
+      <line>Recursively sort left part</line>
+      <line>Choose a pivot</line>
+      <line>Recursively sort right part</line>
+      <line>Partition array around pivot</line>
+    </codeLines>
+  </question>
+
+  <question id="c1_q20" type="multipleChoice">
+    <enonce>Which sorting algorithm is NOT based on comparisons?</enonce>
+    <choices>
+      <choice id="A">Merge Sort</choice>
+      <choice id="B">Quick Sort</choice>
+      <choice id="C">Counting Sort</choice>
+      <choice id="D">Heap Sort</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
+  </question>
+
+</chapter>

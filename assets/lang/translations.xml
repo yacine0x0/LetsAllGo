@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>
+  <!-- Menu Sidebar -->
+  <string name="courses" fr="Cours" en="Courses"/>
+  <string name="quiz" fr="Quiz" en="Quiz"/>
+  <string name="leaderboard" fr="Classement" en="Leaderboard"/>
+  <string name="files" fr="Fichiers" en="Files"/>
+  <string name="logout" fr="Déconnexion" en="Logout"/>
+
+  <!-- Profile Page -->
+  <string name="edit_profile" fr="Modifier le profil" en="Edit Profile"/>
+  <string name="first_name" fr="Prénom" en="First Name"/>
+  <string name="last_name" fr="Nom" en="Last Name"/>
+  <string name="email" fr="Adresse email" en="Email Address"/>
+  <string name="registration_number" fr="Numéro d'inscription" en="Registration Number"/>
+  <string name="enrollment_date" fr="Date d'inscription" en="Enrollment Date"/>
+  <string name="language" fr="Langue" en="Language"/>
+  <string name="sound_effects" fr="Effets sonores" en="Sound Effects"/>
+  <string name="enabled" fr="Activés" en="Enabled"/>
+  <string name="disabled" fr="Désactivés" en="Disabled"/>
+  <string name="switch_to_english" fr="Passer en Anglais" en="Switch to English"/>
+  <string name="switch_to_french" fr="Passer en Français" en="Switch to French"/>
+  <string name="personal_information" fr="Informations personnelles" en="Personal Information"/>
+  <string name="settings" fr="Paramètres" en="Settings"/>
+  <string name="global_progress" fr="Progression globale" en="Global Progress"/>
+
+  <!-- Leaderboard -->
+  <string name="leaderboard_title" fr="Classement" en="Leaderboard"/>
+  <string name="global_ranking" fr="Classement global des étudiants" en="Global student ranking"/>
+  <string name="rank" fr="Rang" en="Rank"/>
+  <string name="user_name" fr="Nom d'utilisateur" en="User Name"/>
+  <string name="total_points" fr="Points totaux" en="Total Points"/>
+  <string name="your_progression" fr="Votre progression" en="Your progression"/>
+  <string name="go_points" fr="Points Go !" en="Go Points !"/>
+  <string name="algorithmic_progress" fr="Progression algorithmique" en="Algorithmic Progress"/>
+  <string name="completed" fr="complété" en="completed"/>
+
+  <!-- Login -->
+  <string name="login" fr="Connexion" en="Login"/>
+  <string name="welcome_back" fr="Bonjour, bienvenue !" en="Hi, welcome back!"/>
+  <string name="password" fr="Mot de passe" en="Password"/>
+  <string name="dont_have_account" fr="Pas encore de compte ?" en="Don't have an account ?"/>
+  <string name="create_account" fr="Créer un compte" en="Create an account"/>
+
+  <!-- Create Account -->
+  <string name="verify_account" fr="Vérifier le compte" en="Verify Account"/>
+  <string name="pin_sent" fr="Un code à 6 chiffres a été envoyé à votre email." en="A 6-digit PIN code has been sent to your email address."/>
+  <string name="enter_pin" fr="Entrez votre code PIN" en="Enter your PIN code"/>
+  <string name="verify" fr="Vérifier" en="Verify"/>
+  <string name="verified_success" fr="Vérifié avec succès !" en="Verified successfully !"/>
+  <string name="next" fr="Suivant" en="Next"/>
+  <string name="already_have_account" fr="Vous avez déjà un compte ?" en="Already have an account ?"/>
+
+  <!-- Course Study -->
+  <string name="home" fr="Accueil" en="Home"/>
+  <string name="finished" fr="Terminé ✓" en="Finished ✓"/>
+</translations>

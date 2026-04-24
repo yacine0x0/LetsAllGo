@@ -1,0 +1,47 @@
+{
+  "name": "letsallgo",
+  "version": "1.0.0",
+  "description": "- Algorithemics 1 and 2 Courses\r - Randomized Quizes with adjustable intensity\r - Academic files (exams + TD)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec tsx index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yacine0x0/LetsAllGo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/yacine0x0/LetsAllGo/issues"
+  },
+  "homepage": "https://github.com/yacine0x0/LetsAllGo#readme",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.5.0",
+    "nodemon": "^3.1.14",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "@getbrevo/brevo": "^5.0.3",
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "resend": "^6.10.0"
+  }
+}
