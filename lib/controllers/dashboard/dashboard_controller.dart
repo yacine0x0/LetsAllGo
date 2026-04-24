@@ -1,15 +1,19 @@
 import '../../models/dashboard/dashboard_model.dart';
-import '../../controllers/auth/login_controller.dart';
+import '../../service/auth/LoginService.dart';
 
 class DashboardController {
   late DashboardModel model;
 
   DashboardController() {
-    final user = LoginController.currentUser;
+    final prenom = LoginService.getPrenom() ?? '';
+    final nom    = LoginService.getNom() ?? '';
+    final role   = LoginService.getRole() ?? 'etudiant';
 
     model = DashboardModel(
-      username: user != null ? '${user.prenom} ${user.nom}' : 'Étudiant',
-      role: user?.role ?? 'etudiant',
+      username: (prenom.isNotEmpty || nom.isNotEmpty)
+          ? '${prenom} ${nom}'.trim()
+          : 'Étudiant',
+      role: role,
       chapters: [
         ChapterModel(
           id: "Chapitre 01",
