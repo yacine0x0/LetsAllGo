@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
+import 'package:audioplayers/audioplayers.dart';
 
 import '../../service/language_service.dart';
 import '../../controllers/auth/login_controller.dart';
@@ -20,22 +21,35 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   static const String _baseUrl = 'http://localhost:3000/api';
 
-  final LoginController        _controller   = LoginController();
-  final TextEditingController  _emailCtrl    = TextEditingController();
-  final TextEditingController  _passwordCtrl = TextEditingController();
+  final LoginController       _controller   = LoginController();
+  final TextEditingController _emailCtrl    = TextEditingController();
+  final TextEditingController _passwordCtrl = TextEditingController();
+  final AudioPlayer           _audioPlayer  = AudioPlayer();
 
   bool    _isLoading       = false;
   bool    _obscurePassword = true;
   String? _errorMessage;
 
+  // ══════════════════════════════════════════
+  // SOUND — edit the file names here to change sounds
+  // ══════════════════════════════════════════
+  static const String _soundLoginButton  = 'sounds/PRESS_1.wav';
+  static const String _soundToggleButton = 'sounds/PRESS_2.wav';
+
+  Future<void> _playSound(String soundPath) async {
+    await _audioPlayer.play(AssetSource(soundPath));
+  }
+
   @override
   void dispose() {
     _emailCtrl.dispose();
     _passwordCtrl.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
   Future<void> _handleLogin() async {
+    await _playSound(_soundLoginButton);
     setState(() { _isLoading = true; _errorMessage = null; });
 
     final error = await _controller.login(
@@ -62,10 +76,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // ══════════════════════════════════════════
-  // MOT DE PASSE OUBLIÉ — 3 étapes
-  // ══════════════════════════════════════════
-
   void _showForgotPasswordDialog() {
     final lang = LanguageService();
     showDialog(
@@ -77,10 +87,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  // ══════════════════════════════════════════
-  // BUILD
-  // ══════════════════════════════════════════
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +110,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
 
-          // ── Sélecteur de langue
           Positioned(
             top:   h * 0.02,
             right: w * 0.02,
@@ -141,7 +146,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: h * 0.04),
 
-                      // ── Carte login
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
@@ -187,7 +191,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 SizedBox(height: h * 0.03),
 
-                                // Email
                                 TextField(
                                   controller: _emailCtrl,
                                   style: TextStyle(
@@ -221,7 +224,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 SizedBox(height: h * 0.02),
 
-                                // Mot de passe
                                 TextField(
                                   controller: _passwordCtrl,
                                   style: TextStyle(
@@ -229,8 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                                       fontSize: h * 0.016),
                                   obscureText: _obscurePassword,
                                   decoration: InputDecoration(
-                                    labelText:
-                                        lang.t("Mot de passe", "Password"),
+                                    labelText: lang.t("Mot de passe", "Password"),
                                     labelStyle: TextStyle(
                                         color: Colors.white,
                                         fontSize: h * 0.016),
@@ -268,7 +269,6 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 SizedBox(height: h * 0.01),
 
-                                // ✅ Lien mot de passe oublié
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
@@ -296,12 +296,10 @@ class _LoginPageState extends State<LoginPage> {
 
                                 SizedBox(height: h * 0.02),
 
-                                // Bouton connexion
                                 SizedBox(
                                   height: h * 0.06,
                                   child: ElevatedButton(
-                                    onPressed:
-                                        _isLoading ? null : _handleLogin,
+                                    onPressed: _isLoading ? null : _handleLogin,
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,
                                       shape: RoundedRectangleBorder(
@@ -312,8 +310,7 @@ class _LoginPageState extends State<LoginPage> {
                                         ? const CircularProgressIndicator(
                                             color: Colors.white)
                                         : Text(
-                                            lang.t(
-                                                "Se connecter", "Login"),
+                                            lang.t("Se connecter", "Login"),
                                             style: TextStyle(
                                                 fontSize: h * 0.02,
                                                 color: Colors.white)),
@@ -321,10 +318,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 SizedBox(height: h * 0.02),
 
-                                // Lien créer un compte
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       lang.t(
@@ -369,7 +364,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // ── Sélecteur de langue
   Widget _buildLanguageSelector(LanguageService lang, double h) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
@@ -386,16 +380,26 @@ class _LoginPageState extends State<LoginPage> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _langButton(flag: "🇫🇷", label: "FR",
-                  isSelected: lang.isFrench,  h: h,
-                  onTap: () => context.read<LanguageService>().setFrench()),
+              _langButton(
+                flag: "🇫🇷", label: "FR",
+                isSelected: lang.isFrench, h: h,
+                onTap: () {
+                  _playSound(_soundToggleButton);
+                  context.read<LanguageService>().setFrench();
+                },
+              ),
               const SizedBox(width: 4),
               Container(width: 1, height: 20,
                   color: Colors.white.withOpacity(0.3)),
               const SizedBox(width: 4),
-              _langButton(flag: "🇬🇧", label: "EN",
-                  isSelected: !lang.isFrench, h: h,
-                  onTap: () => context.read<LanguageService>().setEnglish()),
+              _langButton(
+                flag: "🇬🇧", label: "EN",
+                isSelected: !lang.isFrench, h: h,
+                onTap: () {
+                  _playSound(_soundToggleButton);
+                  context.read<LanguageService>().setEnglish();
+                },
+              ),
             ],
           ),
         ),
@@ -459,17 +463,14 @@ class _ForgotPasswordDialog extends StatefulWidget {
 }
 
 class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
-
-  // Étapes : 1=email, 2=OTP, 3=nouveau mdp
-  int     _step     = 1;
-  bool    _loading  = false;
+  int     _step    = 1;
+  bool    _loading = false;
   String? _error;
 
-  // Données entre étapes
-  String  _userId   = '';
-  String  _email    = '';
+  String _userId      = '';
+  String _email       = '';
+  String _verifiedOtp = '';
 
-  // Controllers
   final _emailCtrl    = TextEditingController();
   final _otpCtrl      = TextEditingController();
   final _newPassCtrl  = TextEditingController();
@@ -477,9 +478,6 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
 
   bool _obscureNew  = true;
   bool _obscureConf = true;
-
-  // Code OTP vérifié — à garder pour l'étape 3
-  String _verifiedOtp = '';
 
   @override
   void dispose() {
@@ -490,7 +488,6 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
     super.dispose();
   }
 
-  // ── Étape 1 : envoyer le code
   Future<void> _sendCode() async {
     final email = _emailCtrl.text.trim();
     if (email.isEmpty || !email.contains('@')) {
@@ -498,132 +495,94 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           'Email invalide', 'Invalid email'));
       return;
     }
-
     setState(() { _loading = true; _error = null; });
-
     try {
       final response = await http.post(
         Uri.parse('${widget.baseUrl}/auth/forgot-password'),
         headers: {'Content-Type': 'application/json'},
         body:    jsonEncode({'email': email}),
       );
-
       final data = jsonDecode(response.body);
-
       if (response.statusCode == 200 && data['success'] == true) {
         _email  = email;
         _userId = data['userId'] ?? '';
         setState(() { _step = 2; _loading = false; });
       } else {
-        setState(() {
-          _error   = data['message'] ?? 'Erreur';
-          _loading = false;
-        });
+        setState(() { _error = data['message'] ?? 'Erreur'; _loading = false; });
       }
     } catch (e) {
       setState(() {
-        _error   = widget.lang.t(
-            'Impossible de contacter le serveur',
-            'Unable to contact server');
+        _error   = widget.lang.t('Impossible de contacter le serveur', 'Unable to contact server');
         _loading = false;
       });
     }
   }
 
-  // ── Étape 2 : vérifier le code OTP
   Future<void> _verifyOtp() async {
     final code = _otpCtrl.text.trim();
     if (code.length != 6) {
       setState(() => _error = widget.lang.t(
-          'Entrez le code à 6 chiffres',
-          'Enter the 6-digit code'));
+          'Entrez le code à 6 chiffres', 'Enter the 6-digit code'));
       return;
     }
-
     setState(() { _loading = true; _error = null; });
-
     try {
       final response = await http.post(
         Uri.parse('${widget.baseUrl}/auth/verify-reset-otp'),
         headers: {'Content-Type': 'application/json'},
         body:    jsonEncode({'userId': _userId, 'code': code}),
       );
-
       final data = jsonDecode(response.body);
-
       if (response.statusCode == 200 && data['success'] == true) {
         _verifiedOtp = code;
         setState(() { _step = 3; _loading = false; });
       } else {
-        setState(() {
-          _error   = data['message'] ?? 'Code invalide';
-          _loading = false;
-        });
+        setState(() { _error = data['message'] ?? 'Code invalide'; _loading = false; });
       }
     } catch (e) {
       setState(() {
-        _error   = widget.lang.t(
-            'Impossible de contacter le serveur',
-            'Unable to contact server');
+        _error   = widget.lang.t('Impossible de contacter le serveur', 'Unable to contact server');
         _loading = false;
       });
     }
   }
 
-  // ── Étape 3 : réinitialiser le mot de passe
   Future<void> _resetPassword() async {
     final newPass  = _newPassCtrl.text;
     final confPass = _confPassCtrl.text;
-
     if (newPass.length < 6) {
-      setState(() => _error = widget.lang.t(
-          'Minimum 6 caractères', 'Minimum 6 characters'));
+      setState(() => _error = widget.lang.t('Minimum 6 caractères', 'Minimum 6 characters'));
       return;
     }
     if (newPass != confPass) {
       setState(() => _error = widget.lang.t(
-          'Les mots de passe ne correspondent pas',
-          'Passwords do not match'));
+          'Les mots de passe ne correspondent pas', 'Passwords do not match'));
       return;
     }
-
     setState(() { _loading = true; _error = null; });
-
     try {
       final response = await http.post(
         Uri.parse('${widget.baseUrl}/auth/reset-password'),
         headers: {'Content-Type': 'application/json'},
-        body:    jsonEncode({
-          'userId':      _userId,
-          'code':        _verifiedOtp,
-          'newPassword': newPass,
-        }),
+        body:    jsonEncode({'userId': _userId, 'code': _verifiedOtp, 'newPassword': newPass}),
       );
-
       final data = jsonDecode(response.body);
-
       if (response.statusCode == 200 && data['success'] == true) {
         if (mounted) {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(widget.lang.t(
-                '✅ Mot de passe réinitialisé !',
-                '✅ Password reset successfully!')),
+                '✅ Mot de passe réinitialisé !', '✅ Password reset successfully!')),
             backgroundColor: Colors.green.shade700,
             behavior: SnackBarBehavior.floating,
           ));
         }
       } else {
-        setState(() {
-          _error   = data['message'] ?? 'Erreur';
-          _loading = false;
-        });
+        setState(() { _error = data['message'] ?? 'Erreur'; _loading = false; });
       }
     } catch (e) {
       setState(() {
-        _error   = widget.lang.t(
-            'Impossible de contacter le serveur',
-            'Unable to contact server');
+        _error   = widget.lang.t('Impossible de contacter le serveur', 'Unable to contact server');
         _loading = false;
       });
     }
@@ -631,8 +590,8 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    final h    = MediaQuery.of(context).size.height;
+    final w    = MediaQuery.of(context).size.width;
     final lang = widget.lang;
 
     return Dialog(
@@ -643,20 +602,17 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             width:       w * 0.32,
-            constraints: BoxConstraints(maxWidth: 480),
+            constraints: const BoxConstraints(maxWidth: 480),
             padding:     const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color:         const Color(0xFF0D1B3E).withOpacity(0.95),
-              borderRadius:  BorderRadius.circular(20),
-              border:        Border.all(
-                  color: Colors.blue.withOpacity(0.3)),
+              color:        const Color(0xFF0D1B3E).withOpacity(0.95),
+              borderRadius: BorderRadius.circular(20),
+              border:       Border.all(color: Colors.blue.withOpacity(0.3)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                // ── En-tête
                 Row(
                   children: [
                     Container(
@@ -667,42 +623,37 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
                       ),
                       child: Icon(
                         _step == 1 ? Icons.email_outlined
-                          : _step == 2 ? Icons.pin_outlined
-                          : Icons.lock_reset_outlined,
+                            : _step == 2 ? Icons.pin_outlined
+                            : Icons.lock_reset_outlined,
                         color: Colors.blue, size: 20),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         _step == 1
-                          ? lang.t('Mot de passe oublié', 'Forgot Password')
-                          : _step == 2
-                          ? lang.t('Vérification', 'Verification')
-                          : lang.t('Nouveau mot de passe', 'New Password'),
+                            ? lang.t('Mot de passe oublié', 'Forgot Password')
+                            : _step == 2
+                            ? lang.t('Vérification', 'Verification')
+                            : lang.t('Nouveau mot de passe', 'New Password'),
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    // ── Indicateur d'étape
                     Row(
                       children: List.generate(3, (i) => Container(
                         margin: const EdgeInsets.only(left: 4),
                         width: 8, height: 8,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: i < _step
-                              ? Colors.blue
-                              : Colors.white24,
+                          color: i < _step ? Colors.blue : Colors.white24,
                         ),
                       )),
                     ),
                   ],
                 ),
                 const SizedBox(height: 24),
-
-                // ── Contenu selon l'étape
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   child: _step == 1
@@ -719,7 +670,6 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
     );
   }
 
-  // ── Étape 1 : entrer l'email
   Widget _buildStep1(LanguageService lang, double h) {
     return Column(
       key: const ValueKey(1),
@@ -733,151 +683,96 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
         const SizedBox(height: 20),
-        _field(
-          ctrl:  _emailCtrl,
-          label: lang.t('Email', 'Email'),
-          hint:  'exemple@gmail.com',
-          icon:  Icons.email_outlined,
-          type:  TextInputType.emailAddress,
-        ),
-        if (_error != null) ...[
-          const SizedBox(height: 12),
-          _errorBox(_error!),
-        ],
+        _field(ctrl: _emailCtrl, label: lang.t('Email', 'Email'),
+            hint: 'exemple@gmail.com', icon: Icons.email_outlined,
+            type: TextInputType.emailAddress),
+        if (_error != null) ...[const SizedBox(height: 12), _errorBox(_error!)],
         const SizedBox(height: 24),
-        _actions(
-          lang:     lang,
-          label:    lang.t('Envoyer le code', 'Send Code'),
-          color:    Colors.blue,
-          onConfirm: _sendCode,
-        ),
+        _actions(lang: lang, label: lang.t('Envoyer le code', 'Send Code'),
+            color: Colors.blue, onConfirm: _sendCode),
       ],
     );
   }
 
-  // ── Étape 2 : entrer le code OTP
   Widget _buildStep2(LanguageService lang, double h) {
     return Column(
       key: const ValueKey(2),
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          lang.t(
-            'Un code à 6 chiffres a été envoyé à\n$_email',
-            'A 6-digit code was sent to\n$_email',
-          ),
+          lang.t('Un code à 6 chiffres a été envoyé à\n$_email',
+              'A 6-digit code was sent to\n$_email'),
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
         const SizedBox(height: 20),
-        // ── Champ OTP centré avec grande police
         TextField(
-          controller:   _otpCtrl,
+          controller: _otpCtrl,
           keyboardType: TextInputType.number,
-          maxLength:    6,
-          textAlign:    TextAlign.center,
+          maxLength: 6,
+          textAlign: TextAlign.center,
           style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              letterSpacing: 8,
-              fontWeight: FontWeight.bold),
+              color: Colors.white, fontSize: 28,
+              letterSpacing: 8, fontWeight: FontWeight.bold),
           decoration: InputDecoration(
             counterText: '',
-            hintText:    '000000',
-            hintStyle:   const TextStyle(color: Colors.white24),
-            filled:      true,
-            fillColor:   Colors.white.withOpacity(0.06),
+            hintText: '000000',
+            hintStyle: const TextStyle(color: Colors.white24),
+            filled: true,
+            fillColor: Colors.white.withOpacity(0.06),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  BorderSide(color: Colors.white.withOpacity(0.15)),
+              borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  const BorderSide(color: Colors.blue, width: 2),
+              borderSide: const BorderSide(color: Colors.blue, width: 2),
             ),
           ),
         ),
-        if (_error != null) ...[
-          const SizedBox(height: 12),
-          _errorBox(_error!),
-        ],
+        if (_error != null) ...[const SizedBox(height: 12), _errorBox(_error!)],
         const SizedBox(height: 24),
-        _actions(
-          lang:      lang,
-          label:     lang.t('Vérifier', 'Verify'),
-          color:     Colors.teal,
-          onConfirm: _verifyOtp,
-          showBack:  true,
-          onBack:    () => setState(() { _step = 1; _error = null; }),
-        ),
+        _actions(lang: lang, label: lang.t('Vérifier', 'Verify'),
+            color: Colors.teal, onConfirm: _verifyOtp,
+            showBack: true, onBack: () => setState(() { _step = 1; _error = null; })),
       ],
     );
   }
 
-  // ── Étape 3 : nouveau mot de passe
   Widget _buildStep3(LanguageService lang, double h) {
     return Column(
       key: const ValueKey(3),
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          lang.t(
-            'Créez un nouveau mot de passe sécurisé.',
-            'Create a new secure password.',
-          ),
+          lang.t('Créez un nouveau mot de passe sécurisé.',
+              'Create a new secure password.'),
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
         const SizedBox(height: 20),
-        _field(
-          ctrl:    _newPassCtrl,
-          label:   lang.t('Nouveau mot de passe', 'New Password'),
-          hint:    '••••••••',
-          icon:    Icons.lock_outline,
-          obscure: _obscureNew,
-          suffix:  IconButton(
-            icon: Icon(
-                _obscureNew
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: Colors.white38, size: 18),
-            onPressed: () => setState(() => _obscureNew = !_obscureNew),
-          ),
-        ),
+        _field(ctrl: _newPassCtrl, label: lang.t('Nouveau mot de passe', 'New Password'),
+            hint: '••••••••', icon: Icons.lock_outline, obscure: _obscureNew,
+            suffix: IconButton(
+              icon: Icon(_obscureNew ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                  color: Colors.white38, size: 18),
+              onPressed: () => setState(() => _obscureNew = !_obscureNew),
+            )),
         const SizedBox(height: 16),
-        _field(
-          ctrl:    _confPassCtrl,
-          label:   lang.t('Confirmer le mot de passe', 'Confirm Password'),
-          hint:    '••••••••',
-          icon:    Icons.lock_reset_outlined,
-          obscure: _obscureConf,
-          suffix:  IconButton(
-            icon: Icon(
-                _obscureConf
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: Colors.white38, size: 18),
-            onPressed: () =>
-                setState(() => _obscureConf = !_obscureConf),
-          ),
-        ),
-        if (_error != null) ...[
-          const SizedBox(height: 12),
-          _errorBox(_error!),
-        ],
+        _field(ctrl: _confPassCtrl, label: lang.t('Confirmer le mot de passe', 'Confirm Password'),
+            hint: '••••••••', icon: Icons.lock_reset_outlined, obscure: _obscureConf,
+            suffix: IconButton(
+              icon: Icon(_obscureConf ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                  color: Colors.white38, size: 18),
+              onPressed: () => setState(() => _obscureConf = !_obscureConf),
+            )),
+        if (_error != null) ...[const SizedBox(height: 12), _errorBox(_error!)],
         const SizedBox(height: 24),
-        _actions(
-          lang:      lang,
-          label:     lang.t('Réinitialiser', 'Reset Password'),
-          color:     Colors.green,
-          onConfirm: _resetPassword,
-        ),
+        _actions(lang: lang, label: lang.t('Réinitialiser', 'Reset Password'),
+            color: Colors.green, onConfirm: _resetPassword),
       ],
     );
   }
 
-  // ── Helpers UI
   Widget _field({
     required TextEditingController ctrl,
     required String label,
@@ -890,31 +785,27 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(
-                color: Colors.white54, fontSize: 12)),
+        Text(label, style: const TextStyle(color: Colors.white54, fontSize: 12)),
         const SizedBox(height: 6),
         TextField(
-          controller:   ctrl,
-          obscureText:  obscure,
+          controller: ctrl,
+          obscureText: obscure,
           keyboardType: type,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            hintText:    hint,
-            hintStyle:   const TextStyle(color: Colors.white24),
-            prefixIcon:  Icon(icon, color: Colors.white38, size: 18),
-            suffixIcon:  suffix,
-            filled:      true,
-            fillColor:   Colors.white.withOpacity(0.06),
+            hintText: hint,
+            hintStyle: const TextStyle(color: Colors.white24),
+            prefixIcon: Icon(icon, color: Colors.white38, size: 18),
+            suffixIcon: suffix,
+            filled: true,
+            fillColor: Colors.white.withOpacity(0.06),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  BorderSide(color: Colors.white.withOpacity(0.15)),
+              borderSide: BorderSide(color: Colors.white.withOpacity(0.15)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide:
-                  const BorderSide(color: Colors.blue, width: 2),
+              borderSide: const BorderSide(color: Colors.blue, width: 2),
             ),
           ),
         ),
@@ -925,18 +816,16 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
   Widget _errorBox(String msg) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     decoration: BoxDecoration(
-      color:        Colors.red.withOpacity(0.15),
+      color: Colors.red.withOpacity(0.15),
       borderRadius: BorderRadius.circular(8),
-      border:       Border.all(color: Colors.red.withOpacity(0.4)),
+      border: Border.all(color: Colors.red.withOpacity(0.4)),
     ),
     child: Row(
       children: [
         const Icon(Icons.error_outline, color: Colors.red, size: 16),
         const SizedBox(width: 8),
-        Expanded(
-            child: Text(msg,
-                style: const TextStyle(
-                    color: Colors.red, fontSize: 13))),
+        Expanded(child: Text(msg,
+            style: const TextStyle(color: Colors.red, fontSize: 13))),
       ],
     ),
   );
@@ -963,9 +852,7 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
         ] else ...[
           Expanded(
             child: TextButton(
-              onPressed: _loading
-                  ? null
-                  : () => Navigator.pop(context),
+              onPressed: _loading ? null : () => Navigator.pop(context),
               child: Text(lang.t('Annuler', 'Cancel'),
                   style: const TextStyle(color: Colors.white38)),
             ),
@@ -982,14 +869,12 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             child: _loading
-                ? const SizedBox(
-                    width: 18, height: 18,
+                ? const SizedBox(width: 18, height: 18,
                     child: CircularProgressIndicator(
                         color: Colors.white, strokeWidth: 2))
                 : Text(label,
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         ),
       ],

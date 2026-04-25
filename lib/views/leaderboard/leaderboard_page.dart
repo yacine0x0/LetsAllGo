@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';                    // ← AJOUTÉ
+import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'dart:ui';
 
-import '../../service/language_service.dart';               // ← AJOUTÉ (adapte le chemin si nécessaire)
+import '../../service/language_service.dart';
 
 import 'package:flutter_project_1/views/profil/profil_page.dart';
 import '../../controllers/leaderboard/leaderboard_controller.dart';
 import '../../models/leaderboard/leaderboard_model.dart';
-import '../../service/auth/LoginService.dart'; 
+import '../../service/auth/LoginService.dart';
 import '../../controllers/auth/login_controller.dart';
 import '../auth/login_page.dart';
 import '../dashboard/dashboard_page.dart';
@@ -23,20 +24,31 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
-  final LeaderboardController _controller = LeaderboardController();
-  bool _isLoading = true;
-  int _selectedIndex = 2;
+  final LeaderboardController _controller  = LeaderboardController();
+  final AudioPlayer           _audioPlayer = AudioPlayer();
 
-  late LanguageService _lang;   // ← AJOUTÉ
+  bool _isLoading    = true;
+  int  _selectedIndex = 2;
+
+  late LanguageService _lang;
+
+  // ══════════════════════════════════════════
+  // SOUND — edit the file names here to change sounds
+  // ══════════════════════════════════════════
+  static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
+
+  Future<void> _playSound(String soundPath) async {
+    await _audioPlayer.play(AssetSource(soundPath));
+  }
 
   TextStyle _orbitron({
-    double size = 14,
+    double fontSize = 14,
     FontWeight weight = FontWeight.normal,
     Color color = Colors.white,
     double letterSpacing = 0,
   }) =>
       GoogleFonts.orbitron(
-        fontSize: size,
+        fontSize: fontSize,
         fontWeight: weight,
         color: color,
         letterSpacing: letterSpacing,
@@ -45,18 +57,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   void initState() {
     super.initState();
-    _lang = Provider.of<LanguageService>(context, listen: false); // ← AJOUTÉ
-
+    _lang = Provider.of<LanguageService>(context, listen: false);
     _controller.loadLeaderboard().then((_) {
       setState(() => _isLoading = false);
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    // Mise à jour en temps réel quand la langue change
-    _lang = context.watch<LanguageService>();   // ← IMPORTANT
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    _lang = context.watch<LanguageService>();
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
@@ -76,7 +91,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             ),
           ),
           _isLoading
-              ? const Center(child: CircularProgressIndicator(color: Colors.blue))
+              ? const Center(
+                  child: CircularProgressIndicator(color: Colors.blue))
               : Row(
                   children: [
                     _buildSidebar(h, w),
@@ -89,15 +105,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
-  // ══════════════════════════════════════════
-  // SIDEBAR
-  // ══════════════════════════════════════════
   Widget _buildSidebar(double h, double w) {
     final items = [
-      {"icon": Icons.menu_book, "label": _lang.t("Cours", "Courses")},
-      {"icon": Icons.quiz, "label": _lang.t("Quiz", "Quiz")},
+      {"icon": Icons.menu_book,    "label": _lang.t("Cours",      "Courses")},
+      {"icon": Icons.quiz,         "label": _lang.t("Quiz",       "Quiz")},
       {"icon": Icons.emoji_events, "label": _lang.t("Classement", "Leaderboard")},
-      {"icon": Icons.folder, "label": _lang.t("Fichiers", "Files")},
+      {"icon": Icons.folder,       "label": _lang.t("Fichiers",   "Files")},
     ];
 
     return Container(
@@ -111,47 +124,46 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           SizedBox(height: h * 0.04),
           ...items.asMap().entries.map(
             (entry) => GestureDetector(
-              onTap: () {
+              onTap: () async {
+                await _playSound(_soundSidebarButton);
                 setState(() => _selectedIndex = entry.key);
                 if (entry.key == 0) {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const DashboardPage()));
+                      MaterialPageRoute(
+                          builder: (_) => const DashboardPage()));
                 } else if (entry.key == 1) {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const QuizSelectionPage()));
+                      MaterialPageRoute(
+                          builder: (_) => const QuizSelectionPage()));
                 } else if (entry.key == 3) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const FilesPage()));
                 }
               },
               child: _buildSidebarItem(
-                icon: entry.value["icon"] as IconData,
-                label: entry.value["label"] as String,
-                h: h,
+                icon:     entry.value["icon"] as IconData,
+                label:    entry.value["label"] as String,
+                h:        h,
                 isActive: _selectedIndex == entry.key,
               ),
             ),
           ),
           const Spacer(),
-
-          // Bouton Logout
           GestureDetector(
             onTap: () async {
+              await _playSound(_soundSidebarButton);
               final controller = LoginController();
               await controller.logout();
-
               if (!mounted) return;
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const LoginPage()),
-              );
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => const LoginPage()));
             },
             child: _buildSidebarItem(
-                icon: Icons.logout, 
-                label: _lang.t("Déconnexion", "Logout"), 
-                h: h, 
-                isLogout: true),
+              icon:     Icons.logout,
+              label:    _lang.t("Déconnexion", "Logout"),
+              h:        h,
+              isLogout: true,
+            ),
           ),
           SizedBox(height: h * 0.02),
         ],
@@ -161,8 +173,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   Widget _buildSidebarItem({
     required IconData icon,
-    required String label,
-    required double h,
+    required String   label,
+    required double   h,
     bool isLogout = false,
     bool isActive = false,
   }) {
@@ -189,13 +201,13 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 SizedBox(height: h * 0.005),
                 Text(label,
                     style: TextStyle(
-                      color: isActive
-                          ? Colors.blue
-                          : (isLogout ? Colors.red : Colors.white70),
-                      fontSize: h * 0.020,
-                      fontWeight:
-                          isActive ? FontWeight.bold : FontWeight.normal,
-                    )),
+                        color: isActive
+                            ? Colors.blue
+                            : (isLogout ? Colors.red : Colors.white70),
+                        fontSize: h * 0.020,
+                        fontWeight: isActive
+                            ? FontWeight.bold
+                            : FontWeight.normal)),
               ],
             ),
           ),
@@ -204,9 +216,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
-  // ══════════════════════════════════════════
-  // CONTENU PRINCIPAL
-  // ══════════════════════════════════════════
   Widget _buildMainContent(double h, double w) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -227,14 +236,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               children: [
                 Text(_lang.t("Classement", "Leaderboard"),
                     style: _orbitron(
-                        size: h * 0.04,
+                        fontSize: h * 0.04,
                         weight: FontWeight.bold,
                         letterSpacing: 2)),
                 SizedBox(height: h * 0.005),
-                Text(_lang.t("Classement global des étudiants", "Global student ranking"),
+                Text(
+                    _lang.t("Classement global des étudiants",
+                        "Global student ranking"),
                     style: _orbitron(
-                        size: h * 0.018,
-                        color: const Color.fromARGB(200, 255, 255, 255))),
+                        fontSize: h * 0.018,
+                        color:
+                            const Color.fromARGB(200, 255, 255, 255))),
                 SizedBox(height: h * 0.03),
                 _buildTableHeader(h, w),
                 SizedBox(height: h * 0.01),
@@ -245,8 +257,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 Expanded(
                   child: ListView.builder(
                     itemCount: _controller.model.entries.length,
-                    itemBuilder: (context, index) =>
-                        _buildTableRow(_controller.model.entries[index], h, w),
+                    itemBuilder: (context, index) => _buildTableRow(
+                        _controller.model.entries[index], h, w),
                   ),
                 ),
               ],
@@ -259,8 +271,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   Widget _buildTableHeader(double h, double w) {
     return Container(
-      padding:
-          EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.012),
+      padding: EdgeInsets.symmetric(
+          horizontal: w * 0.01, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: Colors.blue.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
@@ -271,7 +283,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             width: w * 0.12,
             child: Text(_lang.t("Classement", "Rank"),
                 style: _orbitron(
-                    size: h * 0.018,
+                    fontSize: h * 0.018,
                     weight: FontWeight.bold,
                     color: Colors.white70,
                     letterSpacing: 1.5)),
@@ -279,7 +291,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           Expanded(
             child: Text(_lang.t("Nom D'utilisateur", "User Name"),
                 style: _orbitron(
-                    size: h * 0.018,
+                    fontSize: h * 0.018,
                     weight: FontWeight.bold,
                     color: Colors.white70,
                     letterSpacing: 1.5)),
@@ -289,7 +301,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             child: Text(_lang.t("Points Totals", "Total Points"),
                 textAlign: TextAlign.center,
                 style: _orbitron(
-                    size: h * 0.018,
+                    fontSize: h * 0.018,
                     weight: FontWeight.bold,
                     color: Colors.white70,
                     letterSpacing: 1.5)),
@@ -300,22 +312,23 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Widget _buildTableRow(LeaderboardEntry entry, double h, double w) {
-    final isTop3 = entry.rank <= 3;
-    final medal = LeaderboardController.medalEmoji(entry.rank);
-    final medalColor = LeaderboardController.medalColor(entry.rank);
+    final isTop3      = entry.rank <= 3;
+    final medal       = LeaderboardController.medalEmoji(entry.rank);
+    final medalColor  = LeaderboardController.medalColor(entry.rank);
 
     return Container(
       margin: EdgeInsets.only(bottom: h * 0.008),
-      padding:
-          EdgeInsets.symmetric(horizontal: w * 0.01, vertical: h * 0.012),
+      padding: EdgeInsets.symmetric(
+          horizontal: w * 0.01, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: isTop3
             ? medalColor.withValues(alpha: 0.08)
             : Colors.white.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color:
-              isTop3 ? medalColor.withValues(alpha: 0.3) : Colors.white12,
+          color: isTop3
+              ? medalColor.withValues(alpha: 0.3)
+              : Colors.white12,
           width: isTop3 ? 1.5 : 1,
         ),
       ),
@@ -324,10 +337,11 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           SizedBox(
             width: w * 0.06,
             child: medal.isNotEmpty
-                ? Text(medal, style: TextStyle(fontSize: h * 0.025))
+                ? Text(medal,
+                    style: TextStyle(fontSize: h * 0.025))
                 : Text(entry.rank.toString().padLeft(2, '0'),
                     style: _orbitron(
-                        size: h * 0.018,
+                        fontSize: h * 0.018,
                         weight: FontWeight.bold,
                         color: Colors.white60)),
           ),
@@ -341,15 +355,19 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       : Colors.blue.withValues(alpha: 0.3),
                   child: Text(entry.avatarInitial,
                       style: _orbitron(
-                          size: h * 0.016, weight: FontWeight.bold)),
+                          fontSize: h * 0.016,
+                          weight: FontWeight.bold)),
                 ),
                 SizedBox(width: w * 0.01),
                 Text(entry.username,
                     style: _orbitron(
-                        size: h * 0.018,
-                        weight:
-                            isTop3 ? FontWeight.bold : FontWeight.normal,
-                        color: isTop3 ? Colors.white : Colors.white70)),
+                        fontSize: h * 0.018,
+                        weight: isTop3
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        color: isTop3
+                            ? Colors.white
+                            : Colors.white70)),
               ],
             ),
           ),
@@ -358,9 +376,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             child: Text(entry.totalPoints.toString(),
                 textAlign: TextAlign.center,
                 style: _orbitron(
-                    size: h * 0.018,
-                    weight:
-                        isTop3 ? FontWeight.bold : FontWeight.normal,
+                    fontSize: h * 0.018,
+                    weight: isTop3
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     color: isTop3 ? medalColor : Colors.white60,
                     letterSpacing: 0.5)),
           ),
@@ -369,9 +388,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
-  // ══════════════════════════════════════════
-  // PANNEAU DROIT (traduction des textes statiques)
-  // ══════════════════════════════════════════
   Widget _buildRightPanel(double h, double w) {
     final prenom   = LoginService.getPrenom() ?? 'Utilisateur';
     final nom      = LoginService.getNom() ?? '';
@@ -379,15 +395,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     final initial  = prenom.isNotEmpty ? prenom[0].toUpperCase() : '?';
     final role     = LoginService.getRole() ?? 'etudiant';
 
-    final userId = LoginService.getUserId();
-    final currentEntry = _controller.model.entries.isEmpty ? null :
-        _controller.model.entries.cast<LeaderboardEntry?>().firstWhere(
-          (e) => e?.username == fullName,
-          orElse: () => null,
-        );
+    final currentEntry = _controller.model.entries.isEmpty
+        ? null
+        : _controller.model.entries
+            .cast<LeaderboardEntry?>()
+            .firstWhere((e) => e?.username == fullName,
+                orElse: () => null);
 
-    final score = currentEntry?.totalPoints ?? 0;
-    final rang  = currentEntry?.rank ?? 0;
+    final score        = currentEntry?.totalPoints ?? 0;
+    final rang         = currentEntry?.rank ?? 0;
     final algo1Progress = currentEntry?.algo1Progress ?? 0.0;
 
     return ClipRRect(
@@ -398,20 +414,20 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.06),
             border: Border(
-              left: BorderSide(color: Colors.blue.withValues(alpha: 0.2)),
-            ),
+                left: BorderSide(
+                    color: Colors.blue.withValues(alpha: 0.2))),
           ),
           padding: EdgeInsets.all(h * 0.02),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Carte profil (nom et rôle restent dynamiques)
               Material(
                 color: Colors.transparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12),
                   onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const ProfilePage())),
+                      MaterialPageRoute(
+                          builder: (_) => const ProfilePage())),
                   child: Container(
                     padding: EdgeInsets.all(h * 0.02),
                     decoration: BoxDecoration(
@@ -429,7 +445,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     ),
                     child: Row(
                       children: [
-                        // ... (le profil reste inchangé visuellement)
                         Stack(
                           alignment: Alignment.center,
                           children: [
@@ -438,37 +453,49 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                               height: h * 0.08,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(color: Colors.blue, width: 2),
+                                border: Border.all(
+                                    color: Colors.blue, width: 2),
                               ),
                             ),
                             CircleAvatar(
                               radius: h * 0.032,
-                              backgroundColor: Colors.blue.withValues(alpha: 0.6),
-                              child: Text(
-                                initial,
-                                style: _orbitron(size: h * 0.025, weight: FontWeight.bold),
-                              ),
+                              backgroundColor:
+                                  Colors.blue.withValues(alpha: 0.6),
+                              child: Text(initial,
+                                  style: _orbitron(
+                                      fontSize: h * 0.025,
+                                      weight: FontWeight.bold)),
                             ),
                           ],
                         ),
                         SizedBox(width: w * 0.012),
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               Text(fullName,
-                                  style: _orbitron(size: h * 0.020, weight: FontWeight.bold),
+                                  style: _orbitron(
+                                      fontSize: h * 0.020,
+                                      weight: FontWeight.bold),
                                   overflow: TextOverflow.ellipsis),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue.withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.blue.withValues(alpha: 0.4)),
+                                  color: Colors.blue
+                                      .withValues(alpha: 0.2),
+                                  borderRadius:
+                                      BorderRadius.circular(20),
+                                  border: Border.all(
+                                      color: Colors.blue
+                                          .withValues(alpha: 0.4)),
                                 ),
                                 child: Text(role.toUpperCase(),
-                                    style: _orbitron(size: h * 0.013, color: Colors.blue)),
+                                    style: _orbitron(
+                                        fontSize: h * 0.013,
+                                        color: Colors.blue)),
                               ),
                             ],
                           ),
@@ -479,18 +506,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ),
               SizedBox(height: h * 0.025),
-
-              // Titre progression
               Row(
                 children: [
-                  Icon(Icons.trending_up, color: Colors.blue, size: h * 0.025),
-                  SizedBox(width: 8),
-                  Text(_lang.t("Votre  progression", "Your progression"),
-                      style: _orbitron(size: h * 0.020, weight: FontWeight.bold, letterSpacing: 1)),
+                  Icon(Icons.trending_up,
+                      color: Colors.blue, size: h * 0.025),
+                  const SizedBox(width: 8),
+                  Text(
+                      _lang.t(
+                          "Votre  progression", "Your progression"),
+                      style: _orbitron(
+                          fontSize: h * 0.020,
+                          weight: FontWeight.bold,
+                          letterSpacing: 1)),
                 ],
               ),
               SizedBox(height: h * 0.02),
-
               _buildStatCard(
                 h: h,
                 icon: Icons.stars_rounded,
@@ -499,7 +529,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 color: const Color.fromARGB(255, 251, 255, 0),
               ),
               SizedBox(height: h * 0.015),
-
               _buildStatCard(
                 h: h,
                 icon: Icons.emoji_events,
@@ -508,7 +537,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 color: const Color.fromARGB(255, 71, 255, 92),
               ),
               SizedBox(height: h * 0.025),
-
               Container(
                 height: 1,
                 decoration: BoxDecoration(
@@ -520,14 +548,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ),
               SizedBox(height: h * 0.025),
-
               _buildProgressSection(
                 h: h,
                 w: w,
-                label: _lang.t("Progression D'Algorithmique ", "Algorithmic Progress"),
+                label: _lang.t("Progression D'Algorithmique ",
+                    "Algorithmic Progress"),
                 value: algo1Progress,
                 color: const Color.fromARGB(255, 0, 255, 247),
-                labelColor: const Color.fromARGB(200, 255, 255, 255),
+                labelColor:
+                    const Color.fromARGB(200, 255, 255, 255),
               ),
             ],
           ),
@@ -536,19 +565,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     );
   }
 
-  // Les méthodes _buildStatCard et _buildProgressSection restent identiques
-  // (seul le label est maintenant traduit via _lang)
-
   Widget _buildStatCard({
-    required double h,
+    required double   h,
     required IconData icon,
-    required String label,
-    required String value,
-    required Color color,
+    required String   label,
+    required String   value,
+    required Color    color,
   }) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: h * 0.015, vertical: h * 0.012),
+      padding: EdgeInsets.symmetric(
+          horizontal: h * 0.015, vertical: h * 0.012),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
@@ -561,8 +588,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: _orbitron(size: h * 0.013, color: Colors.white54)),
-              Text(value, style: _orbitron(size: h * 0.026, weight: FontWeight.bold, color: color, letterSpacing: 1)),
+              Text(label,
+                  style: _orbitron(
+                      fontSize: h * 0.013, color: Colors.white54)),
+              Text(value,
+                  style: _orbitron(
+                      fontSize: h * 0.026,
+                      weight: FontWeight.bold,
+                      color: color,
+                      letterSpacing: 1)),
             ],
           ),
         ],
@@ -571,12 +605,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   Widget _buildProgressSection({
-    required double h,
-    required double w,
-    required String label,
-    required double value,
-    required Color color,
-    Color? labelColor,
+    required double  h,
+    required double  w,
+    required String  label,
+    required double  value,
+    required Color   color,
+    Color?           labelColor,
   }) {
     return Row(
       children: [
@@ -593,11 +627,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   value: value,
                   strokeWidth: h * 0.009,
                   backgroundColor: Colors.white12,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(color),
                 ),
               ),
               Text("${(value * 100).toInt()}%",
-                  style: _orbitron(size: h * 0.018, weight: FontWeight.bold, color: color)),
+                  style: _orbitron(
+                      fontSize: h * 0.018,
+                      weight: FontWeight.bold,
+                      color: color)),
             ],
           ),
         ),
@@ -607,7 +645,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label,
-                  style: _orbitron(size: h * 0.015, weight: FontWeight.bold, color: labelColor ?? Colors.white70)),
+                  style: _orbitron(
+                      fontSize: h * 0.015,
+                      weight: FontWeight.bold,
+                      color: labelColor ?? Colors.white70)),
               SizedBox(height: h * 0.008),
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
@@ -615,12 +656,19 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   value: value,
                   minHeight: h * 0.008,
                   backgroundColor: Colors.white12,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(color),
                 ),
               ),
               SizedBox(height: h * 0.005),
-              Text(_lang.t("${(value * 100).toInt()}% complété", "${(value * 100).toInt()}% completed"),
-                  style: _orbitron(size: h * 0.015, color: const Color.fromARGB(200, 255, 255, 255))),
+              Text(
+                  _lang.t(
+                      "${(value * 100).toInt()}% complété",
+                      "${(value * 100).toInt()}% completed"),
+                  style: _orbitron(
+                      fontSize: h * 0.015,
+                      color: const Color.fromARGB(
+                          200, 255, 255, 255))),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
+import 'package:audioplayers/audioplayers.dart';
 
 import '../../service/language_service.dart';
 
@@ -23,17 +24,34 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final DashboardController _controller = DashboardController();
-  final Algo2Controller _algo2Controller = Algo2Controller();
+  final DashboardController _controller      = DashboardController();
+  final Algo2Controller     _algo2Controller = Algo2Controller();
+  final AudioPlayer         _audioPlayer     = AudioPlayer();
+
   int _selectedIndex = 0;
-  int _selectedAlgo = 1;
+  int _selectedAlgo  = 1;
 
   late LanguageService _lang;
+
+  // ══════════════════════════════════════════
+  // SOUND — edit the file names here to change sounds
+  // ══════════════════════════════════════════
+  static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
+
+  Future<void> _playSound(String soundPath) async {
+    await _audioPlayer.play(AssetSource(soundPath));
+  }
 
   @override
   void initState() {
     super.initState();
     _lang = Provider.of<LanguageService>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,7 +89,9 @@ class _DashboardPageState extends State<DashboardPage> {
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.02),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white.withValues(alpha: 0.15), width: 1.5),
+                        border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.15),
+                            width: 1.5),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(h * 0.03),
@@ -91,7 +111,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                       h: h,
                                       w: w,
                                       onChapterSelected: (index) {
-                                        setState(() => _algo2Controller.selectChapter(index));
+                                        setState(() => _algo2Controller
+                                            .selectChapter(index));
                                       },
                                     ),
                             ),
@@ -113,10 +134,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget _buildSidebar(double h, double w) {
     final items = [
-      {"icon": Icons.menu_book, "label": _lang.t("Cours", "Courses")},
-      {"icon": Icons.quiz, "label": _lang.t("Quiz", "Quiz")},
+      {"icon": Icons.menu_book,    "label": _lang.t("Cours",      "Courses")},
+      {"icon": Icons.quiz,         "label": _lang.t("Quiz",       "Quiz")},
       {"icon": Icons.emoji_events, "label": _lang.t("Classement", "Leaderboard")},
-      {"icon": Icons.folder, "label": _lang.t("Fichiers", "Files")},
+      {"icon": Icons.folder,       "label": _lang.t("Fichiers",   "Files")},
     ];
 
     return Container(
@@ -125,24 +146,31 @@ class _DashboardPageState extends State<DashboardPage> {
       child: Column(
         children: [
           SizedBox(height: h * 0.02),
-          Image.asset("assets/images/icone_dash.png", width: h * 0.15, height: h * 0.15),
+          Image.asset("assets/images/icone_dash.png",
+              width: h * 0.15, height: h * 0.15),
           SizedBox(height: h * 0.04),
           ...items.asMap().entries.map(
             (entry) => GestureDetector(
-              onTap: () {
+              onTap: () async {
+                await _playSound(_soundSidebarButton);
                 setState(() => _selectedIndex = entry.key);
                 if (entry.key == 1) {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const QuizSelectionPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (_) => const QuizSelectionPage()));
                 } else if (entry.key == 2) {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const LeaderboardPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (_) => const LeaderboardPage()));
                 } else if (entry.key == 3) {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const FilesPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const FilesPage()));
                 }
               },
               child: _buildSidebarItem(
-                icon: entry.value["icon"] as IconData,
-                label: entry.value["label"] as String,
-                h: h,
+                icon:     entry.value["icon"] as IconData,
+                label:    entry.value["label"] as String,
+                h:        h,
                 isActive: _selectedIndex == entry.key,
               ),
             ),
@@ -150,12 +178,19 @@ class _DashboardPageState extends State<DashboardPage> {
           const Spacer(),
           GestureDetector(
             onTap: () async {
+              await _playSound(_soundSidebarButton);
               final controller = LoginController();
               await controller.logout();
               if (!mounted) return;
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) => const LoginPage()));
             },
-            child: _buildSidebarItem(icon: Icons.logout, label: _lang.t("Déconnexion", "Logout"), h: h, isLogout: true),
+            child: _buildSidebarItem(
+              icon:     Icons.logout,
+              label:    _lang.t("Déconnexion", "Logout"),
+              h:        h,
+              isLogout: true,
+            ),
           ),
           SizedBox(height: h * 0.02),
         ],
@@ -165,8 +200,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Widget _buildSidebarItem({
     required IconData icon,
-    required String label,
-    required double h,
+    required String   label,
+    required double   h,
     bool isLogout = false,
     bool isActive = false,
   }) {
@@ -175,16 +210,31 @@ class _DashboardPageState extends State<DashboardPage> {
         Container(
           width: 4,
           height: h * 0.08,
-          decoration: BoxDecoration(color: isActive ? Colors.blue : Colors.transparent, borderRadius: BorderRadius.circular(2)),
+          decoration: BoxDecoration(
+            color: isActive ? Colors.blue : Colors.transparent,
+            borderRadius: BorderRadius.circular(2),
+          ),
         ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: h * 0.02),
             child: Column(
               children: [
-                Icon(icon, color: isActive ? Colors.blue : (isLogout ? Colors.red : Colors.white70), size: h * 0.06),
+                Icon(icon,
+                    color: isActive
+                        ? Colors.blue
+                        : (isLogout ? Colors.red : Colors.white70),
+                    size: h * 0.06),
                 SizedBox(height: h * 0.005),
-                Text(label, style: TextStyle(color: isActive ? Colors.blue : (isLogout ? Colors.red : Colors.white70), fontSize: h * 0.020, fontWeight: isActive ? FontWeight.bold : FontWeight.normal)),
+                Text(label,
+                    style: TextStyle(
+                        color: isActive
+                            ? Colors.blue
+                            : (isLogout ? Colors.red : Colors.white70),
+                        fontSize: h * 0.020,
+                        fontWeight: isActive
+                            ? FontWeight.bold
+                            : FontWeight.normal)),
               ],
             ),
           ),
@@ -197,8 +247,15 @@ class _DashboardPageState extends State<DashboardPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Hey ${_controller.model.username} ,", style: TextStyle(fontSize: h * 0.04, fontWeight: FontWeight.bold, color: Colors.white)),
-        Text(_lang.t("Commencer votre journé d'Algorithmique.", "Let's start your algorithm journey."), style: TextStyle(fontSize: h * 0.016, color: Colors.white60)),
+        Text("Hey ${_controller.model.username} ,",
+            style: TextStyle(
+                fontSize: h * 0.04,
+                fontWeight: FontWeight.bold,
+                color: Colors.white)),
+        Text(
+            _lang.t("Commencer votre journé d'Algorithmique.",
+                "Let's start your algorithm journey."),
+            style: TextStyle(fontSize: h * 0.016, color: Colors.white60)),
       ],
     );
   }
@@ -210,15 +267,20 @@ class _DashboardPageState extends State<DashboardPage> {
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           height: h * 0.055,
-          decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.white24)),
+          decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.white24)),
           child: TextField(
             style: TextStyle(color: Colors.white, fontSize: h * 0.016),
             decoration: InputDecoration(
-              hintText: _lang.t("Chercher", "Search"),
+              hintText:  _lang.t("Chercher", "Search"),
               hintStyle: TextStyle(color: Colors.white38, fontSize: h * 0.016),
-              prefixIcon: Icon(Icons.search, color: Colors.white38, size: h * 0.025),
+              prefixIcon: Icon(Icons.search,
+                  color: Colors.white38, size: h * 0.025),
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: h * 0.015),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: h * 0.015),
             ),
           ),
         ),
@@ -229,9 +291,15 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _buildFilters(double h) {
     return Row(
       children: [
-        GestureDetector(onTap: () => setState(() => _selectedAlgo = 1), child: _filterChip(_lang.t("Algo 1", "Algo 1"), h, selected: _selectedAlgo == 1)),
-        SizedBox(width: 8),
-        GestureDetector(onTap: () => setState(() => _selectedAlgo = 2), child: _filterChip(_lang.t("Algo 2", "Algo 2"), h, selected: _selectedAlgo == 2)),
+        GestureDetector(
+            onTap: () => setState(() => _selectedAlgo = 1),
+            child: _filterChip(_lang.t("Algo 1", "Algo 1"), h,
+                selected: _selectedAlgo == 1)),
+        const SizedBox(width: 8),
+        GestureDetector(
+            onTap: () => setState(() => _selectedAlgo = 2),
+            child: _filterChip(_lang.t("Algo 2", "Algo 2"), h,
+                selected: _selectedAlgo == 2)),
       ],
     );
   }
@@ -239,8 +307,17 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget _filterChip(String label, double h, {bool selected = false}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: h * 0.008),
-      decoration: BoxDecoration(color: selected ? Colors.blue : Colors.white12, borderRadius: BorderRadius.circular(20), border: Border.all(color: selected ? Colors.blue : Colors.white24)),
-      child: Text(label, style: TextStyle(color: Colors.white, fontSize: h * 0.015, fontWeight: selected ? FontWeight.bold : FontWeight.normal)),
+      decoration: BoxDecoration(
+          color: selected ? Colors.blue : Colors.white12,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+              color: selected ? Colors.blue : Colors.white24)),
+      child: Text(label,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: h * 0.015,
+              fontWeight:
+                  selected ? FontWeight.bold : FontWeight.normal)),
     );
   }
 
@@ -248,10 +325,14 @@ class _DashboardPageState extends State<DashboardPage> {
     final chapters = _controller.model.chapters;
 
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 60, mainAxisSpacing: 25, childAspectRatio: 3.5),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 60,
+          mainAxisSpacing: 25,
+          childAspectRatio: 3.5),
       itemCount: chapters.length,
       itemBuilder: (context, index) {
-        final chapter = chapters[index];
+        final chapter    = chapters[index];
         final isSelected = _controller.model.selectedChapterIndex == index;
 
         return GestureDetector(
@@ -260,38 +341,60 @@ class _DashboardPageState extends State<DashboardPage> {
               context,
               MaterialPageRoute(
                 builder: (_) => CourseStudyPage(
-                  chapterTitle: chapter.title,
+                  chapterTitle:    chapter.title,
                   chapterSubtitle: chapter.id,
-                  xmlPath: chapter.xmlPath,
-                  chapterIcon: chapter.icon,
+                  xmlPath:         chapter.xmlPath,
+                  chapterIcon:     chapter.icon,
                 ),
               ),
             );
           },
           onTap: () => setState(() => _controller.selectChapter(index)),
           child: ClipRRect(
-            borderRadius: const BorderRadius.only(topLeft: Radius.circular(13), topRight: Radius.circular(13), bottomLeft: Radius.circular(27), bottomRight: Radius.circular(27)),
+            borderRadius: const BorderRadius.only(
+                topLeft:     Radius.circular(13),
+                topRight:    Radius.circular(13),
+                bottomLeft:  Radius.circular(27),
+                bottomRight: Radius.circular(27)),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
-                padding: EdgeInsets.only(top: h * 0.005, left: h * 0.02, right: h * 0.02, bottom: h * 0.02),
+                padding: EdgeInsets.only(
+                    top:    h * 0.005,
+                    left:   h * 0.02,
+                    right:  h * 0.02,
+                    bottom: h * 0.02),
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.blue.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.2),
+                  color: isSelected
+                      ? Colors.blue.withValues(alpha: 0.3)
+                      : Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: isSelected ? Colors.blue : Colors.white24, width: isSelected ? 2 : 1),
+                  border: Border.all(
+                      color: isSelected ? Colors.blue : Colors.white24,
+                      width: isSelected ? 2 : 1),
                 ),
                 child: Row(
                   children: [
                     Expanded(
                       child: FittedBox(
-                        fit: BoxFit.scaleDown,
+                        fit:       BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(chapter.id, style: TextStyle(color: Colors.blue, fontSize: h * 0.025, fontWeight: FontWeight.bold)),
+                            Text(chapter.id,
+                                style: TextStyle(
+                                    color:      Colors.blue,
+                                    fontSize:   h * 0.025,
+                                    fontWeight: FontWeight.bold)),
                             SizedBox(height: h * 0.005),
-                            Text(chapter.title, style: TextStyle(color: Colors.white, fontSize: h * 0.02, fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
+                            Text(chapter.title,
+                                style: TextStyle(
+                                    color:      Colors.white,
+                                    fontSize:   h * 0.02,
+                                    fontWeight: FontWeight.bold),
+                                maxLines:  2,
+                                overflow:  TextOverflow.ellipsis),
                           ],
                         ),
                       ),
@@ -299,7 +402,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     SizedBox(width: h * 0.010),
                     FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: Image.asset(chapter.icon, width: h * 0.08, height: h * 0.08),
+                      child: Image.asset(chapter.icon,
+                          width: h * 0.08, height: h * 0.08),
                     ),
                   ],
                 ),
@@ -316,16 +420,22 @@ class _DashboardPageState extends State<DashboardPage> {
       padding: EdgeInsets.only(top: h * 0.02),
       child: Center(
         child: SizedBox(
-          width: w * 0.25,
+          width:  w * 0.25,
           height: h * 0.06,
           child: ElevatedButton.icon(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue.withValues(alpha: 0.3),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: const BorderSide(color: Colors.blue)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(color: Colors.blue)),
             ),
             icon: const Icon(Icons.play_circle_outline, color: Colors.white),
-            label: Text(_lang.t("Continuer le dernier chapitre", "Continue last chapter"), style: TextStyle(color: Colors.white, fontSize: h * 0.016)),
+            label: Text(
+                _lang.t("Continuer le dernier chapitre",
+                    "Continue last chapter"),
+                style:
+                    TextStyle(color: Colors.white, fontSize: h * 0.016)),
           ),
         ),
       ),
@@ -333,34 +443,57 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildRightPanel(double h, double w) {
-    final lessons = _selectedAlgo == 1 ? _controller.getSelectedLessons() : _algo2Controller.getSelectedLessons();
-    final chapterTitle = _selectedAlgo == 1 ? _controller.getSelectedChapterTitle() : _algo2Controller.getSelectedChapterTitle();
+    final lessons = _selectedAlgo == 1
+        ? _controller.getSelectedLessons()
+        : _algo2Controller.getSelectedLessons();
+    final chapterTitle = _selectedAlgo == 1
+        ? _controller.getSelectedChapterTitle()
+        : _algo2Controller.getSelectedChapterTitle();
 
     return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          width: w * 0.27,
-          color: Colors.white.withValues(alpha: 0.08),
+          width:   w * 0.27,
+          color:   Colors.white.withValues(alpha: 0.08),
           padding: EdgeInsets.all(h * 0.02),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage())),
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(
+                        builder: (_) => const ProfilePage())),
                 child: Container(
                   padding: EdgeInsets.all(h * 0.025),
-                  decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+                  decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10)),
                   child: Row(
                     children: [
-                      CircleAvatar(radius: h * 0.035, backgroundColor: Colors.blue, child: Text(_controller.model.username[0], style: TextStyle(color: Colors.white, fontSize: h * 0.025))),
-                      SizedBox(width: 12),
+                      CircleAvatar(
+                          radius:          h * 0.035,
+                          backgroundColor: Colors.blue,
+                          child: Text(_controller.model.username[0],
+                              style: TextStyle(
+                                  color:    Colors.white,
+                                  fontSize: h * 0.025))),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(_controller.model.username, style: TextStyle(color: Colors.white, fontSize: h * 0.023, fontWeight: FontWeight.bold), overflow: TextOverflow.ellipsis),
-                            Text(_controller.model.role, style: TextStyle(color: const Color.fromARGB(255, 223, 220, 220), fontSize: h * 0.020)),
+                            Text(_controller.model.username,
+                                style: TextStyle(
+                                    color:      Colors.white,
+                                    fontSize:   h * 0.023,
+                                    fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis),
+                            Text(_controller.model.role,
+                                style: TextStyle(
+                                    color:    const Color.fromARGB(
+                                        255, 223, 220, 220),
+                                    fontSize: h * 0.020)),
                           ],
                         ),
                       ),
@@ -369,32 +502,61 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               SizedBox(height: h * 0.03),
-              Text(_lang.t("Cours actuel", "Current course"), style: TextStyle(color: Colors.white, fontSize: h * 0.030, fontWeight: FontWeight.bold)),
+              Text(_lang.t("Cours actuel", "Current course"),
+                  style: TextStyle(
+                      color:      Colors.white,
+                      fontSize:   h * 0.030,
+                      fontWeight: FontWeight.bold)),
               SizedBox(height: h * 0.01),
               if (chapterTitle.isNotEmpty)
                 Container(
-                  width: double.infinity,
+                  width:   double.infinity,
                   padding: EdgeInsets.all(h * 0.015),
-                  decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.3), borderRadius: BorderRadius.circular(8)),
-                  child: Text(_lang.t("Contenue de $chapterTitle", "Content of $chapterTitle") , style: TextStyle(color: Colors.white, fontSize: h * 0.022)),
+                  decoration: BoxDecoration(
+                      color:        Colors.blue.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Text(
+                      _lang.t("Contenue de $chapterTitle",
+                          "Content of $chapterTitle"),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: h * 0.022)),
                 ),
               SizedBox(height: h * 0.015),
               Expanded(
                 child: lessons.isEmpty
-                    ? Text(_lang.t("Selectionner un chapitre pour voir ses leçones.", "Select a chapter to see its lessons."), style: TextStyle(color: Colors.white, fontSize: h * 0.023))
+                    ? Text(
+                        _lang.t(
+                            "Selectionner un chapitre pour voir ses leçones.",
+                            "Select a chapter to see its lessons."),
+                        style: TextStyle(
+                            color:    Colors.white,
+                            fontSize: h * 0.023))
                     : ListView.builder(
                         itemCount: lessons.length,
                         itemBuilder: (context, index) => GestureDetector(
                           onTap: () {},
                           child: Container(
-                            margin: EdgeInsets.only(bottom: h * 0.015),
+                            margin:  EdgeInsets.only(bottom: h * 0.015),
                             padding: EdgeInsets.all(h * 0.018),
-                            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.white12)),
+                            decoration: BoxDecoration(
+                                color:        Colors.white
+                                    .withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(8),
+                                border:
+                                    Border.all(color: Colors.white12)),
                             child: Row(
                               children: [
-                                Text("${index + 1}", style: TextStyle(color: Colors.blue, fontSize: h * 0.020, fontWeight: FontWeight.bold)),
-                                SizedBox(width: 10),
-                                Expanded(child: Text(lessons[index], style: TextStyle(color: Colors.white70, fontSize: h * 0.016))),
+                                Text("${index + 1}",
+                                    style: TextStyle(
+                                        color:      Colors.blue,
+                                        fontSize:   h * 0.020,
+                                        fontWeight: FontWeight.bold)),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                    child: Text(lessons[index],
+                                        style: TextStyle(
+                                            color:    Colors.white70,
+                                            fontSize: h * 0.016))),
                               ],
                             ),
                           ),
