@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../../models/quiz/quiz_model.dart';
 import '../../controllers/courses_study/chapter_quiz_controller.dart';
+import '../../service/progress/progress_service.dart';
 import '../dashboard/dashboard_page.dart';
 
 class ChapterQuizPage extends StatefulWidget {
   final ChapterQuizController controller;
   final String chapterTitle;
+  final String algoType;
 
   const ChapterQuizPage({
     super.key,
     required this.controller,
     required this.chapterTitle,
+    required this.algoType,
   });
 
   @override
@@ -19,11 +22,12 @@ class ChapterQuizPage extends StatefulWidget {
 }
 
 class _ChapterQuizPageState extends State<ChapterQuizPage> {
-  bool?   _answerChecked      = null;
-  List<String> _currentOrder  = [];
-  bool    _quizCompleted      = false;
-  bool    _isQuestionValidated = false;
-  bool    _hasSelection       = false;
+  bool?        _answerChecked       = null;
+  List<String> _currentOrder        = [];
+  bool         _quizCompleted       = false;
+  bool         _isQuestionValidated = false;
+  bool         _hasSelection        = false;
+  bool         _isFirstCompletion   = false;
 
   @override
   void initState() {
@@ -57,6 +61,13 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
 
   void _nextQuestion() {
     if (widget.controller.isLastQuestion) {
+      // Check first completion before marking as complete
+      _isFirstCompletion = !ProgressService.isAlreadyCompleted(
+          widget.algoType, widget.chapterTitle);
+      if (_isFirstCompletion) {
+        ProgressService.completeChapter(
+            widget.algoType, widget.chapterTitle);
+      }
       setState(() => _quizCompleted = true);
     } else {
       widget.controller.nextQuestion();
@@ -82,7 +93,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
   }
 
   void _checkAnswer() {
-    final q       = widget.controller.currentQuestion;
+    final q         = widget.controller.currentQuestion;
     final isCorrect = widget.controller.checkAnswer(q.id);
     setState(() {
       _answerChecked       = isCorrect;
@@ -342,8 +353,8 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       final isSelected =
           widget.controller.currentQuiz.userAnswers[question.id] ==
               choice["key"];
-      Color borderColor = Colors.white24;
-      Color bgColor     = Colors.white.withValues(alpha: 0.08);
+      Color   borderColor = Colors.white24;
+      Color   bgColor     = Colors.white.withValues(alpha: 0.08);
       Widget? trailingIcon;
 
       if (_answerChecked != null || _isQuestionValidated) {
@@ -488,8 +499,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
               Color badgeColor     = Colors.blue;
 
               if (isLocked) {
-                final correctOrder =
-                    question.bonneReponse.split('|');
+                final correctOrder = question.bonneReponse.split('|');
                 final isCorrectPos = index < correctOrder.length &&
                     correctOrder[index] == _currentOrder[index];
                 itemBorderColor =
@@ -721,14 +731,13 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
   }
 
   Widget _buildCompletionScreen(double h, double w) {
-    final totalScore    = widget.controller.getTotalScore();
-    final totalQuestions =
-        widget.controller.session.totalPossibleScore;
-    final percentage    = widget.controller.getPercentage();
+    final totalScore     = widget.controller.getTotalScore();
+    final totalQuestions = widget.controller.session.totalPossibleScore;
+    final percentage     = widget.controller.getPercentage();
 
-    String  message;
+    String   message;
     IconData icon;
-    Color   color;
+    Color    color;
 
     if (percentage >= 80) {
       message = "Excellent! Chapter mastered! 🎉";
@@ -747,6 +756,10 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       icon    = Icons.fitness_center;
       color   = Colors.red;
     }
+
+    final algo1Progress  = ProgressService.getAlgo1Progress();
+    final algo2Progress  = ProgressService.getAlgo2Progress();
+    final globalProgress = ProgressService.getGlobalProgress();
 
     return Scaffold(
       body: Stack(
@@ -769,7 +782,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
-                    width: w * 0.45,
+                    width: w * 0.55,
                     padding: EdgeInsets.all(h * 0.05),
                     decoration: BoxDecoration(
                       color: Colors.white.withValues(alpha: 0.1),
@@ -781,8 +794,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                       children: [
                         TweenAnimationBuilder<double>(
                           tween: Tween<double>(begin: 0, end: 1),
-                          duration:
-                              const Duration(milliseconds: 800),
+                          duration: const Duration(milliseconds: 800),
                           builder: (context, value, child) =>
                               Transform.scale(
                             scale: value,
@@ -812,6 +824,8 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                 fontSize: h * 0.018),
                             textAlign: TextAlign.center),
                         SizedBox(height: h * 0.03),
+
+                        // Score circle
                         SizedBox(
                           width: h * 0.15,
                           height: h * 0.15,
@@ -828,8 +842,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                   strokeWidth: h * 0.012,
                                   backgroundColor: Colors.white24,
                                   valueColor:
-                                      AlwaysStoppedAnimation<Color>(
-                                          color),
+                                      AlwaysStoppedAnimation<Color>(color),
                                 ),
                               ),
                               Column(
@@ -856,6 +869,58 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                 fontSize: h * 0.028,
                                 fontWeight: FontWeight.bold)),
                         SizedBox(height: h * 0.04),
+
+                        // Progress section — only show if first completion
+                        if (_isFirstCompletion) ...[
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(h * 0.02),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withValues(alpha: 0.08),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: Colors.green.withValues(alpha: 0.3)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(children: [
+                                  Icon(Icons.emoji_events,
+                                      color: Colors.amber, size: h * 0.025),
+                                  const SizedBox(width: 8),
+                                  Text("Chapter Completed! 🎉",
+                                      style: TextStyle(
+                                          color: Colors.amber,
+                                          fontSize: h * 0.018,
+                                          fontWeight: FontWeight.bold)),
+                                ]),
+                                SizedBox(height: h * 0.02),
+                                _buildProgressRow(
+                                  h: h,
+                                  label: "Algo 1",
+                                  value: algo1Progress,
+                                  color: const Color(0xFF00E5FF),
+                                ),
+                                SizedBox(height: h * 0.015),
+                                _buildProgressRow(
+                                  h: h,
+                                  label: "Algo 2",
+                                  value: algo2Progress,
+                                  color: Colors.purple,
+                                ),
+                                SizedBox(height: h * 0.015),
+                                _buildProgressRow(
+                                  h: h,
+                                  label: "Global",
+                                  value: globalProgress,
+                                  color: Colors.green,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: h * 0.03),
+                        ],
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -919,6 +984,65 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildProgressRow({
+    required double h,
+    required String label,
+    required double value,
+    required Color  color,
+  }) {
+    return Row(
+      children: [
+        SizedBox(
+          width: h * 0.07,
+          height: h * 0.07,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: h * 0.07,
+                height: h * 0.07,
+                child: CircularProgressIndicator(
+                  value: value,
+                  strokeWidth: h * 0.008,
+                  backgroundColor: Colors.white12,
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                ),
+              ),
+              Text("${(value * 100).toInt()}%",
+                  style: TextStyle(
+                      color: color,
+                      fontSize: h * 0.013,
+                      fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+        SizedBox(width: h * 0.015),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label,
+                  style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: h * 0.015,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(height: h * 0.006),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: value,
+                  minHeight: h * 0.007,
+                  backgroundColor: Colors.white12,
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

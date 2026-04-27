@@ -15,6 +15,7 @@ import '../auth/login_page.dart';
 import '../dashboard/dashboard_page.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
+import '../../service/progress/progress_service.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({super.key});
@@ -548,16 +549,41 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
               ),
               SizedBox(height: h * 0.025),
-              _buildProgressSection(
-                h: h,
-                w: w,
-                label: _lang.t("Progression D'Algorithmique ",
-                    "Algorithmic Progress"),
-                value: algo1Progress,
-                color: const Color.fromARGB(255, 0, 255, 247),
-                labelColor:
-                    const Color.fromARGB(200, 255, 255, 255),
-              ),
+
+Expanded(
+  child: SingleChildScrollView(
+    child: Column(
+      children: [
+        _buildProgressSection(
+          h: h,
+          w: w,
+          label: "Algo 1",
+          value: ProgressService.getAlgo1Progress(),
+          color: const Color(0xFF00E5FF),
+          labelColor: const Color.fromARGB(200, 255, 255, 255),
+        ),
+        SizedBox(height: h * 0.02),
+        _buildProgressSection(
+          h: h,
+          w: w,
+          label: "Algo 2",
+          value: ProgressService.getAlgo2Progress(),
+          color: Colors.purple,
+          labelColor: const Color.fromARGB(200, 255, 255, 255),
+        ),
+        SizedBox(height: h * 0.02),
+        _buildProgressSection(
+          h: h,
+          w: w,
+          label: "Global",
+          value: ProgressService.getGlobalProgress(),
+          color: Colors.green,
+          labelColor: const Color.fromARGB(200, 255, 255, 255),
+        ),
+      ],
+    ),
+  ),
+),
             ],
           ),
         ),

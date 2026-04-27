@@ -67,12 +67,15 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
     if (!mounted) return;
     setState(() => _isQuizLoading = false);
 
+     final algoType = widget.xmlPath.contains('algo2') ? 'algo2' : 'algo1';
+
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => ChapterQuizPage(
           controller:    quizController,
           chapterTitle:  widget.chapterTitle,
+          algoType:       algoType,
         ),
       ),
     );
