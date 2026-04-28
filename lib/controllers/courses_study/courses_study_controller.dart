@@ -1,10 +1,12 @@
+// lib/controllers/courses_study/courses_study_controller.dart
 import '../../models/courses_study/courses_study_model.dart';
 import '../../service/files/serviceXML.dart';
+import '../../service/quiz/quiz_score_service.dart';
 
 class CourseStudyController {
   CourseStudyModel? model;
 
-  // Charge les sections depuis XML
+  // ── Chargement XML ──────────────────────────────────────────────────────────
   Future<void> loadFromXml({
     required String xmlPath,
     required String chapterTitle,
@@ -12,16 +14,17 @@ class CourseStudyController {
   }) async {
     final sections = await XmlService.loadChapterSections(xmlPath);
     model = CourseStudyModel(
-      chapterTitle: chapterTitle,
+      chapterTitle:    chapterTitle,
       chapterSubtitle: chapterSubtitle,
-      xmlPath :xmlPath,
-      pages: sections,
+      xmlPath:         xmlPath,
+      pages:           sections,
     );
   }
-// Page actuelle
+
+  // ── Navigation ──────────────────────────────────────────────────────────────
   section? get currentSection {
     if (model == null) return null;
-    return model!.pages[model!.currentPage]; // ← section actuelle
+    return model!.pages[model!.currentPage];
   }
 
   void nextPage() {
@@ -33,8 +36,23 @@ class CourseStudyController {
   }
 
   bool get isFirstPage => model?.currentPage == 0;
-  bool get isLastPage =>
+  bool get isLastPage  =>
       model != null && model!.currentPage == model!.pages.length - 1;
+  int  get totalPages  => model?.pages.length ?? 0;
 
-  int get totalPages => model?.pages.length ?? 0;
+  // ── Terminer un chapitre ────────────────────────────────────────────────────
+  /// À appeler quand l'utilisateur clique sur "Terminer"
+  /// [chapterId] : l'UUID du chapitre dans la BDD
+  /// Retourne true si l'enregistrement a réussi
+  Future<bool> completeChapter({ required String chapterId }) async {
+    final success = await QuizScoreService.completeChapter(
+      chapterId: chapterId,
+    );
+
+    if (success && model != null) {
+      model!.isCompleted = true; 
+    }
+
+    return success;
+  }
 }

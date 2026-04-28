@@ -1,3 +1,4 @@
+// lib/routes/quiz.routes.ts
 import { Router } from 'express';
 import { requireAuth } from '../middlewares/auth.middleware';
 import { submitQuiz } from '../controllers/auth/quiz.controller';

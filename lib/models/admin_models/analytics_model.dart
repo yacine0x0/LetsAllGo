@@ -1,8 +1,6 @@
-// models/admin_models/analytics_model.dart
-
 class ChapterStat {
   final String label;
-  final double algo1Completion; // pourcentage 0.0 → 1.0
+  final double algo1Completion;
   final double algo2Completion;
 
   const ChapterStat({
@@ -10,44 +8,56 @@ class ChapterStat {
     required this.algo1Completion,
     required this.algo2Completion,
   });
+
+  factory ChapterStat.fromApi(Map<String, dynamic> json) {
+    return ChapterStat(
+      label:           json['label'] as String,
+      // ✅ FIX : algo1 et algo2 ont des champs séparés
+      algo1Completion: (json['completion'] as num).toDouble(),
+      algo2Completion: 0.0, // sera écrasé si vient de algo2Chapters
+    );
+  }
+
+  // ✅ NOUVEAU : constructeur dédié pour algo2
+  factory ChapterStat.fromApiAlgo2(Map<String, dynamic> json) {
+    return ChapterStat(
+      label:           json['label'] as String,
+      algo1Completion: 0.0,
+      algo2Completion: (json['completion'] as num).toDouble(),
+    );
+  }
 }
 
 class QuizStat {
   final String day;
-  final int quizzesDone;
+  final int    quizzesDone;
 
   const QuizStat({required this.day, required this.quizzesDone});
+
+  factory QuizStat.fromApi(Map<String, dynamic> json) {
+    return QuizStat(
+      day:         json['day']         as String,
+      quizzesDone: (json['quizzesDone'] as num).toInt(), // ✅ FIX : num → int
+    );
+  }
 }
 
 class AnalyticsModel {
-  final List<ChapterStat> chapters;
-  final List<QuizStat> quizStats;
-  final int totalQuizzesDone;
-
-  /// 0 = Algo 1, 1 = Algo 2
-  int selectedAlgo;
+  int               totalQuizzesDone;
+  List<ChapterStat> chapters;
+  List<QuizStat>    quizStats;
+  int               selectedAlgo;
 
   AnalyticsModel({
+    required this.totalQuizzesDone,
     required this.chapters,
     required this.quizStats,
-    required this.totalQuizzesDone,
     this.selectedAlgo = 0,
   });
 
-  /// Renvoie les taux de complétion pour l'algo sélectionné
-  List<double> get currentCompletions {
-  return displayedChapters.map((c) {
-    return selectedAlgo == 0
-        ? c.algo1Completion
-        : c.algo2Completion;
-  }).toList();
-}
+  List<ChapterStat> get displayedChapters => chapters;
 
-      List<ChapterStat> get displayedChapters {
-  if (selectedAlgo == 0) {
-    return chapters; // Algo 1 → tous les chapitres
-  } else {
-    return chapters.take(4).toList(); // Algo 2 → seulement 4
-  }
-}
+  List<double> get currentCompletions => chapters
+      .map((c) => selectedAlgo == 0 ? c.algo1Completion : c.algo2Completion)
+      .toList();
 }

@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:provider/provider.dart';                    // ← AJOUTÉ
-import '../../../service/language_service.dart';             // ← AJOUTÉ (adapte le chemin si besoin)
-
+import '../../../service/language_service.dart';             // ← AJOUTÉ (adapte le chemin si besoin)++
 import '../../dashboard/dashboard_page.dart';
 
 class WelcomePage extends StatefulWidget {
