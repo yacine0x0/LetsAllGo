@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_01" title="Data Structure">
+
+  <section id="1" title="Introduction aux structures de données">
+    <content>Une structure de données est une façon d'organiser et de stocker des données en mémoire pour pouvoir les utiliser efficacement. Le choix d'une bonne structure de données est crucial pour la performance d'un algorithme.</content>
+    <bulletPoints>
+      <point>Organise les données en mémoire</point>
+      <point>Permet un accès et une manipulation efficaces</point>
+      <point>Le choix dépend du problème à résoudre</point>
+      <point>Exemples : tableaux, listes, arbres, graphes</point>
+    </bulletPoints>
+  </section>
+
+  <section id="2" title="Les tableaux (Arrays)">
+    <content>Un tableau est une collection d'éléments du même type stockés en mémoire contiguë. Chaque élément est accessible via son indice. C'est la structure de données la plus simple et la plus utilisée.</content>
+    <bulletPoints>
+      <point>Accès direct par indice en O(1)</point>
+      <point>Taille fixe définie à la création</point>
+      <point>Éléments du même type</point>
+      <point>Exemple : T[0]=10, T[1]=20, T[2]=30</point>
+      <point>Insertion et suppression coûteuses : O(n)</point>
+    </bulletPoints>
+  </section>
+
+  <section id="3" title="Les enregistrements (Records)">
+    <content>Un enregistrement est une structure regroupant plusieurs champs de types différents sous un même nom. Il permet de représenter des entités complexes comme un étudiant avec son nom, prénom et note.</content>
+    <bulletPoints>
+      <point>Regroupe des données hétérogènes</point>
+      <point>Chaque champ a un nom et un type</point>
+      <point>Exemple : Etudiant { nom: chaîne, age: entier, note: réel }</point>
+      <point>Accès par nom de champ : etudiant.nom</point>
+      <point>Similaire aux struct en C ou classes en Java</point>
+    </bulletPoints>
+  </section>
+
+  <section id="4" title="Les pointeurs">
+    <content>Un pointeur est une variable qui contient l'adresse mémoire d'une autre variable. Les pointeurs permettent de créer des structures de données dynamiques comme les listes chaînées et les arbres.</content>
+    <bulletPoints>
+      <point>Contient une adresse mémoire</point>
+      <point>Permet l'allocation dynamique de mémoire</point>
+      <point>Base des structures de données dynamiques</point>
+      <point>Opérations : référencer (&amp;) et déréférencer (*)</point>
+      <point>Attention aux pointeurs nuls et aux fuites mémoire</point>
+    </bulletPoints>
+  </section>
+
+  <section id="5" title="Complexité et choix de structure">
+    <content>Chaque structure de données a ses forces et faiblesses en termes de complexité temporelle et spatiale. Il faut choisir la structure adaptée au problème.</content>
+    <bulletPoints>
+      <point>Complexité temporelle : temps d'exécution des opérations</point>
+      <point>Complexité spatiale : mémoire utilisée</point>
+      <point>Tableau : accès O(1), insertion O(n)</point>
+      <point>Liste chaînée : insertion O(1), accès O(n)</point>
+      <point>Arbre binaire de recherche : O(log n) en moyenne</point>
+    </bulletPoints>
+  </section>
+
+  <section id="6" title="Structures linéaires vs non linéaires">
+    <content>Les structures de données se divisent en deux grandes catégories : linéaires où les éléments sont organisés séquentiellement, et non linéaires où les éléments ont des relations hiérarchiques ou en réseau.</content>
+    <bulletPoints>
+      <point>Linéaires : tableaux, listes, piles, files</point>
+      <point>Non linéaires : arbres, graphes</point>
+      <point>Structures linéaires : traversée séquentielle</point>
+      <point>Arbres : hiérarchie parent-enfant</point>
+      <point>Graphes : relations complexes entre nœuds</point>
+    </bulletPoints>
+  </section>
+
+  <section id="7" title="Allocation statique vs dynamique">
+    <content>La mémoire peut être allouée de manière statique à la compilation ou dynamiquement à l'exécution. Chaque approche a ses avantages selon les besoins du programme.</content>
+    <bulletPoints>
+      <point>Statique : taille fixe, rapide, simple</point>
+      <point>Dynamique : taille variable, flexible, via pointeurs</point>
+      <point>Allocation dynamique : malloc/new selon le langage</point>
+      <point>Libération obligatoire pour éviter les fuites mémoire</point>
+      <point>Exemple statique : tableau de 100 entiers</point>
+      <point>Exemple dynamique : liste chaînée</point>
+    </bulletPoints>
+  </section>
+
+</chapter>

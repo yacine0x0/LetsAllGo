@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_03" title="Linked List">
+
+  <section id="1" title="Introduction aux listes chaînées">
+    <content>Une liste chaînée est une structure de données dynamique composée de nœuds. Chaque nœud contient une donnée et un pointeur vers le nœud suivant. Contrairement aux tableaux, les éléments ne sont pas stockés de manière contiguë en mémoire.</content>
+    <bulletPoints>
+      <point>Structure dynamique : taille variable</point>
+      <point>Chaque nœud contient : donnée + pointeur suivant</point>
+      <point>Pas de contiguïté mémoire requise</point>
+      <point>Insertion et suppression efficaces : O(1)</point>
+      <point>Accès séquentiel uniquement : O(n)</point>
+    </bulletPoints>
+  </section>
+
+  <section id="2" title="Liste simplement chaînée">
+    <content>Dans une liste simplement chaînée, chaque nœud possède un seul pointeur qui pointe vers le nœud suivant. La traversée se fait dans un seul sens, du premier au dernier nœud.</content>
+    <bulletPoints>
+      <point>Un seul pointeur par nœud : next</point>
+      <point>Traversée dans un sens uniquement</point>
+      <point>Tête (head) : premier nœud de la liste</point>
+      <point>Dernier nœud : pointeur next = null</point>
+      <point>Insertion en tête : O(1), en milieu : O(n)</point>
+    </bulletPoints>
+  </section>
+
+  <section id="3" title="Liste doublement chaînée">
+    <content>Dans une liste doublement chaînée, chaque nœud possède deux pointeurs : un vers le nœud suivant (next) et un vers le nœud précédent (prev). Cela permet une traversée dans les deux sens.</content>
+    <bulletPoints>
+      <point>Deux pointeurs par nœud : next et prev</point>
+      <point>Traversée dans les deux sens</point>
+      <point>Suppression plus facile sans parcourir toute la liste</point>
+      <point>Plus de mémoire utilisée par nœud</point>
+      <point>Tête et queue facilement accessibles</point>
+    </bulletPoints>
+  </section>
+
+  <section id="4" title="Liste circulaire">
+    <content>Une liste circulaire est une liste où le dernier nœud pointe vers le premier, formant un anneau. Elle peut être simplement ou doublement chaînée.</content>
+    <bulletPoints>
+      <point>Dernier nœud pointe vers le premier</point>
+      <point>Pas de fin nulle : traversée infinie possible</point>
+      <point>Utile pour les applications cycliques</point>
+      <point>Exemple : tourniquet de processus dans un OS</point>
+      <point>Condition d'arrêt nécessaire lors du parcours</point>
+    </bulletPoints>
+  </section>
+
+  <section id="5" title="Opérations sur les listes chaînées">
+    <content>Les opérations fondamentales sur une liste chaînée incluent l'insertion, la suppression et la recherche d'éléments. Chacune a une complexité différente selon la position.</content>
+    <bulletPoints>
+      <point>Insertion en tête : O(1)</point>
+      <point>Insertion en queue : O(n) ou O(1) avec pointeur tail</point>
+      <point>Suppression en tête : O(1)</point>
+      <point>Recherche : O(n) dans le pire cas</point>
+      <point>Inversion d'une liste : O(n)</point>
+    </bulletPoints>
+  </section>
+
+  <section id="6" title="Comparaison liste chaînée vs tableau">
+    <content>Listes chaînées et tableaux ont chacun leurs avantages. Le choix dépend des opérations les plus fréquentes dans le programme.</content>
+    <bulletPoints>
+      <point>Tableau : accès direct O(1), insertion O(n)</point>
+      <point>Liste : accès O(n), insertion O(1) en tête</point>
+      <point>Tableau : taille fixe, mémoire contiguë</point>
+      <point>Liste : taille dynamique, mémoire fragmentée</point>
+      <point>Tableau préféré pour accès fréquent par indice</point>
+      <point>Liste préférée pour insertions/suppressions fréquentes</point>
+    </bulletPoints>
+  </section>
+
+  <section id="7" title="Applications des listes chaînées">
+    <content>Les listes chaînées sont à la base de nombreuses structures de données plus complexes et sont utilisées dans divers domaines de l'informatique.</content>
+    <bulletPoints>
+      <point>Implémentation des piles et files</point>
+      <point>Gestion de la mémoire dynamique</point>
+      <point>Représentation de polynômes</point>
+      <point>Historique de navigation (liste doublement chaînée)</point>
+      <point>Implémentation de tables de hachage (chaînage)</point>
+    </bulletPoints>
+  </section>
+
+</chapter>

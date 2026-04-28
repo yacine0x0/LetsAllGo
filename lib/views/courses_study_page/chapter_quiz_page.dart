@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:audioplayers/audioplayers.dart';
 import '../../models/quiz/quiz_model.dart';
 import '../../controllers/courses_study/chapter_quiz_controller.dart';
 import '../../service/progress/progress_service.dart';
@@ -10,12 +11,14 @@ class ChapterQuizPage extends StatefulWidget {
   final String chapterTitle;
   final String algoType;
 
+
   const ChapterQuizPage({
     super.key,
     required this.controller,
     required this.chapterTitle,
     required this.algoType,
   });
+
 
   @override
   State<ChapterQuizPage> createState() => _ChapterQuizPageState();
@@ -29,11 +32,29 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
   bool         _hasSelection        = false;
   bool         _isFirstCompletion   = false;
 
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  static const String _soundCorrect  = 'sounds/CORRECTANSWER.mp3';
+  static const String _soundWrong    = 'sounds/WRONGANSWER.mp3';
+  static const String _soundButton1  = 'sounds/PRESS_1.wav';
+  static const String _soundButton2  = 'sounds/PRESS_2.wav';
+  static const String _soundCheers   = 'sounds/CHEERS.wav';
+
+  Future<void> _playSound(String soundPath) async {
+    await _audioPlayer.play(AssetSource(soundPath));
+  }
+
   @override
   void initState() {
     super.initState();
     _loadQuestion();
   }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
 
   void _loadQuestion() {
     final q = widget.controller.currentQuestion;
@@ -68,6 +89,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
         ProgressService.completeChapter(
             widget.algoType, widget.chapterTitle);
       }
+      _playSound(_soundCheers);
       setState(() => _quizCompleted = true);
     } else {
       widget.controller.nextQuestion();
@@ -100,6 +122,11 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       _isQuestionValidated =
           widget.controller.currentQuiz.isQuestionValidated(q.id);
     });
+    if (isCorrect) {
+      _playSound(_soundCorrect);
+    } else {
+      _playSound(_soundWrong);
+    }
   }
 
   void _resetQuiz() {

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_04" title="Queues and Stacks">
+
+  <section id="1" title="Introduction aux piles (Stacks)">
+    <content>Une pile (stack) est une structure de données linéaire qui suit le principe LIFO : Last In First Out. Le dernier élément inséré est le premier à être retiré. On peut la comparer à une pile d'assiettes.</content>
+    <bulletPoints>
+      <point>LIFO : Last In First Out</point>
+      <point>Insertion et suppression au sommet uniquement</point>
+      <point>Sommet (top) : dernier élément inséré</point>
+      <point>Exemple : pile d'assiettes, historique undo/redo</point>
+    </bulletPoints>
+  </section>
+
+  <section id="2" title="Opérations sur les piles">
+    <content>Une pile supporte trois opérations fondamentales simples mais puissantes qui permettent de gérer les données en mode LIFO.</content>
+    <bulletPoints>
+      <point>Push : ajouter un élément au sommet</point>
+      <point>Pop : retirer l'élément au sommet</point>
+      <point>Peek/Top : consulter le sommet sans le retirer</point>
+      <point>IsEmpty : vérifier si la pile est vide</point>
+      <point>Toutes ces opérations sont en O(1)</point>
+    </bulletPoints>
+  </section>
+
+  <section id="3" title="Implémentation d'une pile">
+    <content>Une pile peut être implémentée avec un tableau ou une liste chaînée. L'implémentation avec tableau est plus simple et plus rapide en pratique.</content>
+    <bulletPoints>
+      <point>Avec tableau : indice top qui augmente et diminue</point>
+      <point>Push : T[++top] = valeur</point>
+      <point>Pop : retourner T[top--]</point>
+      <point>Avec liste chaînée : insertion et suppression en tête</point>
+      <point>Taille dynamique avec liste chaînée</point>
+    </bulletPoints>
+  </section>
+
+  <section id="4" title="Applications des piles">
+    <content>Les piles sont utilisées dans de nombreux algorithmes fondamentaux en informatique, notamment pour la gestion des appels de fonctions et l'évaluation d'expressions.</content>
+    <bulletPoints>
+      <point>Gestion de la pile d'appels (call stack)</point>
+      <point>Évaluation d'expressions arithmétiques</point>
+      <point>Vérification des parenthèses</point>
+      <point>Algorithme de parcours en profondeur (DFS)</point>
+      <point>Fonctionnalité undo/redo dans les éditeurs</point>
+      <point>Conversion infixe vers postfixe</point>
+    </bulletPoints>
+  </section>
+
+  <section id="5" title="Différences entre pile et file">
+    <content>Piles et files sont deux structures fondamentales qui diffèrent par leur ordre d'accès aux éléments. Comprendre cette différence est essentiel pour choisir la bonne structure.</content>
+    <bulletPoints>
+      <point>Pile : LIFO — dernier entré, premier sorti</point>
+      <point>File : FIFO — premier entré, premier sorti</point>
+      <point>Pile : accès uniquement au sommet</point>
+      <point>File : insertion en queue, suppression en tête</point>
+      <point>Pile : DFS, récursion | File : BFS, ordonnancement</point>
+    </bulletPoints>
+  </section>
+
+  <section id="6" title="File de priorité (Priority Queue)">
+    <content>Une file de priorité est une extension de la file classique où chaque élément a une priorité. L'élément de plus haute priorité est retiré en premier, indépendamment de l'ordre d'insertion.</content>
+    <bulletPoints>
+      <point>Chaque élément a une valeur de priorité</point>
+      <point>Déqueue retire l'élément de priorité maximale</point>
+      <point>Implémentation efficace avec un tas (heap)</point>
+      <point>Complexité : insertion O(log n), suppression O(log n)</point>
+      <point>Applications : algorithme de Dijkstra, ordonnancement OS</point>
+    </bulletPoints>
+  </section>
+
+  <section id="7" title="Deque (Double-Ended Queue)">
+    <content>Un deque (double-ended queue) est une généralisation de la file qui permet l'insertion et la suppression aux deux extrémités. Il combine les fonctionnalités de la pile et de la file.</content>
+    <bulletPoints>
+      <point>Insertion et suppression en tête ET en queue</point>
+      <point>Combine pile et file en une seule structure</point>
+      <point>Toutes les opérations en O(1)</point>
+      <point>Implémenté avec liste doublement chaînée ou tableau circulaire</point>
+      <point>Application : algorithme de fenêtre glissante</point>
+    </bulletPoints>
+  </section>
+
+</chapter>
