@@ -1,4 +1,3 @@
-// lib/service/quiz/quiz_score_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../auth/LoginService.dart';
@@ -6,28 +5,63 @@ import '../auth/LoginService.dart';
 class QuizScoreService {
   static const String _baseUrl = 'http://localhost:3000/api';
 
-  /// Soumet le score d'un quiz et enregistre dans `passe`
+  static const Map<String, String> _algo1ChapterMap = {
+    'Chapitre 01': 'Introduction à l\'algorithmique',
+    'Chapitre 02': 'Conditions',
+    'Chapitre 03': 'Boucles',
+    'Chapitre 04': 'Structures de données – Vecteurs et Matrices',
+    'Chapitre 05': 'Sous-programmes (Fonctions et Procédures)',
+  };
+
+  static const Map<String, String> _algo2ChapterMap = {
+    'Chapitre 01': 'Tri et algorithmes de tri',
+    'Chapitre 02': 'Recherche',
+    'Chapitre 03': 'Récursivité avancée',
+    'Chapitre 04': 'Listes chaînées',
+    'Chapitre 05': 'Piles et Files',
+  };
+
   static Future<int?> submitScore({
     required int    correctAnswers,
-    required String algoType,  // ✅ restauré
-    String?         quizId,    // optionnel
+    required String algoType,
+    String?         quizId,
+    String?         chapterName,
+    int?            totalQuestions, // ✅ nouveau
+    String?         intensity,      // ✅ nouveau
   }) async {
     final token = LoginService.getToken();
     if (token == null) return null;
 
+    // ✅ Mapper le nom
+    String? mappedChapter;
+    if (chapterName != null) {
+      final map = algoType == 'algo2' ? _algo2ChapterMap : _algo1ChapterMap;
+      mappedChapter = map[chapterName] ?? chapterName;
+      print('📌 Chapter: "$chapterName" → "$mappedChapter"');
+    }
+
     try {
+      final body = {
+        'correctAnswers': correctAnswers,
+        'algoType':       algoType,
+        if (quizId        != null) 'quizId':         quizId,
+        if (mappedChapter != null) 'chapterName':     mappedChapter,
+        if (totalQuestions != null) 'totalQuestions': totalQuestions,
+        if (intensity     != null) 'intensity':      intensity,
+      };
+
+      print('📤 Envoi quiz: $body');
+
       final response = await http.post(
         Uri.parse('$_baseUrl/quiz/submit'),
         headers: {
           'Content-Type':  'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode({
-          'correctAnswers': correctAnswers,
-          'algoType':       algoType,
-          if (quizId != null && quizId.isNotEmpty) 'quizId': quizId,
-        }),
+        body: jsonEncode(body),
       );
+
+      print('📡 Response: ${response.statusCode} ${response.body}');
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -42,10 +76,7 @@ class QuizScoreService {
     }
   }
 
-  /// Marque un chapitre comme terminé (termine = true, pourcentage = 100)
-  static Future<bool> completeChapter({
-    required String chapterId,
-  }) async {
+  static Future<bool> completeChapter({required String chapterId}) async {
     final token = LoginService.getToken();
     if (token == null) return false;
 
@@ -60,10 +91,7 @@ class QuizScoreService {
       );
 
       final data = jsonDecode(response.body) as Map<String, dynamic>;
-
-      if (response.statusCode == 200 && data['success'] == true) {
-        return true;
-      }
+      if (response.statusCode == 200 && data['success'] == true) return true;
       print('❌ completeChapter: ${data['message']}');
       return false;
     } catch (e) {

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter id="Chapitre_02" title="Conditions - Structures conditionnelles">
 
+  <!-- ==================== MULTIPLE CHOICE QUESTIONS (20) ==================== -->
+
   <question id="c2_q1" type="multipleChoice">
     <enonce>What does an "if-else" statement do?</enonce>
     <choices>
@@ -98,17 +100,6 @@
       <choice id="D">Declaring variables</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q10" type="ordering">
-    <enonce>Order the steps of an if-else execution:</enonce>
-    <bonneReponse>Evaluate condition|Check if true|Execute if block|Execute else block</bonneReponse>
-    <codeLines>
-      <line>Execute if block</line>
-      <line>Evaluate condition</line>
-      <line>Execute else block</line>
-      <line>Check if true</line>
-    </codeLines>
   </question>
 
   <question id="c2_q11" type="multipleChoice">
@@ -210,17 +201,6 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q20" type="ordering">
-    <enonce>Order the steps of a switch statement execution:</enonce>
-    <bonneReponse>Evaluate expression|Compare to first case|Match found: execute case|Break: exit switch</bonneReponse>
-    <codeLines>
-      <line>Break: exit switch</line>
-      <line>Compare to first case</line>
-      <line>Evaluate expression</line>
-      <line>Match found: execute case</line>
-    </codeLines>
-  </question>
-
   <question id="c2_q21" type="multipleChoice">
     <enonce>What is the result of (!(false || false))?</enonce>
     <choices>
@@ -243,73 +223,31 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q23" type="multipleChoice">
-    <enonce>What is "fall-through" in a switch statement?</enonce>
-    <choices>
-      <choice id="A">When the default case runs first</choice>
-      <choice id="B">When execution continues to the next case without a break</choice>
-      <choice id="C">When no case matches</choice>
-      <choice id="D">When the switch crashes</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
+  <!-- ==================== ORDERING QUESTIONS (10) ==================== -->
+
+  <question id="c2_q10" type="ordering">
+    <enonce>Order the steps of an if-else execution:</enonce>
+    <bonneReponse>Evaluate condition|Check if true|Execute if block|Execute else block</bonneReponse>
+    <codeLines>
+      <line>Execute if block</line>
+      <line>Evaluate condition</line>
+      <line>Execute else block</line>
+      <line>Check if true</line>
+    </codeLines>
   </question>
 
-  <question id="c2_q24" type="multipleChoice">
-    <enonce>What condition must be true to enter an "if" block?</enonce>
-    <choices>
-      <choice id="A">The condition evaluates to false</choice>
-      <choice id="B">The condition evaluates to true</choice>
-      <choice id="C">The condition evaluates to zero</choice>
-      <choice id="D">The condition evaluates to null</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
+  <question id="c2_q20" type="ordering">
+    <enonce>Order the steps of a switch statement execution:</enonce>
+    <bonneReponse>Evaluate expression|Compare to first case|Match found: execute case|Break: exit switch</bonneReponse>
+    <codeLines>
+      <line>Break: exit switch</line>
+      <line>Compare to first case</line>
+      <line>Evaluate expression</line>
+      <line>Match found: execute case</line>
+    </codeLines>
   </question>
 
-  <question id="c2_q25" type="multipleChoice">
-    <enonce>What does a nested if statement mean?</enonce>
-    <choices>
-      <choice id="A">An if statement without an else</choice>
-      <choice id="B">An if statement inside another if statement</choice>
-      <choice id="C">An if statement inside a loop</choice>
-      <choice id="D">An if statement with multiple conditions</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q26" type="multipleChoice">
-    <enonce>What is the result of (true &amp;&amp; true)?</enonce>
-    <choices>
-      <choice id="A">false</choice>
-      <choice id="B">error</choice>
-      <choice id="C">true</choice>
-      <choice id="D">null</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q27" type="multipleChoice">
-    <enonce>Which of the following is a relational operator?</enonce>
-    <choices>
-      <choice id="A">&amp;&amp;</choice>
-      <choice id="B">||</choice>
-      <choice id="C">&gt;</choice>
-      <choice id="D">!</choice>
-    </choices>
-    <bonneReponse>C</bonneReponse>
-  </question>
-
-  <question id="c2_q28" type="multipleChoice">
-    <enonce>What happens if the condition in an "if" statement is always true?</enonce>
-    <choices>
-      <choice id="A">The else block always runs</choice>
-      <choice id="B">The if block always runs and the else block never runs</choice>
-      <choice id="C">A compile error occurs</choice>
-      <choice id="D">The program crashes</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
-  </question>
-
-  <question id="c2_q29" type="ordering">
+  <question id="c2_q23" type="ordering">
     <enonce>Order the logical operators by precedence (highest first):</enonce>
     <bonneReponse>NOT (!)|AND (&amp;&amp;)|OR (||)</bonneReponse>
     <codeLines>
@@ -319,15 +257,81 @@
     </codeLines>
   </question>
 
-  <question id="c2_q30" type="multipleChoice">
-    <enonce>What is the purpose of the "default" case in a switch statement?</enonce>
-    <choices>
-      <choice id="A">It is required in every switch statement</choice>
-      <choice id="B">It runs when no other case matches</choice>
-      <choice id="C">It runs before all other cases</choice>
-      <choice id="D">It replaces the break statement</choice>
-    </choices>
-    <bonneReponse>B</bonneReponse>
+  <question id="c2_q24" type="ordering">
+    <enonce>Order the steps to evaluate (true || false) &amp;&amp; false:</enonce>
+    <bonneReponse>Evaluate true OR false|Result is true|Evaluate true AND false|Result is false</bonneReponse>
+    <codeLines>
+      <line>Evaluate true AND false</line>
+      <line>Result is true</line>
+      <line>Evaluate true OR false</line>
+      <line>Result is false</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q25" type="ordering">
+    <enonce>Order the parts of an if-else if-else structure:</enonce>
+    <bonneReponse>if (condition1)|else if (condition2)|else|execute appropriate block</bonneReponse>
+    <codeLines>
+      <line>else if (condition2)</line>
+      <line>execute appropriate block</line>
+      <line>if (condition1)</line>
+      <line>else</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q26" type="ordering">
+    <enonce>Order the steps of ternary operator evaluation:</enonce>
+    <bonneReponse>Evaluate condition|Condition true: use value_if_true|Condition false: use value_if_false|Assign result to variable</bonneReponse>
+    <codeLines>
+      <line>Assign result to variable</line>
+      <line>Condition false: use value_if_false</line>
+      <line>Condition true: use value_if_true</line>
+      <line>Evaluate condition</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q27" type="ordering">
+    <enonce>Order the evaluation of (!false || true) &amp;&amp; false:</enonce>
+    <bonneReponse>NOT false = true|true OR true = true|true AND false = false</bonneReponse>
+    <codeLines>
+      <line>true AND false = false</line>
+      <line>true OR true = true</line>
+      <line>NOT false = true</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q28" type="ordering">
+    <enonce>Order the switch statement components from first to last:</enonce>
+    <bonneReponse>switch (expression)|case value:|break;|default:</bonneReponse>
+    <codeLines>
+      <line>break;</line>
+      <line>case value:</line>
+      <line>default:</line>
+      <line>switch (expression)</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q29" type="ordering">
+    <enonce>Order the steps of nested if-else execution:</enonce>
+    <bonneReponse>Enter outer if|Check outer condition true|Enter inner if|Execute inner if block</bonneReponse>
+    <codeLines>
+      <line>Enter inner if</line>
+      <line>Check outer condition true</line>
+      <line>Execute inner if block</line>
+      <line>Enter outer if</line>
+    </codeLines>
+  </question>
+
+  <question id="c2_q30" type="ordering">
+    <enonce>Order the correct syntax for an if-else statement:</enonce>
+    <bonneReponse>if (condition) {|// if block| } else {|// else block| }</bonneReponse>
+    <codeLines>
+      <line> } else {</line>
+      <line>if (condition) {</line>
+      <line>// else block</line>
+      <line>// if block</line>
+      <line> }</line>
+    </codeLines>
   </question>
 
 </chapter>

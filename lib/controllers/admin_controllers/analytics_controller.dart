@@ -1,3 +1,4 @@
+// lib/controllers/admin_controllers/analytics_controller.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../models/admin_models/analytics_model.dart';
@@ -15,15 +16,11 @@ class AnalyticsController {
   bool isLoading = false;
 
   Future<void> loadAnalytics() async {
-    isLoading = true; // ✅ FIX 1 : avant le check token
+    isLoading = true;
 
     try {
       final token = LoginService.getToken();
-
-      if (token == null) {
-        print('❌ Token manquant');
-        return;
-      }
+      if (token == null) return;
 
       final response = await http.get(
         Uri.parse('$_baseUrl/admin/analytics'),
@@ -39,22 +36,13 @@ class AnalyticsController {
         final d = data['data'];
 
         final algo1 = (d['algo1Chapters'] as List)
-            .map((e) => ChapterStat(
-                  label:           e['label'] as String,
-                  algo1Completion: (e['completion'] as num).toDouble(),
-                  algo2Completion: 0.0,
-                ))
+            .map((e) => ChapterStat.fromApi(e))
             .toList();
 
         final algo2 = (d['algo2Chapters'] as List)
-            .map((e) => ChapterStat(
-                  label:           e['label'] as String,
-                  algo1Completion: 0.0,
-                  algo2Completion: (e['completion'] as num).toDouble(),
-                ))
+            .map((e) => ChapterStat.fromApiAlgo2(e))
             .toList();
 
-        // ✅ FIX 2 : fusion par label, pas par index
         final allLabels = {
           ...algo1.map((e) => e.label),
           ...algo2.map((e) => e.label),
@@ -76,15 +64,22 @@ class AnalyticsController {
           );
         }).toList();
 
-        final quizStats = (d['quizStats'] as List)
+        final quizStatsAlgo1 = (d['quizStatsAlgo1'] as List)
+            .map((e) => QuizStat.fromApi(e))
+            .toList();
+
+        final quizStatsAlgo2 = (d['quizStatsAlgo2'] as List)
             .map((e) => QuizStat.fromApi(e))
             .toList();
 
         model = AnalyticsModel(
-          totalQuizzesDone: (d['totalQuizzesDone'] as num).toInt(), // ✅ FIX 3 : cast sûr
+          totalQuizzesDone: (d['totalQuizzesDone'] as num).toInt(),
           chapters:         merged,
-          quizStats:        quizStats,
+          quizStats:        quizStatsAlgo1,
+          quizStatsAlgo1:   quizStatsAlgo1,
+          quizStatsAlgo2:   quizStatsAlgo2,
           selectedAlgo:     model.selectedAlgo,
+          selectedQuizAlgo: model.selectedQuizAlgo,
         );
       } else {
         print('❌ Erreur API: ${data['message']}');
@@ -92,9 +87,10 @@ class AnalyticsController {
     } catch (e) {
       print('❌ Erreur analytics: $e');
     } finally {
-      isLoading = false; // ✅ FIX 4 : finally garantit le reset même en cas d'erreur
+      isLoading = false;
     }
   }
 
-  void selectAlgo(int index) => model.selectedAlgo = index;
+  void selectAlgo(int index)     => model.selectedAlgo     = index;
+  void selectQuizAlgo(int index) => model.selectedQuizAlgo = index;
 }

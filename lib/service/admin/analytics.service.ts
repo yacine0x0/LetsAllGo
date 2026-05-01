@@ -1,88 +1,122 @@
+// lib/service/admin/analytics.service.ts
 import { PrismaClient } from '@prisma/client';
 
-// ✅ Singleton Prisma — évite les fuites mémoire
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-const JOURS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const CHAPTER_LABELS_ALGO1: Record<string, string> = {
+  'Chapitre 01': 'Intro',
+  'Chapitre 02': 'Conditions',
+  'Chapitre 03': 'Boucles',
+  'Chapitre 04': 'Structures',
+  'Chapitre 05': 'Sous-prog',
+};
+
+const CHAPTER_LABELS_ALGO2: Record<string, string> = {
+  'Chapitre 01': 'Tri',
+  'Chapitre 02': 'Recherche',
+  'Chapitre 03': 'Récursivité',
+  'Chapitre 04': 'Listes',
+  'Chapitre 05': 'Piles/Files',
+};
 
 export const getAnalytics = async () => {
 
-  // ✅ Requêtes parallèles — plus rapide
-  const [chapitres, totalQuizzesDone, quizParJour] = await Promise.all([
+  // ── 1. Chapitres avec progression depuis suividuchapitre
+  const chapitres = await prisma.chapitre.findMany({
+    select: {
+      id_chapitre:         true,
+      titre:               true,
+      pourcentagechapitre: true,
+      module:              { select: { nom: true } },
+      suividuchapitre:     { select: { complete: true } },
+    },
+    orderBy: { titre: 'asc' },
+  });
 
-    prisma.chapitre.findMany({
-      select: {
-        titre:               true,
-        pourcentagechapitre: true,
-        id_module:           true,
-        module: {
-          select: { nom: true },
-        },
-      },
-      orderBy: { titre: 'asc' },
-    }),
-
-    prisma.passe.count(),
-
-    prisma.suividuchapitre.groupBy({
-      by:      ['datepassage'],
-      _count:  { id_s: true },
-      where:   {
-        datepassage: {
-          gte: (() => {
-            const d = new Date();
-            d.setDate(d.getDate() - 6);
-            d.setHours(0, 0, 0, 0);
-            return d;
-          })(),
-        },
-      },
-      orderBy: { datepassage: 'asc' },
-    }),
-
-  ]);
-
-  // ✅ 7 jours complets dans le bon ordre, avec 0 pour les jours sans données
-  const quizStats = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() - (6 - i));
-    d.setHours(0, 0, 0, 0);
-    const found = quizParJour.find(q =>
-      q.datepassage && new Date(q.datepassage).toDateString() === d.toDateString()
-    );
+  const chapitresAvecProgression = chapitres.map(c => {
+    const total    = c.suividuchapitre.length;
+    const termines = c.suividuchapitre.filter(s => s.complete === true).length;
+    const completion = total > 0
+      ? termines / total
+      : (c.pourcentagechapitre ?? 0) / 100;
     return {
-      day:         JOURS[d.getDay()],
-      quizzesDone: found?._count.id_s ?? 0,
+      titre:      c.titre,
+      module_nom: c.module?.nom?.toLowerCase() ?? '',
+      completion,
     };
   });
 
-  // ✅ Filtrage des chapitres par module
-  const algo1 = chapitres.filter(c => {
-    const nom = c.module?.nom?.toLowerCase() ?? '';
-    return nom.includes('1') || nom.includes('algo') || nom.includes('algorithmique');
+  // ── 2. Total questions dans tous les quiz (somme nombrequestionstotal)
+  const totalResult = await prisma.quizz.aggregate({
+    _sum: { nombrequestionstotal: true },
+  });
+  const totalQuizzesDone = totalResult._sum.nombrequestionstotal ?? 0;
+
+  // ── 3. Quiz groupés par chapitre — Algo1
+  const quizzAlgo1 = await prisma.quizz.groupBy({
+    by:     ['chapitresselectionnees'],
+    where:  { intensite: 'algo1' },
+    _count: { id_quiz: true },
+    _sum:   { nombrequestionstotal: true },
   });
 
-  const algo2 = chapitres.filter(c => {
-    const nom = c.module?.nom?.toLowerCase() ?? '';
-    return nom.includes('2');
+  // ── 4. Quiz groupés par chapitre — Algo2
+  const quizzAlgo2 = await prisma.quizz.groupBy({
+    by:     ['chapitresselectionnees'],
+    where:  { intensite: 'algo2' },
+    _count: { id_quiz: true },
+    _sum:   { nombrequestionstotal: true },
   });
 
-  // ✅ Fallback : si aucun filtre ne correspond, tout mettre dans algo1
-  const finalAlgo1 = algo1.length > 0 ? algo1 : chapitres;
-  const finalAlgo2 = algo2.length > 0 ? algo2 : [];
+  // ── Debug : afficher les vraies valeurs de chapitresselectionnees
+  console.log('quizzAlgo1 raw:', JSON.stringify(quizzAlgo1, null, 2));
+  console.log('quizzAlgo2 raw:', JSON.stringify(quizzAlgo2, null, 2));
+
+  // ── 5. Formater quizStatsAlgo1 — valeur = somme nombrequestionstotal
+  const quizStatsAlgo1 = Object.entries(CHAPTER_LABELS_ALGO1).map(([key, label]) => {
+    const found = quizzAlgo1.find(q => q.chapitresselectionnees === key);
+    return {
+      day:            label,
+      quizzesDone:    found?._sum.nombrequestionstotal ?? 0,
+      totalQuestions: found?._sum.nombrequestionstotal ?? 0,
+    };
+  });
+
+  // ── 6. Formater quizStatsAlgo2 — valeur = somme nombrequestionstotal
+  const quizStatsAlgo2 = Object.entries(CHAPTER_LABELS_ALGO2).map(([key, label]) => {
+    const found = quizzAlgo2.find(q => q.chapitresselectionnees === key);
+    return {
+      day:            label,
+      quizzesDone:    found?._sum.nombrequestionstotal ?? 0,
+      totalQuestions: found?._sum.nombrequestionstotal ?? 0,
+    };
+  });
+
+  // ── 7. Séparer chapitres Algo1 / Algo2 par module_nom
+  const algo1Chapters = chapitresAvecProgression
+    .filter(c => c.module_nom.includes('algo1') || c.module_nom.includes('algorithme 1'))
+    .map(c => ({ label: c.titre, completion: c.completion }));
+
+  const algo2Chapters = chapitresAvecProgression
+    .filter(c => c.module_nom.includes('algo2') || c.module_nom.includes('algorithme 2'))
+    .map(c => ({ label: c.titre, completion: c.completion }));
+
+  const finalAlgo1 = algo1Chapters.length > 0
+    ? algo1Chapters
+    : chapitresAvecProgression.map(c => ({ label: c.titre, completion: c.completion }));
+
+  const finalAlgo2 = algo2Chapters.length > 0
+    ? algo2Chapters
+    : [];
 
   return {
     totalQuizzesDone,
-    quizStats,
-    algo1Chapters: finalAlgo1.map(c => ({
-      label:      c.titre,
-      completion: (c.pourcentagechapitre ?? 0) / 100,
-    })),
-    algo2Chapters: finalAlgo2.map(c => ({
-      label:      c.titre,
-      completion: (c.pourcentagechapitre ?? 0) / 100,
-    })),
+    quizStats:      quizStatsAlgo1,
+    quizStatsAlgo1,
+    quizStatsAlgo2,
+    algo1Chapters:  finalAlgo1,
+    algo2Chapters:  finalAlgo2,
   };
 };
