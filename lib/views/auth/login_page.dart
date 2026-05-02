@@ -197,6 +197,8 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.white,
                                       fontSize: h * 0.016),
                                   keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.next,
+                                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                                   decoration: InputDecoration(
                                     labelText: "Email",
                                     labelStyle: TextStyle(
@@ -230,6 +232,8 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.white,
                                       fontSize: h * 0.016),
                                   obscureText: _obscurePassword,
+                                  textInputAction: TextInputAction.done,
+                                  onSubmitted: (_) => _handleLogin(),
                                   decoration: InputDecoration(
                                     labelText: lang.t("Mot de passe", "Password"),
                                     labelStyle: TextStyle(
@@ -310,7 +314,7 @@ class _LoginPageState extends State<LoginPage> {
                                         ? const CircularProgressIndicator(
                                             color: Colors.white)
                                         : Text(
-                                            lang.t("Se connecter", "Login"),
+                                            lang.t("Entrer", "Enter"),
                                             style: TextStyle(
                                                 fontSize: h * 0.02,
                                                 color: Colors.white)),

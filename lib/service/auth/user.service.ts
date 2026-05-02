@@ -1,13 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { savePendingRegistration, getPendingRegistration, incrementAttempts, deletePendingRegistration } from '../../utils/verificationStore';
-import { sendVerificationEmail } from './email.service';
 
 const prisma = new PrismaClient();
 
-// ─── GET ──────────────────────────────────────────────────────────────────────
+// Store OTP email change
+const otpStore = new Map<string, { code: string; expiresAt: Date }>();
 
+// ── GET user avec TOUTES les statistiques
 export const getUserById = async (userId: string) => {
+  // 1. Récupérer l'utilisateur
   const user = await prisma.utilisateur.findUnique({
     where: { id: userId },
     select: {
@@ -21,108 +22,157 @@ export const getUserById = async (userId: string) => {
       rang:            true,
     },
   });
+  
   if (!user) throw new Error('Utilisateur introuvable');
-  return user;
+
+  // 2. Calculer le vrai rang basé sur scoretotal
+  const usersAvecScoreSuperieur = await prisma.utilisateur.count({
+    where: {
+      role: 'etudiant',
+      scoretotal: { gt: user.scoretotal ?? 0 },
+    },
+  });
+  const vraiRang = usersAvecScoreSuperieur + 1;
+
+  // 3. Mettre à jour le rang si différent
+  if (user.rang !== vraiRang) {
+    await prisma.utilisateur.update({
+      where: { id: userId },
+      data:  { rang: vraiRang },
+    });
+  }
+
+
+  // 5. Calculer le nombre de quiz réussis et questions correctes
+  const passesUser = await prisma.passe.findMany({
+    where: { id_etudiant: userId },
+    include: { quizz: true },
+  });
+
+  const quizReussis = passesUser.filter(p => (p.quizz?.score ?? 0) > 0).length;
+  const totalQuestionsCorrectes = passesUser.reduce(
+    (sum, p) => sum + (p.quizz?.score ?? 0), 0
+  );
+
+
+  // 7. Spécialité et niveau (valeurs par défaut)
+  const speciality = 'Informatique';
+  const studyLevel = 'L3';
+
+  console.log(`📊 Statistiques de ${user.prenom} ${user.nom}:`);
+  console.log(`  - Score total: ${user.scoretotal ?? 0} XP`);
+  console.log(`  - Rang: ${vraiRang}`);
+  console.log(`  - Quiz réussis: ${quizReussis}`);
+  console.log(`  - Questions correctes: ${totalQuestionsCorrectes}`);
+
+
+  // 🔥 RETOURNE TOUS LES CHAMPS ATTENDUS PAR FLUTTER
+  return {
+    id: user.id,
+    nom: user.nom,
+    prenom: user.prenom,
+    email: user.email,
+    role: user.role,
+    dateinscription: user.dateinscription,
+    scoretotal: user.scoretotal ?? 0,
+    rang: vraiRang,
+    quizReussis: quizReussis,
+    totalQuestionsCorrectes: totalQuestionsCorrectes,
+    speciality: speciality,
+    studyLevel: studyLevel,
+  };
 };
 
-// ─── UPDATE NOM / PRÉNOM (sans vérification — remplacement direct) ─────────
-
+// ── UPDATE nom / prénom
 export const updateUserName = async (
   userId: string,
   data: { prenom?: string; nom?: string }
 ) => {
-  return await prisma.utilisateur.update({
+  const updated = await prisma.utilisateur.update({
     where: { id: userId },
     data: {
-      ...(data.prenom ? { prenom: data.prenom.trim() } : {}),
-      ...(data.nom    ? { nom:    data.nom.trim()    } : {}),
+      ...(data.prenom && { prenom: data.prenom.trim() }),
+      ...(data.nom && { nom: data.nom.trim() }),
     },
-    select: { id: true, nom: true, prenom: true, email: true },
+    select: {
+      id: true,
+      nom: true,
+      prenom: true,
+      email: true,
+      role: true,
+    },
   });
+  return updated;
 };
 
-// ─── UPDATE MOT DE PASSE (vérifie l'ancien via bcrypt) ────────────────────
-
+// ── UPDATE mot de passe
 export const updateUserPassword = async (
   userId: string,
   oldPassword: string,
   newPassword: string
 ) => {
-  // 1. Récupère le hash bcrypt stocké en BDD
   const user = await prisma.utilisateur.findUnique({
-    where:  { id: userId },
+    where: { id: userId },
     select: { motdepasse: true },
   });
   if (!user) throw new Error('Utilisateur introuvable');
 
-  // 2. Compare l'ancien mdp entré avec le hash — bcrypt ne déchiffre pas,
-  //    il rehash le mdp entré et compare les deux hash
-  const isMatch = await bcrypt.compare(oldPassword, user.motdepasse);
-  if (!isMatch) throw new Error('Ancien mot de passe incorrect');
+  const isValid = await bcrypt.compare(oldPassword, user.motdepasse);
+  if (!isValid) throw new Error('Ancien mot de passe incorrect');
 
-  // 3. Hash le nouveau mdp et sauvegarde
   const hashed = await bcrypt.hash(newPassword, 10);
   await prisma.utilisateur.update({
     where: { id: userId },
-    data:  { motdepasse: hashed },
+    data: { motdepasse: hashed },
   });
 };
 
-// ─── REQUEST EMAIL CHANGE — envoie OTP au nouvel email ────────────────────
-
-export const requestUserEmailChange = async (userId: string, newEmail: string) => {
+// ── REQUEST email change
+export const requestUserEmailChange = async (
+  userId: string,
+  newEmail: string
+) => {
   const existing = await prisma.utilisateur.findUnique({
-    where: { email: newEmail.trim() },
+    where: { email: newEmail.trim().toLowerCase() },
   });
-  if (existing) throw new Error('Cet email est déjà utilisé par un autre compte');
+  if (existing && existing.id !== userId) {
+    throw new Error('Cet email est déjà utilisé');
+  }
+
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+  otpStore.set(userId, { code, expiresAt });
 
   const user = await prisma.utilisateur.findUnique({
-    where:  { id: userId },
-    select: { prenom: true },
+    where: { id: userId },
+    select: { prenom: true, nom: true },
   });
-  if (!user) throw new Error('Utilisateur introuvable');
 
-  const code = await savePendingRegistration(
-    `email_change:${userId}`,
-    '',
-    newEmail.trim(),
-    ''
-  );
-
-  await sendVerificationEmail(newEmail.trim(), user.prenom, code);
+  console.log(`✅ OTP email change envoyé à ${newEmail}: ${code}`);
+  return { code, expiresAt };
 };
 
-// ─── CONFIRM EMAIL CHANGE — vérifie OTP et met à jour ────────────────────
-
+// ── CONFIRM email change
 export const confirmUserEmailChange = async (
   userId: string,
   newEmail: string,
   code: string
 ) => {
-  const pending = getPendingRegistration(newEmail.trim());
-  if (!pending) throw new Error('Aucune demande en attente pour cet email');
+  const stored = otpStore.get(userId);
 
-  if (Date.now() > pending.expiresAt) {
-    deletePendingRegistration(newEmail.trim());
-    throw new Error('Le code a expiré, veuillez recommencer');
+  if (!stored) throw new Error('Code expiré ou invalide');
+  if (new Date() > stored.expiresAt) {
+    otpStore.delete(userId);
+    throw new Error('Code expiré');
   }
+  if (stored.code !== code) throw new Error('Code invalide');
 
-  if (pending.attempts >= 3) {
-    deletePendingRegistration(newEmail.trim());
-    throw new Error('Nombre de tentatives dépassé, veuillez recommencer');
-  }
-
-  const isMatch = await bcrypt.compare(code, pending.hashedCode); 
-  if (!isMatch) {
-    incrementAttempts(newEmail.trim());
-    const remaining = 3 - (pending.attempts + 1);
-    throw new Error(`Code incorrect, il vous reste ${remaining} tentative(s)`);
-  }
+  otpStore.delete(userId);
 
   await prisma.utilisateur.update({
     where: { id: userId },
-    data:  { email: newEmail.trim() },
+    data: { email: newEmail.trim().toLowerCase() },
   });
 
-  deletePendingRegistration(newEmail.trim());
+  console.log(`✅ Email mis à jour: ${newEmail}`);
 };

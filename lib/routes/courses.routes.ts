@@ -1,7 +1,7 @@
 // lib/routes/courses.routes.ts
 import { Router }     from 'express';
 import { requireAuth } from '../middlewares/auth.middleware';
-import { completeChapter as completeChapterHandler } from '../controllers/auth/quiz.controller';
+import { completeChapter as completeChapterHandler } from '../controllers/quiz/quiz.controller';
 
 const router = Router();
 

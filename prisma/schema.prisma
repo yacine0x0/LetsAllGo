@@ -145,6 +145,7 @@ model obtient {
 model passe {
   id_etudiant String      @db.Uuid
   id_quiz     String      @db.Uuid
+  datepassage DateTime?   @default(now()) @db.Timestamp(6)
   utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
   quizz       quizz       @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
 

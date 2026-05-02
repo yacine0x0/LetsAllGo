@@ -20,7 +20,10 @@ class AnalyticsController {
 
     try {
       final token = LoginService.getToken();
-      if (token == null) return;
+      if (token == null) {
+        print('❌ Token null');
+        return;
+      }
 
       final response = await http.get(
         Uri.parse('$_baseUrl/admin/analytics'),
@@ -30,10 +33,20 @@ class AnalyticsController {
         },
       );
 
+      // ✅ Debug complet
+      print('STATUS: ${response.statusCode}');
+      print('BODY: ${response.body}');
+
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 200 && data['success'] == true) {
         final d = data['data'];
+
+        // ✅ Debug champs quiz
+        print('quizStatsAlgo1: ${d['quizStatsAlgo1']}');
+        print('quizStatsAlgo2: ${d['quizStatsAlgo2']}');
+        print('algo1Chapters:  ${d['algo1Chapters']}');
+        print('algo2Chapters:  ${d['algo2Chapters']}');
 
         final algo1 = (d['algo1Chapters'] as List)
             .map((e) => ChapterStat.fromApi(e))
@@ -51,11 +64,17 @@ class AnalyticsController {
         final merged = allLabels.map((label) {
           final a1 = algo1.firstWhere(
             (e) => e.label == label,
-            orElse: () => ChapterStat(label: label, algo1Completion: 0.0, algo2Completion: 0.0),
+            orElse: () => ChapterStat(
+                label: label,
+                algo1Completion: 0.0,
+                algo2Completion: 0.0),
           );
           final a2 = algo2.firstWhere(
             (e) => e.label == label,
-            orElse: () => ChapterStat(label: label, algo1Completion: 0.0, algo2Completion: 0.0),
+            orElse: () => ChapterStat(
+                label: label,
+                algo1Completion: 0.0,
+                algo2Completion: 0.0),
           );
           return ChapterStat(
             label:           label,
@@ -72,6 +91,9 @@ class AnalyticsController {
             .map((e) => QuizStat.fromApi(e))
             .toList();
 
+        print(' quizStatsAlgo1 parsed: ${quizStatsAlgo1.length} items');
+        print(' quizStatsAlgo2 parsed: ${quizStatsAlgo2.length} items');
+
         model = AnalyticsModel(
           totalQuizzesDone: (d['totalQuizzesDone'] as num).toInt(),
           chapters:         merged,
@@ -82,10 +104,11 @@ class AnalyticsController {
           selectedQuizAlgo: model.selectedQuizAlgo,
         );
       } else {
-        print('❌ Erreur API: ${data['message']}');
+        print(' Erreur API: ${data['message']}');
       }
-    } catch (e) {
-      print('❌ Erreur analytics: $e');
+    } catch (e, stack) {
+      print(' Erreur analytics: $e');
+      print(' Stack: $stack');
     } finally {
       isLoading = false;
     }

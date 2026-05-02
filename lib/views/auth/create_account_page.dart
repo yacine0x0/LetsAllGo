@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';                    // ← Ajouté
-import '../../service/language_service.dart';             // ← Déjà présent mais bien placé
+import 'package:provider/provider.dart';
+import '../../service/language_service.dart';
 
 import 'package:flutter_project_1/controllers/auth/create_account_controller.dart';
 import 'package:flutter_project_1/controllers/auth/verify_account_controller.dart';
@@ -45,15 +45,37 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   }
 
   Future<void> _handleCreateAccount() async {
+    // Vérification des champs requis
+    if (_firstNameCtrl.text.trim().isEmpty) {
+      setState(() => _errorMessage = "Le prénom est requis / First name is required");
+      return;
+    }
+    if (_lastNameCtrl.text.trim().isEmpty) {
+      setState(() => _errorMessage = "Le nom est requis / Last name is required");
+      return;
+    }
+    if (_emailCtrl.text.trim().isEmpty || !_emailCtrl.text.contains('@')) {
+      setState(() => _errorMessage = "Email valide requis / Valid email required");
+      return;
+    }
+    if (_passwordCtrl.text.length < 6) {
+      setState(() => _errorMessage = "Le mot de passe doit contenir au moins 6 caractères / Password must be at least 6 characters");
+      return;
+    }
+    if (_selectedGender == null) {
+      setState(() => _errorMessage = "Veuillez sélectionner un genre / Please select a gender");
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     final error = await _createController.createAccount(
-      firstName: _firstNameCtrl.text,
-      lastName: _lastNameCtrl.text,
-      email: _emailCtrl.text,
+      firstName: _firstNameCtrl.text.trim(),
+      lastName: _lastNameCtrl.text.trim(),
+      email: _emailCtrl.text.trim(),
       password: _passwordCtrl.text,
       gender: _selectedGender ?? '',
     );
@@ -64,19 +86,25 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     });
 
     if (error == null) {
-      _verifyController = VerifyAccountController(email: _emailCtrl.text);
+      _verifyController = VerifyAccountController(email: _emailCtrl.text.trim());
       setState(() => _currentStep = _AccountStep.verifyAccount);
     }
   }
 
   Future<void> _handleVerifyPin() async {
+    final pin = _pinCtrl.text.trim();
+    if (pin.length != 6) {
+      setState(() => _errorMessage = "Le code PIN doit contenir 6 chiffres / PIN must be 6 digits");
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
       _isVerified = false;
     });
 
-    final error = await _verifyController.verifyPin(_pinCtrl.text);
+    final error = await _verifyController.verifyPin(pin);
 
     setState(() {
       _isLoading = false;
@@ -87,7 +115,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final lang = context.watch<LanguageService>();   // ← CORRIGÉ
+    final lang = context.watch<LanguageService>();
 
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
@@ -141,7 +169,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              lang.t('Créer un compte',  'Create Account'),
+              lang.t('Créer un compte', 'Create Account'),
               style: TextStyle(
                 fontSize: h * 0.04,
                 fontWeight: FontWeight.bold,
@@ -155,16 +183,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 Expanded(
                   child: _buildField(
                     controller: _firstNameCtrl,
-                    label: lang.t('Nom',  'First Name'),
+                    label: lang.t('Prénom', 'First Name'),
                     h: h,
+                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                   ),
                 ),
                 SizedBox(width: w * 0.02),
                 Expanded(
                   child: _buildField(
                     controller: _lastNameCtrl,
-                    label: lang.t('Prénom',  'Last Name'),
+                    label: lang.t('Nom', 'Last Name'),
                     h: h,
+                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                   ),
                 ),
               ],
@@ -173,9 +203,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
             _buildField(
               controller: _emailCtrl,
-              label: lang.t('Email',  'Email'),
+              label: lang.t('Email', 'Email'),
               h: h,
               keyboardType: TextInputType.emailAddress,
+              onSubmitted: (_) => FocusScope.of(context).nextFocus(),
             ),
             SizedBox(height: h * 0.025),
 
@@ -183,8 +214,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               controller: _passwordCtrl,
               obscureText: _obscurePassword,
               style: TextStyle(fontSize: h * 0.018),
+              textInputAction: TextInputAction.next,
+              onSubmitted: (_) => FocusScope.of(context).nextFocus(),
               decoration: InputDecoration(
-                labelText: lang.t('Mot De Passe',  'Password'),
+                labelText: lang.t('Mot De Passe', 'Password'),
                 labelStyle: TextStyle(fontSize: h * 0.016),
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
@@ -246,7 +279,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  lang.t('Vous avez déja un compte',  'Already have an account ? '),
+                  lang.t('Vous avez déjà un compte', 'Already have an account? '),
                   style: TextStyle(color: Colors.grey, fontSize: h * 0.015),
                 ),
                 GestureDetector(
@@ -255,7 +288,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     MaterialPageRoute(builder: (_) => const LoginPage()),
                   ),
                   child: Text(
-                    lang.t(' Connexion', ' Login'),
+                    lang.t('Connexion', 'Login'),
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
@@ -292,20 +325,30 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 children: [
                   const Icon(Icons.arrow_back_ios, size: 16, color: Colors.black54),
                   SizedBox(width: w * 0.005),
-                  Text("Back", style: TextStyle(fontSize: h * 0.016, color: Colors.black54)),
+                  Text(
+                    lang.t('Retour', 'Back'),
+                    style: TextStyle(fontSize: h * 0.016, color: Colors.black54),
+                  ),
                 ],
               ),
             ),
             SizedBox(height: h * 0.03),
 
             Text(
-              lang.t('Compte Vérifié',  'Verify Account'),
-              style: TextStyle(fontSize: h * 0.04, fontWeight: FontWeight.bold, color: Colors.black87),
+              lang.t('Vérifier le compte', 'Verify Account'),
+              style: TextStyle(
+                fontSize: h * 0.04,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
             SizedBox(height: h * 0.015),
 
             Text(
-              lang.t('Un code de vérification a été envoyé a votre adresse Email', 'A 6-digit PIN code has been sent to your email address.'),
+              lang.t(
+                'Un code de vérification a été envoyé à votre adresse email',
+                'A 6-digit PIN code has been sent to your email address.',
+              ),
               style: TextStyle(fontSize: h * 0.016, color: Colors.black54),
             ),
             SizedBox(height: h * 0.04),
@@ -315,31 +358,45 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               keyboardType: TextInputType.number,
               maxLength: 6,
               style: TextStyle(fontSize: h * 0.022, letterSpacing: h * 0.01),
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _handleVerifyPin(),
               decoration: InputDecoration(
-                labelText: lang.t('Enter your PIN code' , 'Enter the code pin' ),
+                labelText: lang.t('Code PIN', 'Enter the PIN code'),
                 labelStyle: TextStyle(fontSize: h * 0.016),
                 border: const OutlineInputBorder(),
                 counterText: '',
                 suffixIcon: _isVerified
                     ? const Icon(Icons.check_circle, color: Colors.green)
-                    : (_errorMessage != null ? const Icon(Icons.cancel, color: Colors.red) : null),
+                    : (_errorMessage != null && _errorMessage != 'verification_reussie'
+                        ? const Icon(Icons.cancel, color: Colors.red)
+                        : null),
               ),
             ),
             SizedBox(height: h * 0.02),
 
-            if (_errorMessage != null)
-              Text(_errorMessage!, style: TextStyle(color: Colors.red, fontSize: h * 0.015)),
+            if (_errorMessage != null && !_isVerified)
+              Text(
+                _errorMessage!,
+                style: TextStyle(color: Colors.red, fontSize: h * 0.015),
+              ),
 
             if (_isVerified)
-              Row(
-                children: [
-                  const Icon(Icons.verified, color: Colors.green, size: 18),
-                  const SizedBox(width: 6),
-                  Text(
-                    lang.t('verification reussie' , 'Verified successfully !'),
-                    style: TextStyle(color: Colors.green, fontSize: h * 0.016, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              Container(
+                padding: EdgeInsets.symmetric(vertical: h * 0.01),
+                child: Row(
+                  children: [
+                    const Icon(Icons.verified, color: Colors.green, size: 18),
+                    const SizedBox(width: 6),
+                    Text(
+                      lang.t('Vérification réussie !', 'Verified successfully!'),
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: h * 0.016,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             SizedBox(height: h * 0.03),
 
@@ -351,12 +408,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   onPressed: _isLoading ? null : _handleVerifyPin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black87,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          lang.t('verifier' , 'Verify'),
+                          lang.t('Vérifier', 'Verify'),
                           style: TextStyle(fontSize: h * 0.02, color: Colors.white),
                         ),
                 ),
@@ -378,7 +437,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green.shade600,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                 ),
               ),
@@ -393,11 +454,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     required String label,
     required double h,
     TextInputType keyboardType = TextInputType.text,
+    ValueChanged<String>? onSubmitted,
   }) {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
       style: TextStyle(fontSize: h * 0.018),
+      textInputAction: TextInputAction.next,
+      onSubmitted: onSubmitted,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(fontSize: h * 0.016),

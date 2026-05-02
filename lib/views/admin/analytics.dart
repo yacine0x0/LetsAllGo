@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'dart:ui';
 import '../../controllers/admin_controllers/analytics_controller.dart';
 import '../../models/admin_models/analytics_model.dart';
@@ -57,8 +58,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               Expanded(
                 child: _isLoading
                     ? const Center(
-                        child: CircularProgressIndicator(
-                            color: Colors.greenAccent))
+                        child: CircularProgressIndicator(color: Colors.greenAccent))
                     : _controller.model.chapters.isEmpty &&
                               _controller.model.quizStats.isEmpty
                         ? Center(
@@ -66,36 +66,28 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.bar_chart,
-                                    color: Colors.white24,
-                                    size: h * 0.08),
+                                    color: Colors.white24, size: h * 0.08),
                                 SizedBox(height: h * 0.02),
                                 Text(
-                                  lang.t(
-                                    "Aucune donnée disponible",
-                                    "No data available",
-                                  ),
+                                  lang.t("Aucune donnée disponible", "No data available"),
                                   style: TextStyle(
-                                      color: Colors.white54,
-                                      fontSize: h * 0.02),
+                                      color: Colors.white54, fontSize: h * 0.02),
                                 ),
                               ],
                             ),
                           )
                         : SingleChildScrollView(
                             padding: EdgeInsets.symmetric(
-                              horizontal: w * 0.03,
-                              vertical:   h * 0.03,
-                            ),
+                                horizontal: w * 0.03, vertical: h * 0.03),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   lang.t("Analytique", "Analytics"),
                                   style: TextStyle(
-                                    color:      Colors.white,
-                                    fontSize:   h * 0.04,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      color:      Colors.white,
+                                      fontSize:   h * 0.04,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: h * 0.005),
                                 Text(
@@ -104,8 +96,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                                     "View student performance by chapter and quiz.",
                                   ),
                                   style: TextStyle(
-                                      color:    Colors.white54,
-                                      fontSize: h * 0.016),
+                                      color: Colors.white54, fontSize: h * 0.016),
                                 ),
                                 SizedBox(height: h * 0.03),
                                 _buildCoursesSection(h, w, lang),
@@ -143,22 +134,18 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               SizedBox(height: h * 0.02),
               Image.asset(
                 "assets/images/icone_dash.png",
-                width:  h * 0.13,
-                height: h * 0.13,
+                width: h * 0.13, height: h * 0.13,
                 errorBuilder: (_, __, ___) =>
                     const Icon(Icons.school, color: Colors.blue, size: 40),
               ),
               SizedBox(height: h * 0.04),
-
               ...items.asMap().entries.map(
                 (entry) => GestureDetector(
                   onTap: () {
                     setState(() => _selectedSidebarIndex = entry.key);
                     if (entry.key == 0) {
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (_) => const AdminPage()),
-                      );
+                          MaterialPageRoute(builder: (_) => const AdminPage()));
                     } else if (entry.key == 2) {
                       Navigator.of(context).push(PageRouteBuilder(
                         pageBuilder: (_, __, ___) => const ProfilePage(),
@@ -166,7 +153,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                             SlideTransition(
                           position: Tween(
                                   begin: const Offset(0.0, 1.0),
-                                  end: Offset.zero)
+                                  end:   Offset.zero)
                               .chain(CurveTween(curve: Curves.easeInOut))
                               .animate(animation),
                           child: child,
@@ -182,9 +169,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   ),
                 ),
               ),
-
               const Spacer(),
-
               GestureDetector(
                 onTap: () => Navigator.pushReplacement(
                   context,
@@ -249,7 +234,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               children: [
                 Icon(icon,
                     color: isActive ? Colors.greenAccent : Colors.white38,
-                    size: h * 0.04),
+                    size:  h * 0.04),
                 SizedBox(height: h * 0.005),
                 Text(label,
                     style: TextStyle(
@@ -266,7 +251,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   }
 
   // ══════════════════════════════════════════
-  // COURSES STATISTICS
+  // COURSES STATISTICS — BarChart fl_chart
   // ══════════════════════════════════════════
   Widget _buildCoursesSection(double h, double w, LanguageService lang) {
     final chapters    = _controller.model.displayedChapters;
@@ -312,8 +297,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               ),
               SizedBox(height: h * 0.025),
               Text(
-                lang.t("Taux de complétion des chapitres",
-                    "Chapters completion rate"),
+                lang.t("Taux de complétion des chapitres", "Chapters completion rate"),
                 style: TextStyle(
                     color:      Colors.white70,
                     fontSize:   h * 0.018,
@@ -325,40 +309,119 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                       child: Padding(
                         padding: EdgeInsets.all(h * 0.04),
                         child: Text(
-                          lang.t("Aucun chapitre disponible",
-                              "No chapters available"),
-                          style: TextStyle(
-                              color: Colors.white38,
-                              fontSize: h * 0.018),
+                          lang.t("Aucun chapitre disponible", "No chapters available"),
+                          style: TextStyle(color: Colors.white38, fontSize: h * 0.018),
                         ),
                       ),
                     )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: SizedBox(
-                            height: h * 0.28,
-                            child: _BarChart(
-                              chapters:    chapters,
-                              completions: completions,
-                              h:           h,
+                  : SizedBox(
+                      height: h * 0.30,
+                      child: BarChart(
+                        BarChartData(
+                          alignment:     BarChartAlignment.spaceAround,
+                          maxY:          1.0,
+                          barTouchData:  BarTouchData(
+                            touchTooltipData: BarTouchTooltipData(
+                              getTooltipColor: (_) => const Color(0xFF1A1A3E),
+                              getTooltipItem:  (group, groupIndex, rod, rodIndex) {
+                                final label = chapters[groupIndex].label;
+                                final pct   = (rod.toY * 100).round();
+                                return BarTooltipItem(
+                                  '$label\n$pct%',
+                                  const TextStyle(
+                                      color:      Colors.greenAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:   12),
+                                );
+                              },
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: w * 0.12,
-                          child: Image.asset(
-                            "assets/images/masscott02.png",
-                            fit: BoxFit.contain,
-                            errorBuilder: (_, __, ___) => Icon(
-                                Icons.emoji_nature,
-                                color: Colors.white24,
-                                size: h * 0.12),
+                          titlesData: FlTitlesData(
+                            show: true,
+                            leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 40,
+                                getTitlesWidget: (value, meta) {
+                                  if (value == 0 || value == 0.25 ||
+                                      value == 0.5 || value == 0.75 ||
+                                      value == 1.0) {
+                                    return Text(
+                                      '${(value * 100).toInt()}%',
+                                      style: const TextStyle(
+                                          color: Colors.white38, fontSize: 11),
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                            ),
+                            bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles:   true,
+                                reservedSize: 36,
+                                getTitlesWidget: (value, meta) {
+                                  final idx = value.toInt();
+                                  if (idx < 0 || idx >= chapters.length) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  final lbl = chapters[idx].label;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Text(
+                                      lbl.length > 8
+                                          ? '${lbl.substring(0, 8)}…'
+                                          : lbl,
+                                      style: const TextStyle(
+                                          color: Colors.white54, fontSize: 11),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            rightTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            topTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
                           ),
+                          gridData: FlGridData(
+  show:                true,
+  drawVerticalLine:    false,
+  horizontalInterval:  1, // ← changer 0.25 par 1 pour quiz
+  getDrawingHorizontalLine: (_) => FlLine(
+    color:       Colors.white.withValues(alpha: 0.08),
+    strokeWidth: 0.8,
+  ),
+),
+                          borderData: FlBorderData(show: false),
+                          barGroups: List.generate(chapters.length, (i) {
+                            final val = completions[i].clamp(0.0, 1.0);
+                            return BarChartGroupData(
+                              x: i,
+                              barRods: [
+                                BarChartRodData(
+                                  toY:           val,
+                                  width:         22,
+                                  borderRadius:  const BorderRadius.only(
+                                    topLeft:  Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                  gradient: const LinearGradient(
+                                    begin:  Alignment.topCenter,
+                                    end:    Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFF8B7FE8),
+                                      Color(0xFF5B52C8),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                         ),
-                      ],
+                        duration: const Duration(milliseconds: 400),
+                      ),
                     ),
             ],
           ),
@@ -373,8 +436,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       onTap: () => setState(() => _controller.selectAlgo(index)),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(
-            horizontal: h * 0.02, vertical: h * 0.010),
+        padding: EdgeInsets.symmetric(horizontal: h * 0.02, vertical: h * 0.010),
         decoration: BoxDecoration(
           color: isSelected
               ? Colors.greenAccent.withValues(alpha: 0.2)
@@ -394,10 +456,19 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
   }
 
   // ══════════════════════════════════════════
-  // QUIZ STATISTICS
+  // QUIZ STATISTICS — LineChart fl_chart
   // ══════════════════════════════════════════
   Widget _buildQuizSection(double h, double w, LanguageService lang) {
     final quizStats = _controller.model.currentQuizStats;
+
+    // Calcul du max pour l'axe Y
+    final maxY = quizStats.isEmpty
+        ? 10.0
+        : quizStats
+                .map((s) => s.quizzesDone.toDouble())
+                .reduce((a, b) => a > b ? a : b) *
+            1.3;
+    final safeMaxY = maxY < 5 ? 5.0 : maxY;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -436,21 +507,36 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   const SizedBox(width: 8),
                   _quizAlgoButton("Algo 2", 1, h),
                   const SizedBox(width: 16),
-                  Text(
-                    lang.t("Total questions → ",
-                            "Total questions → ") +
-                        _formatNumber(_controller.model.totalQuizzesDone),
-                    style: TextStyle(
-                        color:      Colors.white70,
-                        fontSize:   h * 0.016,
-                        fontWeight: FontWeight.w500),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: h * 0.02, vertical: h * 0.008),
+                    decoration: BoxDecoration(
+                      color:        Colors.greenAccent.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                          color: Colors.greenAccent.withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.quiz_outlined,
+                            color: Colors.greenAccent, size: 14),
+                        const SizedBox(width: 6),
+                        Text(
+                          lang.t("Total → ", "Total → ") +
+                              _formatNumber(_controller.model.totalQuizzesDone),
+                          style: TextStyle(
+                              color:      Colors.greenAccent,
+                              fontSize:   h * 0.015,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
               SizedBox(height: h * 0.025),
               Text(
-                lang.t("Nombre de questions par chapitre",
-                    "Number of questions per chapter"),
+                lang.t("Nombre de quiz par chapitre", "Number of quizzes per chapter"),
                 style: TextStyle(
                     color:      Colors.white70,
                     fontSize:   h * 0.018,
@@ -462,39 +548,130 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                       child: Padding(
                         padding: EdgeInsets.all(h * 0.04),
                         child: Text(
-                          lang.t("Aucun quiz disponible",
-                              "No quiz data available"),
+                          lang.t("Aucun quiz disponible", "No quiz data available"),
                           style: TextStyle(
-                              color:    Colors.white38,
-                              fontSize: h * 0.018),
+                              color: Colors.white38, fontSize: h * 0.018),
                         ),
                       ),
                     )
-                  : Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: SizedBox(
-                            height: h * 0.28,
-                            child: _BarChartQuiz(
-                              stats: quizStats,
-                              h:     h,
+                  : SizedBox(
+                      height: h * 0.30,
+                      child: LineChart(
+                        LineChartData(
+                          minX: 0,
+                          maxX: (quizStats.length - 1).toDouble(),
+                          minY: 0,
+                          maxY: safeMaxY,
+                          lineTouchData: LineTouchData(
+                            touchTooltipData: LineTouchTooltipData(
+                              getTooltipColor: (_) => const Color(0xFF1A1A3E),
+                              getTooltipItems: (spots) => spots.map((spot) {
+                                final idx = spot.x.toInt();
+                                final lbl = idx < quizStats.length
+                                    ? quizStats[idx].day
+                                    : '';
+                                return LineTooltipItem(
+                                  '$lbl\n${spot.y.toInt()} quiz',
+                                  const TextStyle(
+                                      color:      Colors.greenAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:   12),
+                                );
+                              }).toList(),
+                            ),
+                            handleBuiltInTouches: true,
+                          ),
+                          gridData: FlGridData(
+                            show:             true,
+                            drawVerticalLine: false,
+                            getDrawingHorizontalLine: (_) => FlLine(
+                              color:       Colors.white.withValues(alpha: 0.08),
+                              strokeWidth: 0.8,
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: w * 0.12,
-                          child: Image.asset(
-                            "assets/images/masscott02.png",
-                            fit: BoxFit.contain,
-                            errorBuilder: (_, __, ___) => Icon(
-                                Icons.emoji_nature,
-                                color: Colors.white24,
-                                size: h * 0.12),
+                          titlesData: FlTitlesData(
+                            show: true,
+                            leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles:   true,
+                                reservedSize: 40,
+                                getTitlesWidget: (value, meta) {
+                                  if (value == meta.max) return const SizedBox.shrink();
+                                  return Text(
+                                    value.toInt().toString(),
+                                    style: const TextStyle(
+                                        color: Colors.white38, fontSize: 11),
+                                  );
+                                },
+                              ),
+                            ),
+                          bottomTitles: AxisTitles(
+  sideTitles: SideTitles(
+    showTitles:   true,
+    reservedSize: 36,
+    interval:     1, // ← ajouter ça
+    getTitlesWidget: (value, meta) {
+      final idx = value.toInt();
+      // ← vérifier que c'est un entier exact
+      if (value != value.toInt().toDouble()) return const SizedBox.shrink();
+      if (idx < 0 || idx >= quizStats.length) return const SizedBox.shrink();
+      return Padding(
+        padding: const EdgeInsets.only(top: 6),
+        child: Text(
+          quizStats[idx].day,
+          style: const TextStyle(
+              color: Colors.white54, fontSize: 11),
+          textAlign: TextAlign.center,
+        ),
+      );
+    },
+  ),
+),
+                            rightTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
+                            topTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false)),
                           ),
+                          borderData: FlBorderData(show: false),
+                          lineBarsData: [
+                            LineChartBarData(
+                              spots: List.generate(
+                                quizStats.length,
+                                (i) => FlSpot(
+                                    i.toDouble(),
+                                    quizStats[i].quizzesDone.toDouble()),
+                              ),
+                              isCurved:       true,
+                              curveSmoothness: 0.35,
+                              color:          Colors.greenAccent,
+                              barWidth:       2.5,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                getDotPainter: (spot, percent, bar, index) =>
+                                    FlDotCirclePainter(
+                                  radius:    4,
+                                  color:     Colors.greenAccent,
+                                  strokeColor: const Color(0xFF0D0D2B),
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                              belowBarData: BarAreaData(
+                                show:  true,
+                                gradient: LinearGradient(
+                                  begin:  Alignment.topCenter,
+                                  end:    Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.greenAccent.withValues(alpha: 0.25),
+                                    Colors.greenAccent.withValues(alpha: 0.0),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                        duration: const Duration(milliseconds: 400),
+                      ),
                     ),
             ],
           ),
@@ -509,8 +686,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       onTap: () => setState(() => _controller.selectQuizAlgo(index)),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(
-            horizontal: h * 0.02, vertical: h * 0.010),
+        padding: EdgeInsets.symmetric(horizontal: h * 0.02, vertical: h * 0.010),
         decoration: BoxDecoration(
           color: isSelected
               ? Colors.greenAccent.withValues(alpha: 0.2)
@@ -533,262 +709,4 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     return n.toString().replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (m) => '${m[1]} ');
   }
-}
-
-// ══════════════════════════════════════════
-// CUSTOM PAINTER — Bar Chart Cours
-// ══════════════════════════════════════════
-class _BarChart extends StatelessWidget {
-  final List<ChapterStat> chapters;
-  final List<double>      completions;
-  final double            h;
-
-  const _BarChart({
-    required this.chapters,
-    required this.completions,
-    required this.h,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return CustomPaint(
-        size: Size(constraints.maxWidth, constraints.maxHeight),
-        painter: _BarChartPainter(
-            chapters: chapters, completions: completions, h: h),
-      );
-    });
-  }
-}
-
-class _BarChartPainter extends CustomPainter {
-  final List<ChapterStat> chapters;
-  final List<double>      completions;
-  final double            h;
-
-  _BarChartPainter({
-    required this.chapters,
-    required this.completions,
-    required this.h,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const yLabels = ["100%", "75%", "50%", "25%", "0%"];
-    const yValues = [1.0, 0.75, 0.50, 0.25, 0.0];
-
-    final leftPad   = size.width  * 0.10;
-    final bottomPad = size.height * 0.18;
-    final chartH    = size.height - bottomPad - size.height * 0.05;
-    final chartW    = size.width  - leftPad;
-
-    final gridPaint = Paint()
-      ..color       = Colors.white.withValues(alpha: 0.08)
-      ..strokeWidth = 0.8;
-
-    final textStyle = TextStyle(color: Colors.white54, fontSize: h * 0.013);
-
-    for (int i = 0; i < yValues.length; i++) {
-      final y = size.height * 0.05 + chartH * (1.0 - yValues[i]);
-      canvas.drawLine(
-          Offset(leftPad, y), Offset(size.width, y), gridPaint);
-      _drawText(canvas, yLabels[i], Offset(0, y - 7), textStyle);
-    }
-
-    if (completions.isEmpty) return;
-
-    final n     = completions.length;
-    final slotW = chartW / n;
-    final barW  = slotW * 0.45;
-
-    for (int i = 0; i < n; i++) {
-      final ratio = completions[i].clamp(0.0, 1.0);
-      final barH  = chartH * ratio;
-      final x     = leftPad + slotW * i + (slotW - barW) / 2;
-      final y     = size.height * 0.05 + chartH - barH;
-
-      final gradient = LinearGradient(
-        begin:  Alignment.topCenter,
-        end:    Alignment.bottomCenter,
-        colors: [const Color(0xFF8B7FE8), const Color(0xFF5B52C8)],
-      ).createShader(Rect.fromLTWH(x, y, barW, barH));
-
-      canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromLTWH(x, y, barW, barH),
-          topLeft:  const Radius.circular(5),
-          topRight: const Radius.circular(5),
-        ),
-        Paint()..shader = gradient,
-      );
-
-      _drawText(
-        canvas,
-        chapters[i].label.length > 10
-            ? '${chapters[i].label.substring(0, 10)}...'
-            : chapters[i].label,
-        Offset(x + barW / 2,
-            size.height * 0.05 + chartH + size.height * 0.03),
-        textStyle,
-        centered: true,
-      );
-
-      _drawText(
-        canvas,
-        "${(ratio * 100).round()}%",
-        Offset(x + barW / 2, y - h * 0.018),
-        TextStyle(
-            color:      Colors.white70,
-            fontSize:   h * 0.013,
-            fontWeight: FontWeight.bold),
-        centered: true,
-      );
-    }
-  }
-
-  void _drawText(
-    Canvas canvas,
-    String text,
-    Offset offset,
-    TextStyle style, {
-    bool centered = false,
-  }) {
-    final tp = TextPainter(
-      text:          TextSpan(text: text, style: style),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    final dx = centered ? offset.dx - tp.width / 2 : offset.dx;
-    tp.paint(canvas, Offset(dx, offset.dy));
-  }
-
-  @override
-  bool shouldRepaint(_BarChartPainter old) =>
-      old.completions != completions || old.chapters != chapters;
-}
-
-// ══════════════════════════════════════════
-// CUSTOM PAINTER — Bar Chart Quiz
-// ══════════════════════════════════════════
-class _BarChartQuiz extends StatelessWidget {
-  final List<QuizStat> stats;
-  final double         h;
-
-  const _BarChartQuiz({required this.stats, required this.h});
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return CustomPaint(
-        size: Size(constraints.maxWidth, constraints.maxHeight),
-        painter: _BarChartQuizPainter(stats: stats, h: h),
-      );
-    });
-  }
-}
-
-class _BarChartQuizPainter extends CustomPainter {
-  final List<QuizStat> stats;
-  final double         h;
-
-  _BarChartQuizPainter({required this.stats, required this.h});
-
-  // ✅ Échelle toujours fixe 0 → 10000 par paliers de 2000
-  static const List<int> _ySteps = [0, 2000, 4000, 6000, 8000, 10000];
-  static const double    _maxY   = 10000.0;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (stats.isEmpty) return;
-
-    final leftPad   = size.width  * 0.12;
-    final bottomPad = size.height * 0.18;
-    final chartH    = size.height - bottomPad - size.height * 0.05;
-    final chartW    = size.width  - leftPad;
-
-    final gridPaint = Paint()
-      ..color       = Colors.white.withValues(alpha: 0.08)
-      ..strokeWidth = 0.8;
-
-    final textStyle = TextStyle(color: Colors.white54, fontSize: h * 0.013);
-
-    // ── Grille horizontale + labels Y (0, 2k, 4k, 6k, 8k, 10k)
-    for (final step in _ySteps) {
-      final ratio = step / _maxY;
-      final y     = size.height * 0.05 + chartH * (1.0 - ratio);
-      canvas.drawLine(
-          Offset(leftPad, y), Offset(size.width, y), gridPaint);
-      final label = step == 0 ? '0' : '${step ~/ 1000}k';
-      _drawText(canvas, label, Offset(0, y - 7), textStyle);
-    }
-
-    final n     = stats.length;
-    final slotW = chartW / n;
-    final barW  = slotW * 0.45;
-
-    for (int i = 0; i < n; i++) {
-      // ✅ Clamp sur _maxY fixe — barre visible même si données > 10000
-      final ratio = (stats[i].quizzesDone / _maxY).clamp(0.0, 1.0);
-      final barH  = chartH * ratio;
-      final x     = leftPad + slotW * i + (slotW - barW) / 2;
-      final y     = size.height * 0.05 + chartH - barH;
-
-      // ✅ Dégradé bleu pour différencier des cours (violet)
-      final gradient = LinearGradient(
-        begin:  Alignment.topCenter,
-        end:    Alignment.bottomCenter,
-        colors: [const Color(0xFF4A90D9), const Color(0xFF2A5FA8)],
-      ).createShader(Rect.fromLTWH(x, y, barW, barH));
-
-      canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromLTWH(x, y, barW, barH),
-          topLeft:  const Radius.circular(5),
-          topRight: const Radius.circular(5),
-        ),
-        Paint()..shader = gradient,
-      );
-
-      // ── Label X (nom chapitre)
-      _drawText(
-        canvas,
-        stats[i].day.length > 10
-            ? '${stats[i].day.substring(0, 10)}...'
-            : stats[i].day,
-        Offset(x + barW / 2,
-            size.height * 0.05 + chartH + size.height * 0.03),
-        textStyle,
-        centered: true,
-      );
-
-      // ── Valeur au-dessus de la barre (0 si pas de données)
-      _drawText(
-        canvas,
-        stats[i].quizzesDone.toString(),
-        Offset(x + barW / 2, y - h * 0.018),
-        TextStyle(
-            color:      Colors.white70,
-            fontSize:   h * 0.013,
-            fontWeight: FontWeight.bold),
-        centered: true,
-      );
-    }
-  }
-
-  void _drawText(
-    Canvas canvas,
-    String text,
-    Offset offset,
-    TextStyle style, {
-    bool centered = false,
-  }) {
-    final tp = TextPainter(
-      text:          TextSpan(text: text, style: style),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    final dx = centered ? offset.dx - tp.width / 2 : offset.dx;
-    tp.paint(canvas, Offset(dx, offset.dy));
-  }
-
-  @override
-  bool shouldRepaint(_BarChartQuizPainter old) => old.stats != stats;
 }

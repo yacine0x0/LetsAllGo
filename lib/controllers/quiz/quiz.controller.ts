@@ -3,8 +3,6 @@ import { Response }     from 'express';
 import { AuthRequest }  from '../../middlewares/auth.middleware';
 import { PrismaClient } from '@prisma/client';
 
-console.log('✅ quiz.controller.ts chargé'); // ← vérifie que le fichier est bien importé
-
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma = globalForPrisma.prisma ?? new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
@@ -22,9 +20,7 @@ const CHAPTER_MAP: Record<string, string> = {
   'Chapitre 05': 'Sous-programmes',
 };
 
-// POST /api/quiz/submit
 export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void> => {
-  console.log('🎯 submitQuiz appelé body:', JSON.stringify(req.body));
   try {
     const userId = req.userId!;
     const {
@@ -39,8 +35,6 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
       totalQuestions: number;
     };
 
-    console.log(`📊 userId: ${userId}, correctAnswers: ${correctAnswers}, algoType: ${algoType}, chapterName: ${chapterName}`);
-
     if (typeof correctAnswers !== 'number' || correctAnswers < 0) {
       res.status(400).json({ success: false, message: 'correctAnswers invalide' });
       return;
@@ -48,9 +42,17 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
 
     const pointsParReponse = GO_POINTS[algoType] ?? 250;
     const pointsGagnes     = correctAnswers * pointsParReponse;
+    const now              = new Date();
 
-    // ✅ 1. Crée le quiz dans `quizz`
-    console.log('📝 Création quizz...');
+    // ✅ 1. Cherche le chapitre AVANT de créer le quiz
+    const titreBDD = CHAPTER_MAP[chapterName] ?? chapterName;
+    const chapitre = await prisma.chapitre.findFirst({
+      where: { titre: { contains: titreBDD, mode: 'insensitive' } },
+    });
+
+    console.log(`🔍 Chapitre cherché: "${titreBDD}" → trouvé: ${chapitre?.id_chapitre ?? 'NON'}`);
+
+    // ✅ 2. Crée le quiz dans `quizz`
     const quizzRecord = await prisma.quizz.create({
       data: {
         score:                  correctAnswers,
@@ -60,56 +62,62 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
         intensite:              algoType,
       },
     });
-    console.log('✅ quizz créé:', quizzRecord.id_quiz);
 
-    // ✅ 2. Cherche le chapitre dans la BDD via la map
-    const titreBDD = CHAPTER_MAP[chapterName] ?? chapterName;
-    console.log(`🔍 Recherche chapitre: "${titreBDD}"`);
-    const chapitre = await prisma.chapitre.findFirst({
-      where: { titre: { contains: titreBDD, mode: 'insensitive' } },
-    });
-    console.log('📚 Chapitre trouvé:', chapitre ? chapitre.id_chapitre : 'NON TROUVÉ');
-
-    // ✅ 3. Crée un suivi du chapitre + lie l'étudiant
+    // ✅ 3. Remplit `selectionne` pour lier quiz ↔ chapitre
     if (chapitre) {
-      console.log('📝 Création suividuchapitre...');
+      await prisma.selectionne.create({
+        data: {
+          id_quiz:     quizzRecord.id_quiz,
+          id_chapitre: chapitre.id_chapitre,
+        },
+      });
+
+      console.log(`✅ selectionne créé: quiz=${quizzRecord.id_quiz} ↔ chapitre=${chapitre.id_chapitre}`);
+
+      // ✅ 4. Crée un suivi du chapitre + lie l'étudiant
       const suivi = await prisma.suividuchapitre.create({
         data: {
           id_chapitre: chapitre.id_chapitre,
           complete:    correctAnswers >= Math.ceil(totalQuestions * 0.5),
-          datepassage: new Date(),
+          datepassage: now,
         },
       });
-      console.log('✅ suivi créé:', suivi.id_s);
 
-      console.log('📝 Création obtient...');
       await prisma.obtient.create({
         data: {
           id_etudiant:      userId,
           id_suivichapitre: suivi.id_s,
         },
       });
-      console.log('✅ obtient créé');
     }
 
-    // ✅ 4. Lie l'étudiant au quiz dans `passe`
-    console.log('📝 Création passe...');
+    // ✅ 5. Lie l'étudiant au quiz dans `passe` avec datepassage
     await prisma.passe.create({
       data: {
         id_etudiant: userId,
         id_quiz:     quizzRecord.id_quiz,
+        datepassage: now,
       },
     });
-    console.log('✅ passe créé');
 
-    // ✅ 5. Met à jour le score total
-    console.log('📝 Mise à jour scoretotal...');
+    // ✅ 6. Enregistre dans statistiquesquiz
+    await prisma.statistiquesquiz.create({
+      data: {
+        moyennescores:    correctAnswers,
+        nombretentatives: 1,
+        dategeneration:   now,
+        id_admin:         null,
+      },
+    });
+
+    // ✅ 7. Met à jour le score total
     const updatedUser = await prisma.utilisateur.update({
       where:  { id: userId },
       data:   { scoretotal: { increment: pointsGagnes } },
       select: { id: true, scoretotal: true, rang: true },
     });
-    console.log('✅ scoretotal mis à jour:', updatedUser.scoretotal);
+
+    console.log(`✅ Quiz soumis: userId=${userId}, points=${pointsGagnes}, chapitre=${chapterName}, date=${now.toISOString()}`);
 
     res.status(200).json({
       success:         true,
@@ -129,9 +137,7 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
   }
 };
 
-// POST /api/courses/complete
 export const completeChapter = async (req: AuthRequest, res: Response): Promise<void> => {
-  console.log('🎯 completeChapter appelé body:', JSON.stringify(req.body));
   try {
     const userId        = req.userId!;
     const { chapterId } = req.body as { chapterId: string };
@@ -141,14 +147,11 @@ export const completeChapter = async (req: AuthRequest, res: Response): Promise<
       return;
     }
 
-    console.log('📝 Mise à jour chapitre...');
     const updated = await prisma.chapitre.update({
       where: { id_chapitre: chapterId },
       data:  { termine: true, pourcentagechapitre: 100 },
     });
-    console.log('✅ chapitre mis à jour');
 
-    console.log('📝 Création suividuchapitre...');
     const suivi = await prisma.suividuchapitre.create({
       data: {
         id_chapitre: chapterId,
@@ -156,16 +159,15 @@ export const completeChapter = async (req: AuthRequest, res: Response): Promise<
         datepassage: new Date(),
       },
     });
-    console.log('✅ suivi créé:', suivi.id_s);
 
-    console.log('📝 Création obtient...');
     await prisma.obtient.create({
       data: {
         id_etudiant:      userId,
         id_suivichapitre: suivi.id_s,
       },
     });
-    console.log('✅ obtient créé');
+
+    console.log(`✅ Chapitre terminé: userId=${userId}, chapterId=${chapterId}`);
 
     res.status(200).json({
       success:             true,

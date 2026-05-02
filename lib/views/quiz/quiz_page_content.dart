@@ -155,10 +155,12 @@ Future<void> _submitAndComplete() async {
 
   final totalScore     = widget.controller.getTotalScore();
   final totalQuestions = widget.controller.session.totalPossibleScore;
-  final chapterName    = widget.controller.currentQuiz.chapter;
+
+  // ✅ Tous les chapitres de la session
+  final selectedChapters = widget.controller.session.selectedChapters;
 
   print('📤 SUBMIT START');
-  print('📤 chapterName: "$chapterName"');
+  print('📤 selectedChapters: $selectedChapters');
   print('📤 totalScore: $totalScore');
   print('📤 totalQuestions: $totalQuestions');
   print('📤 algoType: ${widget.algoType}');
@@ -166,18 +168,21 @@ Future<void> _submitAndComplete() async {
   if (mounted) setState(() => _quizCompleted = true);
 
   try {
-    print('📤 Calling QuizScoreService.submitScore...');
-    final points = await QuizScoreService.submitScore(
-      correctAnswers: totalScore,
-      algoType:       widget.algoType,
-      chapterName:    chapterName,
-      totalQuestions: totalQuestions,
-    );
-    print('📤 Response: $points');
+    // ✅ Soumettre un score par chapitre
+    int totalPoints = 0;
+    for (final chapterName in selectedChapters) {
+      final points = await QuizScoreService.submitScore(
+        correctAnswers: totalScore,
+        algoType:       widget.algoType,
+        chapterName:    chapterName,   // ✅ "Chapitre 01", "Chapitre 02"...
+        totalQuestions: totalQuestions,
+      );
+      totalPoints += points ?? 0;
+    }
 
     if (!mounted) return;
-    if (points != null && points > 0) {
-      setState(() => _pointsGagnes = points);
+    if (totalPoints > 0) {
+      setState(() => _pointsGagnes = totalPoints);
     }
   } catch (e) {
     print('❌ Erreur soumission: $e');

@@ -1,15 +1,21 @@
 import { Response } from 'express';
 import { AuthRequest } from '../../middlewares/auth.middleware';
-import { getUserById, updateUserName, updateUserPassword, requestUserEmailChange, confirmUserEmailChange } from '../../service/auth/user.service';
+import {
+  getUserById,
+  updateUserName,
+  updateUserPassword,
+  requestUserEmailChange,
+  confirmUserEmailChange
+} from '../../service/auth/user.service';
 
 // GET /api/users/me
 export async function getMe(req: AuthRequest, res: Response): Promise<void> {
   try {
     const user = await getUserById(req.userId!);
-    res.status(200).json({ success: true, data: user });
+    console.log('📤 Réponse API:', JSON.stringify(user, null, 2));
+    res.status(200).json(user);
   } catch (error) {
     res.status(404).json({
-      success: false,
       message: error instanceof Error ? error.message : 'Erreur serveur',
     });
   }
@@ -20,14 +26,13 @@ export async function updateMe(req: AuthRequest, res: Response): Promise<void> {
   try {
     const { prenom, nom } = req.body;
     if (!prenom && !nom) {
-      res.status(400).json({ success: false, message: 'Aucune donnée à mettre à jour' });
+      res.status(400).json({ message: 'Aucune donnée à mettre à jour' });
       return;
     }
     const updated = await updateUserName(req.userId!, { prenom, nom });
-    res.status(200).json({ success: true, data: updated });
+    res.status(200).json(updated);
   } catch (error) {
     res.status(500).json({
-      success: false,
       message: error instanceof Error ? error.message : 'Erreur serveur',
     });
   }
@@ -38,19 +43,19 @@ export async function updatePassword(req: AuthRequest, res: Response): Promise<v
   try {
     const { oldPassword, newPassword } = req.body;
     if (!oldPassword || !newPassword) {
-      res.status(400).json({ success: false, message: 'Champs manquants' });
+      res.status(400).json({ message: 'Champs manquants' });
       return;
     }
     if (newPassword.length < 6) {
-      res.status(400).json({ success: false, message: 'Le mot de passe doit contenir au moins 6 caractères' });
+      res.status(400).json({ message: 'Le mot de passe doit contenir au moins 6 caractères' });
       return;
     }
     await updateUserPassword(req.userId!, oldPassword, newPassword);
-    res.status(200).json({ success: true, message: 'Mot de passe mis à jour' });
+    res.status(200).json({ message: 'Mot de passe mis à jour' });
   } catch (error) {
     const msg = error instanceof Error ? error.message : 'Erreur serveur';
     const status = msg.includes('incorrect') ? 401 : 500;
-    res.status(status).json({ success: false, message: msg });
+    res.status(status).json({ message: msg });
   }
 }
 
@@ -59,15 +64,15 @@ export async function requestEmailChange(req: AuthRequest, res: Response): Promi
   try {
     const { newEmail } = req.body;
     if (!newEmail || !newEmail.includes('@')) {
-      res.status(400).json({ success: false, message: 'Email invalide' });
+      res.status(400).json({ message: 'Email invalide' });
       return;
     }
     await requestUserEmailChange(req.userId!, newEmail);
-    res.status(200).json({ success: true, message: 'Code de vérification envoyé' });
+    res.status(200).json({ message: 'Code de vérification envoyé' });
   } catch (error) {
     const msg = error instanceof Error ? error.message : 'Erreur serveur';
     const status = msg.includes('déjà utilisé') ? 409 : 500;
-    res.status(status).json({ success: false, message: msg });
+    res.status(status).json({ message: msg });
   }
 }
 
@@ -76,14 +81,13 @@ export async function confirmEmailChange(req: AuthRequest, res: Response): Promi
   try {
     const { newEmail, code } = req.body;
     if (!newEmail || !code) {
-      res.status(400).json({ success: false, message: 'Champs manquants' });
+      res.status(400).json({ message: 'Champs manquants' });
       return;
     }
     await confirmUserEmailChange(req.userId!, newEmail, code);
-    res.status(200).json({ success: true, message: 'Email mis à jour' });
+    res.status(200).json({ message: 'Email mis à jour' });
   } catch (error) {
     res.status(400).json({
-      success: false,
       message: error instanceof Error ? error.message : 'Erreur serveur',
     });
   }
