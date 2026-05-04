@@ -1,3 +1,4 @@
+// lib/views/courses_study_page/chapter_quiz_page.dart
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
@@ -11,14 +12,12 @@ class ChapterQuizPage extends StatefulWidget {
   final String chapterTitle;
   final String algoType;
 
-
   const ChapterQuizPage({
     super.key,
     required this.controller,
     required this.chapterTitle,
     required this.algoType,
   });
-
 
   @override
   State<ChapterQuizPage> createState() => _ChapterQuizPageState();
@@ -31,16 +30,24 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
   bool         _isQuestionValidated = false;
   bool         _hasSelection        = false;
   bool         _isFirstCompletion   = false;
+  bool         _isSubmitting        = false;
+
+  // ✅ Progression depuis l'API
+  double _algo1Progress  = 0.0;
+  double _algo2Progress  = 0.0;
+  double _globalProgress = 0.0;
 
   final AudioPlayer _audioPlayer = AudioPlayer();
-  static const String _soundCorrect  = 'sounds/CORRECTANSWER.mp3';
-  static const String _soundWrong    = 'sounds/WRONGANSWER.mp3';
-  static const String _soundButton1  = 'sounds/PRESS_1.wav';
-  static const String _soundButton2  = 'sounds/PRESS_2.wav';
-  static const String _soundCheers   = 'sounds/CHEERS.wav';
+  static const String _soundCorrect = 'sounds/CORRECTANSWER.mp3';
+  static const String _soundWrong   = 'sounds/WRONGANSWER.mp3';
+  static const String _soundCheers  = 'sounds/CHEERS.wav';
 
   Future<void> _playSound(String soundPath) async {
-    await _audioPlayer.play(AssetSource(soundPath));
+    try {
+      await _audioPlayer.play(AssetSource(soundPath));
+    } catch (e) {
+      print('❌ Audio error: $e');
+    }
   }
 
   @override
@@ -54,7 +61,6 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
     _audioPlayer.dispose();
     super.dispose();
   }
-
 
   void _loadQuestion() {
     final q = widget.controller.currentQuestion;
@@ -80,17 +86,33 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
     }
   }
 
-  void _nextQuestion() {
+  Future<void> _nextQuestion() async {
     if (widget.controller.isLastQuestion) {
-      // Check first completion before marking as complete
-      _isFirstCompletion = !ProgressService.isAlreadyCompleted(
-          widget.algoType, widget.chapterTitle);
-      if (_isFirstCompletion) {
-        ProgressService.completeChapter(
-            widget.algoType, widget.chapterTitle);
-      }
-      _playSound(_soundCheers);
-      setState(() => _quizCompleted = true);
+      if (_isSubmitting) return;
+      _isSubmitting = true;
+
+      // ✅ Vérifier si première completion
+      final alreadyDone = ProgressService.isAlreadyCompleted(
+        widget.algoType,
+        widget.chapterTitle,
+      );
+      _isFirstCompletion = !alreadyDone;
+
+      // ✅ Appel API — marque le chapitre complété + met à jour progression en DB
+      await ProgressService.completeChapter(
+        algoType:     widget.algoType,
+        chapterTitle: widget.chapterTitle,
+      );
+
+      // ✅ Récupérer progression mise à jour depuis le cache local
+      _algo1Progress  = ProgressService.getAlgo1Progress();
+      _algo2Progress  = ProgressService.getAlgo2Progress();
+      _globalProgress = ProgressService.getGlobalProgress();
+
+      await _playSound(_soundCheers);
+
+      if (mounted) setState(() => _quizCompleted = true);
+
     } else {
       widget.controller.nextQuestion();
       setState(() {
@@ -122,11 +144,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       _isQuestionValidated =
           widget.controller.currentQuiz.isQuestionValidated(q.id);
     });
-    if (isCorrect) {
-      _playSound(_soundCorrect);
-    } else {
-      _playSound(_soundWrong);
-    }
+    _playSound(isCorrect ? _soundCorrect : _soundWrong);
   }
 
   void _resetQuiz() {
@@ -137,6 +155,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       _currentOrder        = [];
       _hasSelection        = false;
       _isQuestionValidated = false;
+      _isSubmitting        = false;
       _loadQuestion();
     });
   }
@@ -169,7 +188,8 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: w * 0.03, vertical: h * 0.01),
+                    horizontal: w * 0.03, vertical: h * 0.01,
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: BackdropFilter(
@@ -179,8 +199,9 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                           color: Colors.white.withValues(alpha: 0.02),
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.15),
-                              width: 1.5),
+                            color: Colors.white.withValues(alpha: 0.15),
+                            width: 1.5,
+                          ),
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(h * 0.03),
@@ -209,51 +230,53 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
 
   Widget _buildTopBar(double h, double w) {
     return Container(
-      height: h * 0.09,
+      height:  h * 0.09,
       padding: EdgeInsets.symmetric(horizontal: w * 0.03),
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.4),
         border: Border(
-            bottom:
-                BorderSide(color: Colors.white.withValues(alpha: 0.1))),
+          bottom: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
       ),
-      child: Row(
-        children: [
-          Icon(Icons.quiz, color: Colors.blue, size: h * 0.04),
-          SizedBox(width: w * 0.01),
-          Text(
-            "Chapter Quiz — ${widget.chapterTitle}",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: h * 0.022,
-                fontWeight: FontWeight.bold),
+      child: Row(children: [
+        Icon(Icons.quiz, color: Colors.blue, size: h * 0.04),
+        SizedBox(width: w * 0.01),
+        Text(
+          "Chapter Quiz — ${widget.chapterTitle}",
+          style: TextStyle(
+            color:      Colors.white,
+            fontSize:   h * 0.022,
+            fontWeight: FontWeight.bold,
           ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (_) => const DashboardPage())),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: w * 0.015, vertical: h * 0.008),
-              decoration: BoxDecoration(
-                color: Colors.red.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(8),
-                border:
-                    Border.all(color: Colors.red.withValues(alpha: 0.4)),
-              ),
-              child: Row(children: [
-                Icon(Icons.exit_to_app,
-                    color: Colors.red.shade300, size: h * 0.025),
-                const SizedBox(width: 6),
-                Text('Exit',
-                    style: TextStyle(
-                        color: Colors.red.shade300,
-                        fontSize: h * 0.018)),
-              ]),
+        ),
+        const Spacer(),
+        GestureDetector(
+          onTap: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const DashboardPage()),
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: w * 0.015, vertical: h * 0.008,
             ),
+            decoration: BoxDecoration(
+              color:        Colors.red.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.red.withValues(alpha: 0.4)),
+            ),
+            child: Row(children: [
+              Icon(Icons.exit_to_app,
+                  color: Colors.red.shade300, size: h * 0.025),
+              const SizedBox(width: 6),
+              Text('Exit',
+                  style: TextStyle(
+                    color:    Colors.red.shade300,
+                    fontSize: h * 0.018,
+                  )),
+            ]),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
   }
 
@@ -263,9 +286,10 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       children: [
         Text("Chapter Quiz",
             style: TextStyle(
-                fontSize: h * 0.04,
-                fontWeight: FontWeight.bold,
-                color: Colors.white)),
+              fontSize:   h * 0.04,
+              fontWeight: FontWeight.bold,
+              color:      Colors.white,
+            )),
         SizedBox(height: h * 0.005),
         Text("Test your knowledge of ${widget.chapterTitle}",
             style: TextStyle(fontSize: h * 0.016, color: Colors.white60)),
@@ -284,24 +308,23 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Progress",
-                style:
-                    TextStyle(color: Colors.white70, fontSize: h * 0.018)),
+                style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
             Text("${(progress * 100).toInt()}%",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: h * 0.018,
-                    fontWeight: FontWeight.bold)),
+                  color:      Colors.white,
+                  fontSize:   h * 0.018,
+                  fontWeight: FontWeight.bold,
+                )),
           ],
         ),
         SizedBox(height: h * 0.01),
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: LinearProgressIndicator(
-            value: progress,
+            value:           progress,
             backgroundColor: Colors.white12,
-            valueColor:
-                const AlwaysStoppedAnimation<Color>(Colors.blue),
-            minHeight: h * 0.012,
+            valueColor:      const AlwaysStoppedAnimation<Color>(Colors.blue),
+            minHeight:       h * 0.012,
           ),
         ),
       ],
@@ -316,38 +339,41 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          width: double.infinity,
+          width:   double.infinity,
           padding: EdgeInsets.all(h * 0.03),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color:        Colors.white.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white24),
+            border:       Border.all(color: Colors.white24),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: EdgeInsets.symmetric(
-                    horizontal: h * 0.02, vertical: h * 0.008),
+                  horizontal: h * 0.02, vertical: h * 0.008,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withValues(alpha: 0.3),
+                  color:        Colors.blue.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   "Question ${widget.controller.currentQuestionIndex + 1} of ${widget.controller.totalQuestionsInCurrentQuiz}",
                   style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: h * 0.016,
-                      fontWeight: FontWeight.bold),
+                    color:      Colors.blue,
+                    fontSize:   h * 0.016,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: h * 0.02),
               Text(question.enonce,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: h * 0.022,
-                      fontWeight: FontWeight.w500,
-                      height: 1.5)),
+                    color:      Colors.white,
+                    fontSize:   h * 0.022,
+                    fontWeight: FontWeight.w500,
+                    height:     1.5,
+                  )),
               SizedBox(height: h * 0.03),
               Expanded(
                 child: question.type == QuestionType.multipleChoice
@@ -384,7 +410,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       Color   bgColor     = Colors.white.withValues(alpha: 0.08);
       Widget? trailingIcon;
 
-      if (_answerChecked != null || _isQuestionValidated) {
+      if (isLocked) {
         final isCorrectChoice = choice["key"] == question.bonneReponse;
         if (isCorrectChoice) {
           borderColor  = Colors.green;
@@ -415,63 +441,59 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
         child: Container(
           height: h * 0.11,
           decoration: BoxDecoration(
-            color: bgColor,
+            color:        bgColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: borderColor, width: 1.5),
+            border:       Border.all(color: borderColor, width: 1.5),
           ),
           padding: EdgeInsets.symmetric(
-              horizontal: h * 0.015, vertical: h * 0.01),
-          child: Row(
-            children: [
-              Container(
-                width: h * 0.035,
-                height: h * 0.035,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isSelected && !isLocked
-                      ? Colors.blue
-                      : Colors.white12,
-                  border: Border.all(color: borderColor, width: 1.5),
-                ),
-                child: Center(
-                  child: Text(choice["key"]!,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: h * 0.014,
-                          fontWeight: FontWeight.bold)),
-                ),
-              ),
-              SizedBox(width: h * 0.012),
-              Expanded(
-                child: Text(choice["label"]!,
-                    style: TextStyle(
-                        color: Colors.white, fontSize: h * 0.016),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis),
-              ),
-              if (trailingIcon != null) trailingIcon,
-            ],
+            horizontal: h * 0.015, vertical: h * 0.01,
           ),
+          child: Row(children: [
+            Container(
+              width:  h * 0.035,
+              height: h * 0.035,
+              decoration: BoxDecoration(
+                shape:  BoxShape.circle,
+                color:  isSelected && !isLocked
+                    ? Colors.blue : Colors.white12,
+                border: Border.all(color: borderColor, width: 1.5),
+              ),
+              child: Center(
+                child: Text(choice["key"]!,
+                    style: TextStyle(
+                      color:      Colors.white,
+                      fontSize:   h * 0.014,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+            ),
+            SizedBox(width: h * 0.012),
+            Expanded(
+              child: Text(choice["label"]!,
+                  style:    TextStyle(color: Colors.white, fontSize: h * 0.016),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis),
+            ),
+            if (trailingIcon != null) trailingIcon,
+          ]),
         ),
       );
     }
 
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(children: [
-            Expanded(child: buildChoice(choices[0])),
-            SizedBox(width: h * 0.015),
-            Expanded(child: buildChoice(choices[1])),
-          ]),
-          SizedBox(height: h * 0.015),
-          Row(children: [
-            Expanded(child: buildChoice(choices[2])),
-            SizedBox(width: h * 0.015),
-            Expanded(child: buildChoice(choices[3])),
-          ]),
-        ],
-      ),
+      child: Column(children: [
+        Row(children: [
+          Expanded(child: buildChoice(choices[0])),
+          SizedBox(width: h * 0.015),
+          Expanded(child: buildChoice(choices[1])),
+        ]),
+        SizedBox(height: h * 0.015),
+        Row(children: [
+          Expanded(child: buildChoice(choices[2])),
+          SizedBox(width: h * 0.015),
+          Expanded(child: buildChoice(choices[3])),
+        ]),
+      ]),
     );
   }
 
@@ -483,22 +505,26 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       children: [
         Container(
           padding: EdgeInsets.symmetric(
-              horizontal: h * 0.02, vertical: h * 0.01),
+            horizontal: h * 0.02, vertical: h * 0.01,
+          ),
           decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(8)),
+            color:        Colors.blue.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.drag_handle, color: Colors.blue, size: h * 0.02),
               const SizedBox(width: 8),
               Text(
-                  isLocked
-                      ? "✓ Answer locked"
-                      : "Drag and drop to order the steps",
-                  style: TextStyle(
-                      color: isLocked ? Colors.green : Colors.blue,
-                      fontSize: h * 0.014)),
+                isLocked
+                    ? "✓ Answer locked"
+                    : "Drag and drop to order the steps",
+                style: TextStyle(
+                  color:    isLocked ? Colors.green : Colors.blue,
+                  fontSize: h * 0.014,
+                ),
+              ),
             ],
           ),
         ),
@@ -506,7 +532,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
         Expanded(
           child: ReorderableListView.builder(
             shrinkWrap: true,
-            itemCount: _currentOrder.length,
+            itemCount:  _currentOrder.length,
             onReorder: isLocked
                 ? (_, _) {}
                 : (oldIndex, newIndex) {
@@ -529,56 +555,55 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                 final correctOrder = question.bonneReponse.split('|');
                 final isCorrectPos = index < correctOrder.length &&
                     correctOrder[index] == _currentOrder[index];
-                itemBorderColor =
-                    isCorrectPos ? Colors.green : Colors.red;
-                textColor  = isCorrectPos ? Colors.green : Colors.red;
-                iconColor  = isCorrectPos ? Colors.green : Colors.red;
-                badgeColor = isCorrectPos ? Colors.green : Colors.red;
+                itemBorderColor = isCorrectPos ? Colors.green : Colors.red;
+                textColor       = isCorrectPos ? Colors.green : Colors.red;
+                iconColor       = isCorrectPos ? Colors.green : Colors.red;
+                badgeColor      = isCorrectPos ? Colors.green : Colors.red;
               }
 
               return Container(
-                key: ValueKey(_currentOrder[index]),
-                margin: EdgeInsets.only(bottom: h * 0.01),
+                key:     ValueKey(_currentOrder[index]),
+                margin:  EdgeInsets.only(bottom: h * 0.01),
                 padding: EdgeInsets.symmetric(
-                    horizontal: h * 0.02, vertical: h * 0.012),
+                  horizontal: h * 0.02, vertical: h * 0.012,
+                ),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.1),
-                      Colors.white.withValues(alpha: 0.05)
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
+                  gradient: LinearGradient(colors: [
+                    Colors.white.withValues(alpha: 0.1),
+                    Colors.white.withValues(alpha: 0.05),
+                  ]),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: itemBorderColor),
+                  border:       Border.all(color: itemBorderColor),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.drag_handle,
-                        color: iconColor, size: h * 0.025),
-                    const SizedBox(width: 12),
-                    Expanded(
-                        child: Text(_currentOrder[index],
-                            style: TextStyle(
-                                color: textColor,
-                                fontSize: h * 0.016,
-                                fontFamily: 'monospace'))),
-                    Container(
-                      width: h * 0.035,
-                      height: h * 0.035,
-                      decoration: BoxDecoration(
-                          color: badgeColor.withValues(alpha: 0.3),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Center(
-                          child: Text("${index + 1}",
-                              style: TextStyle(
-                                  color: badgeColor,
-                                  fontSize: h * 0.014,
-                                  fontWeight: FontWeight.bold))),
+                child: Row(children: [
+                  Icon(Icons.drag_handle,
+                      color: iconColor, size: h * 0.025),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(_currentOrder[index],
+                        style: TextStyle(
+                          color:      textColor,
+                          fontSize:   h * 0.016,
+                          fontFamily: 'monospace',
+                        )),
+                  ),
+                  Container(
+                    width:  h * 0.035,
+                    height: h * 0.035,
+                    decoration: BoxDecoration(
+                      color:        badgeColor.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  ],
-                ),
+                    child: Center(
+                      child: Text("${index + 1}",
+                          style: TextStyle(
+                            color:      badgeColor,
+                            fontSize:   h * 0.014,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
+                ]),
               );
             },
           ),
@@ -596,35 +621,36 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: EdgeInsets.symmetric(
-                horizontal: w * 0.04, vertical: h * 0.016),
+              horizontal: w * 0.04, vertical: h * 0.016,
+            ),
             decoration: BoxDecoration(
               gradient: _hasSelection
                   ? const LinearGradient(
                       colors: [Color(0xFF2979FF), Color(0xFF1565C0)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight)
+                      begin:  Alignment.topLeft,
+                      end:    Alignment.bottomRight,
+                    )
                   : null,
-              color: _hasSelection ? null : Colors.white12,
+              color:        _hasSelection ? null : Colors.white12,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                  color: _hasSelection ? Colors.blue : Colors.white24,
-                  width: 1.5),
+                color: _hasSelection ? Colors.blue : Colors.white24,
+                width: 1.5,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.check_circle_outline,
-                    color:
-                        _hasSelection ? Colors.white : Colors.white38,
-                    size: h * 0.022),
+                    color: _hasSelection ? Colors.white : Colors.white38,
+                    size:  h * 0.022),
                 const SizedBox(width: 10),
                 Text("Check Answer",
                     style: TextStyle(
-                        color: _hasSelection
-                            ? Colors.white
-                            : Colors.white38,
-                        fontSize: h * 0.018,
-                        fontWeight: FontWeight.bold)),
+                      color:      _hasSelection ? Colors.white : Colors.white38,
+                      fontSize:   h * 0.018,
+                      fontWeight: FontWeight.bold,
+                    )),
               ],
             ),
           ),
@@ -639,29 +665,34 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       child: Center(
         child: Container(
           padding: EdgeInsets.symmetric(
-              horizontal: h * 0.03, vertical: h * 0.01),
+            horizontal: h * 0.03, vertical: h * 0.01,
+          ),
           decoration: BoxDecoration(
             color: _answerChecked!
                 ? Colors.green.withValues(alpha: 0.2)
                 : Colors.red.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-                color: _answerChecked! ? Colors.green : Colors.red),
+              color: _answerChecked! ? Colors.green : Colors.red,
+            ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                  _answerChecked! ? Icons.check_circle : Icons.cancel,
-                  color: _answerChecked! ? Colors.green : Colors.red,
-                  size: h * 0.022),
+                _answerChecked! ? Icons.check_circle : Icons.cancel,
+                color: _answerChecked! ? Colors.green : Colors.red,
+                size:  h * 0.022,
+              ),
               const SizedBox(width: 8),
-              Text(_answerChecked! ? "✓ Correct!" : "✗ Incorrect!",
-                  style: TextStyle(
-                      color:
-                          _answerChecked! ? Colors.green : Colors.red,
-                      fontSize: h * 0.018,
-                      fontWeight: FontWeight.bold)),
+              Text(
+                _answerChecked! ? "✓ Correct!" : "✗ Incorrect!",
+                style: TextStyle(
+                  color:      _answerChecked! ? Colors.green : Colors.red,
+                  fontSize:   h * 0.018,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
@@ -682,45 +713,47 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
             onTap: widget.controller.isFirstQuestion ? null : _prevQuestion,
             child: Container(
               padding: EdgeInsets.symmetric(
-                  horizontal: w * 0.02, vertical: h * 0.015),
+                horizontal: w * 0.02, vertical: h * 0.015,
+              ),
               decoration: BoxDecoration(
                 color: widget.controller.isFirstQuestion
                     ? Colors.white.withValues(alpha: 0.05)
                     : Colors.white.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: widget.controller.isFirstQuestion
-                        ? Colors.white12
-                        : Colors.white30),
+                  color: widget.controller.isFirstQuestion
+                      ? Colors.white12 : Colors.white30,
+                ),
               ),
               child: Row(children: [
                 Icon(Icons.chevron_left,
                     color: widget.controller.isFirstQuestion
-                        ? Colors.white24
-                        : Colors.white,
+                        ? Colors.white24 : Colors.white,
                     size: h * 0.02),
                 Text("Prev",
                     style: TextStyle(
-                        color: widget.controller.isFirstQuestion
-                            ? Colors.white24
-                            : Colors.white,
-                        fontSize: h * 0.016)),
+                      color: widget.controller.isFirstQuestion
+                          ? Colors.white24 : Colors.white,
+                      fontSize: h * 0.016,
+                    )),
               ]),
             ),
           ),
           Text(
             "${widget.controller.currentQuestionIndex + 1} / ${widget.controller.totalQuestionsInCurrentQuiz}",
             style: TextStyle(
-                color: Colors.white70,
-                fontSize: h * 0.016,
-                fontWeight: FontWeight.w500),
+              color:      Colors.white70,
+              fontSize:   h * 0.016,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           GestureDetector(
-            onTap: canGoNext ? _nextQuestion : null,
+            onTap: canGoNext ? () async => await _nextQuestion() : null,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: EdgeInsets.symmetric(
-                  horizontal: w * 0.02, vertical: h * 0.015),
+                horizontal: w * 0.02, vertical: h * 0.015,
+              ),
               decoration: BoxDecoration(
                 gradient: canGoNext
                     ? (isLast
@@ -729,26 +762,24 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                         : const LinearGradient(
                             colors: [Colors.blue, Color(0xFF2196F3)]))
                     : null,
-                color: canGoNext ? null : Colors.white12,
+                color:        canGoNext ? null : Colors.white12,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Row(children: [
                 Text(
                   isLast ? "Finish" : "Next",
                   style: TextStyle(
-                      color:
-                          canGoNext ? Colors.white : Colors.white38,
-                      fontSize: h * 0.016,
-                      fontWeight: FontWeight.bold),
+                    color:      canGoNext ? Colors.white : Colors.white38,
+                    fontSize:   h * 0.016,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(width: 4),
                 Icon(
-                    isLast
-                        ? Icons.check_circle
-                        : Icons.chevron_right,
-                    color:
-                        canGoNext ? Colors.white : Colors.white38,
-                    size: h * 0.018),
+                  isLast ? Icons.check_circle : Icons.chevron_right,
+                  color: canGoNext ? Colors.white : Colors.white38,
+                  size:  h * 0.018,
+                ),
               ]),
             ),
           ),
@@ -784,10 +815,6 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
       color   = Colors.red;
     }
 
-    final algo1Progress  = ProgressService.getAlgo1Progress();
-    final algo2Progress  = ProgressService.getAlgo2Progress();
-    final globalProgress = ProgressService.getGlobalProgress();
-
     return Scaffold(
       body: Stack(
         children: [
@@ -797,8 +824,9 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
             child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/images/background.png"),
-                    fit: BoxFit.cover),
+                  image: AssetImage("assets/images/background.png"),
+                  fit:   BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -809,18 +837,19 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
-                    width: w * 0.55,
+                    width:   w * 0.55,
                     padding: EdgeInsets.all(h * 0.05),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
+                      color:        Colors.white.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white24),
+                      border:       Border.all(color: Colors.white24),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        // ── Icône animée
                         TweenAnimationBuilder<double>(
-                          tween: Tween<double>(begin: 0, end: 1),
+                          tween:    Tween<double>(begin: 0, end: 1),
                           duration: const Duration(milliseconds: 800),
                           builder: (context, value, child) =>
                               Transform.scale(
@@ -829,9 +858,8 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                               padding: EdgeInsets.all(h * 0.02),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: color.withValues(alpha: 0.2),
-                                border:
-                                    Border.all(color: color, width: 3),
+                                color:  color.withValues(alpha: 0.2),
+                                border: Border.all(color: color, width: 3),
                               ),
                               child: Icon(icon,
                                   size: h * 0.08, color: color),
@@ -841,32 +869,33 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                         SizedBox(height: h * 0.03),
                         Text("Quiz Completed!",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: h * 0.04,
-                                fontWeight: FontWeight.bold)),
+                              color:      Colors.white,
+                              fontSize:   h * 0.04,
+                              fontWeight: FontWeight.bold,
+                            )),
                         SizedBox(height: h * 0.01),
                         Text(message,
                             style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: h * 0.018),
+                              color:    Colors.white70,
+                              fontSize: h * 0.018,
+                            ),
                             textAlign: TextAlign.center),
                         SizedBox(height: h * 0.03),
 
-                        // Score circle
+                        // ── Score circulaire
                         SizedBox(
-                          width: h * 0.15,
+                          width:  h * 0.15,
                           height: h * 0.15,
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
                               SizedBox(
-                                width: h * 0.15,
+                                width:  h * 0.15,
                                 height: h * 0.15,
                                 child: CircularProgressIndicator(
                                   value: totalQuestions > 0
-                                      ? totalScore / totalQuestions
-                                      : 0,
-                                  strokeWidth: h * 0.012,
+                                      ? totalScore / totalQuestions : 0,
+                                  strokeWidth:     h * 0.012,
                                   backgroundColor: Colors.white24,
                                   valueColor:
                                       AlwaysStoppedAnimation<Color>(color),
@@ -877,13 +906,15 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                 children: [
                                   Text("$totalScore",
                                       style: TextStyle(
-                                          color: color,
-                                          fontSize: h * 0.045,
-                                          fontWeight: FontWeight.bold)),
+                                        color:      color,
+                                        fontSize:   h * 0.045,
+                                        fontWeight: FontWeight.bold,
+                                      )),
                                   Text("/ $totalQuestions",
                                       style: TextStyle(
-                                          color: Colors.white54,
-                                          fontSize: h * 0.016)),
+                                        color:    Colors.white54,
+                                        fontSize: h * 0.016,
+                                      )),
                                 ],
                               ),
                             ],
@@ -892,54 +923,58 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                         SizedBox(height: h * 0.02),
                         Text("$percentage%",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: h * 0.028,
-                                fontWeight: FontWeight.bold)),
+                              color:      Colors.white,
+                              fontSize:   h * 0.028,
+                              fontWeight: FontWeight.bold,
+                            )),
                         SizedBox(height: h * 0.04),
 
-                        // Progress section — only show if first completion
+                        // ✅ Bloc progression — affiché seulement à la première completion
                         if (_isFirstCompletion) ...[
                           Container(
-                            width: double.infinity,
+                            width:   double.infinity,
                             padding: EdgeInsets.all(h * 0.02),
                             decoration: BoxDecoration(
                               color: Colors.green.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: Colors.green.withValues(alpha: 0.3)),
+                                color: Colors.green.withValues(alpha: 0.3),
+                              ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(children: [
                                   Icon(Icons.emoji_events,
-                                      color: Colors.amber, size: h * 0.025),
+                                      color: Colors.amber,
+                                      size:  h * 0.025),
                                   const SizedBox(width: 8),
                                   Text("Chapter Completed! 🎉",
                                       style: TextStyle(
-                                          color: Colors.amber,
-                                          fontSize: h * 0.018,
-                                          fontWeight: FontWeight.bold)),
+                                        color:      Colors.amber,
+                                        fontSize:   h * 0.018,
+                                        fontWeight: FontWeight.bold,
+                                      )),
                                 ]),
                                 SizedBox(height: h * 0.02),
                                 _buildProgressRow(
-                                  h: h,
+                                  h:     h,
                                   label: "Algo 1",
-                                  value: algo1Progress,
+                                  value: _algo1Progress,
                                   color: const Color(0xFF00E5FF),
                                 ),
                                 SizedBox(height: h * 0.015),
                                 _buildProgressRow(
-                                  h: h,
+                                  h:     h,
                                   label: "Algo 2",
-                                  value: algo2Progress,
+                                  value: _algo2Progress,
                                   color: Colors.purple,
                                 ),
                                 SizedBox(height: h * 0.015),
                                 _buildProgressRow(
-                                  h: h,
+                                  h:     h,
                                   label: "Global",
-                                  value: globalProgress,
+                                  value: _globalProgress,
                                   color: Colors.green,
                                 ),
                               ],
@@ -948,6 +983,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                           SizedBox(height: h * 0.03),
                         ],
 
+                        // ── Boutons
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -956,48 +992,57 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: w * 0.02,
-                                    vertical: h * 0.015),
+                                  horizontal: w * 0.02,
+                                  vertical:   h * 0.015,
+                                ),
                               ),
                               child: Row(children: [
                                 Icon(Icons.replay,
-                                    color: Colors.white,
-                                    size: h * 0.02),
+                                    color: Colors.white, size: h * 0.02),
                                 const SizedBox(width: 8),
                                 Text("Try Again",
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: h * 0.016)),
+                                      color:    Colors.white,
+                                      fontSize: h * 0.016,
+                                    )),
                               ]),
                             ),
                             const SizedBox(width: 16),
                             ElevatedButton(
-                              onPressed: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) =>
-                                          const DashboardPage())),
+                              // ✅ loadProgress avant de retourner au dashboard
+                              onPressed: () async {
+                                await ProgressService.loadProgress();
+                                if (mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const DashboardPage(),
+                                    ),
+                                  );
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white24,
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(10)),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: w * 0.02,
-                                    vertical: h * 0.015),
+                                  horizontal: w * 0.02,
+                                  vertical:   h * 0.015,
+                                ),
                               ),
                               child: Row(children: [
                                 Icon(Icons.home,
-                                    color: Colors.white,
-                                    size: h * 0.02),
+                                    color: Colors.white, size: h * 0.02),
                                 const SizedBox(width: 8),
                                 Text("Dashboard",
                                     style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: h * 0.016)),
+                                      color:    Colors.white,
+                                      fontSize: h * 0.016,
+                                    )),
                               ]),
                             ),
                           ],
@@ -1020,56 +1065,56 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
     required double value,
     required Color  color,
   }) {
-    return Row(
-      children: [
-        SizedBox(
-          width: h * 0.07,
-          height: h * 0.07,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: h * 0.07,
-                height: h * 0.07,
-                child: CircularProgressIndicator(
-                  value: value,
-                  strokeWidth: h * 0.008,
-                  backgroundColor: Colors.white12,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
-                ),
+    return Row(children: [
+      SizedBox(
+        width:  h * 0.07,
+        height: h * 0.07,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              width:  h * 0.07,
+              height: h * 0.07,
+              child: CircularProgressIndicator(
+                value:           value,
+                strokeWidth:     h * 0.008,
+                backgroundColor: Colors.white12,
+                valueColor:      AlwaysStoppedAnimation<Color>(color),
               ),
-              Text("${(value * 100).toInt()}%",
-                  style: TextStyle(
-                      color: color,
-                      fontSize: h * 0.013,
-                      fontWeight: FontWeight.bold)),
-            ],
-          ),
+            ),
+            Text("${(value * 100).toInt()}%",
+                style: TextStyle(
+                  color:      color,
+                  fontSize:   h * 0.013,
+                  fontWeight: FontWeight.bold,
+                )),
+          ],
         ),
-        SizedBox(width: h * 0.015),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label,
-                  style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: h * 0.015,
-                      fontWeight: FontWeight.bold)),
-              SizedBox(height: h * 0.006),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: LinearProgressIndicator(
-                  value: value,
-                  minHeight: h * 0.007,
-                  backgroundColor: Colors.white12,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
-                ),
+      ),
+      SizedBox(width: h * 0.015),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label,
+                style: TextStyle(
+                  color:      Colors.white70,
+                  fontSize:   h * 0.015,
+                  fontWeight: FontWeight.bold,
+                )),
+            SizedBox(height: h * 0.006),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value:           value,
+                minHeight:       h * 0.007,
+                backgroundColor: Colors.white12,
+                valueColor:      AlwaysStoppedAnimation<Color>(color),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    );
+      ),
+    ]);
   }
 }

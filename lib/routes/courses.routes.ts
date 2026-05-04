@@ -1,11 +1,16 @@
 // lib/routes/courses.routes.ts
-import { Router }     from 'express';
+import { Router }      from 'express';
 import { requireAuth } from '../middlewares/auth.middleware';
-import { completeChapter as completeChapterHandler } from '../controllers/quiz/quiz.controller';
+import {
+  recordChapterVisit,
+  completeChapter,
+  getChapterProgress,
+} from '../controllers/courses_study/courses.controller';
 
 const router = Router();
 
-// POST /api/courses/complete
-router.post('/complete', requireAuth, completeChapterHandler);
+router.post('/visit',    requireAuth, recordChapterVisit);
+router.post('/complete', requireAuth, completeChapter);
+router.get('/progress',  requireAuth, getChapterProgress); // ✅ cette ligne doit exister
 
 export default router;

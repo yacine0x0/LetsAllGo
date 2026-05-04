@@ -1,9 +1,11 @@
+// lib/views/courses_study_page/courses_study_page.dart
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../../models/courses_study/courses_study_model.dart';
 import '../../controllers/courses_study/courses_study_controller.dart';
 import '../../controllers/courses_study/chapter_quiz_controller.dart';
 import '../../controllers/auth/login_controller.dart';
+import '../../service/progress/progress_service.dart';
 import '../dashboard/dashboard_page.dart';
 import '../../views/leaderboard/leaderboard_page.dart';
 import '../files/files_page.dart';
@@ -33,8 +35,10 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
   bool _isLoading     = true;
   bool _isQuizLoading = false;
 
-  // Derives the quiz XML path from the course XML path
-  // e.g. assets/data/algo1/cours/chapitre01.xml → assets/data/algo1/quiz/chapitre01.xml
+  // ✅ algoType dérivé du xmlPath
+  String get _algoType =>
+      widget.xmlPath.contains('algo2') ? 'algo2' : 'algo1';
+
   String get _quizXmlPath =>
       widget.xmlPath.replaceFirst('/cours/', '/quiz/');
 
@@ -46,10 +50,17 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
 
   Future<void> _loadSections() async {
     await _controller.loadFromXml(
-      xmlPath: widget.xmlPath,
-      chapterTitle: widget.chapterTitle,
+      xmlPath:         widget.xmlPath,
+      chapterTitle:    widget.chapterTitle,
       chapterSubtitle: widget.chapterSubtitle,
     );
+
+    // ✅ Enregistrer la visite dès l'ouverture du chapitre
+    await ProgressService.recordVisit(
+      algoType:     _algoType,
+      chapterTitle: widget.chapterTitle,
+    );
+
     setState(() => _isLoading = false);
   }
 
@@ -67,15 +78,13 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
     if (!mounted) return;
     setState(() => _isQuizLoading = false);
 
-     final algoType = widget.xmlPath.contains('algo2') ? 'algo2' : 'algo1';
-
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => ChapterQuizPage(
-          controller:    quizController,
-          chapterTitle:  widget.chapterTitle,
-          algoType:       algoType,
+          controller:   quizController,
+          chapterTitle: widget.chapterTitle,
+          algoType:     _algoType,
         ),
       ),
     );
@@ -93,12 +102,8 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
       );
     }
 
-    final page        = _controller.currentSection!;
-    final isLastPage  = _controller.isLastPage;
-    // Second to last page — next click lands on last page which has the quiz banner
-    final isPreLast   = !isLastPage &&
-        _controller.model!.currentPage ==
-            _controller.totalPages - 2;
+    final page       = _controller.currentSection!;
+    final isLastPage = _controller.isLastPage;
 
     return Scaffold(
       body: Stack(
@@ -122,7 +127,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: w * 0.03,
-                    vertical: h * 0.01,
+                    vertical:   h * 0.01,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
@@ -142,8 +147,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
                           children: [
                             _buildChapterHeader(h, w),
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: w * 0.03),
+                              padding: EdgeInsets.symmetric(horizontal: w * 0.03),
                               child: Container(
                                 height: 1.5,
                                 color: Colors.blue.withValues(alpha: 0.5),
@@ -175,7 +179,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
         : 'Étudiant';
 
     return Container(
-      height: h * 0.11,
+      height:  h * 0.11,
       padding: EdgeInsets.symmetric(horizontal: w * 0.02),
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.4),
@@ -204,8 +208,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
           GestureDetector(
             onTap: () => Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (_) => const LeaderboardPage())),
-            child: _buildNavButton(
-                Icons.emoji_events_outlined, "Leaderboard", h),
+            child: _buildNavButton(Icons.emoji_events_outlined, "Leaderboard", h),
           ),
           SizedBox(width: w * 0.02),
           GestureDetector(
@@ -218,27 +221,29 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
             padding: EdgeInsets.symmetric(
                 horizontal: w * 0.015, vertical: h * 0.008),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
+              color:        Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: Colors.white24),
+              border:       Border.all(color: Colors.white24),
             ),
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: h * 0.030,
+                  radius:          h * 0.030,
                   backgroundColor: Colors.blue,
                   child: Text(initiale,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: h * 0.025,
-                          fontWeight: FontWeight.bold)),
+                        color:      Colors.white,
+                        fontSize:   h * 0.025,
+                        fontWeight: FontWeight.bold,
+                      )),
                 ),
                 const SizedBox(width: 8),
                 Text(nomComplet,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: h * 0.020,
-                        fontWeight: FontWeight.w500)),
+                      color:      Colors.white,
+                      fontSize:   h * 0.020,
+                      fontWeight: FontWeight.w500,
+                    )),
               ],
             ),
           ),
@@ -264,21 +269,21 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
       child: Row(
         children: [
           Container(
-            width: h * 0.07,
+            width:  h * 0.07,
             height: h * 0.07,
             decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.2),
+              color:        Colors.blue.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: Colors.blue.withValues(alpha: 0.4)),
             ),
             child: Image.asset(
               widget.chapterIcon,
-              width: h * 0.05,
+              width:  h * 0.05,
               height: h * 0.05,
               errorBuilder: (_, _, _) => Icon(
                 Icons.smart_toy_outlined,
                 color: Colors.blue,
-                size: h * 0.04,
+                size:  h * 0.04,
               ),
             ),
           ),
@@ -288,12 +293,15 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
             children: [
               Text(widget.chapterTitle,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: h * 0.025,
-                      fontWeight: FontWeight.bold)),
+                    color:      Colors.white,
+                    fontSize:   h * 0.025,
+                    fontWeight: FontWeight.bold,
+                  )),
               Text(widget.chapterSubtitle,
                   style: TextStyle(
-                      color: Colors.white54, fontSize: h * 0.017)),
+                    color:    Colors.white54,
+                    fontSize: h * 0.017,
+                  )),
             ],
           ),
         ],
@@ -304,25 +312,27 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
   Widget _buildPageContent(
       double h, double w, section page, bool isLastPage) {
     return SingleChildScrollView(
-      padding:
-          EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.01),
+      padding: EdgeInsets.symmetric(
+          horizontal: w * 0.04, vertical: h * 0.01),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             page.title,
             style: TextStyle(
-                color: Colors.white,
-                fontSize: h * 0.038,
-                fontWeight: FontWeight.bold),
+              color:      Colors.white,
+              fontSize:   h * 0.038,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           SizedBox(height: h * 0.025),
           Text(
             page.content,
             style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.85),
-                fontSize: h * 0.025,
-                height: 1.6),
+              color:    Colors.white.withValues(alpha: 0.85),
+              fontSize: h * 0.025,
+              height:   1.6,
+            ),
           ),
           if (page.imagePath != null) ...[
             SizedBox(height: h * 0.03),
@@ -331,7 +341,7 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
               child: Image.asset(
                 page.imagePath!,
                 width: double.infinity,
-                fit: BoxFit.contain,
+                fit:   BoxFit.contain,
               ),
             ),
           ],
@@ -345,26 +355,29 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
                     Expanded(
                       child: Text(point,
                           style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.85),
-                              fontSize: h * 0.022,
-                              height: 1.5)),
+                            color:    Colors.white.withValues(alpha: 0.85),
+                            fontSize: h * 0.022,
+                            height:   1.5,
+                          )),
                     ),
                   ],
                 ),
               ),
             ),
 
-          // Quiz announcement banner — only on the last section
+          // ✅ Bannière quiz sur la dernière section
           if (isLastPage) ...[
             SizedBox(height: h * 0.04),
             Container(
-              width: double.infinity,
+              width:   double.infinity,
               padding: EdgeInsets.all(h * 0.02),
               decoration: BoxDecoration(
                 color: Colors.amber.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                    color: Colors.amber.withValues(alpha: 0.5), width: 1.5),
+                  color: Colors.amber.withValues(alpha: 0.5),
+                  width: 1.5,
+                ),
               ),
               child: Row(
                 children: [
@@ -377,16 +390,22 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
                         Text(
                           "You have a Quiz to pass!",
                           style: TextStyle(
-                              color: Colors.amber,
-                              fontSize: h * 0.020,
-                              fontWeight: FontWeight.bold),
+                            color:      Colors.amber,
+                            fontSize:   h * 0.020,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         SizedBox(height: h * 0.005),
+                        // ✅ Afficher si déjà complété
                         Text(
-                          "5 questions to test your knowledge of this chapter.",
+                          ProgressService.isAlreadyCompleted(
+                                  _algoType, widget.chapterTitle)
+                              ? "✓ Already completed — retry anytime!"
+                              : "5 questions to test your knowledge of this chapter.",
                           style: TextStyle(
-                              color: Colors.amber.withValues(alpha: 0.8),
-                              fontSize: h * 0.015),
+                            color:    Colors.amber.withValues(alpha: 0.8),
+                            fontSize: h * 0.015,
+                          ),
                         ),
                       ],
                     ),
@@ -406,7 +425,6 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
     final isFirstPage = _controller.isFirstPage;
     final isLastPage  = _controller.isLastPage;
 
-    // Button label and color logic
     String nextLabel;
     Color  nextColor;
 
@@ -422,12 +440,13 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
     }
 
     return Container(
-      height: h * 0.08,
+      height:  h * 0.08,
       padding: EdgeInsets.symmetric(horizontal: w * 0.03),
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.5),
         border: Border(
-            top: BorderSide(color: Colors.white.withValues(alpha: 0.1))),
+          top: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+        ),
       ),
       child: Row(
         children: [
@@ -442,18 +461,18 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
                     : Colors.white.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color:
-                        isFirstPage ? Colors.white12 : Colors.white30),
+                  color: isFirstPage ? Colors.white12 : Colors.white30,
+                ),
               ),
               child: Row(
                 children: [
                   Icon(Icons.chevron_left,
                       color: isFirstPage ? Colors.white24 : Colors.white,
-                      size: h * 0.03),
+                      size:  h * 0.03),
                   const SizedBox(width: 4),
                   Icon(Icons.menu,
                       color: isFirstPage ? Colors.white24 : Colors.white,
-                      size: h * 0.025),
+                      size:  h * 0.025),
                 ],
               ),
             ),
@@ -463,16 +482,17 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
             padding: EdgeInsets.symmetric(
                 horizontal: w * 0.025, vertical: h * 0.012),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.08),
+              color:        Colors.white.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white24),
+              border:       Border.all(color: Colors.white24),
             ),
             child: Text(
               "${_controller.model!.currentPage + 1}/${_controller.totalPages}",
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: h * 0.020,
-                  fontWeight: FontWeight.w500),
+                color:      Colors.white,
+                fontSize:   h * 0.020,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           const Spacer(),
@@ -486,23 +506,26 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
               padding: EdgeInsets.symmetric(
                   horizontal: w * 0.025, vertical: h * 0.015),
               decoration: BoxDecoration(
-                color: nextColor,
+                color:        nextColor,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: nextColor),
+                border:       Border.all(color: nextColor),
               ),
               child: _isQuizLoading
                   ? SizedBox(
-                      width: h * 0.02,
+                      width:  h * 0.02,
                       height: h * 0.02,
                       child: const CircularProgressIndicator(
-                          color: Colors.white, strokeWidth: 2),
+                        color:       Colors.white,
+                        strokeWidth: 2,
+                      ),
                     )
                   : Text(
                       nextLabel,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: h * 0.020,
-                          fontWeight: FontWeight.bold),
+                        color:      Colors.white,
+                        fontSize:   h * 0.020,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
             ),
           ),

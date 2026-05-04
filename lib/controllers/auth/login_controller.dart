@@ -1,9 +1,12 @@
+// lib/controllers/auth/login_controller.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';   // ← Ajout important
-
+import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/auth/login_model.dart';
 import '../../service/auth/LoginService.dart';
+import '../../service/progress/progress_service.dart';
 
 class AuthData {
   final String token;
@@ -22,7 +25,13 @@ class AuthData {
 }
 
 class LoginController {
-  static const String _baseUrl = 'http://localhost:3000/api/auth';
+  // ✅ URL dynamique selon la plateforme
+  static String get _baseUrl {
+    if (kIsWeb) return 'http://localhost:3000/api/auth';
+    if (Platform.isAndroid) return 'http://10.0.2.2:3000/api/auth';
+    return 'http://localhost:3000/api/auth'; // Windows / iOS / Desktop
+  }
+
   static AuthData? currentUser;
 
   Future<String?> login(String email, String password) async {
@@ -35,7 +44,7 @@ class LoginController {
         Uri.parse('$_baseUrl/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'email': email.trim(),
+          'email':    email.trim(),
           'password': password,
         }),
       );
@@ -49,21 +58,26 @@ class LoginController {
         final role = data['role'] as String? ?? 'etudiant';
 
         currentUser = AuthData(
-          token: data['token'],
+          token:  data['token'],
           userId: data['userId'].toString(),
-          nom: data['nom'],
+          nom:    data['nom'],
           prenom: data['prenom'],
-          role: role,
+          role:   role,
         );
 
-        // Sauvegarde via LoginService (gardé comme avant)
         LoginService.saveToken(data['token']);
         LoginService.saveUser(
           userId: data['userId'].toString(),
-          nom: data['nom'],
+          nom:    data['nom'],
           prenom: data['prenom'],
-          role: role,
+          role:   role,
         );
+
+        // ✅ Charger la progression après connexion
+        if (role == 'etudiant') {
+          await ProgressService.loadProgress();
+          print('✅ Progression chargée après login');
+        }
 
         print('✅ Utilisateur connecté: ${currentUser?.prenom} ${currentUser?.nom} [$role]');
         return null;
@@ -76,24 +90,15 @@ class LoginController {
     }
   }
 
-  /// ✅ MÉTHODE LOGOUT CORRIGÉE
   Future<void> logout() async {
     try {
-      // 1. Nettoyer la variable statique
       currentUser = null;
+      ProgressService.reset();
 
-      // 2. Nettoyer le stockage local (SharedPreferences)
       final prefs = await SharedPreferences.getInstance();
-      await prefs.clear();                    // Supprime tout (le plus simple et sûr pour logout)
+      await prefs.clear();
 
-      // Alternative si vous voulez supprimer seulement certaines clés :
-      // await prefs.remove('token');
-      // await prefs.remove('userId');
-      // await prefs.remove('nom');
-      // await prefs.remove('prenom');
-      // await prefs.remove('role');
-
-      print('✅ Logout réussi - toutes les données locales ont été supprimées');
+      print('✅ Logout réussi');
     } catch (e) {
       print('❌ Erreur lors du logout: $e');
       rethrow;

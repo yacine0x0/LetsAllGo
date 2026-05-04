@@ -1,3 +1,4 @@
+// lib/controllers/courses_study/chapter_quiz_controller.dart
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
@@ -85,8 +86,8 @@ class ChapterQuizController implements BaseQuizController {
   ) async {
     final allQuestions = await _loadQuestionsFromXml(xmlPath);
 
-    // Pick 5 random questions
-    final random = Random();
+    // ✅ 5 questions aléatoires
+    final random   = Random();
     final shuffled = List<Question>.from(allQuestions)..shuffle(random);
     final selected = shuffled.take(5).toList();
 
@@ -133,10 +134,12 @@ class ChapterQuizController implements BaseQuizController {
   bool get isLastQuiz => _session.isLastQuiz;
 
   @override
-  int get totalQuestionsInCurrentQuiz => _session.currentQuiz.totalQuestions;
+  int get totalQuestionsInCurrentQuiz =>
+      _session.currentQuiz.totalQuestions;
 
   @override
-  int get currentQuestionIndex => _session.currentQuiz.currentQuestionIndex;
+  int get currentQuestionIndex =>
+      _session.currentQuiz.currentQuestionIndex;
 
   @override
   Question get currentQuestion => _session.currentQuiz.currentQuestion;
@@ -168,10 +171,11 @@ class ChapterQuizController implements BaseQuizController {
     bool isCorrect;
 
     if (question.type == QuestionType.multipleChoice) {
-      isCorrect =
-          _session.currentQuiz.userAnswers[questionId] == question.bonneReponse;
+      isCorrect = _session.currentQuiz.userAnswers[questionId] ==
+          question.bonneReponse;
     } else {
-      final userOrder = _session.currentQuiz.userOrderings[questionId];
+      final userOrder =
+          _session.currentQuiz.userOrderings[questionId];
       if (userOrder == null) return false;
       final correctOrder = question.bonneReponse.split('|');
       isCorrect = userOrder.join('|') == correctOrder.join('|');
@@ -191,16 +195,21 @@ class ChapterQuizController implements BaseQuizController {
         return _session.currentQuiz.userAnswers[questionId] ==
             question.bonneReponse;
       } else {
-        final userOrder = _session.currentQuiz.userOrderings[questionId];
+        final userOrder =
+            _session.currentQuiz.userOrderings[questionId];
         if (userOrder == null) return false;
         return userOrder.join('|') == question.bonneReponse;
       }
     }
 
     if (question.type == QuestionType.multipleChoice) {
-      if (!_session.currentQuiz.userAnswers.containsKey(questionId)) return null;
+      if (!_session.currentQuiz.userAnswers.containsKey(questionId)) {
+        return null;
+      }
     } else {
-      if (!_session.currentQuiz.userOrderings.containsKey(questionId)) return null;
+      if (!_session.currentQuiz.userOrderings.containsKey(questionId)) {
+        return null;
+      }
     }
 
     return checkAnswer(questionId);
@@ -216,10 +225,10 @@ class ChapterQuizController implements BaseQuizController {
   }
 
   @override
-  int getTotalScore() => _session.getTotalScore();
+  int getTotalScore()  => _session.getTotalScore();
 
   @override
-  int getPercentage() => _session.getPercentage();
+  int getPercentage()  => _session.getPercentage();
 
   @override
   void resetSession() {

@@ -1,16 +1,19 @@
+// lib/models/dashboard/algo2_model.dart
 class ChapterModel {
   final String number;
   final String title;
   final String icon;
   final List<String> lessons;
-  final String xmlPath; // ← ajouté
+  final String xmlPath;
+  final bool isFinished; // ✅ ajouté
 
   ChapterModel({
     required this.number,
     required this.title,
     required this.icon,
     required this.lessons,
-    required this.xmlPath, // ← ajouté
+    required this.xmlPath,
+    required this.isFinished, // ✅ ajouté
   });
 }
 
