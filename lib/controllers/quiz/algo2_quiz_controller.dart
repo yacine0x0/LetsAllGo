@@ -45,11 +45,11 @@ class Algo2QuizController implements BaseQuizController {
     // Chemin : assets/data/algo2/quiz/chapitre01.xml
     // Mapping chapitre → nom de fichier exact
     const fileNames = {
-      'Chapitre 01': 'algo2_chapitre01_tri',
-      'Chapitre 02': 'algo2_chapitre02_recherche',
-      'Chapitre 03': 'algo2_chapitre03_recursivite',
-      'Chapitre 04': 'algo2_chapitre04_listes',
-      'Chapitre 05': 'algo2_chapitre05_piles_files',
+      'Chapitre 01': 'chapitre01',
+      'Chapitre 02': 'chapitre02',
+      'Chapitre 03': 'chapitre03',
+      'Chapitre 04': 'chapitre04',
+      'Chapitre 05': 'chapitre05',
     };
     final file = fileNames[chapter] ?? 'algo2_chapitre01_tri';
     final path = 'assets/data/algo2/quiz/$file.xml';

@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { sendVerificationEmail } from './email.service';
 
 const prisma = new PrismaClient();
 
@@ -12,17 +13,17 @@ export const getUserById = async (userId: string) => {
   const user = await prisma.utilisateur.findUnique({
     where: { id: userId },
     select: {
-      id:              true,
-      nom:             true,
-      prenom:          true,
-      email:           true,
-      role:            true,
+      id: true,
+      nom: true,
+      prenom: true,
+      email: true,
+      role: true,
       dateinscription: true,
-      scoretotal:      true,
-      rang:            true,
+      scoretotal: true,
+      rang: true,
     },
   });
-  
+
   if (!user) throw new Error('Utilisateur introuvable');
 
   // 2. Calculer le vrai rang basé sur scoretotal
@@ -38,10 +39,9 @@ export const getUserById = async (userId: string) => {
   if (user.rang !== vraiRang) {
     await prisma.utilisateur.update({
       where: { id: userId },
-      data:  { rang: vraiRang },
+      data: { rang: vraiRang },
     });
   }
-
 
   // 5. Calculer le nombre de quiz réussis et questions correctes
   const passesUser = await prisma.passe.findMany({
@@ -49,11 +49,11 @@ export const getUserById = async (userId: string) => {
     include: { quizz: true },
   });
 
-  const quizReussis = passesUser.filter(p => (p.quizz?.score ?? 0) > 0).length;
+  const quizReussis = passesUser.filter((p) => (p.quizz?.score ?? 0) > 0).length;
   const totalQuestionsCorrectes = passesUser.reduce(
-    (sum, p) => sum + (p.quizz?.score ?? 0), 0
+    (sum, p) => sum + (p.quizz?.score ?? 0),
+    0
   );
-
 
   // 7. Spécialité et niveau (valeurs par défaut)
   const speciality = 'Informatique';
@@ -64,7 +64,6 @@ export const getUserById = async (userId: string) => {
   console.log(`  - Rang: ${vraiRang}`);
   console.log(`  - Quiz réussis: ${quizReussis}`);
   console.log(`  - Questions correctes: ${totalQuestionsCorrectes}`);
-
 
   // 🔥 RETOURNE TOUS LES CHAMPS ATTENDUS PAR FLUTTER
   return {
@@ -132,8 +131,10 @@ export const requestUserEmailChange = async (
   userId: string,
   newEmail: string
 ) => {
+  const normalizedEmail = newEmail.trim().toLowerCase();
+
   const existing = await prisma.utilisateur.findUnique({
-    where: { email: newEmail.trim().toLowerCase() },
+    where: { email: normalizedEmail },
   });
   if (existing && existing.id !== userId) {
     throw new Error('Cet email est déjà utilisé');
@@ -147,8 +148,18 @@ export const requestUserEmailChange = async (
     where: { id: userId },
     select: { prenom: true, nom: true },
   });
+  if (!user) {
+    throw new Error('Utilisateur introuvable');
+  }
 
-  console.log(`✅ OTP email change envoyé à ${newEmail}: ${code}`);
+  const recipientName =
+    user.prenom?.toString().trim() ||
+    user.nom?.toString().trim() ||
+    'Utilisateur';
+
+  await sendVerificationEmail(normalizedEmail, recipientName, code);
+
+  console.log(`✅ OTP email change envoyé à ${normalizedEmail}: ${code}`);
   return { code, expiresAt };
 };
 

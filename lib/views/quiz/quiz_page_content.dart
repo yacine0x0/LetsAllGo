@@ -13,6 +13,7 @@ import 'quiz_selection_page.dart';
 import '../../controllers/quiz/base_quiz_controller.dart';
 import '../../controllers/auth/login_controller.dart';
 import '../../service/quiz/quiz_score_service.dart';
+import '../../service/progress/progress_service.dart';
 
 class QuizPageContent extends StatefulWidget {
   final BaseQuizController controller;
@@ -184,6 +185,9 @@ Future<void> _submitAndComplete() async {
     if (totalPoints > 0) {
       setState(() => _pointsGagnes = totalPoints);
     }
+
+    // Synchronise l'état des chapitres terminés pour l'affichage dashboard.
+    await ProgressService.loadProgress();
   } catch (e) {
     print('❌ Erreur soumission: $e');
   }

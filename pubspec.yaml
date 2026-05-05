@@ -37,7 +37,7 @@ dependencies:
   path_provider: ^2.1.2          # ← ajouté
   flutter_cache_manager: ^3.3.1  # ← ajouté
   open_file: ^3.3.2  
-
+  country_flags: ^3.0.0
   google_fonts: ^6.2.1
   shared_preferences: ^2.3.0
   fl_chart: ^0.69.0

@@ -9,33 +9,49 @@ const JOURS_FR = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
 
 export const getAnalytics = async () => {
 
-  // ── 1. Chapitres avec taux de complétion
+  // ── 1. Chapitres avec moyenne de progression (étudiants distincts)
+  const totalStudents = await prisma.utilisateur.count({
+    where: { role: 'etudiant' },
+  });
+
   const chapitres = await prisma.chapitre.findMany({
     select: {
       id_chapitre: true,
       titre: true,
-      pourcentagechapitre: true,
       module: { select: { nom: true } },
-      suividuchapitre: { select: { complete: true } },
+      suividuchapitre: {
+        select: {
+          complete: true,
+          obtient: { select: { id_etudiant: true } },
+        },
+      },
     },
     orderBy: { titre: 'asc' },
   });
 
   const chapitresAvecProgression = chapitres.map(c => {
-    const total = c.suividuchapitre.length;
-    const termines = c.suividuchapitre.filter(
-      s => s.complete === true
-    ).length;
+    // Etudiants ayant au moins une completion sur ce chapitre
+    const completedStudentIds = new Set<string>();
 
-    const completion = total > 0
-      ? termines / total
-      : (c.pourcentagechapitre ?? 0) / 100;
+    for (const suivi of c.suividuchapitre) {
+      if (!suivi.complete) continue;
+      for (const o of suivi.obtient) {
+        completedStudentIds.add(o.id_etudiant);
+      }
+    }
+
+    // Moyenne de progression = nb étudiants qui ont complété / nb étudiants total
+    const completion = totalStudents > 0
+      ? completedStudentIds.size / totalStudents
+      : 0;
 
     return {
       id_chapitre: c.id_chapitre,
       titre: c.titre,
       module_nom: c.module?.nom?.toLowerCase() ?? '',
       completion,
+      completedStudents: completedStudentIds.size,
+      totalStudents,
     };
   });
 
@@ -153,6 +169,8 @@ const passages = await prisma.passe.findMany({
     .map(c => ({
       label: c.titre,
       completion: c.completion,
+      completedStudents: c.completedStudents,
+      totalStudents: c.totalStudents,
     }));
 
   const algo2Chapters = chapitresAvecProgression
@@ -164,6 +182,8 @@ const passages = await prisma.passe.findMany({
     .map(c => ({
       label: c.titre,
       completion: c.completion,
+      completedStudents: c.completedStudents,
+      totalStudents: c.totalStudents,
     }));
 
   // Fallback Algo1
@@ -172,6 +192,8 @@ const passages = await prisma.passe.findMany({
     : chapitresAvecProgression.map(c => ({
         label: c.titre,
         completion: c.completion,
+        completedStudents: c.completedStudents,
+        totalStudents: c.totalStudents,
       }));
 
   const finalAlgo2 = algo2Chapters.length > 0

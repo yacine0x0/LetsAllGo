@@ -1,43 +1,79 @@
+// lib/controllers/profil/profil_controller.dart
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../../models/profil/profil_model.dart';
 import '../../service/auth/LoginService.dart';
 import '../auth/login_controller.dart';
 
-class ProfileController {
-  static const String _baseUrl = 'http://localhost:3000/api';
+class ProfileController extends ChangeNotifier {
+  static String get _baseUrl {
+    if (kIsWeb) return 'http://localhost:3000/api';
+    return 'http://localhost:3000/api';
+  }
 
-  ProfileModel _model = ProfileModel.mock();
+  ProfileModel _model = ProfileModel.empty();
   ProfileModel get model => _model;
 
-  Future<void> loadProfile() async {
-    final token = LoginService.getToken();
-    if (token == null) {
-      _model = ProfileModel.mock();
-      return;
-    }
-
+  Map<String, dynamic> _safeJsonMap(String rawBody) {
     try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/users/me'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      final body = jsonDecode(response.body) as Map<String, dynamic>;
-
-      if (response.statusCode == 200 && body['success'] == true) {
-        final userData = body['data'];
-        if (userData != null) {
-          _model = ProfileModel.fromApi(userData as Map<String, dynamic>);
-        }
-      }
-    } catch (e) {
-      // garde le mock en cas d'erreur
+      final decoded = jsonDecode(rawBody);
+      if (decoded is Map<String, dynamic>) return decoded;
+      return <String, dynamic>{};
+    } catch (_) {
+      return <String, dynamic>{};
     }
   }
+
+Future<void> loadProfile() async {
+  final token = LoginService.getToken();
+  if (token == null) {
+    print('❌ loadProfile: token manquant');
+    _model = ProfileModel.empty();
+    notifyListeners();
+    return;
+  }
+
+  try {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/users/me'),
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    print('📡 loadProfile status: ${response.statusCode}');
+    print('📡 loadProfile body: ${response.body}');
+
+    final body = jsonDecode(response.body) as Map<String, dynamic>;
+
+    if (response.statusCode == 200) {
+      // ✅ Gère les deux formats : {data: {...}} ou directement {...}
+      final userData = (body.containsKey('data') && body['data'] is Map)
+          ? body['data'] as Map<String, dynamic>
+          : body;
+
+      _model = ProfileModel.fromApi(userData);
+      print('✅ Profil chargé: ${_model.firstName} ${_model.lastName}');
+      print('   email: ${_model.email}');
+      print('   pointsXP: ${_model.pointsXP}');
+      print('   classement: ${_model.classement}');
+      print('   coursesSuivis: ${_model.coursesSuivis}');
+      print('   globalProgress: ${(_model.globalProgress * 100).toInt()}%');
+      notifyListeners();
+    } else {
+      print('❌ loadProfile HTTP ${response.statusCode}: ${body['message']}');
+      _model = ProfileModel.empty();
+      notifyListeners();
+    }
+  } catch (e) {
+    print('❌ loadProfile error: $e');
+    _model = ProfileModel.empty();
+    notifyListeners();
+  }
+}
 
   Future<String?> updateName({
     required String newFirstName,
@@ -50,7 +86,7 @@ class ProfileController {
       final response = await http.patch(
         Uri.parse('$_baseUrl/users/me'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type':  'application/json',
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
@@ -58,16 +94,15 @@ class ProfileController {
           'nom':    newLastName.trim(),
         }),
       );
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final data = _safeJsonMap(response.body);
 
-      if (response.statusCode == 200 && data['success'] == true) {
-        // 1. Met à jour le modèle local
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         _model = _model.copyWith(
           firstName: newFirstName.trim(),
           lastName:  newLastName.trim(),
         );
+        notifyListeners();
 
-        // 2. Met à jour LoginService — utilisé par toute l'app
         LoginService.saveUser(
           userId: LoginService.getUserId() ?? '',
           nom:    newLastName.trim(),
@@ -75,7 +110,6 @@ class ProfileController {
           role:   LoginService.getRole() ?? 'etudiant',
         );
 
-        // 3. Met à jour LoginController.currentUser — utilisé par navbar/dashboard
         if (LoginController.currentUser != null) {
           LoginController.currentUser = AuthData(
             token:  LoginController.currentUser!.token,
@@ -88,7 +122,8 @@ class ProfileController {
 
         return null;
       }
-      return data['message'] as String? ?? 'Erreur lors de la mise à jour';
+      return data['message'] as String? ??
+          'Erreur lors de la mise à jour (HTTP ${response.statusCode})';
     } catch (e) {
       return 'Erreur réseau : $e';
     }
@@ -105,7 +140,7 @@ class ProfileController {
       final response = await http.patch(
         Uri.parse('$_baseUrl/users/me/password'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type':  'application/json',
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
@@ -113,9 +148,10 @@ class ProfileController {
           'newPassword': newPassword,
         }),
       );
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      if (response.statusCode == 200 && data['success'] == true) return null;
-      return data['message'] as String? ?? 'Erreur mot de passe';
+      final data = _safeJsonMap(response.body);
+      if (response.statusCode >= 200 && response.statusCode < 300) return null;
+      return data['message'] as String? ??
+          'Erreur mot de passe (HTTP ${response.statusCode})';
     } catch (e) {
       return 'Erreur réseau : $e';
     }
@@ -129,14 +165,15 @@ class ProfileController {
       final response = await http.post(
         Uri.parse('$_baseUrl/users/me/email/request'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type':  'application/json',
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({'newEmail': newEmail.trim()}),
       );
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      if (response.statusCode == 200 && data['success'] == true) return null;
-      return data['message'] as String? ?? "Erreur envoi code";
+      final data = _safeJsonMap(response.body);
+      if (response.statusCode >= 200 && response.statusCode < 300) return null;
+      return data['message'] as String? ??
+          'Erreur envoi code (HTTP ${response.statusCode})';
     } catch (e) {
       return 'Erreur réseau : $e';
     }
@@ -153,7 +190,7 @@ class ProfileController {
       final response = await http.post(
         Uri.parse('$_baseUrl/users/me/email/confirm'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type':  'application/json',
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
@@ -161,25 +198,20 @@ class ProfileController {
           'code':     otp.trim(),
         }),
       );
-      final data = jsonDecode(response.body) as Map<String, dynamic>;
-      if (response.statusCode == 200 && data['success'] == true) {
-        // Met à jour partout
+      final data = _safeJsonMap(response.body);
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         _model = _model.copyWith(email: newEmail.trim());
-        LoginService.saveUser(
-          userId: LoginService.getUserId() ?? '',
-          nom:    LoginService.getNom()    ?? '',
-          prenom: LoginService.getPrenom() ?? '',
-          role:   LoginService.getRole()   ?? 'etudiant',
-        );
+        notifyListeners();
         return null;
       }
-      return data['message'] as String? ?? 'Code invalide';
+      return data['message'] as String? ??
+          'Code invalide (HTTP ${response.statusCode})';
     } catch (e) {
       return 'Erreur réseau : $e';
     }
   }
 
-  void toggleLanguage() => _model.isFrench = !_model.isFrench;
+  void toggleLanguage() => _model.isFrench    = !_model.isFrench;
   void toggleSound()    => _model.soundEffects = !_model.soundEffects;
   String t(String fr, String en) => _model.isFrench ? fr : en;
 }

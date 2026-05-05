@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';                    // ← À AJOUTER
+import 'package:provider/provider.dart';
 
-import 'service/language_service.dart';                   // ← À AJOUTER
+import 'service/language_service.dart';
+import 'controllers/profil/profil_controller.dart'; // ✅ ajouter
 import 'views/auth/login_page.dart';
 
 void main() {
@@ -13,15 +14,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(                                 // ← Changement ici
+    return MultiProvider(
       providers: [
         ChangeNotifierProvider<LanguageService>(
           create: (_) => LanguageService(),
         ),
-        // Vous pourrez ajouter d'autres providers ici plus tard
+        ChangeNotifierProvider<ProfileController>( // ✅ ajouter
+          create: (_) => ProfileController(),
+        ),
       ],
       child: MaterialApp(
-        title: 'Mon Application',
+        title: 'LetsAllGo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),

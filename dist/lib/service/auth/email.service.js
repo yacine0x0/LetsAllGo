@@ -1,64 +1,56 @@
-import { BrevoClient, BrevoError } from '@getbrevo/brevo';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendVerificationEmail = sendVerificationEmail;
+exports.sendResetPasswordEmail = sendResetPasswordEmail;
+exports.verifyResetOTP = verifyResetOTP;
+const brevo_1 = require("@getbrevo/brevo");
 if (!process.env.BREVO_API_KEY) {
-  throw new Error('BREVO_API_KEY is missing in environment variables');
+    throw new Error('BREVO_API_KEY is missing in environment variables');
 }
-
-const brevo = new BrevoClient({
-  apiKey: process.env.BREVO_API_KEY,
+const brevo = new brevo_1.BrevoClient({
+    apiKey: process.env.BREVO_API_KEY,
 });
-
-export async function sendVerificationEmail(
-  email: string,
-  nom: string,
-  code: string
-): Promise<void> {
-  const recipientName = (nom ?? '').toString().trim() || 'Utilisateur';
-
-  try {
-    const result = await brevo.transactionalEmails.sendTransacEmail({
-      subject: 'LetsAllGo — Code de vérification',
-      htmlContent: buildEmailTemplate(recipientName, code),
-      sender: {
-        name: 'LetsAllGo',
-        email: 'no.reply.letsallgo@gmail.com', // ⚠️ must be verified
-      },
-      to: [{ email, name: recipientName }],
-    });
-
-    console.log('✅ Email sent:', result);
-  } catch (err: any) {
-    // ✅ Safe universal error handling
-    if (err instanceof BrevoError) {
-      console.error(`❌ Brevo API Error ${err.statusCode}:`, err.message);
-      console.error('Details:', err.body);
-      const brevoMessage =
-        (err.body as { message?: string } | undefined)?.message ||
-        err.message ||
-        'Erreur Brevo';
-      throw new Error(`Envoi OTP impossible: ${brevoMessage}`);
-    } else {
-      console.error('❌ Unknown error:', err);
-      throw new Error(
-        `Erreur inconnue lors de l'envoi de l'email: ${String(err)}`
-      );
+async function sendVerificationEmail(email, nom, code) {
+    const recipientName = (nom ?? '').toString().trim() || 'Utilisateur';
+    try {
+        const result = await brevo.transactionalEmails.sendTransacEmail({
+            subject: 'LetsAllGo — Code de vérification',
+            htmlContent: buildEmailTemplate(recipientName, code),
+            sender: {
+                name: 'LetsAllGo',
+                email: 'no.reply.letsallgo@gmail.com', // ⚠️ must be verified
+            },
+            to: [{ email, name: recipientName }],
+        });
+        console.log('✅ Email sent:', result);
     }
-  }
+    catch (err) {
+        // ✅ Safe universal error handling
+        if (err instanceof brevo_1.BrevoError) {
+            console.error(`❌ Brevo API Error ${err.statusCode}:`, err.message);
+            console.error('Details:', err.body);
+            const brevoMessage = err.body?.message ||
+                err.message ||
+                'Erreur Brevo';
+            throw new Error(`Envoi OTP impossible: ${brevoMessage}`);
+        }
+        else {
+            console.error('❌ Unknown error:', err);
+            throw new Error(`Erreur inconnue lors de l'envoi de l'email: ${String(err)}`);
+        }
+    }
 }
-
 // Escape helper
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
 }
-
 // Template
-function buildEmailTemplate(nom: string, code: string): string {
-  const safeNom = escapeHtml(nom);
-
-  return `
+function buildEmailTemplate(nom, code) {
+    const safeNom = escapeHtml(nom);
+    return `
     <!DOCTYPE html>
     <html lang="fr">
       <head>
@@ -110,25 +102,16 @@ function buildEmailTemplate(nom: string, code: string): string {
     </html>
   `;
 }
-
 // Ajouter à ton email.service.ts existant
-
 // Store séparé pour le reset password
-const resetStore = new Map<string, { code: string; expiresAt: Date; email: string }>();
-
-export async function sendResetPasswordEmail(
-  userId: string,
-  email: string,
-  prenom: string
-): Promise<void> {
-  const code      = Math.floor(100000 + Math.random() * 900000).toString();
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
-
-  resetStore.set(userId, { code, expiresAt, email });
-
-  await brevo.transactionalEmails.sendTransacEmail({
-  subject: '🔑 Réinitialisation de mot de passe LetsAllGo',
-  htmlContent: `
+const resetStore = new Map();
+async function sendResetPasswordEmail(userId, email, prenom) {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+    resetStore.set(userId, { code, expiresAt, email });
+    await brevo.transactionalEmails.sendTransacEmail({
+        subject: '🔑 Réinitialisation de mot de passe LetsAllGo',
+        htmlContent: `
     <div style="font-family: Arial; max-width: 500px; margin: 0 auto;
                 padding: 20px; background: #0D0D2B; color: white; border-radius: 12px;">
       <h2 style="color: #2196F3; text-align: center;">LetsAllGo 🚀</h2>
@@ -145,21 +128,24 @@ export async function sendResetPasswordEmail(
       <p style="color: #888;">Ce code expire dans <strong>10 minutes</strong>.</p>
     </div>
   `,
-  sender: {
-    name: 'LetsAllGo',
-    email: 'no.reply.letsallgo@gmail.com',
-  },
-  to: [{ email, name: prenom }],
-});
-
-  console.log(`✅ Reset password OTP envoyé à ${email}: ${code}`);
+        sender: {
+            name: 'LetsAllGo',
+            email: 'no.reply.letsallgo@gmail.com',
+        },
+        to: [{ email, name: prenom }],
+    });
+    console.log(`✅ Reset password OTP envoyé à ${email}: ${code}`);
 }
-
-export function verifyResetOTP(userId: string, code: string): boolean {
-  const stored = resetStore.get(userId);
-  if (!stored)                       return false;
-  if (new Date() > stored.expiresAt) { resetStore.delete(userId); return false; }
-  if (stored.code !== code)          return false;
-  resetStore.delete(userId);
-  return true;
+function verifyResetOTP(userId, code) {
+    const stored = resetStore.get(userId);
+    if (!stored)
+        return false;
+    if (new Date() > stored.expiresAt) {
+        resetStore.delete(userId);
+        return false;
+    }
+    if (stored.code !== code)
+        return false;
+    resetStore.delete(userId);
+    return true;
 }

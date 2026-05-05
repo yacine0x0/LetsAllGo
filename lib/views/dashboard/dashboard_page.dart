@@ -417,6 +417,8 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (context, index) {
         final chapter    = chapters[index];
         final isSelected = _controller.model.selectedChapterIndex == index;
+        final isCompleted =
+            ProgressService.isAlreadyCompleted('algo1', chapter.title);
 
         return GestureDetector(
           onDoubleTap: () {
@@ -452,17 +454,17 @@ class _DashboardPageState extends State<DashboardPage> {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Colors.blue.withValues(alpha: 0.3)
-                      : chapter.isFinished
+                      : isCompleted
                           ? Colors.green.withValues(alpha: 0.15)
                           : Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected
                         ? Colors.blue
-                        : chapter.isFinished
+                        : isCompleted
                             ? Colors.green.withValues(alpha: 0.6)
                             : Colors.white24,
-                    width: isSelected || chapter.isFinished ? 2 : 1,
+                    width: isSelected || isCompleted ? 2 : 1,
                   ),
                 ),
                 child: Row(
@@ -485,7 +487,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                 ),
                                 // ✅ Badge complété
-                                if (chapter.isFinished) ...[
+                                if (isCompleted) ...[
                                   const SizedBox(width: 6),
                                   Icon(Icons.check_circle,
                                       color: Colors.green,
@@ -556,6 +558,8 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (context, index) {
         final chapter    = chapters[index];
         final isSelected = _algo2Controller.model.selectedChapterIndex == index;
+        final isCompleted =
+            ProgressService.isAlreadyCompleted('algo2', chapter.title);
 
         return GestureDetector(
           onDoubleTap: () {
@@ -593,17 +597,17 @@ class _DashboardPageState extends State<DashboardPage> {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Colors.blue.withValues(alpha: 0.3)
-                      : chapter.isFinished
+                      : isCompleted
                           ? Colors.green.withValues(alpha: 0.15)
                           : Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: isSelected
                         ? Colors.blue
-                        : chapter.isFinished
+                        : isCompleted
                             ? Colors.green.withValues(alpha: 0.6)
                             : Colors.white24,
-                    width: isSelected || chapter.isFinished ? 2 : 1,
+                    width: isSelected || isCompleted ? 2 : 1,
                   ),
                 ),
                 child: Row(
@@ -626,7 +630,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ),
                                 ),
                                 // ✅ Badge complété
-                                if (chapter.isFinished) ...[
+                                if (isCompleted) ...[
                                   const SizedBox(width: 6),
                                   Icon(Icons.check_circle,
                                       color: Colors.green,

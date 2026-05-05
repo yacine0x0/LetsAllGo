@@ -12,12 +12,19 @@ const GO_POINTS: Record<string, number> = {
   algo2: 500,
 };
 
-const CHAPTER_MAP: Record<string, string> = {
+const CHAPTER_MAP_ALGO1: Record<string, string> = {
   'Chapitre 01': "Introduction à l'algorithmique",
   'Chapitre 02': 'Conditions',
   'Chapitre 03': 'Boucles',
   'Chapitre 04': 'Structures de données',
   'Chapitre 05': 'Sous-programmes',
+};
+
+const CHAPTER_MAP_ALGO2: Record<string, string> = {
+  'Chapitre 01': 'Les Enregistrements',
+  'Chapitre 02': 'Les Fichiers',
+  'Chapitre 03': 'Les Listes chaînées',
+  'Chapitre 04': 'Piles et Files',
 };
 
 export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -45,7 +52,8 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
     const now              = new Date();
 
     // ✅ 1. Cherche le chapitre AVANT de créer le quiz
-    const titreBDD = CHAPTER_MAP[chapterName] ?? chapterName;
+    const chapterMap = algoType === 'algo2' ? CHAPTER_MAP_ALGO2 : CHAPTER_MAP_ALGO1;
+    const titreBDD = chapterMap[chapterName] ?? chapterName;
     const chapitre = await prisma.chapitre.findFirst({
       where: { titre: { contains: titreBDD, mode: 'insensitive' } },
     });
@@ -78,7 +86,8 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
       const suivi = await prisma.suividuchapitre.create({
         data: {
           id_chapitre: chapitre.id_chapitre,
-          complete:    correctAnswers >= Math.ceil(totalQuestions * 0.5),
+          // Le chapitre est considéré terminé dès que le quiz est finalisé.
+          complete:    true,
           datepassage: now,
         },
       });

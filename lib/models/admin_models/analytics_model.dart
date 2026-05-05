@@ -4,11 +4,15 @@ class ChapterStat {
   final String label;
   final double algo1Completion;
   final double algo2Completion;
+  final int completedStudents;
+  final int totalStudents;
 
   const ChapterStat({
     required this.label,
     required this.algo1Completion,
     required this.algo2Completion,
+    this.completedStudents = 0,
+    this.totalStudents = 0,
   });
 
   factory ChapterStat.fromApi(Map<String, dynamic> json) {
@@ -16,6 +20,8 @@ class ChapterStat {
       label:           json['label'] as String,
       algo1Completion: (json['completion'] as num).toDouble(),
       algo2Completion: 0.0,
+      completedStudents: (json['completedStudents'] as num?)?.toInt() ?? 0,
+      totalStudents: (json['totalStudents'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -24,6 +30,8 @@ class ChapterStat {
       label:           json['label'] as String,
       algo1Completion: 0.0,
       algo2Completion: (json['completion'] as num).toDouble(),
+      completedStudents: (json['completedStudents'] as num?)?.toInt() ?? 0,
+      totalStudents: (json['totalStudents'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -51,6 +59,8 @@ class QuizStat {
 class AnalyticsModel {
   int               totalQuizzesDone;
   List<ChapterStat> chapters;
+  List<ChapterStat> algo1Chapters;
+  List<ChapterStat> algo2Chapters;
   List<QuizStat>    quizStats;
   List<QuizStat>    quizStatsAlgo1;
   List<QuizStat>    quizStatsAlgo2;
@@ -60,20 +70,25 @@ class AnalyticsModel {
   AnalyticsModel({
     required this.totalQuizzesDone,
     required this.chapters,
+    List<ChapterStat>? algo1Chapters,
+    List<ChapterStat>? algo2Chapters,
     required this.quizStats,
     List<QuizStat>? quizStatsAlgo1,
     List<QuizStat>? quizStatsAlgo2,
     this.selectedAlgo     = 0,
     this.selectedQuizAlgo = 0,
-  })  : quizStatsAlgo1 = quizStatsAlgo1 ?? quizStats,
+  })  : algo1Chapters = algo1Chapters ?? chapters,
+        algo2Chapters = algo2Chapters ?? [],
+        quizStatsAlgo1 = quizStatsAlgo1 ?? quizStats,
         quizStatsAlgo2 = quizStatsAlgo2 ?? [];
 
-  List<ChapterStat> get displayedChapters => chapters;
+  List<ChapterStat> get displayedChapters =>
+      selectedAlgo == 0 ? algo1Chapters : algo2Chapters;
 
   List<QuizStat> get currentQuizStats =>
       selectedQuizAlgo == 0 ? quizStatsAlgo1 : quizStatsAlgo2;
 
-  List<double> get currentCompletions => chapters
+  List<double> get currentCompletions => displayedChapters
       .map((c) => selectedAlgo == 0 ? c.algo1Completion : c.algo2Completion)
       .toList();
 }

@@ -56,33 +56,6 @@ class AnalyticsController {
             .map((e) => ChapterStat.fromApiAlgo2(e))
             .toList();
 
-        final allLabels = {
-          ...algo1.map((e) => e.label),
-          ...algo2.map((e) => e.label),
-        };
-
-        final merged = allLabels.map((label) {
-          final a1 = algo1.firstWhere(
-            (e) => e.label == label,
-            orElse: () => ChapterStat(
-                label: label,
-                algo1Completion: 0.0,
-                algo2Completion: 0.0),
-          );
-          final a2 = algo2.firstWhere(
-            (e) => e.label == label,
-            orElse: () => ChapterStat(
-                label: label,
-                algo1Completion: 0.0,
-                algo2Completion: 0.0),
-          );
-          return ChapterStat(
-            label:           label,
-            algo1Completion: a1.algo1Completion,
-            algo2Completion: a2.algo2Completion,
-          );
-        }).toList();
-
         final quizStatsAlgo1 = (d['quizStatsAlgo1'] as List)
             .map((e) => QuizStat.fromApi(e))
             .toList();
@@ -96,7 +69,9 @@ class AnalyticsController {
 
         model = AnalyticsModel(
           totalQuizzesDone: (d['totalQuizzesDone'] as num).toInt(),
-          chapters:         merged,
+          chapters:         algo1,
+          algo1Chapters:    algo1,
+          algo2Chapters:    algo2,
           quizStats:        quizStatsAlgo1,
           quizStatsAlgo1:   quizStatsAlgo1,
           quizStatsAlgo2:   quizStatsAlgo2,

@@ -1,0 +1,17 @@
+{
+  "watch": ["index.ts", "lib/**/*.ts"],
+  "ignore": [
+    "build/**",
+    "dist/**",
+    "windows/**",
+    ".dart_tool/**",
+    "android/**",
+    "ios/**",
+    "macos/**",
+    "linux/**",
+    "web/**",
+    "**/*.log"
+  ],
+  "ext": "ts,json",
+  "exec": "tsx index.ts"
+}
