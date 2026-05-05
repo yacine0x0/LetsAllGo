@@ -1,4 +1,5 @@
 // controllers/quiz/algo2_quiz_controller.dart
+import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
 import '../../models/quiz/quiz_model.dart';
@@ -6,6 +7,7 @@ import 'base_quiz_controller.dart';
 
 class Algo2QuizController implements BaseQuizController {
   late CustomQuizSession _session;
+  static final Map<String, List<String>> _recentQuestionIdsByChapter = {};
 
   @override
   CustomQuizSession get session => _session;
@@ -15,7 +17,6 @@ class Algo2QuizController implements BaseQuizController {
     'Chapitre 02': 'assets/images/icons_algo2/files_icone.png',
     'Chapitre 03': 'assets/images/icons_algo2/listes_icones.png',
     'Chapitre 04': 'assets/images/icons_algo2/stacks_icone.png',
-    'Chapitre 05': 'assets/images/icons_algo2/stacks_icone.png',
   };
 
   // Constructeur privé — utilise Algo2QuizController.create()
@@ -33,25 +34,15 @@ class Algo2QuizController implements BaseQuizController {
 
   // ─── Chargement XML ───────────────────────────────────────────────────────
 
-  /// "Chapitre 01" → "chapitre01"
-  static String _chapterToFileName(String chapter) {
-    final match = RegExp(r'(\d+)').firstMatch(chapter);
-    final number = match != null ? match.group(1)!.padLeft(2, '0') : '';
-    return 'chapitre$number';
-  }
-
   static Future<List<Question>> _loadQuestionsFromXml(String chapter) async {
-    final fileName = _chapterToFileName(chapter);
-    // Chemin : assets/data/algo2/quiz/chapitre01.xml
     // Mapping chapitre → nom de fichier exact
     const fileNames = {
       'Chapitre 01': 'chapitre01',
       'Chapitre 02': 'chapitre02',
       'Chapitre 03': 'chapitre03',
       'Chapitre 04': 'chapitre04',
-      'Chapitre 05': 'chapitre05',
     };
-    final file = fileNames[chapter] ?? 'algo2_chapitre01_tri';
+    final file = fileNames[chapter] ?? 'chapitre01';
     final path = 'assets/data/algo2/quiz/$file.xml';
 
     late String raw;
@@ -119,16 +110,16 @@ class Algo2QuizController implements BaseQuizController {
     int intensity,
   ) async {
     final List<Quiz> quizzes = [];
+    final random = Random.secure();
 
     for (final chapter in selectedChapters) {
       final allQuestions = await _loadQuestionsFromXml(chapter);
-
-      // Mélange aléatoire + limite à intensity
-      allQuestions.shuffle();
-      final count = intensity > allQuestions.length
-          ? allQuestions.length
-          : intensity;
-      final selected = allQuestions.take(count).toList();
+      final selected = _pickRandomQuestions(
+        chapter: chapter,
+        allQuestions: allQuestions,
+        intensity: intensity,
+        random: random,
+      );
 
       quizzes.add(Quiz(
         id:        'algo2_quiz_${chapter.replaceAll(' ', '_')}',
@@ -146,6 +137,40 @@ class Algo2QuizController implements BaseQuizController {
       intensity:        intensity,
       quizzes:          quizzes,
     );
+  }
+
+  List<Question> _pickRandomQuestions({
+    required String chapter,
+    required List<Question> allQuestions,
+    required int intensity,
+    required Random random,
+  }) {
+    if (allQuestions.isEmpty) return const [];
+
+    final count = intensity > allQuestions.length ? allQuestions.length : intensity;
+    final recentIds = _recentQuestionIdsByChapter[chapter] ?? <String>[];
+    final recentSet = recentIds.toSet();
+
+    final fresh = allQuestions.where((q) => !recentSet.contains(q.id)).toList()
+      ..shuffle(random);
+
+    final selected = <Question>[];
+    selected.addAll(fresh.take(count));
+
+    if (selected.length < count) {
+      final selectedIds = selected.map((q) => q.id).toSet();
+      final fallback = allQuestions.where((q) => !selectedIds.contains(q.id)).toList()
+        ..shuffle(random);
+      selected.addAll(fallback.take(count - selected.length));
+    }
+
+    final updatedHistory = [...recentIds, ...selected.map((q) => q.id)];
+    final maxHistory = count * 2;
+    _recentQuestionIdsByChapter[chapter] = updatedHistory.length > maxHistory
+        ? updatedHistory.sublist(updatedHistory.length - maxHistory)
+        : updatedHistory;
+
+    return selected;
   }
 
   // ─── BaseQuizController ───────────────────────────────────────────────────

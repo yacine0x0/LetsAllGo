@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_02" title="Algorithmes de recherche (Searching Algorithms)">
+<chapter id="Chapitre_02" title="Les Fichiers">
 
   <question id="c2_q1" type="multipleChoice">
     <enonce>What is the time complexity of Linear Search?</enonce>

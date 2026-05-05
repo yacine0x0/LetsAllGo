@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_03" title="Récursivité avancée (Advanced Recursion)">
+<chapter id="Chapitre_03" title="Les Listes chaînées">
 
   <question id="c3_q1" type="multipleChoice">
     <enonce>What is a stack overflow in recursion?</enonce>

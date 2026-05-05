@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:ui';
 
 import '../../service/language_service.dart';
+import '../../service/sound/sound_settings_service.dart';
 
 import '../../models/quiz/quiz_model.dart';
 import '../dashboard/dashboard_page.dart';
@@ -50,6 +51,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
   static const String _soundCheers  = 'sounds/CHEERS.wav';
 
   Future<void> _playSound(String soundPath) async {
+    if (!await SoundSettingsService.isSoundEnabled()) return;
     await _audioPlayer.play(AssetSource(soundPath));
   }
 
@@ -743,6 +745,7 @@ Future<void> _submitAndComplete() async {
   }
 
   Widget _buildHeader(double h) {
+    final chapterLabel = _localizedQuizChapter(widget.controller.currentQuiz.chapter);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -754,11 +757,40 @@ Future<void> _submitAndComplete() async {
         SizedBox(height: h * 0.005),
         Text(
             _lang.t("Chapitre : ", "Chapter: ") +
-                "${widget.controller.currentQuiz.chapter}",
+                chapterLabel,
             style: TextStyle(
                 fontSize: h * 0.016, color: Colors.white60)),
       ],
     );
+  }
+
+  String _localizedQuizChapter(String chapterId) {
+    if (widget.algoType == 'algo1') {
+      switch (chapterId) {
+        case 'Chapitre 01':
+          return _lang.t('Chapitre 01 - Notions de base', 'Chapter 01 - Basics');
+        case 'Chapitre 02':
+          return _lang.t('Chapitre 02 - Conditions', 'Chapter 02 - Conditions');
+        case 'Chapitre 03':
+          return _lang.t('Chapitre 03 - Boucles', 'Chapter 03 - Loops');
+        case 'Chapitre 04':
+          return _lang.t('Chapitre 04 - Structures de donnees', 'Chapter 04 - Data Structures');
+        case 'Chapitre 05':
+          return _lang.t('Chapitre 05 - Sous-programmes', 'Chapter 05 - Subprograms');
+      }
+    } else {
+      switch (chapterId) {
+        case 'Chapitre 01':
+          return _lang.t('Chapitre 01 - Les Enregistrements', 'Chapter 01 - Records');
+        case 'Chapitre 02':
+          return _lang.t('Chapitre 02 - Les Fichiers', 'Chapter 02 - Files');
+        case 'Chapitre 03':
+          return _lang.t('Chapitre 03 - Les Listes chainees', 'Chapter 03 - Linked Lists');
+        case 'Chapitre 04':
+          return _lang.t('Chapitre 04 - Piles et Files', 'Chapter 04 - Stacks and Queues');
+      }
+    }
+    return chapterId;
   }
 
   Widget _buildProgressBar(double h, double w) {

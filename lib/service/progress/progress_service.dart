@@ -21,6 +21,7 @@ class ProgressService {
   static double _algo2Progress  = 0.0;
   static double _globalProgress = 0.0;
   static final Set<String> _completedChapters = {};
+  static final Set<String> _completedChapterIds = {};
 
   // ── Enregistrer visite
   static Future<void> recordVisit({
@@ -134,9 +135,14 @@ class ProgressService {
         _globalProgress = (data['global']['progress'] as num).toDouble();
 
         _completedChapters.clear();
+        _completedChapterIds.clear();
         final completed = data['completedChapters'] as List<dynamic>? ?? [];
         for (final c in completed) {
           _completedChapters.add(c as String);
+        }
+        final completedIds = data['completedChapterIds'] as List<dynamic>? ?? [];
+        for (final c in completedIds) {
+          _completedChapterIds.add(c as String);
         }
 
         print('✅ Progression chargée:');
@@ -158,6 +164,7 @@ class ProgressService {
     _algo2Progress  = 0.0;
     _globalProgress = 0.0;
     _completedChapters.clear();
+    _completedChapterIds.clear();
     print('✅ Progression réinitialisée');
   }
 
@@ -168,4 +175,7 @@ class ProgressService {
 
   static bool isAlreadyCompleted(String algoType, String chapterTitle) =>
       _completedChapters.contains('${algoType}_$chapterTitle');
+
+  static bool isChapterCompletedById(String algoType, String chapterId) =>
+      _completedChapterIds.contains('${algoType}_$chapterId');
 }

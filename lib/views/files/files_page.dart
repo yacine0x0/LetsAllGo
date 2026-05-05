@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 import '../../controllers/files/files_controller.dart';
 import '../../models/files/files_model.dart';
 import '../../service/language_service.dart';
+import '../../service/sound/sound_settings_service.dart';
 
 import '../auth/login_page.dart';
 import '../dashboard/dashboard_page.dart';
@@ -37,6 +38,7 @@ class _FilesPageState extends State<FilesPage> {
   static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
 
   Future<void> _playSound(String soundPath) async {
+    if (!await SoundSettingsService.isSoundEnabled()) return;
     await _audioPlayer.play(AssetSource(soundPath));
   }
 

@@ -547,9 +547,32 @@ class _AdminPageState extends State<AdminPage> {
 
                 // Bouton bloquer/débloquer
                 GestureDetector(
-                  onTap: () {
-                    setState(
-                        () => _controller.toggleBlock(user.id));
+                  onTap: () async {
+                    final error = await _controller.toggleBlock(user.id);
+                    if (!mounted) return;
+                    if (error == null) {
+                      setState(() {});
+                      final nowBlocked = _controller.model.users
+                          .firstWhere((u) => u.id == user.id)
+                          .isBlocked;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            nowBlocked
+                                ? '🚫 ${user.firstName} a ete bloque'
+                                : '✅ ${user.firstName} a ete debloque',
+                          ),
+                          backgroundColor: nowBlocked ? Colors.orange : Colors.green,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('❌ $error'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.all(h * 0.010),

@@ -1,4 +1,5 @@
 // controllers/quiz/quiz_controller.dart
+import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
 import '../../models/quiz/quiz_model.dart';
@@ -6,6 +7,7 @@ import 'base_quiz_controller.dart';
 
 class QuizController implements BaseQuizController {
   late CustomQuizSession _session;
+  static final Map<String, List<String>> _recentQuestionIdsByChapter = {};
 
   @override
   CustomQuizSession get session => _session;
@@ -113,12 +115,17 @@ class QuizController implements BaseQuizController {
     int intensity,
   ) async {
     final List<Quiz> quizzes = [];
+    final random = Random.secure();
 
     for (final chapter in selectedChapters) {
       final allQuestions = await _loadQuestionsFromXml(chapter);
 
-      // Prend au maximum `intensity` questions
-      final selected = allQuestions.take(intensity).toList();
+      final selected = _pickRandomQuestions(
+        chapter: chapter,
+        allQuestions: allQuestions,
+        intensity: intensity,
+        random: random,
+      );
 
       quizzes.add(Quiz(
         id:        'quiz_${chapter.replaceAll(' ', '_')}',
@@ -136,6 +143,40 @@ class QuizController implements BaseQuizController {
       intensity:        intensity,
       quizzes:          quizzes,
     );
+  }
+
+  List<Question> _pickRandomQuestions({
+    required String chapter,
+    required List<Question> allQuestions,
+    required int intensity,
+    required Random random,
+  }) {
+    if (allQuestions.isEmpty) return const [];
+
+    final count = intensity > allQuestions.length ? allQuestions.length : intensity;
+    final recentIds = _recentQuestionIdsByChapter[chapter] ?? <String>[];
+    final recentSet = recentIds.toSet();
+
+    final fresh = allQuestions.where((q) => !recentSet.contains(q.id)).toList()
+      ..shuffle(random);
+
+    final selected = <Question>[];
+    selected.addAll(fresh.take(count));
+
+    if (selected.length < count) {
+      final selectedIds = selected.map((q) => q.id).toSet();
+      final fallback = allQuestions.where((q) => !selectedIds.contains(q.id)).toList()
+        ..shuffle(random);
+      selected.addAll(fallback.take(count - selected.length));
+    }
+
+    final updatedHistory = [...recentIds, ...selected.map((q) => q.id)];
+    final maxHistory = count * 2;
+    _recentQuestionIdsByChapter[chapter] = updatedHistory.length > maxHistory
+        ? updatedHistory.sublist(updatedHistory.length - maxHistory)
+        : updatedHistory;
+
+    return selected;
   }
 
   // ─── BaseQuizController (inchangé) ────────────────────────────────────────

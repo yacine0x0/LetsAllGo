@@ -54,8 +54,18 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
     // ✅ 1. Cherche le chapitre AVANT de créer le quiz
     const chapterMap = algoType === 'algo2' ? CHAPTER_MAP_ALGO2 : CHAPTER_MAP_ALGO1;
     const titreBDD = chapterMap[chapterName] ?? chapterName;
+    const expectedModule = algoType === 'algo2' ? 'algorithmique 2' : 'algorithmique 1';
     const chapitre = await prisma.chapitre.findFirst({
-      where: { titre: { contains: titreBDD, mode: 'insensitive' } },
+      where: {
+        titre: { contains: titreBDD, mode: 'insensitive' },
+        module: {
+          nom: { contains: expectedModule, mode: 'insensitive' },
+        },
+      },
+      select: {
+        id_chapitre: true,
+        id_module: true,
+      },
     });
 
     console.log(`🔍 Chapitre cherché: "${titreBDD}" → trouvé: ${chapitre?.id_chapitre ?? 'NON'}`);
@@ -73,6 +83,22 @@ export const submitQuiz = async (req: AuthRequest, res: Response): Promise<void>
 
     // ✅ 3. Remplit `selectionne` pour lier quiz ↔ chapitre
     if (chapitre) {
+      if (chapitre.id_module) {
+        await prisma.etudie.upsert({
+          where: {
+            id_etudiant_id_module: {
+              id_etudiant: userId,
+              id_module: chapitre.id_module,
+            },
+          },
+          update: {},
+          create: {
+            id_etudiant: userId,
+            id_module: chapitre.id_module,
+          },
+        });
+      }
+
       await prisma.selectionne.create({
         data: {
           id_quiz:     quizzRecord.id_quiz,

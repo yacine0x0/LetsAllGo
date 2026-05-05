@@ -43,6 +43,21 @@ const REVERSE_MAP_ALGO2: Record<string, string> = {
   'piles et files':      'Piles et Files',
 };
 
+const CHAPTER_NUMBER_ALGO1: Record<string, string> = {
+  "introduction a l algorithmique": 'Chapitre 01',
+  'conditions': 'Chapitre 02',
+  'boucles': 'Chapitre 03',
+  'structures de donnees': 'Chapitre 04',
+  'sous programmes': 'Chapitre 05',
+};
+
+const CHAPTER_NUMBER_ALGO2: Record<string, string> = {
+  'les enregistrements': 'Chapitre 01',
+  'les fichiers': 'Chapitre 02',
+  'les listes chainees': 'Chapitre 03',
+  'piles et files': 'Chapitre 04',
+};
+
 // ✅ Normalise un titre pour comparaison robuste (accents, tirets, casse)
 const normalizeTitle = (str: string): string =>
   str
@@ -52,6 +67,29 @@ const normalizeTitle = (str: string): string =>
     .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase();
+
+// ── Convertit un titre DB vers le titre Flutter attendu
+const toFlutterTitle = (algoType: 'algo1' | 'algo2', dbTitle: string): string => {
+  const normalizedDb = normalizeTitle(dbTitle);
+  const reverseMap   = algoType === 'algo2' ? REVERSE_MAP_ALGO2 : REVERSE_MAP_ALGO1;
+
+  // 1) Exact normalized match
+  const exact = reverseMap[normalizedDb];
+  if (exact) return exact;
+
+  // 2) Fallback robuste: partial match (one-way + reverse)
+  for (const [normalizedKey, flutterTitle] of Object.entries(reverseMap)) {
+    if (
+      normalizedDb.includes(normalizedKey) ||
+      normalizedKey.includes(normalizedDb)
+    ) {
+      return flutterTitle;
+    }
+  }
+
+  // 3) Dernier recours: titre DB brut
+  return dbTitle;
+};
 
 // ── Trouve le chapitre en DB avec normalisation
 const findChapitre = async (chapterTitle: string, algoType: string) => {
@@ -184,6 +222,12 @@ const findExistingSuivi = async (userId: string, chapitreId: string) => {
 
 // ── Recalculer et persister la progression complète
 const recalculerEtSauvegarderProgression = async (userId: string) => {
+  const enrolled = await prisma.etudie.findMany({
+    where: { id_etudiant: userId },
+    select: { id_module: true },
+  });
+  const enrolledModuleIds = new Set(enrolled.map((e) => e.id_module));
+
   const suivis = await prisma.obtient.findMany({
     where: { id_etudiant: userId },
     include: {
@@ -201,9 +245,11 @@ const recalculerEtSauvegarderProgression = async (userId: string) => {
   for (const o of suivis) {
     const suivi     = o.suividuchapitre;
     const chapId    = suivi.id_chapitre ?? '';
+    const moduleId  = suivi.chapitre?.id_module ?? '';
     const moduleNom = suivi.chapitre?.module?.nom?.toLowerCase() ?? '';
 
     if (!suivi.complete) continue;
+    if (!moduleId || !enrolledModuleIds.has(moduleId)) continue;
 
     if (moduleNom.includes('algorithmique 1')) completedAlgo1Ids.add(chapId);
     if (moduleNom.includes('algorithmique 2')) completedAlgo2Ids.add(chapId);
@@ -458,6 +504,11 @@ export const getChapterProgress = async (
 ): Promise<void> => {
   try {
     const userId = req.userId!;
+    const enrolled = await prisma.etudie.findMany({
+      where: { id_etudiant: userId },
+      select: { id_module: true },
+    });
+    const enrolledModuleIds = new Set(enrolled.map((e) => e.id_module));
 
     const progressionAlgo1 = await prisma.progression.findFirst({
       where: {
@@ -497,21 +548,37 @@ export const getChapterProgress = async (
     });
 
     const completedChapters: string[] = [];
+    const completedChapterIds: string[] = [];
     const seenIds = new Set<string>();
 
     for (const o of suivis) {
       const suivi     = o.suividuchapitre;
       const chapId    = suivi.id_chapitre ?? '';
+      const moduleId  = suivi.chapitre?.id_module ?? '';
       const moduleNom = suivi.chapitre?.module?.nom?.toLowerCase() ?? '';
       const titre     = suivi.chapitre?.titre ?? '';
 
       if (!suivi.complete || seenIds.has(chapId)) continue;
+      if (!moduleId || !enrolledModuleIds.has(moduleId)) continue;
       seenIds.add(chapId);
 
-      const algoType     = moduleNom.includes('algorithmique 1') ? 'algo1' : 'algo2';
-      const map          = algoType === 'algo2' ? REVERSE_MAP_ALGO2 : REVERSE_MAP_ALGO1;
-      const flutterTitle = map[normalizeTitle(titre)] ?? titre;
+      const algoType = moduleNom.includes('algorithmique 1')
+          ? 'algo1'
+          : moduleNom.includes('algorithmique 2')
+              ? 'algo2'
+              : null;
+      if (algoType == null) continue;
+      const flutterTitle = toFlutterTitle(algoType, titre);
       completedChapters.push(`${algoType}_${flutterTitle}`);
+
+      const normalizedTitle = normalizeTitle(titre).replace(/'/g, ' ');
+      const numberMap = algoType === 'algo2' ? CHAPTER_NUMBER_ALGO2 : CHAPTER_NUMBER_ALGO1;
+      const chapterNumber = Object.entries(numberMap).find(([k]) =>
+        normalizedTitle.includes(k) || k.includes(normalizedTitle)
+      )?.[1];
+      if (chapterNumber) {
+        completedChapterIds.push(`${algoType}_${chapterNumber}`);
+      }
     }
 
     res.status(200).json({
@@ -532,6 +599,7 @@ export const getChapterProgress = async (
         progress:  parseFloat((pTotal / 100).toFixed(2)),
       },
       completedChapters,
+      completedChapterIds,
     });
   } catch (error) {
     console.error('❌ getChapterProgress:', error);

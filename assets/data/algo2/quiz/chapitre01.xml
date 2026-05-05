@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_01" title="Algorithmes de tri (Sorting Algorithms)">
+<chapter id="Chapitre_01" title="Les Enregistrements">
 
   <question id="c1_q1" type="multipleChoice">
     <enonce>What is the time complexity of Bubble Sort in the worst case?</enonce>

@@ -5,6 +5,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:ui';
 
 import '../../service/language_service.dart';
+import '../../service/sound/sound_settings_service.dart';
 
 import 'package:flutter_project_1/views/profil/profil_page.dart';
 import '../../controllers/leaderboard/leaderboard_controller.dart';
@@ -39,6 +40,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
 
   Future<void> _playSound(String soundPath) async {
+    if (!await SoundSettingsService.isSoundEnabled()) return;
     await _audioPlayer.play(AssetSource(soundPath));
   }
 

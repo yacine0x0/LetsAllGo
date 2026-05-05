@@ -1,9 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { getBlockedUserIds, setUserBlocked } from './blocked_users_store.service';
 
 const prisma = new PrismaClient();
 
 // ── Récupérer tous les étudiants triés par score
 export const getAllStudents = async () => {
+  const blockedIds = await getBlockedUserIds();
   const students = await prisma.utilisateur.findMany({
     where: { role: 'etudiant' },
     select: {
@@ -27,6 +29,7 @@ export const getAllStudents = async () => {
     totalPoints: s.scoretotal ?? 0,
     rang:        s.rang,
     enrolledAt:  s.dateinscription,
+    isBlocked:   blockedIds.has(s.id),
   }));
 };
 
@@ -81,6 +84,7 @@ export const deleteStudent = async (userId: string) => {
 
 // ── Rechercher des étudiants
 export const searchStudents = async (query: string) => {
+  const blockedIds = await getBlockedUserIds();
   const students = await prisma.utilisateur.findMany({
     where: {
       role: 'etudiant',
@@ -111,5 +115,30 @@ export const searchStudents = async (query: string) => {
     totalPoints: s.scoretotal ?? 0,
     rang:        s.rang,
     enrolledAt:  s.dateinscription,
+    isBlocked:   blockedIds.has(s.id),
   }));
+};
+
+export const blockStudent = async (adminId: string, userId: string) => {
+  if (adminId === userId) throw new Error('Vous ne pouvez pas vous bloquer vous-meme');
+
+  const user = await prisma.utilisateur.findUnique({
+    where: { id: userId },
+    select: { id: true, role: true },
+  });
+
+  if (!user) throw new Error('Utilisateur introuvable');
+  if (user.role === 'admin') throw new Error('Impossible de bloquer un admin');
+
+  await setUserBlocked(userId, true);
+};
+
+export const unblockStudent = async (userId: string) => {
+  const user = await prisma.utilisateur.findUnique({
+    where: { id: userId },
+    select: { id: true },
+  });
+
+  if (!user) throw new Error('Utilisateur introuvable');
+  await setUserBlocked(userId, false);
 };

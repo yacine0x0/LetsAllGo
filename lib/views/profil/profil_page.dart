@@ -24,6 +24,16 @@ class _ProfilePageState extends State<ProfilePage> {
   final ScrollController  _scrollController = ScrollController();
 
   bool _isLoading = true;
+  double _soundVolume = 1.0;
+  static const List<String> _founders = [
+    'Lebsir Mohamed Ali',
+    'Kersani Ilyas',
+    'Lounis Arezki',
+    'Laadj Zakaria',
+    'Kherbouche Mouloud',
+    'Mahrez Fouad',
+    'Madani Yacine',
+  ];
 
   // ══════════════════════════════════════════
   // SOUND — edit the file names here to change sounds
@@ -32,6 +42,9 @@ class _ProfilePageState extends State<ProfilePage> {
   static const String _soundActionButton  = 'sounds/PRESS_2.wav';
 
   Future<void> _playSound(String soundPath) async {
+    if (!_controller.model.soundEffects) return;
+    final effectiveVolume = _soundVolume.clamp(0.05, 1.0);
+    await _audioPlayer.setVolume(effectiveVolume);
     await _audioPlayer.play(AssetSource(soundPath));
   }
 
@@ -818,6 +831,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: h * 0.03),
                 _buildSettingsSection(lang, h, w),
                 SizedBox(height: h * 0.04),
+                _buildHelpSection(lang, h, w),
+                SizedBox(height: h * 0.04),
               ],
             ),
           ),
@@ -1112,8 +1127,13 @@ class _ProfilePageState extends State<ProfilePage> {
               : lang.t('Désactivés', 'Disabled'),
           trailing: GestureDetector(
             onTap: () async {
-              await _playSound(_soundActionButton);
+              final willEnable = !_controller.model.soundEffects;
               setState(() => _controller.toggleSound());
+              if (willEnable) {
+                await _playSound(_soundActionButton);
+              } else {
+                await _audioPlayer.stop();
+              }
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
@@ -1152,6 +1172,36 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: h * 0.02),
+        _buildSettingsTile(
+          h: h,
+          icon: Icons.graphic_eq,
+          iconColor: const Color(0xFF00E5FF),
+          title: lang.t('Volume des effets', 'Effects Volume'),
+          subtitle: "${(_soundVolume * 100).round()}%",
+          trailing: SizedBox(
+            width: w * 0.20,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 4,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+              ),
+              child: Slider(
+                value: _soundVolume,
+                min: 0,
+                max: 1,
+                divisions: 10,
+                activeColor: const Color(0xFF00E5FF),
+                inactiveColor: Colors.white24,
+                onChanged: m.soundEffects
+                    ? (v) {
+                        setState(() => _soundVolume = v);
+                      }
+                    : null,
               ),
             ),
           ),
@@ -1209,6 +1259,139 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           trailing,
         ],
+      ),
+    );
+  }
+
+  Widget _buildHelpSection(LanguageService lang, double h, double w) {
+    return GestureDetector(
+      onTap: () => _showHelpDialog(lang, h, w),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(h * 0.02),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white12),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.help_outline, color: Colors.amber, size: h * 0.028),
+            SizedBox(width: h * 0.012),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    lang.t("Help & Infos", "Help & Info"),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: h * 0.019,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: h * 0.003),
+                  Text(
+                    lang.t(
+                      "Cliquez pour voir l'objectif de la welcome page et les informations de l'application.",
+                      "Click to view the welcome page purpose and app information.",
+                    ),
+                    style: TextStyle(color: Colors.white60, fontSize: h * 0.014),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios_rounded, color: Colors.white54, size: h * 0.018),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showHelpDialog(LanguageService lang, double h, double w) {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+            child: Container(
+              width: w * 0.52,
+              padding: EdgeInsets.all(h * 0.025),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0D1B3E).withValues(alpha: 0.95),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.white24),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      lang.t("A propos de l'application", "About the application"),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: h * 0.024,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: h * 0.012),
+                    Text(
+                      lang.t(
+                        "La Welcome page est le point de depart pour acceder rapidement aux cours, quiz, progression, fichiers et profil.",
+                        "The Welcome page is the entry point for quick access to courses, quizzes, progress, files, and profile.",
+                      ),
+                      style: TextStyle(color: Colors.white70, fontSize: h * 0.014, height: 1.35),
+                    ),
+                    SizedBox(height: h * 0.01),
+                    Text(
+                      lang.t(
+                        "L'application propose un apprentissage progressif en algorithmique avec evaluation et suivi detaille.",
+                        "The app provides progressive algorithm learning with assessment and detailed progress tracking.",
+                      ),
+                      style: TextStyle(color: Colors.white70, fontSize: h * 0.014, height: 1.35),
+                    ),
+                    SizedBox(height: h * 0.015),
+                    Text(
+                      lang.t("Fondateurs", "Founders"),
+                      style: TextStyle(color: Colors.lightBlueAccent, fontSize: h * 0.017, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: h * 0.008),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: _founders.map((founder) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(horizontal: h * 0.012, vertical: h * 0.006),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.withValues(alpha: 0.16),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.blue.withValues(alpha: 0.45)),
+                          ),
+                          child: Text(
+                            founder,
+                            style: TextStyle(color: Colors.white, fontSize: h * 0.013, fontWeight: FontWeight.w600),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(height: h * 0.015),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(lang.t("Fermer", "Close"), style: const TextStyle(color: Colors.white70)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_04" title="Listes chaînées (Linked Lists)">
+<chapter id="Chapitre_04" title="Piles et Files">
 
   <question id="c4_q1" type="multipleChoice">
     <enonce>What is a linked list?</enonce>

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { isUserBlocked } from '../service/admin/blocked_users_store.service';
 
 export interface AuthRequest extends Request {
   userId?: string;
@@ -7,11 +8,11 @@ export interface AuthRequest extends Request {
   userEmail?: string;
 }
 
-export function requireAuth(
+export async function requireAuth(
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): void {
+): Promise<void> {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -31,6 +32,11 @@ export function requireAuth(
     req.userId    = decoded.id;
     req.userEmail = decoded.email;
     req.userRole  = decoded.role;
+
+    if (await isUserBlocked(decoded.id)) {
+      res.status(403).json({ success: false, message: 'Compte bloque par l administrateur' });
+      return;
+    }
 
     next();
   } catch {

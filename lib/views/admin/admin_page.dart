@@ -414,7 +414,35 @@ class _AdminPageState extends State<AdminPage> {
                 ),
                 SizedBox(width: w * 0.01),
                 GestureDetector(
-                  onTap: () => setState(() => _controller.toggleBlock(user.id)),
+                  onTap: () async {
+                    final lang = context.read<LanguageService>();
+                    final error = await _controller.toggleBlock(user.id);
+                    if (!mounted) return;
+
+                    if (error == null) {
+                      setState(() {});
+                      final nowBlocked = _controller.model.users
+                          .firstWhere((u) => u.id == user.id)
+                          .isBlocked;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            nowBlocked
+                                ? lang.t('🚫 ${user.firstName} a été bloqué', '🚫 ${user.firstName} has been blocked')
+                                : lang.t('✅ ${user.firstName} a été débloqué', '✅ ${user.firstName} has been unblocked'),
+                          ),
+                          backgroundColor: nowBlocked ? Colors.orange : Colors.green,
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(lang.t('❌ $error', '❌ $error')),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
                   child: Container(
                     padding: EdgeInsets.all(h * 0.010),
                     decoration: BoxDecoration(

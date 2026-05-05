@@ -6,6 +6,7 @@ import 'package:audioplayers/audioplayers.dart';
 
 import '../../service/language_service.dart';
 import '../../service/progress/progress_service.dart';
+import '../../service/sound/sound_settings_service.dart';
 
 import 'package:flutter_project_1/views/profil/profil_page.dart';
 import '../leaderboard/leaderboard_page.dart';
@@ -40,9 +41,18 @@ class _DashboardPageState extends State<DashboardPage> {
   late LanguageService _lang;
 
   static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
+  static const List<String> _founders = [
+    'Lebsir mohamed ali',
+    'kersani ilyas',
+    'lounis arezki',
+    'laadj zakaria',
+    'kherbouche mouloud',
+    'mahrez fouad',
+  ];
 
   Future<void> _playSound(String soundPath) async {
     try {
+      if (!await SoundSettingsService.isSoundEnabled()) return;
       await _audioPlayer.play(AssetSource(soundPath));
     } catch (e) {
       print('❌ Audio error: $e');
@@ -85,6 +95,15 @@ class _DashboardPageState extends State<DashboardPage> {
       c.title.toLowerCase().contains(_searchQuery) ||
       c.number.toLowerCase().contains(_searchQuery)
     ).toList();
+  }
+
+  bool _isChapterCompleted({
+    required String algoType,
+    required String chapterTitle,
+    required String chapterId,
+  }) {
+    return ProgressService.isChapterCompletedById(algoType, chapterId) ||
+        ProgressService.isAlreadyCompleted(algoType, chapterTitle);
   }
 
   @override
@@ -143,7 +162,6 @@ class _DashboardPageState extends State<DashboardPage> {
                                   ? _buildChaptersGrid(h, w)
                                   : _buildAlgo2Grid(h, w),
                             ),
-                            _buildContinueButton(h, w),
                           ],
                         ),
                       ),
@@ -342,6 +360,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
+
   Widget _buildFilters(double h) {
     return Row(
       children: [
@@ -420,9 +439,25 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (context, index) {
         final chapter    = chapters[index];
         final isSelected = _controller.model.selectedChapterIndex == index;
-        final isCompleted = ProgressService.isAlreadyCompleted('algo1', chapter.title);
+        final isCompleted = _isChapterCompleted(
+          algoType: 'algo1',
+          chapterTitle: chapter.title,
+          chapterId: chapter.id,
+        );
 
-        return GestureDetector(
+        return TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: 1),
+          duration: Duration(milliseconds: 220 + (index * 60)),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value.clamp(0, 1),
+              child: Transform.translate(
+                offset: Offset(0, (1 - value) * 12),
+                child: child,
+              ),
+            );
+          },
+          child: GestureDetector(
           onDoubleTap: () {
             Navigator.push(
               context,
@@ -508,6 +543,34 @@ class _DashboardPageState extends State<DashboardPage> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
+                            SizedBox(height: h * 0.004),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: h * 0.010,
+                                vertical: h * 0.003,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isCompleted
+                                    ? Colors.green.withValues(alpha: 0.18)
+                                    : Colors.blue.withValues(alpha: 0.18),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: isCompleted
+                                      ? Colors.green.withValues(alpha: 0.6)
+                                      : Colors.blue.withValues(alpha: 0.6),
+                                ),
+                              ),
+                              child: Text(
+                                isCompleted
+                                    ? _lang.t("Terminé", "Completed")
+                                    : _lang.t("En cours", "In progress"),
+                                style: TextStyle(
+                                  color: isCompleted ? Colors.green : Colors.blue,
+                                  fontSize: h * 0.012,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -530,6 +593,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
             ),
+          ),
           ),
         );
       },
@@ -560,10 +624,25 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (context, index) {
         final chapter    = chapters[index];
         final isSelected = _algo2Controller.model.selectedChapterIndex == index;
-        final isCompleted =
-            ProgressService.isAlreadyCompleted('algo2', chapter.title);
+        final isCompleted = _isChapterCompleted(
+          algoType: 'algo2',
+          chapterTitle: chapter.title,
+          chapterId: chapter.number,
+        );
 
-        return GestureDetector(
+        return TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: 1),
+          duration: Duration(milliseconds: 220 + (index * 60)),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value.clamp(0, 1),
+              child: Transform.translate(
+                offset: Offset(0, (1 - value) * 12),
+                child: child,
+              ),
+            );
+          },
+          child: GestureDetector(
           onDoubleTap: () {
             Navigator.push(
               context,
@@ -651,6 +730,34 @@ class _DashboardPageState extends State<DashboardPage> {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
+                            SizedBox(height: h * 0.004),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: h * 0.010,
+                                vertical: h * 0.003,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isCompleted
+                                    ? Colors.green.withValues(alpha: 0.18)
+                                    : Colors.blue.withValues(alpha: 0.18),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: isCompleted
+                                      ? Colors.green.withValues(alpha: 0.6)
+                                      : Colors.blue.withValues(alpha: 0.6),
+                                ),
+                              ),
+                              child: Text(
+                                isCompleted
+                                    ? _lang.t("Terminé", "Completed")
+                                    : _lang.t("En cours", "In progress"),
+                                style: TextStyle(
+                                  color: isCompleted ? Colors.green : Colors.blue,
+                                  fontSize: h * 0.012,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -674,35 +781,9 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
           ),
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildContinueButton(double h, double w) {
-    return Padding(
-      padding: EdgeInsets.only(top: h * 0.02),
-      child: Center(
-        child: SizedBox(
-          width:  w * 0.25,
-          height: h * 0.06,
-          child: ElevatedButton.icon(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.withValues(alpha: 0.3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: const BorderSide(color: Colors.blue),
-              ),
-            ),
-            icon:  const Icon(Icons.play_circle_outline, color: Colors.white),
-            label: Text(
-              _lang.t("Continuer le dernier chapitre", "Continue last chapter"),
-              style: TextStyle(color: Colors.white, fontSize: h * 0.016),
-            ),
-          ),
-        ),
-      ),
     );
   }
 

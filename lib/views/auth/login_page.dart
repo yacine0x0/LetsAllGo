@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:country_flags/country_flags.dart';
 
 import '../../service/language_service.dart';
+import '../../service/sound/sound_settings_service.dart';
 import '../../controllers/auth/login_controller.dart';
 import 'create_account_page.dart';
 import '../dashboard/dashboard_page.dart';
@@ -37,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   static const String _soundToggleButton = 'sounds/PRESS_2.wav';
 
   Future<void> _playSound(String soundPath) async {
+    if (!await SoundSettingsService.isSoundEnabled()) return;
     await _audioPlayer.play(AssetSource(soundPath));
   }
 
@@ -113,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             top:   h * 0.02,
             right: w * 0.02,
-            child: _buildLanguageSelector(lang, h),
+            child: _buildLanguageSelector(lang, h, w),
           ),
 
           Center(
@@ -368,13 +371,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLanguageSelector(LanguageService lang, double h) {
+  Widget _buildLanguageSelector(LanguageService lang, double h, double w) {
+    final selectorWidth =
+        (w * 0.28).clamp(200.0, 320.0);
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          width: selectorWidth,
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
@@ -382,27 +388,33 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.white.withOpacity(0.3), width: 1.5),
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              _langButton(
-                flag: "🇫🇷", label: "FR",
-                isSelected: lang.isFrench, h: h,
-                onTap: () {
-                  _playSound(_soundToggleButton);
-                  context.read<LanguageService>().setFrench();
-                },
+              Expanded(
+                child: _langTile(
+                  countryCode: "FR",
+                  label: "FR",
+                  subtitle: lang.t("Français", "French"),
+                  isSelected: lang.isFrench,
+                  h: h,
+                  onTap: () {
+                    _playSound(_soundToggleButton);
+                    context.read<LanguageService>().setFrench();
+                  },
+                ),
               ),
-              const SizedBox(width: 4),
-              Container(width: 1, height: 20,
-                  color: Colors.white.withOpacity(0.3)),
-              const SizedBox(width: 4),
-              _langButton(
-                flag: "🇬🇧", label: "EN",
-                isSelected: !lang.isFrench, h: h,
-                onTap: () {
-                  _playSound(_soundToggleButton);
-                  context.read<LanguageService>().setEnglish();
-                },
+              const SizedBox(width: 8),
+              Expanded(
+                child: _langTile(
+                  countryCode: "GB",
+                  label: "EN",
+                  subtitle: lang.t("Anglais", "English"),
+                  isSelected: !lang.isFrench,
+                  h: h,
+                  onTap: () {
+                    _playSound(_soundToggleButton);
+                    context.read<LanguageService>().setEnglish();
+                  },
+                ),
               ),
             ],
           ),
@@ -411,9 +423,10 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _langButton({
-    required String flag,
+  Widget _langTile({
+    required String countryCode,
     required String label,
+    required String subtitle,
     required bool isSelected,
     required double h,
     required VoidCallback onTap,
@@ -422,8 +435,7 @@ class _LoginPageState extends State<LoginPage> {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding: EdgeInsets.symmetric(
-            horizontal: h * 0.015, vertical: h * 0.008),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
               ? Colors.white.withOpacity(0.3)
@@ -431,17 +443,48 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(flag, style: TextStyle(fontSize: h * 0.022)),
-            SizedBox(width: h * 0.006),
-            Text(label,
-                style: TextStyle(
-                    color: isSelected ? Colors.white : Colors.white60,
-                    fontSize: h * 0.015,
-                    fontWeight: isSelected
-                        ? FontWeight.bold
-                        : FontWeight.normal)),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: CountryFlag.fromCountryCode(
+                countryCode,
+                height: h * 0.028,
+                width: (h * 0.028) * (3 / 2),
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.white60,
+                      fontSize: (h * 0.015).clamp(11.0, 15.0),
+                      fontWeight:
+                          isSelected ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                  Text(
+                    subtitle,
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color:
+                          isSelected ? Colors.white70 : Colors.white38,
+                      fontSize: (h * 0.012).clamp(9.0, 12.0),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

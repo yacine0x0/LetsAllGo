@@ -26,6 +26,7 @@ class UserItem {
       lastName:    json['lastName']    as String,
       email:       json['email']       as String,
       totalPoints: json['totalPoints'] as int,
+      isBlocked:   json['isBlocked']   as bool? ?? false,
     );
   }
 }

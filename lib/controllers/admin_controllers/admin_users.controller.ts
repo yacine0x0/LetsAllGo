@@ -4,6 +4,8 @@ import {
   getAllStudents,
   deleteStudent,
   searchStudents,
+  blockStudent,
+  unblockStudent,
 } from '../../service/admin/admin_users.service';
 
 // ── GET /api/admin/users — récupérer tous les étudiants
@@ -65,6 +67,58 @@ export async function deleteUser(
     res.status(400).json({
       success: false,
       message,
+    });
+  }
+}
+
+export async function blockUser(
+  req: AuthRequest,
+  res: Response
+): Promise<void> {
+  try {
+    if (req.userRole !== 'admin') {
+      res.status(403).json({ success: false, message: 'Acces refuse' });
+      return;
+    }
+
+    const { id } = req.params;
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      res.status(400).json({ success: false, message: 'ID manquant ou invalide' });
+      return;
+    }
+
+    await blockStudent(req.userId ?? '', id.trim());
+    res.status(200).json({ success: true, message: 'Utilisateur bloque avec succes' });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Erreur lors du blocage',
+    });
+  }
+}
+
+export async function unblockUser(
+  req: AuthRequest,
+  res: Response
+): Promise<void> {
+  try {
+    if (req.userRole !== 'admin') {
+      res.status(403).json({ success: false, message: 'Acces refuse' });
+      return;
+    }
+
+    const { id } = req.params;
+    if (!id || typeof id !== 'string' || id.trim() === '') {
+      res.status(400).json({ success: false, message: 'ID manquant ou invalide' });
+      return;
+    }
+
+    await unblockStudent(id.trim());
+    res.status(200).json({ success: true, message: 'Utilisateur debloque avec succes' });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error instanceof Error ? error.message : 'Erreur lors du deblocage',
     });
   }
 }

@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:ui';
 
 import '../../service/language_service.dart';
+import '../../service/sound/sound_settings_service.dart';
 
 import 'package:flutter_project_1/controllers/quiz/quiz_controller.dart';
 import 'package:flutter_project_1/controllers/quiz/algo2_quiz_controller.dart';
@@ -38,6 +39,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
   static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
 
   Future<void> _playSound(String soundPath) async {
+    if (!await SoundSettingsService.isSoundEnabled()) return;
     await _audioPlayer.play(AssetSource(soundPath));
   }
 
@@ -52,9 +54,8 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
   final List<Map<String, String>> _chaptersAlgo2 = const [
     {"id": "Chapitre 01", "title": "Les Enregistrements",   "icon": "assets/images/icons_algo2/data_structure_icone.png"},
     {"id": "Chapitre 02", "title": "Les Fichiers", "icon": "assets/images/icons_algo2/files_icone.png"},
-    {"id": "Chapitre 03", "title": "La recursivité",   "icon": "assets/images/icons_algo2/listes_icones.png"},
-    {"id": "Chapitre 04", "title": "Linked Lists",         "icon": "assets/images/icons_algo2/stacks_icone.png"},
-    {"id": "Chapitre 05", "title": "Stacks and Queues",    "icon": "assets/images/icons_algo2/stacks_icone.png"},
+    {"id": "Chapitre 03", "title": "Les Listes chaînées",   "icon": "assets/images/icons_algo2/listes_icones.png"},
+    {"id": "Chapitre 04", "title": "Piles et Files",         "icon": "assets/images/icons_algo2/stacks_icone.png"},
   ];
 
   List<Map<String, String>> get _currentChapters =>
@@ -510,7 +511,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                                           fontWeight:
                                               FontWeight.bold)),
                                   SizedBox(height: h * 0.005),
-                                  Text(chapter["title"]!,
+                                  Text(_chapterDisplayTitle(chapter),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: h * 0.02,
@@ -563,6 +564,36 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
         ),
       ],
     );
+  }
+
+  String _chapterDisplayTitle(Map<String, String> chapter) {
+    final id = chapter['id'] ?? '';
+    if (_selectedAlgo == 1) {
+      switch (id) {
+        case 'Chapitre 01':
+          return _lang.t('Notions de base', 'Basics');
+        case 'Chapitre 02':
+          return _lang.t('Conditions', 'Conditions');
+        case 'Chapitre 03':
+          return _lang.t('Boucles', 'Loops');
+        case 'Chapitre 04':
+          return _lang.t('Structures de donnees - Vecteurs et matrices', 'Data Structures - Vectors and Matrices');
+        case 'Chapitre 05':
+          return _lang.t('Sous-programmes (Fonctions et Procedures)', 'Subprograms (Functions and Procedures)');
+      }
+    } else {
+      switch (id) {
+        case 'Chapitre 01':
+          return _lang.t('Les Enregistrements', 'Records');
+        case 'Chapitre 02':
+          return _lang.t('Les Fichiers', 'Files');
+        case 'Chapitre 03':
+          return _lang.t('Les Listes chainees', 'Linked Lists');
+        case 'Chapitre 04':
+          return _lang.t('Piles et Files', 'Stacks and Queues');
+      }
+    }
+    return chapter['title'] ?? id;
   }
 
   Widget _buildIntensitySelection(double h, double w) {

@@ -1,10 +1,13 @@
 // lib/views/courses_study_page/chapter_quiz_page.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import '../../models/quiz/quiz_model.dart';
 import '../../controllers/courses_study/chapter_quiz_controller.dart';
 import '../../service/progress/progress_service.dart';
+import '../../service/sound/sound_settings_service.dart';
+import '../../service/language_service.dart';
 import '../dashboard/dashboard_page.dart';
 
 class ChapterQuizPage extends StatefulWidget {
@@ -31,6 +34,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
   bool         _hasSelection        = false;
   bool         _isFirstCompletion   = false;
   bool         _isSubmitting        = false;
+  late LanguageService _lang;
 
   // ✅ Progression depuis l'API
   double _algo1Progress  = 0.0;
@@ -44,6 +48,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
 
   Future<void> _playSound(String soundPath) async {
     try {
+      if (!await SoundSettingsService.isSoundEnabled()) return;
       await _audioPlayer.play(AssetSource(soundPath));
     } catch (e) {
       print('❌ Audio error: $e');
@@ -53,6 +58,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
   @override
   void initState() {
     super.initState();
+    _lang = Provider.of<LanguageService>(context, listen: false);
     _loadQuestion();
   }
 
@@ -162,6 +168,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    _lang = context.watch<LanguageService>();
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
@@ -242,7 +249,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
         Icon(Icons.quiz, color: Colors.blue, size: h * 0.04),
         SizedBox(width: w * 0.01),
         Text(
-          "Chapter Quiz — ${widget.chapterTitle}",
+          "${_lang.t("Quiz du chapitre", "Chapter Quiz")} — ${_localizedChapterTitle(widget.chapterTitle)}",
           style: TextStyle(
             color:      Colors.white,
             fontSize:   h * 0.022,
@@ -268,7 +275,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
               Icon(Icons.exit_to_app,
                   color: Colors.red.shade300, size: h * 0.025),
               const SizedBox(width: 6),
-              Text('Exit',
+                Text(_lang.t('Quitter', 'Exit'),
                   style: TextStyle(
                     color:    Colors.red.shade300,
                     fontSize: h * 0.018,
@@ -284,14 +291,16 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Chapter Quiz",
+        Text(_lang.t("Quiz du chapitre", "Chapter Quiz"),
             style: TextStyle(
               fontSize:   h * 0.04,
               fontWeight: FontWeight.bold,
               color:      Colors.white,
             )),
         SizedBox(height: h * 0.005),
-        Text("Test your knowledge of ${widget.chapterTitle}",
+        Text(_lang.t(
+            "Teste tes connaissances sur ${_localizedChapterTitle(widget.chapterTitle)}",
+            "Test your knowledge of ${_localizedChapterTitle(widget.chapterTitle)}"),
             style: TextStyle(fontSize: h * 0.016, color: Colors.white60)),
       ],
     );
@@ -307,7 +316,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Progress",
+            Text(_lang.t("Progression", "Progress"),
                 style: TextStyle(color: Colors.white70, fontSize: h * 0.018)),
             Text("${(progress * 100).toInt()}%",
                 style: TextStyle(
@@ -358,7 +367,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
-                  "Question ${widget.controller.currentQuestionIndex + 1} of ${widget.controller.totalQuestionsInCurrentQuiz}",
+                  "${_lang.t("Question", "Question")} ${widget.controller.currentQuestionIndex + 1} ${_lang.t("sur", "of")} ${widget.controller.totalQuestionsInCurrentQuiz}",
                   style: TextStyle(
                     color:      Colors.blue,
                     fontSize:   h * 0.016,
@@ -518,8 +527,8 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
               const SizedBox(width: 8),
               Text(
                 isLocked
-                    ? "✓ Answer locked"
-                    : "Drag and drop to order the steps",
+                    ? _lang.t("✓ Reponse verrouillee", "✓ Answer locked")
+                    : _lang.t("Glisse pour ordonner les etapes", "Drag and drop to order the steps"),
                 style: TextStyle(
                   color:    isLocked ? Colors.green : Colors.blue,
                   fontSize: h * 0.014,
@@ -645,7 +654,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                     color: _hasSelection ? Colors.white : Colors.white38,
                     size:  h * 0.022),
                 const SizedBox(width: 10),
-                Text("Check Answer",
+                Text(_lang.t("Verifier la reponse", "Check Answer"),
                     style: TextStyle(
                       color:      _hasSelection ? Colors.white : Colors.white38,
                       fontSize:   h * 0.018,
@@ -686,7 +695,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
               ),
               const SizedBox(width: 8),
               Text(
-                _answerChecked! ? "✓ Correct!" : "✗ Incorrect!",
+                _answerChecked! ? _lang.t("✓ Correct !", "✓ Correct!") : _lang.t("✗ Incorrect !", "✗ Incorrect!"),
                 style: TextStyle(
                   color:      _answerChecked! ? Colors.green : Colors.red,
                   fontSize:   h * 0.018,
@@ -730,7 +739,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                     color: widget.controller.isFirstQuestion
                         ? Colors.white24 : Colors.white,
                     size: h * 0.02),
-                Text("Prev",
+                Text(_lang.t("Precedent", "Prev"),
                     style: TextStyle(
                       color: widget.controller.isFirstQuestion
                           ? Colors.white24 : Colors.white,
@@ -767,7 +776,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
               ),
               child: Row(children: [
                 Text(
-                  isLast ? "Finish" : "Next",
+                  isLast ? _lang.t("Terminer", "Finish") : _lang.t("Suivant", "Next"),
                   style: TextStyle(
                     color:      canGoNext ? Colors.white : Colors.white38,
                     fontSize:   h * 0.016,
@@ -798,19 +807,19 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
     Color    color;
 
     if (percentage >= 80) {
-      message = "Excellent! Chapter mastered! 🎉";
+      message = _lang.t("Excellent ! Chapitre maitrise ! 🎉", "Excellent! Chapter mastered! 🎉");
       icon    = Icons.emoji_events;
       color   = const Color(0xFFFFD700);
     } else if (percentage >= 60) {
-      message = "Good job! Keep going! 👍";
+      message = _lang.t("Bon travail ! Continue ! 👍", "Good job! Keep going! 👍");
       icon    = Icons.thumb_up;
       color   = Colors.green;
     } else if (percentage >= 40) {
-      message = "Not bad! Review the chapter and try again! 📚";
+      message = _lang.t("Pas mal ! Revois le chapitre puis reessaie ! 📚", "Not bad! Review the chapter and try again! 📚");
       icon    = Icons.school;
       color   = Colors.orange;
     } else {
-      message = "Keep practicing! You'll get there! 💪";
+      message = _lang.t("Continue a pratiquer ! Tu vas y arriver ! 💪", "Keep practicing! You'll get there! 💪");
       icon    = Icons.fitness_center;
       color   = Colors.red;
     }
@@ -867,7 +876,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                           ),
                         ),
                         SizedBox(height: h * 0.03),
-                        Text("Quiz Completed!",
+                        Text(_lang.t("Quiz termine !", "Quiz Completed!"),
                             style: TextStyle(
                               color:      Colors.white,
                               fontSize:   h * 0.04,
@@ -949,7 +958,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                       color: Colors.amber,
                                       size:  h * 0.025),
                                   const SizedBox(width: 8),
-                                  Text("Chapter Completed! 🎉",
+                                  Text(_lang.t("Chapitre termine ! 🎉", "Chapter Completed! 🎉"),
                                       style: TextStyle(
                                         color:      Colors.amber,
                                         fontSize:   h * 0.018,
@@ -1003,7 +1012,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                 Icon(Icons.replay,
                                     color: Colors.white, size: h * 0.02),
                                 const SizedBox(width: 8),
-                                Text("Try Again",
+                                Text(_lang.t("Reessayer", "Try Again"),
                                     style: TextStyle(
                                       color:    Colors.white,
                                       fontSize: h * 0.016,
@@ -1038,7 +1047,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                                 Icon(Icons.home,
                                     color: Colors.white, size: h * 0.02),
                                 const SizedBox(width: 8),
-                                Text("Dashboard",
+                                Text(_lang.t("Tableau de bord", "Dashboard"),
                                     style: TextStyle(
                                       color:    Colors.white,
                                       fontSize: h * 0.016,
@@ -1057,6 +1066,33 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
         ],
       ),
     );
+  }
+
+  String _localizedChapterTitle(String chapterTitle) {
+    switch (chapterTitle) {
+      case 'Basics':
+        return _lang.t('Notions de base', 'Basics');
+      case 'Conditions':
+        return _lang.t('Conditions', 'Conditions');
+      case 'Loops':
+        return _lang.t('Boucles', 'Loops');
+      case 'Data Structures - Vectors and Matrices':
+      case 'Data Structures – Vectors and Matrices':
+        return _lang.t('Structures de donnees - Vecteurs et matrices', 'Data Structures - Vectors and Matrices');
+      case 'Subprograms (Functions and Procedures)':
+        return _lang.t('Sous-programmes (Fonctions et Procedures)', 'Subprograms (Functions and Procedures)');
+      case 'Les Enregistrements':
+        return _lang.t('Les Enregistrements', 'Records');
+      case 'Les Fichiers':
+        return _lang.t('Les Fichiers', 'Files');
+      case 'Les Listes chaînées':
+      case 'Les Listes chainees':
+        return _lang.t('Les Listes chainees', 'Linked Lists');
+      case 'Piles et Files':
+        return _lang.t('Piles et Files', 'Stacks and Queues');
+      default:
+        return chapterTitle;
+    }
   }
 
   Widget _buildProgressRow({

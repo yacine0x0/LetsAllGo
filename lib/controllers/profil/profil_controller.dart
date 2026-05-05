@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/profil/profil_model.dart';
 import '../../service/auth/LoginService.dart';
 import '../auth/login_controller.dart';
 
 class ProfileController extends ChangeNotifier {
+  static const String _soundEffectsPrefKey = 'profile_sound_effects';
+
   static String get _baseUrl {
     if (kIsWeb) return 'http://localhost:3000/api';
     return 'http://localhost:3000/api';
@@ -27,10 +30,15 @@ class ProfileController extends ChangeNotifier {
   }
 
 Future<void> loadProfile() async {
+  final prefs = await SharedPreferences.getInstance();
+  final savedSoundEffects = prefs.getBool(_soundEffectsPrefKey);
   final token = LoginService.getToken();
   if (token == null) {
     print('❌ loadProfile: token manquant');
     _model = ProfileModel.empty();
+    if (savedSoundEffects != null) {
+      _model.soundEffects = savedSoundEffects;
+    }
     notifyListeners();
     return;
   }
@@ -56,6 +64,9 @@ Future<void> loadProfile() async {
           : body;
 
       _model = ProfileModel.fromApi(userData);
+      if (savedSoundEffects != null) {
+        _model.soundEffects = savedSoundEffects;
+      }
       print('✅ Profil chargé: ${_model.firstName} ${_model.lastName}');
       print('   email: ${_model.email}');
       print('   pointsXP: ${_model.pointsXP}');
@@ -66,11 +77,17 @@ Future<void> loadProfile() async {
     } else {
       print('❌ loadProfile HTTP ${response.statusCode}: ${body['message']}');
       _model = ProfileModel.empty();
+      if (savedSoundEffects != null) {
+        _model.soundEffects = savedSoundEffects;
+      }
       notifyListeners();
     }
   } catch (e) {
     print('❌ loadProfile error: $e');
     _model = ProfileModel.empty();
+    if (savedSoundEffects != null) {
+      _model.soundEffects = savedSoundEffects;
+    }
     notifyListeners();
   }
 }
@@ -212,6 +229,11 @@ Future<void> loadProfile() async {
   }
 
   void toggleLanguage() => _model.isFrench    = !_model.isFrench;
-  void toggleSound()    => _model.soundEffects = !_model.soundEffects;
+  void toggleSound() {
+    _model.soundEffects = !_model.soundEffects;
+    SharedPreferences.getInstance().then(
+      (prefs) => prefs.setBool(_soundEffectsPrefKey, _model.soundEffects),
+    );
+  }
   String t(String fr, String en) => _model.isFrench ? fr : en;
 }

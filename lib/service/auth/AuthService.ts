@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { LoginInput, RegisterInput, AuthResponse, VerifyEmailInput } from '../../models/auth/auth.model';
 import { savePendingRegistration, getPendingRegistration, incrementAttempts, deletePendingRegistration } from '../../utils/verificationStore';
 import { sendVerificationEmail } from './email.service';
+import { isUserBlocked } from '../admin/blocked_users_store.service';
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,10 @@ export const loginService = async (input: LoginInput): Promise<AuthResponse> => 
     where: { email: input.email.trim() },
   });
   if (!user) throw new Error('Email ou mot de passe incorrect');
+
+  if (await isUserBlocked(user.id)) {
+    throw new Error('Compte bloque par l administrateur. Contactez le support.');
+  }
 
   const isMatch = await bcrypt.compare(input.password, user.motdepasse);
   if (!isMatch) throw new Error('Email ou mot de passe incorrect');

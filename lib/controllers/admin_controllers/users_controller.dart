@@ -89,10 +89,33 @@ class AdminController {
   }
 
   // ── Toggle block (local uniquement pour l'instant)
-  void toggleBlock(String userId) {
+  Future<String?> toggleBlock(String userId) async {
+    final token = LoginService.getToken();
+    if (token == null) return 'Non connecté';
+
     final index = _model.users.indexWhere((u) => u.id == userId);
-    if (index != -1) {
-      _model.users[index].isBlocked = !_model.users[index].isBlocked;
+    if (index == -1) return 'Utilisateur introuvable';
+
+    final shouldBlock = !_model.users[index].isBlocked;
+    final endpoint = shouldBlock ? 'block' : 'unblock';
+
+    try {
+      final response = await http.patch(
+        Uri.parse('$_baseUrl/admin/users/$userId/$endpoint'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+      if (response.statusCode == 200 && data['success'] == true) {
+        _model.users[index].isBlocked = shouldBlock;
+        return null;
+      }
+      return data['message'] ?? 'Erreur lors de la mise a jour';
+    } catch (_) {
+      return 'Impossible de contacter le serveur';
     }
   }
 }
