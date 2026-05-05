@@ -53,6 +53,9 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     _lang = Provider.of<LanguageService>(context, listen: false);
+    ProgressService.loadProgress().then((_) {
+      if (mounted) setState(() {});
+    });
     _searchController.addListener(() {
       setState(() => _searchQuery = _searchController.text.toLowerCase().trim());
     });
@@ -417,8 +420,7 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (context, index) {
         final chapter    = chapters[index];
         final isSelected = _controller.model.selectedChapterIndex == index;
-        final isCompleted =
-            ProgressService.isAlreadyCompleted('algo1', chapter.title);
+        final isCompleted = ProgressService.isAlreadyCompleted('algo1', chapter.title);
 
         return GestureDetector(
           onDoubleTap: () {
@@ -452,19 +454,19 @@ class _DashboardPageState extends State<DashboardPage> {
                   bottom: h * 0.02,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.blue.withValues(alpha: 0.3)
-                      : isCompleted
-                          ? Colors.green.withValues(alpha: 0.15)
+                  color: isCompleted
+                      ? Colors.green.withValues(alpha: 0.15)
+                      : isSelected
+                          ? Colors.blue.withValues(alpha: 0.3)
                           : Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected
-                        ? Colors.blue
-                        : isCompleted
-                            ? Colors.green.withValues(alpha: 0.6)
+                    color: isCompleted
+                        ? Colors.green.withValues(alpha: 0.75)
+                        : isSelected
+                            ? Colors.blue
                             : Colors.white24,
-                    width: isSelected || isCompleted ? 2 : 1,
+                    width: (isSelected || isCompleted) ? 2 : 1,
                   ),
                 ),
                 child: Row(
@@ -595,19 +597,19 @@ class _DashboardPageState extends State<DashboardPage> {
                   bottom: h * 0.02,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? Colors.blue.withValues(alpha: 0.3)
-                      : isCompleted
-                          ? Colors.green.withValues(alpha: 0.15)
+                  color: isCompleted
+                      ? Colors.green.withValues(alpha: 0.15)
+                      : isSelected
+                          ? Colors.blue.withValues(alpha: 0.3)
                           : Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isSelected
-                        ? Colors.blue
-                        : isCompleted
-                            ? Colors.green.withValues(alpha: 0.6)
+                    color: isCompleted
+                        ? Colors.green.withValues(alpha: 0.75)
+                        : isSelected
+                            ? Colors.blue
                             : Colors.white24,
-                    width: isSelected || isCompleted ? 2 : 1,
+                    width: (isSelected || isCompleted) ? 2 : 1,
                   ),
                 ),
                 child: Row(

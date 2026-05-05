@@ -50,9 +50,9 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
   ];
 
   final List<Map<String, String>> _chaptersAlgo2 = const [
-    {"id": "Chapitre 01", "title": "Sorting Algorithms",   "icon": "assets/images/icons_algo2/data_structure_icone.png"},
-    {"id": "Chapitre 02", "title": "Searching Algorithms", "icon": "assets/images/icons_algo2/files_icone.png"},
-    {"id": "Chapitre 03", "title": "Advanced Recursion",   "icon": "assets/images/icons_algo2/listes_icones.png"},
+    {"id": "Chapitre 01", "title": "Les Enregistrements",   "icon": "assets/images/icons_algo2/data_structure_icone.png"},
+    {"id": "Chapitre 02", "title": "Les Fichiers", "icon": "assets/images/icons_algo2/files_icone.png"},
+    {"id": "Chapitre 03", "title": "La recursivité",   "icon": "assets/images/icons_algo2/listes_icones.png"},
     {"id": "Chapitre 04", "title": "Linked Lists",         "icon": "assets/images/icons_algo2/stacks_icone.png"},
     {"id": "Chapitre 05", "title": "Stacks and Queues",    "icon": "assets/images/icons_algo2/stacks_icone.png"},
   ];
@@ -71,8 +71,8 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
       ];
 
   List<Color> get _currentIntensityColors => _selectedAlgo == 1
-      ? [Colors.orange, Colors.red, Colors.purple, Colors.deepPurple]
-      : [Colors.green,  Colors.orange, Colors.red, Colors.purple];
+      ? [Colors.orange, Colors.red, Colors.purple, const Color.fromARGB(255, 0, 39, 212)]
+      : [Colors.green,  Colors.orange, Colors.red, const Color.fromARGB(255, 212, 0, 117)];
 
   int get _defaultIntensity => _selectedAlgo == 1 ? 10 : 5;
 

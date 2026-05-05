@@ -84,9 +84,15 @@ const findChapitre = async (chapterTitle: string, algoType: string) => {
 
   const normalizedTarget = normalizeTitle(titreBDD);
 
-  const found = module.chapitre.find(c =>
-    normalizeTitle(c.titre).includes(normalizedTarget) ||
-    normalizedTarget.includes(normalizeTitle(c.titre))
+  // 1) Exact normalized match first (most reliable).
+  let found = module.chapitre.find(
+    c => normalizeTitle(c.titre) === normalizedTarget
+  );
+
+  // 2) Fallback: DB title can be longer than UI label (e.g. subtitle),
+  // but we avoid reverse-contains to prevent false positives.
+  found ??= module.chapitre.find(
+    c => normalizeTitle(c.titre).includes(normalizedTarget)
   );
 
   if (found) {

@@ -31,6 +31,9 @@ export const getAllStudents = async () => {
 };
 
 // ── Supprimer un étudiant
+// lib/service/admin/admin_users.service.ts
+// Dans la fonction deleteStudent — remplace le prisma.utilisateur.delete par :
+
 export const deleteStudent = async (userId: string) => {
   const user = await prisma.utilisateur.findUnique({
     where: { id: userId },
@@ -39,9 +42,41 @@ export const deleteStudent = async (userId: string) => {
   if (!user) throw new Error('Utilisateur introuvable');
   if (user.role === 'admin') throw new Error('Impossible de supprimer un admin');
 
+  // ✅ Supprimer dans l'ordre pour respecter les FK
+  await prisma.obtient.deleteMany({
+    where: { id_etudiant: userId },
+  });
+
+  await prisma.suit.deleteMany({
+    where: { id_etudiant: userId },
+  });
+
+  await prisma.etudie.deleteMany({
+    where: { id_etudiant: userId },
+  });
+
+  await prisma.passe.deleteMany({
+    where: { id_etudiant: userId },
+  });
+
+  await prisma.statistiquescours.deleteMany({
+    where: { id_admin: userId },
+  });
+
+  await prisma.statistiquesetudiant.deleteMany({
+    where: { id_admin: userId },
+  });
+
+  await prisma.statistiquesquiz.deleteMany({
+    where: { id_admin: userId },
+  });
+
+  // ✅ Maintenant on peut supprimer l'utilisateur
   await prisma.utilisateur.delete({
     where: { id: userId },
   });
+
+  console.log(`✅ Utilisateur supprimé: ${userId}`);
 };
 
 // ── Rechercher des étudiants
