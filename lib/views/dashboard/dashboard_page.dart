@@ -13,7 +13,6 @@ import '../leaderboard/leaderboard_page.dart';
 import '../../controllers/dashboard/dashboard_controller.dart';
 import '../courses_study_page/courses_study_page.dart';
 import '../auth/login_page.dart';
-import 'algo2_grid.dart';
 import '../../controllers/dashboard/algo2_controller.dart';
 import '../files/files_page.dart';
 import '../quiz/quiz_selection_page.dart';
@@ -41,15 +40,6 @@ class _DashboardPageState extends State<DashboardPage> {
   late LanguageService _lang;
 
   static const String _soundSidebarButton = 'sounds/PRESS_1.wav';
-  static const List<String> _founders = [
-    'Lebsir mohamed ali',
-    'kersani ilyas',
-    'lounis arezki',
-    'laadj zakaria',
-    'kherbouche mouloud',
-    'mahrez fouad',
-  ];
-
   Future<void> _playSound(String soundPath) async {
     try {
       if (!await SoundSettingsService.isSoundEnabled()) return;
@@ -82,19 +72,54 @@ class _DashboardPageState extends State<DashboardPage> {
   List<dynamic> get _filteredAlgo1Chapters {
     final chapters = _controller.model.chapters;
     if (_searchQuery.isEmpty) return chapters;
-    return chapters.where((c) =>
-      c.title.toLowerCase().contains(_searchQuery) ||
-      c.id.toLowerCase().contains(_searchQuery)
-    ).toList();
+    return chapters.where((c) {
+      final display = _chapterDisplayTitleAlgo1(c.id).toLowerCase();
+      return display.contains(_searchQuery) || c.id.toLowerCase().contains(_searchQuery);
+    }).toList();
   }
 
   List<dynamic> get _filteredAlgo2Chapters {
     final chapters = _algo2Controller.model.chapters;
     if (_searchQuery.isEmpty) return chapters;
-    return chapters.where((c) =>
-      c.title.toLowerCase().contains(_searchQuery) ||
-      c.number.toLowerCase().contains(_searchQuery)
-    ).toList();
+    return chapters.where((c) {
+      final display = _chapterDisplayTitleAlgo2(c.number).toLowerCase();
+      return display.contains(_searchQuery) || c.number.toLowerCase().contains(_searchQuery);
+    }).toList();
+  }
+
+  // ✅ Titles localisés (comme la section Quiz)
+  String _chapterDisplayTitleAlgo1(String id) {
+    switch (id) {
+      case 'Chapitre 01':
+        return _lang.t('Basics', 'Basics');
+      case 'Chapitre 02':
+        return _lang.t('Conditions', 'Conditions');
+      case 'Chapitre 03':
+        return _lang.t('Boucles', 'Loops');
+      case 'Chapitre 04':
+        return _lang.t('Structures de données — Vecteurs et matrices',
+            'Data Structures — Vectors and Matrices');
+      case 'Chapitre 05':
+        return _lang.t('Sous-programmes (Fonctions et Procédures)',
+            'Subprograms (Functions and Procedures)');
+      default:
+        return id;
+    }
+  }
+
+  String _chapterDisplayTitleAlgo2(String number) {
+    switch (number) {
+      case 'Chapitre 01':
+        return _lang.t('Les Enregistrements', 'Records');
+      case 'Chapitre 02':
+        return _lang.t('Les Fichiers', 'Files');
+      case 'Chapitre 03':
+        return _lang.t('Les Listes chaînées', 'Linked Lists');
+      case 'Chapitre 04':
+        return _lang.t('Piles et Files', 'Stacks and Queues');
+      default:
+        return number;
+    }
   }
 
   bool _isChapterCompleted({
@@ -294,7 +319,10 @@ class _DashboardPageState extends State<DashboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Hey ${_controller.model.username},",
+          _lang.t(
+            "Salut ${_controller.model.username},",
+             "Hey ${_controller.model.username},",
+          ),
           style: TextStyle(
             fontSize:   h * 0.04,
             fontWeight: FontWeight.bold,
@@ -444,6 +472,7 @@ class _DashboardPageState extends State<DashboardPage> {
           chapterTitle: chapter.title,
           chapterId: chapter.id,
         );
+        final displayTitle = _chapterDisplayTitleAlgo1(chapter.id);
 
         return TweenAnimationBuilder<double>(
           tween: Tween(begin: 0, end: 1),
@@ -463,7 +492,7 @@ class _DashboardPageState extends State<DashboardPage> {
               context,
               MaterialPageRoute(
                 builder: (_) => CourseStudyPage(
-                  chapterTitle:    chapter.title,
+                  chapterTitle:    displayTitle,
                   chapterSubtitle: chapter.id,
                   xmlPath:         chapter.xmlPath,
                   chapterIcon:     chapter.icon,
@@ -534,7 +563,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             SizedBox(height: h * 0.005),
                             Text(
-                              chapter.title,
+                              displayTitle,
                               style: TextStyle(
                                 color:      Colors.white,
                                 fontSize:   h * 0.02,
@@ -629,6 +658,7 @@ class _DashboardPageState extends State<DashboardPage> {
           chapterTitle: chapter.title,
           chapterId: chapter.number,
         );
+        final displayTitle = _chapterDisplayTitleAlgo2(chapter.number);
 
         return TweenAnimationBuilder<double>(
           tween: Tween(begin: 0, end: 1),
@@ -648,7 +678,7 @@ class _DashboardPageState extends State<DashboardPage> {
               context,
               MaterialPageRoute(
                 builder: (_) => CourseStudyPage(
-                  chapterTitle:    chapter.title,
+                  chapterTitle:    displayTitle,
                   chapterSubtitle: chapter.number,
                   xmlPath:         chapter.xmlPath,
                   chapterIcon:     chapter.icon,
@@ -721,7 +751,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             ),
                             SizedBox(height: h * 0.005),
                             Text(
-                              chapter.title,
+                              displayTitle,
                               style: TextStyle(
                                 color:      Colors.white,
                                 fontSize:   h * 0.02,
@@ -792,8 +822,16 @@ class _DashboardPageState extends State<DashboardPage> {
         ? _controller.getSelectedLessons()
         : _algo2Controller.getSelectedLessons();
     final chapterTitle = _selectedAlgo == 1
-        ? _controller.getSelectedChapterTitle()
-        : _algo2Controller.getSelectedChapterTitle();
+        ? (_controller.model.selectedChapterIndex == null
+            ? ''
+            : _chapterDisplayTitleAlgo1(
+                _controller.model.chapters[_controller.model.selectedChapterIndex!].id,
+              ))
+        : (_algo2Controller.model.selectedChapterIndex == null
+            ? ''
+            : _chapterDisplayTitleAlgo2(
+                _algo2Controller.model.chapters[_algo2Controller.model.selectedChapterIndex!].number,
+              ));
 
     return ClipRRect(
       child: BackdropFilter(

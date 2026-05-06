@@ -1264,47 +1264,99 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildHelpSection(LanguageService lang, double h, double w) {
-    return GestureDetector(
-      onTap: () => _showHelpDialog(lang, h, w),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(h * 0.02),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white12),
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () => _showHelpDialog(lang, h, w),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(h * 0.02),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white12),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.help_outline, color: Colors.amber, size: h * 0.028),
+                SizedBox(width: h * 0.012),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang.t("Help & Infos", "Help & Info"),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: h * 0.019,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: h * 0.003),
+                      Text(
+                        lang.t(
+                          "Conseils d'utilisation et informations sur l'application.",
+                          "Usage tips and information about the app.",
+                        ),
+                        style: TextStyle(color: Colors.white60, fontSize: h * 0.014),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.arrow_forward_ios_rounded, color: Colors.white54, size: h * 0.018),
+              ],
+            ),
+          ),
         ),
-        child: Row(
-          children: [
-            Icon(Icons.help_outline, color: Colors.amber, size: h * 0.028),
-            SizedBox(width: h * 0.012),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    lang.t("Help & Infos", "Help & Info"),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: h * 0.019,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: h * 0.003),
-                  Text(
-                    lang.t(
-                      "Cliquez pour voir l'objectif de la welcome page et les informations de l'application.",
-                      "Click to view the welcome page purpose and app information.",
-                    ),
-                    style: TextStyle(color: Colors.white60, fontSize: h * 0.014),
-                  ),
+        SizedBox(height: h * 0.015),
+        GestureDetector(
+          onTap: () => _showAboutUsDialog(lang, h, w),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(h * 0.02),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue.withValues(alpha: 0.22),
+                  Colors.purple.withValues(alpha: 0.14),
                 ],
               ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.blue.withValues(alpha: 0.35)),
             ),
-            Icon(Icons.arrow_forward_ios_rounded, color: Colors.white54, size: h * 0.018),
-          ],
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: Colors.lightBlueAccent, size: h * 0.028),
+                SizedBox(width: h * 0.012),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lang.t("À propos", "About us"),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: h * 0.019,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: h * 0.003),
+                      Text(
+                        lang.t(
+                          "Découvrir les fondateurs et le projet.",
+                          "Meet the founders and learn about the project.",
+                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: h * 0.014),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.arrow_forward_ios_rounded, color: Colors.white70, size: h * 0.018),
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -1331,7 +1383,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      lang.t("A propos de l'application", "About the application"),
+                      lang.t("Aide & informations", "Help & information"),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: h * 0.024,
@@ -1341,23 +1393,83 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: h * 0.012),
                     Text(
                       lang.t(
-                        "La Welcome page est le point de depart pour acceder rapidement aux cours, quiz, progression, fichiers et profil.",
-                        "The Welcome page is the entry point for quick access to courses, quizzes, progress, files, and profile.",
+                        "La section welcome page sert a donner une idée générale sur l'application c'est une page qui motive les utilisateurs avant d'entrer dans l'application. Les utilisateurs gagne des points en joueand aux quiz et aussi ils auront une progression globale qui montre leur avancement dans l'apprentissage de l'algorithmique par rapport aux chapitres des deux modules algo 1 et algo 2.",
+                        "The welcome page serves to give a general idea of the application; it's a page that motivates users before they enter the application. Users earn points by playing quizzes, and they also have an overall progress that shows their advancement in learning algorithms compared to the chapters of the two modules algo 1 and algo 2.",
                       ),
                       style: TextStyle(color: Colors.white70, fontSize: h * 0.014, height: 1.35),
                     ),
                     SizedBox(height: h * 0.01),
                     Text(
                       lang.t(
-                        "L'application propose un apprentissage progressif en algorithmique avec evaluation et suivi detaille.",
-                        "The app provides progressive algorithm learning with assessment and detailed progress tracking.",
+                        "Vous trouverez des cours, des quiz, un suivi de progression, des fichiers (PDF) et votre profil.",
+                        "You will find courses, quizzes, progress tracking, files (PDF), and your profile.",
+                      ),
+                      style: TextStyle(color: Colors.white70, fontSize: h * 0.014, height: 1.35),
+                    ),
+                    SizedBox(height: h * 0.015),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(lang.t("Fermer", "Close"), style: const TextStyle(color: Colors.white70)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAboutUsDialog(LanguageService lang, double h, double w) {
+    showDialog(
+      context: context,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+            child: Container(
+              width: w * 0.52,
+              padding: EdgeInsets.all(h * 0.025),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0D1B3E).withValues(alpha: 0.95),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.blue.withValues(alpha: 0.35)),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      lang.t("À propos", "About us"),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: h * 0.024,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: h * 0.012),
+                    Text(
+                      lang.t(
+                        "Nous sommes des étudiants en L3 Informatique. Nous avons développé cette application pour aider les étudiants à apprendre l'algorithmique de manière simple et progressive.",
+                        "We are 3rd-year CS students. We built this app to help students learn algorithms in a simple, progressive way.",
                       ),
                       style: TextStyle(color: Colors.white70, fontSize: h * 0.014, height: 1.35),
                     ),
                     SizedBox(height: h * 0.015),
                     Text(
                       lang.t("Fondateurs", "Founders"),
-                      style: TextStyle(color: Colors.lightBlueAccent, fontSize: h * 0.017, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        color: Colors.lightBlueAccent,
+                        fontSize: h * 0.017,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: h * 0.008),
                     Wrap(

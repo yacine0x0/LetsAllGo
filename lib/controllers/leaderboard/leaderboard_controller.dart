@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../models/leaderboard/leaderboard_model.dart';
 import '../../service/auth/LoginService.dart';
+import '../../service/app_logger.dart';
 
 class LeaderboardController {
   static const String _baseUrl = 'http://localhost:3000/api';
@@ -15,13 +16,13 @@ class LeaderboardController {
 
     // Pas de token → mock
     if (token == null) {
-      print('❌ Pas de token → mock');
+      AppLogger.d('leaderboard: no token -> mock');
       _model = LeaderboardModel.mock();
       return;
     }
 
     try {
-      print('🔄 Chargement leaderboard...');
+      AppLogger.d('leaderboard: loading...');
 
       final response = await http.get(
         Uri.parse('$_baseUrl/leaderboard'),
@@ -31,8 +32,7 @@ class LeaderboardController {
         },
       );
 
-      print('✅ Status: ${response.statusCode}');
-      print('✅ Body: ${response.body}');
+      AppLogger.d('leaderboard status: ${response.statusCode}');
 
       final data = jsonDecode(response.body);
 
@@ -50,13 +50,13 @@ class LeaderboardController {
             : null;
 
         _model = LeaderboardModel(entries: entries, currentUser: currentUser);
-        print('✅ Leaderboard chargé: ${entries.length} entrées');
+        AppLogger.d('leaderboard loaded: ${entries.length} entries');
       } else {
-        print('❌ Erreur backend → mock');
+        AppLogger.d('leaderboard backend error -> mock');
         _model = LeaderboardModel.mock();
       }
     } catch (e) {
-      print('❌ ERREUR réseau: $e');
+      AppLogger.e('leaderboard network error', error: e);
       _model = LeaderboardModel.mock();
     }
   }

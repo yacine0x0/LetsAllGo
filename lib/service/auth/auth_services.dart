@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../../controllers/auth/login_controller.dart';
-import '../progress/progress_service.dart';
 import 'LoginService.dart';
 
 class AuthService {

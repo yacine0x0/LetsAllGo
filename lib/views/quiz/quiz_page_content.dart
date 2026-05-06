@@ -41,7 +41,7 @@ class _QuizPageContentState extends State<QuizPageContent> {
   int          _pointsGagnes        = 0;
   bool         _isSubmitted         = false;
 
-  final _user = LoginController.currentUser;
+  AuthData? get _user => LoginController.currentUser;
   late LanguageService _lang;
 
   static const String _soundCorrect = 'sounds/CORRECTANSWER.mp3';
@@ -351,8 +351,8 @@ Future<void> _submitAndComplete() async {
   }
 
   Widget _buildTopNavBar(double h, double w) {
-    final String initiale = _user?.prenom?.isNotEmpty == true
-        ? _user!.prenom![0].toUpperCase()
+    final String initiale = _user?.prenom.isNotEmpty == true
+        ? _user!.prenom[0].toUpperCase()
         : '?';
     final String displayName = _user != null
         ? '${_user!.prenom} ${_user!.nom}'.trim()

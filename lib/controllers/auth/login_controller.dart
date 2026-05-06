@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/auth/login_model.dart';
 import '../../service/auth/LoginService.dart';
 import '../../service/progress/progress_service.dart';
+import '../../service/app_logger.dart';
 
 class AuthData {
   final String token;
@@ -49,8 +50,7 @@ class LoginController {
         }),
       );
 
-      print('✅ Status: ${response.statusCode}');
-      print('✅ Body: ${response.body}');
+      AppLogger.d('login status: ${response.statusCode}');
 
       final data = jsonDecode(response.body);
 
@@ -76,16 +76,16 @@ class LoginController {
         // ✅ Charger la progression après connexion
         if (role == 'etudiant') {
           await ProgressService.loadProgress();
-          print('✅ Progression chargée après login');
+          AppLogger.d('progress loaded after login');
         }
 
-        print('✅ Utilisateur connecté: ${currentUser?.prenom} ${currentUser?.nom} [$role]');
+        AppLogger.d('user logged: ${currentUser?.prenom} ${currentUser?.nom} [$role]');
         return null;
       } else {
         return data['message'] ?? 'Identifiants incorrects';
       }
     } catch (e) {
-      print('❌ ERREUR: $e');
+      AppLogger.e('login error', error: e);
       return 'Impossible de contacter le serveur';
     }
   }
@@ -98,9 +98,9 @@ class LoginController {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
 
-      print('✅ Logout réussi');
+      AppLogger.d('logout ok');
     } catch (e) {
-      print('❌ Erreur lors du logout: $e');
+      AppLogger.e('logout error', error: e);
       rethrow;
     }
   }

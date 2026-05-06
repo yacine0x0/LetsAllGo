@@ -7,7 +7,7 @@ import userRoutes        from './lib/routes/user.routes';
 import leaderboardRoutes from './lib/routes/leaderboard.routes';
 import adminRoutes       from './lib/routes/admin.routes';
 import quizRoutes        from './lib/routes/quiz.routes';
-import coursesRoutes     from './lib/routes/courses.routes'; // ✅ NOUVEAU
+import coursesRoutes     from './lib/routes/courses.routes'; 
 
 const app  = express();
 const PORT = process.env.PORT ?? 3000;

@@ -1,12 +1,12 @@
 // lib/controllers/profil/profil_controller.dart
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/profil/profil_model.dart';
 import '../../service/auth/LoginService.dart';
 import '../auth/login_controller.dart';
+import '../../service/app_logger.dart';
 
 class ProfileController extends ChangeNotifier {
   static const String _soundEffectsPrefKey = 'profile_sound_effects';
@@ -34,7 +34,7 @@ Future<void> loadProfile() async {
   final savedSoundEffects = prefs.getBool(_soundEffectsPrefKey);
   final token = LoginService.getToken();
   if (token == null) {
-    print('❌ loadProfile: token manquant');
+    AppLogger.d('profile: token missing');
     _model = ProfileModel.empty();
     if (savedSoundEffects != null) {
       _model.soundEffects = savedSoundEffects;
@@ -52,8 +52,7 @@ Future<void> loadProfile() async {
       },
     );
 
-    print('📡 loadProfile status: ${response.statusCode}');
-    print('📡 loadProfile body: ${response.body}');
+    AppLogger.d('profile load status: ${response.statusCode}');
 
     final body = jsonDecode(response.body) as Map<String, dynamic>;
 
@@ -67,15 +66,10 @@ Future<void> loadProfile() async {
       if (savedSoundEffects != null) {
         _model.soundEffects = savedSoundEffects;
       }
-      print('✅ Profil chargé: ${_model.firstName} ${_model.lastName}');
-      print('   email: ${_model.email}');
-      print('   pointsXP: ${_model.pointsXP}');
-      print('   classement: ${_model.classement}');
-      print('   coursesSuivis: ${_model.coursesSuivis}');
-      print('   globalProgress: ${(_model.globalProgress * 100).toInt()}%');
+      AppLogger.d('profile loaded: ${_model.firstName} ${_model.lastName}');
       notifyListeners();
     } else {
-      print('❌ loadProfile HTTP ${response.statusCode}: ${body['message']}');
+      AppLogger.d('profile load http ${response.statusCode}');
       _model = ProfileModel.empty();
       if (savedSoundEffects != null) {
         _model.soundEffects = savedSoundEffects;
@@ -83,7 +77,7 @@ Future<void> loadProfile() async {
       notifyListeners();
     }
   } catch (e) {
-    print('❌ loadProfile error: $e');
+    AppLogger.e('profile load error', error: e);
     _model = ProfileModel.empty();
     if (savedSoundEffects != null) {
       _model.soundEffects = savedSoundEffects;

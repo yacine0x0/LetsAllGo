@@ -7,6 +7,8 @@ import 'package:flutter_project_1/controllers/auth/verify_account_controller.dar
 
 import 'login_page.dart';
 import 'welcome/welcome_page.dart';
+import '../../controllers/auth/login_controller.dart';
+// (DashboardPage import pas nécessaire ici pour l’instant)
 
 enum _AccountStep { createAccount, verifyAccount }
 
@@ -111,6 +113,16 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       _errorMessage = error;
       _isVerified = error == null;
     });
+  }
+
+  Future<String?> _autoLoginAfterVerify() async {
+    final email = _emailCtrl.text.trim();
+    final pass  = _passwordCtrl.text;
+    if (email.isEmpty || pass.isEmpty) {
+      return "Veuillez vous connecter / Please login";
+    }
+    final controller = LoginController();
+    return await controller.login(email, pass);
   }
 
   @override
@@ -426,10 +438,24 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 width: double.infinity,
                 height: h * 0.065,
                 child: ElevatedButton.icon(
-                  onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const WelcomePage()),
-                  ),
+                  onPressed: () async {
+                    if (_isLoading) return;
+                    setState(() {
+                      _isLoading = true;
+                      _errorMessage = null;
+                    });
+                    final err = await _autoLoginAfterVerify();
+                    if (!mounted) return;
+                    setState(() => _isLoading = false);
+                    if (err != null) {
+                      setState(() => _errorMessage = err);
+                      return;
+                    }
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const WelcomePage()),
+                    );
+                  },
                   icon: const Icon(Icons.arrow_forward, color: Colors.white),
                   label: Text(
                     lang.t('Suivant', 'Next'),

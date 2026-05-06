@@ -2,11 +2,9 @@
 import '../../models/dashboard/dashboard_model.dart';
 import '../../service/auth/LoginService.dart';
 import '../../service/progress/progress_service.dart';
-import '../../service/language_service.dart';
 
 class DashboardController {
   late DashboardModel model;
-  late LanguageService _lang;
 
   DashboardController() {
     final prenom = LoginService.getPrenom() ?? '';

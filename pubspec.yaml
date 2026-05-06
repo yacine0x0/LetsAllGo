@@ -32,6 +32,7 @@ dependencies:
   flutter:
     sdk: flutter
   xml: ^6.3.0
+  http: ^1.2.2
 
   syncfusion_flutter_pdfviewer: ^26.2.14    
   path_provider: ^2.1.2          # ← ajouté
@@ -128,3 +129,4 @@ flutter:
     - assets/lang/
     - assets/sounds/
     - assets/data/algo2/cours/
+    - assets/files/

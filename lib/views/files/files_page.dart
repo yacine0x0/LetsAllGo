@@ -274,11 +274,18 @@ class _FilesPageState extends State<FilesPage> {
       lang.t("Examen", "Exam"),
       lang.t("Fiches", "Sheets"),
     ];
+    final selectedCategory = _selectedAlgo == 1
+        ? _controller.model.selectedCategory
+        : _algo2Controller.model.selectedCategory;
     return Row(
       children: List.generate(categories.length, (i) {
         return Padding(
           padding: const EdgeInsets.only(right: 8),
-          child: _filterChip(labels[i], h, false, () {
+          child: _filterChip(
+            labels[i],
+            h,
+            selectedCategory == categories[i],
+            () {
             setState(() {
               if (_selectedAlgo == 1) {
                 _controller.switchCategory(categories[i]);

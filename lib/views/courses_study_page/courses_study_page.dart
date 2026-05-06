@@ -31,7 +31,7 @@ class CourseStudyPage extends StatefulWidget {
 
 class _CourseStudyPageState extends State<CourseStudyPage> {
   final CourseStudyController _controller = CourseStudyController();
-  final _user = LoginController.currentUser;
+  AuthData? get _user => LoginController.currentUser;
   bool _isLoading     = true;
   bool _isQuizLoading = false;
 
@@ -173,9 +173,11 @@ class _CourseStudyPageState extends State<CourseStudyPage> {
   }
 
   Widget _buildTopNavBar(double h, double w) {
-    final initiale   = _user != null ? _user.prenom[0].toUpperCase() : "?";
+    final initiale = _user?.prenom.isNotEmpty == true
+        ? _user!.prenom[0].toUpperCase()
+        : "?";
     final nomComplet = _user != null
-        ? '${_user.prenom} ${_user.nom}'
+        ? '${_user!.prenom} ${_user!.nom}'.trim()
         : 'Étudiant';
 
     return Container(
