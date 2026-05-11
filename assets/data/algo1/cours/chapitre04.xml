@@ -1,245 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter id="Chapitre_04" title="Structures de données – Vecteurs et Matrices">
 
-  <section id="1" title="Introduction aux structures de données">
+  <section id="1" title="Introduction to Data Structures">
     <content>
-Les structures de données permettent d'organiser et de stocker des données de manière structurée pour faciliter leur manipulation. Jusqu'à présent, nous avons manipulé des variables simples (entiers, réels, booléens). Mais comment stocker une liste de 100 notes ? Ou une table de multiplication ? C'est là qu'interviennent les vecteurs et les matrices (appelés aussi tableaux).
+Data structures allow data to be organized and stored in a structured manner to facilitate their manipulation. Until now, we have manipulated simple variables (integers, reals, booleans). But how do we store a list of 100 grades? Or a multiplication table? This is where vectors and matrices (also called arrays) come in.
     </content>
     <bulletPoints>
-      <point>Une structure de données est un conteneur qui regroupe plusieurs valeurs.</point>
-      <point>Les vecteurs (tableaux 1D) stockent une séquence d'éléments de même type.</point>
-      <point>Les matrices (tableaux 2D) stockent des données sous forme de lignes et colonnes.</point>
-      <point>Elles permettent d'accéder rapidement à chaque élément via son indice.</point>
-      <point>Exemple : un vecteur de 5 notes peut être représenté par notes = [12, 15, 8, 19, 10].</point>
+      <point>▶️ A data structure is a container that groups several values together.</point>
+      <point>▶️ Vectors (1D arrays) store a sequence of elements of the same type.</point>
+      <point>▶️ Matrices (2D arrays) store data in the form of rows and columns.</point>
+      <point>▶️ They allow quick access to each element via its index.</point>
+      <point>💻 Example: a vector of 5 grades can be represented as grades = [12, 15, 8, 19, 10].</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Vecteurs (tableaux unidimensionnels)">
+  <section id="2" title="Vectors (One-Dimensional Arrays)">
     <content>
-Un vecteur est une collection ordonnée d'éléments de même type, stockés dans des cases mémoire contiguës. Chaque élément est repéré par son indice (ou position).
+A vector is an ordered collection of elements of the same type, stored in contiguous memory cells. Each element is identified by its index (or position).
     </content>
     <bulletPoints>
       <point>
-Déclaration :
-Variables notes : Tableau[1..5] d'Entiers
-ou : int notes[5];
+
+💻 Declaration:
+Variables grades : Array[1..5] of Integers
+or : int grades[5];
+      
       </point>
-      <point>Accès à un élément : notes[indice]. Exemple : notes[3] = 14.</point>
-      <point>Les indices commencent généralement à 0 en programmation.</point>
-      <point>Longueur du vecteur : nombre total d'éléments.</point>
+      <point>💻 Access to an element: grades[index]. Example: grades[3] = 14.</point>
+      <point>▶️ Indices generally start at 0 in programming.</point>
+      <point>▶️ Vector length: total number of elements.</point>
       <point>
-Exemple :
-Variables temp : Tableau[1..7] de Réels
+
+💻 Example:
+Variables temp : Array[1..7] of Reals
 temp[1] ← 22.5 ; temp[2] ← 23.0 ; ...
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Matrices (tableaux bidimensionnels)">
+  <section id="3" title="Matrices (Two-Dimensional Arrays)">
     <content>
-Une matrice est un tableau à deux dimensions, organisé en lignes et colonnes.
+A matrix is a two-dimensional array, organized in rows and columns.
     </content>
     <bulletPoints>
       <point>
-Déclaration :
-Variables mat : Tableau[1..L][1..C] d'Entiers
+
+💻 Declaration:
+Variables mat : Array[1..L][1..C] of Integers
+      
       </point>
-      <point>Accès : mat[ligne][colonne]. Exemple : mat[2][3].</point>
-      <point>Indices commencent souvent à 0 en programmation.</point>
+      <point>💻 Access: mat[row][column]. Example: mat[2][3].</point>
+      <point>▶️ Indices often start at 0 in programming.</point>
       <point>
-Représentation :
+
+▶️ Representation:
 [ [1, 2, 3],
   [4, 5, 6],
   [7, 8, 9] ]
+      
       </point>
-      <point>Utilité : grilles, images, données tabulaires.</point>
+      <point>🎯 Usefulness: grids, images, tabular data.</point>
       <point>
-Exemple matrice identité :
-Pour i de 1 à 3 faire
-  Pour j de 1 à 3 faire
-    Si i = j alors identite[i][j] ← 1 Sinon identite[i][j] ← 0
-  FinPour
-FinPour.
+
+▶️ Example identity matrix:
+For i from 1 to 3 do
+  For j from 1 to 3 do
+    If i = j then identity[i][j] ← 1 Else identity[i][j] ← 0
+  EndFor
+EndFor.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Opérations de base sur les vecteurs">
+  <section id="4" title="Basic Operations on Vectors">
     <content>
-Manipuler un vecteur nécessite souvent de parcourir ses éléments.
+Manipulating a vector often requires traversing its elements.
     </content>
     <bulletPoints>
       <point>
-Parcours :
-Pour i de 1 à N faire
-  Traiter vecteur[i]
-FinPour.
+
+▶️ Traversal:
+For i from 1 to N do
+  Process vector[i]
+EndFor.
+      
       </point>
       <point>
-Remplissage :
-Pour i de 1 à N faire
-  Lire(vecteur[i])
-FinPour.
+
+▶️ Filling:
+For i from 1 to N do
+  Read(vector[i])
+EndFor.
+      
       </point>
       <point>
-Recherche :
-i ← 1 ; Trouvé ← faux
-Tant que i &lt;= N ET non Trouvé faire
-  Si vecteur[i] = valeur_cherchée alors Trouvé ← vrai
+
+▶️ Search:
+i ← 1 ; Found ← false
+While i &lt;= N AND NOT Found do
+  If vector[i] = value_sought then Found ← true
   i ← i + 1
-FinTantQue.
+EndWhile.
+      
       </point>
       <point>
-Somme / moyenne :
-somme ← 0
-Pour i de 1 à N faire somme ← somme + vecteur[i] FinPour
-moyenne ← somme / N.
+
+▶️ Sum / average:
+sum ← 0
+For i from 1 to N do sum ← sum + vector[i] EndFor
+average ← sum / N.
+      
       </point>
       <point>
-Maximum :
-max ← vecteur[1]
-Pour i de 2 à N faire
-  Si vecteur[i] > max alors max ← vecteur[i]
-FinPour.
+
+▶️ Maximum:
+max ← vector[1]
+For i from 2 to N do
+  If vector[i] &gt; max then max ← vector[i]
+EndFor.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Opérations de base sur les matrices">
+  <section id="5" title="Basic Operations on Matrices">
     <content>
-Les matrices nécessitent des boucles imbriquées.
+Matrices require nested loops.
     </content>
     <bulletPoints>
       <point>
-Parcours :
-Pour i de 1 à L faire
-  Pour j de 1 à C faire
-    Traiter mat[i][j]
-  FinPour
-FinPour.
+
+▶️ Traversal:
+For i from 1 to L do
+  For j from 1 to C do
+    Process mat[i][j]
+  EndFor
+EndFor.
+      
       </point>
       <point>
-Remplissage :
-Pour i de 1 à L faire
-  Pour j de 1 à C faire
-    Lire(mat[i][j])
-  FinPour
-FinPour.
+
+▶️ Filling:
+For i from 1 to L do
+  For j from 1 to C do
+    Read(mat[i][j])
+  EndFor
+EndFor.
+      
       </point>
-      <point>Recherche d'une valeur dans toute la matrice.</point>
+      <point>▶️ Searching for a value in the entire matrix.</point>
       <point>
-Somme :
-somme ← 0
-Pour i de 1 à L faire
-  Pour j de 1 à C faire
-    somme ← somme + mat[i][j]
-  FinPour
-FinPour.
+
+▶️ Sum:
+sum ← 0
+For i from 1 to L do
+  For j from 1 to C do
+    sum ← sum + mat[i][j]
+  EndFor
+EndFor.
+      
       </point>
       <point>
-Diagonales :
-principale : mat[i][i]
-secondaire : mat[i][C-i+1]
+
+▶️ Diagonals:
+main: mat[i][i]
+secondary: mat[i][C-i+1]
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Opérations courantes sur les matrices">
+  <section id="6" title="Common Operations on Matrices">
     <content>
-Les matrices permettent des opérations mathématiques importantes.
+Matrices allow important mathematical operations.
     </content>
     <bulletPoints>
       <point>
-Addition :
+
+▶️ Addition:
 C[i][j] ← A[i][j] + B[i][j]
+      
       </point>
       <point>
-Multiplication :
-Pour i de 1 à L faire
-  Pour j de 1 à N faire
+
+▶️ Multiplication:
+For i from 1 to L do
+  For j from 1 to N do
     C[i][j] ← 0
-    Pour k de 1 à M faire
+    For k from 1 to M do
       C[i][j] ← C[i][j] + A[i][k] * B[k][j]
-    FinPour
-  FinPour
-FinPour.
+    EndFor
+  EndFor
+EndFor.
+      
       </point>
       <point>
-Transposition :
-Transposee[j][i] ← Mat[i][j]
+
+▶️ Transposition:
+Transposed[j][i] ← Mat[i][j]
+      
       </point>
-      <point>Utilisation : graphisme, IA, calcul scientifique.</point>
+      <point>▶️ Usage: graphics, AI, scientific computing.</point>
     </bulletPoints>
   </section>
 
-  <section id="7" title="Algorithmes de tri sur vecteurs">
+  <section id="7" title="Sorting Algorithms on Vectors">
     <content>
-Trier un vecteur est une opération fondamentale.
+Sorting a vector is a fundamental operation.
     </content>
     <bulletPoints>
       <point>
-Tri par sélection :
-Pour i de 1 à N-1 faire
+
+🧠 Selection sort:
+For i from 1 to N-1 do
   minPos ← i
-  Pour j de i+1 à N faire
-    Si tab[j] &lt; tab[minPos] alors minPos ← j
-  FinPour
-  Échanger tab[i] et tab[minPos]
-FinPour.
+  For j from i+1 to N do
+    If tab[j] &lt; tab[minPos] then minPos ← j
+  EndFor
+  Swap tab[i] and tab[minPos]
+EndFor.
+      
       </point>
       <point>
-Tri à bulles :
-Répéter
-  echange ← faux
-  Pour i de 1 à N-1 faire
-    Si tab[i] > tab[i+1] alors
-      Échanger tab[i] et tab[i+1]
-      echange ← vrai
-    FinSi
-  FinPour
-Jusqu'à non echange.
+
+🧠 Bubble sort:
+Repeat
+  swap ← false
+  For i from 1 to N-1 do
+    If tab[i] &gt; tab[i+1] then
+      Swap tab[i] and tab[i+1]
+      swap ← true
+    EndIf
+  EndFor
+Until NOT swap.
+      
       </point>
-      <point>Ces tris sont simples mais peu performants.</point>
+      <point>❌ These sorts are simple but not very performant.</point>
     </bulletPoints>
   </section>
 
-  <section id="8" title="Exemples complets d'algorithmes">
+  <section id="8" title="Complete Algorithm Examples">
     <content>
-Exemples combinant vecteurs et matrices.
+Examples combining vectors and matrices.
     </content>
     <bulletPoints>
       <point>
-Gestion des notes :
-Lire(n)
-Pour i de 1 à n faire Lire(notes[i]) FinPour
-somme ← 0
-Pour i de 1 à n faire somme ← somme + notes[i] FinPour
-moyenne ← somme / n
+
+💻 Grade management:
+Read(n)
+For i from 1 to n do Read(grades[i]) EndFor
+sum ← 0
+For i from 1 to n do sum ← sum + grades[i] EndFor
+average ← sum / n
+      
       </point>
       <point>
-Produit de matrices :
-Pour i de 1 à L faire
-  Pour j de 1 à N faire
+
+💻 Matrix product:
+For i from 1 to L do
+  For j from 1 to N do
     C[i][j] ← 0
-    Pour k de 1 à M faire
+    For k from 1 to M do
       C[i][j] ← C[i][j] + A[i][k] * B[k][j]
-    FinPour
-  FinPour
-FinPour.
+    EndFor
+  EndFor
+EndFor.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="9" title="Bonnes pratiques et conseils">
+  <section id="9" title="Best Practices and Tips">
     <content>
-Bonnes pratiques pour vecteurs et matrices.
+Best practices for vectors and matrices.
     </content>
     <bulletPoints>
-      <point>Choisir la bonne taille.</point>
-      <point>Utiliser des noms explicites.</point>
-      <point>Faire attention aux indices.</point>
-      <point>Vérifier les dimensions.</point>
-      <point>Factoriser le code.</point>
+      <point>✔️ Choose the right size.</point>
+      <point>✔️ Use explicit names.</point>
+      <point>⚠️ Be careful with indices.</point>
+      <point>✔️ Check dimensions.</point>
+      <point>✔️ Factor out code.</point>
     </bulletPoints>
   </section>
 

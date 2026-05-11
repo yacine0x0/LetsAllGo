@@ -171,8 +171,8 @@ class _AdminPageState extends State<AdminPage> {
                         } else if (entry.key == 2) {
                           Navigator.of(context).push(
                             PageRouteBuilder(
-                              pageBuilder: (_, __, ___) => const ProfilePage(),
-                              transitionsBuilder: (_, animation, __, child) {
+                              pageBuilder: (_, _, _) => const ProfilePage(),
+                              transitionsBuilder: (_, animation, _, child) {
                                 return SlideTransition(
                                   position: Tween(begin: const Offset(0.0, 1.0), end: Offset.zero)
                                       .chain(CurveTween(curve: Curves.easeInOut))

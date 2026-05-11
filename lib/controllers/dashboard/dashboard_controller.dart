@@ -13,7 +13,7 @@ class DashboardController {
 
     model = DashboardModel(
       username: (prenom.isNotEmpty || nom.isNotEmpty)
-          ? '${prenom} ${nom}'.trim()
+          ? '$prenom $nom'.trim()
           : 'Étudiant',
       role: role,
       chapters: [

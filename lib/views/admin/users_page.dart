@@ -6,7 +6,7 @@ import '../../models/admin_models/users_model.dart';
 import '../../service/auth/LoginService.dart';
 import '../admin/profil_admin_page.dart';
 import '../auth/login_page.dart';
-import '../auth/login_page.dart';
+
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -171,7 +171,7 @@ class _AdminPageState extends State<AdminPage> {
                 "assets/images/icone_dash.png",
                 width: h * 0.13,
                 height: h * 0.13,
-                errorBuilder: (_, __, ___) =>
+                errorBuilder: (_, _, _) =>
                     const Icon(Icons.school, color: Colors.blue, size: 40),
               ),
               SizedBox(height: h * 0.04),
@@ -181,8 +181,8 @@ class _AdminPageState extends State<AdminPage> {
                     setState(() => _selectedSidebarIndex = entry.key);
                     if (entry.key == 2) {
                       Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => ProfilePage(),
-                        transitionsBuilder: (_, animation, __, child) {
+                        pageBuilder: (_, _, _) => ProfilePage(),
+                        transitionsBuilder: (_, animation, _, child) {
                           return SlideTransition(
                             position: Tween(
                                     begin: const Offset(0.0, 1.0),
@@ -196,8 +196,8 @@ class _AdminPageState extends State<AdminPage> {
                       ));
                     } else if (entry.key == 1) {
                       Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => AnalyticsPage(),
-                        transitionsBuilder: (_, animation, __, child) {
+                        pageBuilder: (_, _, _) => AnalyticsPage(),
+                        transitionsBuilder: (_, animation, _, child) {
                           return SlideTransition(
                             position: Tween(
                                     begin: const Offset(0.0, 1.0),

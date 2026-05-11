@@ -1,80 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter id="Chapitre_04" title="Queues and Stacks">
 
-  <section id="1" title="Introduction aux piles (Stacks)">
-    <content>Une pile (stack) est une structure de données linéaire qui suit le principe LIFO : Last In First Out. Le dernier élément inséré est le premier à être retiré. On peut la comparer à une pile d'assiettes.</content>
+  <section id="1" title="Introduction to Stacks">
+    <content>A stack is a fundamental linear data structure that strictly enforces the LIFO principle: Last In First Out. This means the most recently inserted element is always the first one to be removed. All insertions and deletions occur at a single end called the top of the stack — the opposite end, called the base or bottom, is never directly accessed. This constrained access model makes stacks conceptually simple yet remarkably powerful. A real-world analogy is a stack of plates: you always place a new plate on top and always take the topmost plate first. In computing, stacks are the mechanism behind function call management, expression evaluation, backtracking algorithms, and syntax parsing. Every time a function is called, its local variables and return address are pushed onto the program's call stack; when the function returns, that frame is popped off, restoring the previous execution context.</content>
     <bulletPoints>
-      <point>LIFO : Last In First Out</point>
-      <point>Insertion et suppression au sommet uniquement</point>
-      <point>Sommet (top) : dernier élément inséré</point>
-      <point>Exemple : pile d'assiettes, historique undo/redo</point>
+      <point>📌 LIFO: Last In First Out — the most recently inserted element is always removed first</point>
+      <point>▶️ All insertions and deletions occur exclusively at the top of the stack</point>
+      <point>▶️ Top: the position of the most recently inserted element — the only accessible element</point>
+      <point>▶️ Base/Bottom: the position of the oldest element — never directly accessible</point>
+      <point>▶️ Real-world analogies: stack of plates, stack of books, browser back-button history</point>
+      <point>📊 Contrast with Queue (FIFO): elements leave in the same order they entered</point>
+      <point>💻 Call stack: the OS uses a hardware stack to manage function frames and return addresses</point>
+      <point>▶️ Recursive algorithms implicitly use the call stack; iterative equivalents use an explicit stack</point>
+      <point>⚠️ Stack overflow: pushing onto a full stack (fixed-size) — causes runtime error if unchecked</point>
+      <point>⚠️ Stack underflow: popping from an empty stack — must always be guarded against</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Opérations sur les piles">
-    <content>Une pile supporte trois opérations fondamentales simples mais puissantes qui permettent de gérer les données en mode LIFO.</content>
+  <section id="2" title="Operations on Stacks">
+    <content>A stack exposes a minimal but complete interface: every operation runs in constant time O(1) regardless of the number of elements in the stack. The two primary operations are Push, which adds a new element on top, and Pop, which removes and returns the top element. Peek (also called Top) allows inspecting the top element without removing it, which is essential in algorithms that need to look ahead before deciding whether to pop. IsEmpty guards against underflow by checking whether the stack holds any elements before a Pop or Peek is attempted. IsFull is relevant for fixed-capacity array-based implementations and prevents overflow. Because all operations target only the top, the internal state of the rest of the stack is entirely hidden, making the stack a natural encapsulation boundary.</content>
     <bulletPoints>
-      <point>Push : ajouter un élément au sommet</point>
-      <point>Pop : retirer l'élément au sommet</point>
-      <point>Peek/Top : consulter le sommet sans le retirer</point>
-      <point>IsEmpty : vérifier si la pile est vide</point>
-      <point>Toutes ces opérations sont en O(1)</point>
+      <point>🔧 Push: insert a new element at the top of the stack — O(1)</point>
+      <point>⚠️ Pop: remove and return the top element — O(1); raises underflow error if stack is empty</point>
+      <point>🔧 Peek / Top: read the top element without removing it — O(1)</point>
+      <point>🔧 IsEmpty: returns true if the stack contains no elements — O(1); always check before Pop/Peek</point>
+      <point>🔧 IsFull: returns true if the stack has reached maximum capacity (array-based only) — O(1)</point>
+      <point>🔧 Size / Count: returns the current number of elements — O(1) if a counter is maintained</point>
+      <point>🔧 Clear / Reset: removes all elements at once — O(1) by resetting the top index</point>
+      <point>⚡ All operations are strictly O(1) — no iteration over the stack is ever needed</point>
+      <point>⚠️ Underflow error: calling Pop or Peek on an empty stack — must be explicitly checked</point>
+      <point>⚠️ Overflow error: calling Push on a full stack (fixed-size array) — check IsFull first</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Implémentation d'une pile">
-    <content>Une pile peut être implémentée avec un tableau ou une liste chaînée. L'implémentation avec tableau est plus simple et plus rapide en pratique.</content>
+  <section id="3" title="Stack Implementation">
+    <content>A stack can be implemented using either a static array or a singly linked list, and both approaches deliver O(1) performance for all core operations. The array-based implementation is the most common in practice: a single integer index called top tracks the position of the most recently inserted element, initialized to -1 for an empty stack. Push increments top and stores the value at T[top]; Pop reads T[top] and decrements top. This approach benefits from excellent cache locality and zero pointer overhead, but is limited to a fixed capacity. The linked-list implementation eliminates the size constraint by dynamically allocating a new node for each Push at the head of the list, and freeing it on Pop. Both head insertion and head deletion are O(1), matching the array performance. The tradeoff is a pointer overhead per node and worse cache behavior due to scattered heap allocations.</content>
     <bulletPoints>
-      <point>Avec tableau : indice top qui augmente et diminue</point>
-      <point>Push : T[++top] = valeur</point>
-      <point>Pop : retourner T[top--]</point>
-      <point>Avec liste chaînée : insertion et suppression en tête</point>
-      <point>Taille dynamique avec liste chaînée</point>
+      <point>▶️ Array-based: uses a fixed-size array T[0..maxSize-1] and an integer top index</point>
+      <point>▶️ top initialized to -1: convention for an empty stack (no valid element at index 0 yet)</point>
+      <point>⚠️ Push: T[++top] = value (check top &lt; maxSize - 1 before incrementing to avoid overflow)</point>
+      <point>⚠️ Pop: return T[top--] (check top &gt;= 0 before decrementing to avoid underflow)</point>
+      <point>🔧 Peek: return T[top] without modifying top</point>
+      <point>🔧 IsEmpty: top == -1 | IsFull: top == maxSize - 1</point>
+      <point>✅ Array advantages: O(1) all operations, excellent cache locality, zero pointer overhead</point>
+      <point>⚠️ Array disadvantage: fixed capacity — stack overflow if maxSize is exceeded</point>
+      <point>🔗 Linked-list-based: each node contains data and a next pointer; top points to the head node</point>
+      <point>🔧 Push: allocate new node, set node.next = top, then top = node — O(1)</point>
+      <point>🔧 Pop: save top.data, advance top = top.next, free old node — O(1)</point>
+      <point>✅ Linked-list advantage: unbounded dynamic size — no overflow risk (only heap limits apply)</point>
+      <point>❌ Linked-list disadvantage: pointer overhead per node, poor cache locality</point>
+      <point>⚡ Dynamic array variant (e.g., Java Stack / C++ std::stack): amortized O(1) push with auto-resize</point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Applications des piles">
-    <content>Les piles sont utilisées dans de nombreux algorithmes fondamentaux en informatique, notamment pour la gestion des appels de fonctions et l'évaluation d'expressions.</content>
+  <section id="4" title="Applications of Stacks">
+    <content>Stacks are among the most widely used data structures in both systems programming and algorithm design. Their LIFO discipline naturally models any scenario involving nested or reversible operations. The most pervasive use is the program call stack: each function invocation pushes a new frame containing local variables, parameters, and a return address; returning from a function pops that frame, restoring the caller's context. Expression evaluation relies on stacks to handle operator precedence: the shunting-yard algorithm uses one stack for operators and one for operands to convert infix expressions to postfix (Reverse Polish Notation), which can then be evaluated with a single operand stack. Bracket matching, which verifies that every opening bracket has a corresponding closing bracket in the correct order, is a textbook stack application. Depth-First Search (DFS) on graphs uses a stack — either the call stack implicitly (recursive DFS) or an explicit stack (iterative DFS) — to track nodes to visit.</content>
     <bulletPoints>
-      <point>Gestion de la pile d'appels (call stack)</point>
-      <point>Évaluation d'expressions arithmétiques</point>
-      <point>Vérification des parenthèses</point>
-      <point>Algorithme de parcours en profondeur (DFS)</point>
-      <point>Fonctionnalité undo/redo dans les éditeurs</point>
-      <point>Conversion infixe vers postfixe</point>
+      <point>🎯 Program call stack: function frames (locals, parameters, return address) are pushed on call and popped on return</point>
+      <point>▶️ Recursion simulation: any recursive algorithm can be converted to iterative using an explicit stack</point>
+      <point>▶️ Expression evaluation: operand stack evaluates postfix (RPN) expressions in a single left-to-right pass</point>
+      <point>🧠 Infix to postfix conversion: shunting-yard algorithm uses an operator stack to respect precedence and associativity</point>
+      <point>🧠 Infix to prefix conversion: reverse the input, apply shunting-yard, reverse the output</point>
+      <point>🐢 Bracket / parenthesis matching: push opening brackets, pop and verify on each closing bracket — O(n)</point>
+      <point>🧠 Depth-First Search (DFS): iterative DFS replaces the recursive call stack with an explicit stack</point>
+      <point>▶️ Backtracking algorithms: push candidate states, pop and explore alternatives on dead ends (e.g., maze solving)</point>
+      <point>▶️ Undo / Redo in editors: two stacks — undo stack holds past states, redo stack holds undone states</point>
+      <point>▶️ Browser back/forward navigation: back button pops from the visited-pages stack</point>
+      <point>▶️ Syntax parsing and compilers: shift-reduce parsers use a stack to track grammar symbols</point>
+      <point>⚡ Memory management: stack allocator (bump pointer) for short-lived allocations — O(1) alloc and free</point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Différences entre pile et file">
-    <content>Piles et files sont deux structures fondamentales qui diffèrent par leur ordre d'accès aux éléments. Comprendre cette différence est essentiel pour choisir la bonne structure.</content>
+  <section id="5" title="Differences Between Stack and Queue">
+    <content>Although stacks and queues are both linear data structures built on the same underlying memory representations, they differ fundamentally in their access discipline, which determines which algorithms and real-world problems each is suited to solve. A stack follows LIFO: the element that was inserted most recently is the first to leave, which naturally models depth-first exploration and nested call structures. A queue follows FIFO: elements leave in the same order they arrived, which naturally models breadth-first exploration and fair scheduling. Both structures support only restricted access — neither allows arbitrary index-based reads — but the end exposed for removal is opposite: a stack removes from the top (the same end used for insertion), while a queue removes from the front (the opposite end from insertion). This single structural difference produces entirely different traversal orders and application domains.</content>
     <bulletPoints>
-      <point>Pile : LIFO — dernier entré, premier sorti</point>
-      <point>File : FIFO — premier entré, premier sorti</point>
-      <point>Pile : accès uniquement au sommet</point>
-      <point>File : insertion en queue, suppression en tête</point>
-      <point>Pile : DFS, récursion | File : BFS, ordonnancement</point>
+      <point>📌 Stack — LIFO: last element inserted is the first to be removed</point>
+      <point>📌 Queue — FIFO: first element inserted is the first to be removed</point>
+      <point>▶️ Stack: single active end (top) — both insertion and removal happen at the same end</point>
+      <point>▶️ Queue: two active ends — insertion at the rear, removal at the front</point>
+      <point>🧠 Stack: models depth-first, nested, or reversible processes (recursion, undo, backtracking)</point>
+      <point>🧠 Queue: models breadth-first, ordered, or fair processes (BFS, scheduling, buffering)</point>
+      <point>▶️ Stack traversal order: reverse of insertion order</point>
+      <point>▶️ Queue traversal order: identical to insertion order</point>
+      <point>▶️ Stack algorithms: DFS, infix-to-postfix, call stack, bracket matching</point>
+      <point>▶️ Queue algorithms: BFS, CPU round-robin scheduling, print spooling, producer-consumer</point>
+      <point>⚡ Both support O(1) insert and remove when implemented correctly</point>
+      <point>▶️ Both can be implemented with arrays or linked lists</point>
+      <point>⚡ Deque generalizes both: supports O(1) insert and remove at either end simultaneously</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="File de priorité (Priority Queue)">
-    <content>Une file de priorité est une extension de la file classique où chaque élément a une priorité. L'élément de plus haute priorité est retiré en premier, indépendamment de l'ordre d'insertion.</content>
+  <section id="6" title="Priority Queue">
+    <content>A priority queue is a generalization of the standard queue in which each element carries an associated priority value. Rather than serving elements in strict insertion order (FIFO), a priority queue always dequeues the element with the highest (or lowest, depending on convention) priority, regardless of when it was inserted. This makes it ideal for scheduling and optimization problems where importance outweighs arrival order. The most efficient implementation is a binary heap, which organizes elements as a complete binary tree stored in an array: a max-heap ensures the root is always the largest element, so Peek returns the maximum in O(1) and Dequeue extracts it in O(log n) by sinking the replacement root to its correct position. Insertion (Enqueue) runs in O(log n) by bubbling the new element up from the last leaf. For k elements with equal priority, a stable priority queue preserves their relative insertion order, though standard heap implementations are not inherently stable.</content>
     <bulletPoints>
-      <point>Chaque élément a une valeur de priorité</point>
-      <point>Déqueue retire l'élément de priorité maximale</point>
-      <point>Implémentation efficace avec un tas (heap)</point>
-      <point>Complexité : insertion O(log n), suppression O(log n)</point>
-      <point>Applications : algorithme de Dijkstra, ordonnancement OS</point>
+      <point>▶️ Each element carries a (data, priority) pair; the element with highest priority is served first</point>
+      <point>📌 Not strictly FIFO: arrival order is irrelevant — priority determines service order</point>
+      <point>🧠 Min-heap: smallest priority value is dequeued first (e.g., Dijkstra's shortest path)</point>
+      <point>▶️ Max-heap: largest priority value is dequeued first (e.g., task scheduling by urgency)</point>
+      <point>🔧 Peek / Top: returns the highest-priority element without removing it — O(1)</point>
+      <point>🔧 Enqueue / Insert: add element and restore heap property by bubbling up — O(log n)</point>
+      <point>🔧 Dequeue / Extract: remove root, replace with last leaf, restore heap by sinking down — O(log n)</point>
+      <point>🐢 Building a heap from n elements: O(n) using bottom-up heapification (not O(n log n))</point>
+      <point>❌ Naive sorted-array implementation: O(1) dequeue but O(n) insertion — inefficient</point>
+      <point>❌ Naive unsorted-array implementation: O(1) insertion but O(n) dequeue — inefficient</point>
+      <point>✅ Binary heap: optimal balance — O(log n) both insert and extract, O(1) peek</point>
+      <point>⚡ Fibonacci heap: amortized O(1) insert and decrease-key — used in optimized Dijkstra and Prim</point>
+      <point>🧠 Applications: Dijkstra's shortest-path, A* search, Huffman encoding, OS process scheduling, event simulation</point>
     </bulletPoints>
   </section>
 
   <section id="7" title="Deque (Double-Ended Queue)">
-    <content>Un deque (double-ended queue) est une généralisation de la file qui permet l'insertion et la suppression aux deux extrémités. Il combine les fonctionnalités de la pile et de la file.</content>
+    <content>A deque (pronounced "deck", short for double-ended queue) is a generalization of both the stack and the queue: it supports O(1) insertion and deletion at both the front and the rear simultaneously. This flexibility makes it a single data structure that subsumes the behavior of a stack (insert and remove at the same end), a queue (insert at rear, remove at front), and more. A deque can be implemented efficiently with a doubly linked list — head and tail pointers give O(1) access to both ends — or with a circular array, which offers better cache performance at the cost of a fixed or resize-on-demand capacity. A common and important algorithmic application of deques is the sliding window maximum problem: by maintaining a monotonic deque of indices (removing from the rear when a larger element is found, and removing from the front when the window slides past an index), the maximum of every window of size k can be computed in O(n) total time, rather than O(nk) with a naive approach.</content>
     <bulletPoints>
-      <point>Insertion et suppression en tête ET en queue</point>
-      <point>Combine pile et file en une seule structure</point>
-      <point>Toutes les opérations en O(1)</point>
-      <point>Implémenté avec liste doublement chaînée ou tableau circulaire</point>
-      <point>Application : algorithme de fenêtre glissante</point>
+      <point>⚡ Supports four operations: push_front, push_back, pop_front, pop_back — all O(1)</point>
+      <point>🔧 Peek_front and peek_back: inspect either end without removal — O(1)</point>
+      <point>▶️ Generalizes stack: use push_front / pop_front (or push_back / pop_back) for LIFO behavior</point>
+      <point>▶️ Generalizes queue: use push_back / pop_front for FIFO behavior</point>
+      <point>⚡ Doubly linked list implementation: O(1) all four operations, dynamic size, pointer overhead per node</point>
+      <point>⚡ Circular array implementation: O(1) amortized all operations, better cache locality, fixed or resizable capacity</point>
+      <point>🔧 IsEmpty: front == rear (circular array) or head == null (linked list)</point>
+      <point>🐢 Sliding window maximum: monotonic deque solves the k-window max problem in O(n) total — O(1) amortized per element</point>
+      <point>🧠 Sliding window minimum: same technique with a min-deque (remove larger elements from rear)</point>
+      <point>▶️ Palindrome checking: push all characters, then pop from both ends simultaneously and compare</point>
+      <point>🎯 Work-stealing scheduler: each thread has a deque; it pushes/pops its own tasks from one end and steals from the other end of other threads' deques</point>
+      <point>🎯 Standard library: Java ArrayDeque, C++ std::deque, Python collections.deque</point>
+      <point>✅ Java ArrayDeque is recommended over Stack and LinkedList for both stack and queue use cases</point>
     </bulletPoints>
   </section>
 

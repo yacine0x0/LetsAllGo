@@ -1,118 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_01" title="Éléments de base d'algorithmique">
+<chapter id="Chapter_01" title="Basic Elements of Algorithmics">
 
-  <section id="1" title="Introduction à l'algorithmique">
-    <content>L'algorithmique est la science de la conception et de l'étude des algorithmes. Concevoir un algorithme de résolution d'un problème est synonyme à la proposition d'une méthode de résolution automatique du dit problème. De ce fait, l'algorithmique est considérée comme l'un des éléments essentiels de l'informatique, car le traitement automatique de l'information ne pourra pas exister sans l'algorithmique.</content>
+  <section id="1" title="Introduction to Algorithmics">
+    <content>Algorithmics is the science of designing and studying algorithms. Designing an algorithm to solve a problem is synonymous with proposing a method for automatic resolution of said problem. Therefore, algorithmics is considered one of the essential elements of computer science, as automatic information processing cannot exist without algorithmics.</content>
     <bulletPoints>
-      <point>L'algorithmique étudie la conception et l'analyse des algorithmes</point>
-      <point>Un algorithme est une liste ordonnée d'opérations primitives appelées instructions</point>
-      <point>Chaque instruction est une action appliquant une opération définie sur une ou plusieurs données</point>
-      <point>L'algorithmique est indispensable au traitement automatique de l'information</point>
+      <point>▶️ Algorithmics studies the design and analysis of algorithms</point>
+      <point>▶️ An algorithm is an ordered list of primitive operations called instructions</point>
+      <point>▶️ Each instruction is an action applying a defined operation to one or more data items</point>
+      <point>▶️ Algorithmics is indispensable for automatic information processing</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Étapes de la résolution automatique d'un problème">
-    <content>En informatique, la résolution automatique d'un problème s'effectue en suivant 4 étapes essentielles : Problème → Analyse → Algorithme → Programmation → Édition. L'étape Analyse consiste à comprendre le problème en répondant à trois questions fondamentales.</content>
+  <section id="2" title="Steps of Automatic Problem Resolution">
+    <content>In computer science, automatic problem resolution is carried out by following 4 essential steps: Problem → Analysis → Algorithm → Programming → Execution. The Analysis step consists of understanding the problem by answering three fundamental questions.</content>
     <bulletPoints>
-      <point>Analyse : étudier et comprendre le problème (Qu'avons-nous comme données ? Quels résultats voulons-nous ? Quels traitements effectuer ?)</point>
-      <point>Algorithme : écrire la solution sous forme d'algorithme</point>
-      <point>Programmation : traduire l'algorithme en programme exécutable (langage de programmation)</point>
-      <point>Édition : introduire le programme dans l'ordinateur et observer les résultats</point>
+      <point>📋 Analysis: study and understand the problem (What data do we have? What results do we want? What processing should be done?)</point>
+      <point>📋 Algorithm: write the solution in the form of an algorithm</point>
+      <point>📋 Programming: translate the algorithm into an executable program (programming language)</point>
+      <point>📋 Execution: introduce the program into the computer and observe the results</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Notion d'algorithme et structure">
-    <content>Un algorithme est une liste (ou ensemble) ordonnée d'opérations primitives, appelées instructions, réalisant un traitement spécifique pour la résolution d'un problème. Le nom algorithme vient du mathématicien Abou Jaafar Mohamed Ibn Moussa Al Khawarizmi. Un algorithme de base comprend généralement 4 parties.</content>
+  <section id="3" title="Notion of Algorithm and Structure">
+    <content>An algorithm is an ordered list (or set) of primitive operations, called instructions, performing specific processing for solving a problem. The name algorithm comes from the mathematician Abou Jaafar Mohamed Ibn Moussa Al Khawarizmi. A basic algorithm generally comprises 4 parts.</content>
     <bulletPoints>
-      <point>En-tête : commence par le mot ALGORITHME suivi du nom de l'algorithme</point>
-      <point>CONSTANTE (ou CONST) : déclaration des constantes de l'algorithme</point>
-      <point>VARIABLE (ou VAR) : déclaration des variables de l'algorithme</point>
-      <point>Corps : compris entre DÉBUT et FIN, contient la liste des instructions séquentielles</point>
-      <point>Chaque instruction se termine par un point-virgule (;)</point>
-      <point>Les instructions sont exécutées séquentiellement de DÉBUT jusqu'à FIN</point>
+      <point>📋 Header: begins with the word ALGORITHM followed by the algorithm name</point>
+      <point>📋 CONSTANT (or CONST): declaration of algorithm constants</point>
+      <point>📋 VARIABLE (or VAR): declaration of algorithm variables</point>
+      <point>📋 Body: between BEGIN and END, contains the list of sequential instructions</point>
+      <point>▶️ Each instruction ends with a semicolon (;)</point>
+      <point>▶️ Instructions are executed sequentially from BEGIN to END</point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Types de données simples d'algorithmique">
-    <content>Un type détermine l'ensemble des valeurs que peut prendre une donnée. Un type est caractérisé par ses valeurs et les opérations que nous pouvons effectuer sur les données ayant ce type. Les types des données simples d'algorithmique sont : Entier, Réel, Caractère, Chaîne de caractères, et Booléen.</content>
+  <section id="4" title="Simple Data Types in Algorithmics">
+    <content>A type determines the set of values that a data item can take. A type is characterized by its values and the operations that we can perform on data having this type. The simple data types in algorithmics are: Integer, Real, Character, String, and Boolean.</content>
     <bulletPoints>
-      <point>Entier (Int) : quantité indivisible (ensemble Z), représenté sur 16 bits (2 octets). Exemple : -5, 15, 30</point>
-      <point>Réel (Float/Double) : valeur fractionnaire (ensemble R), représenté sur 4 ou 6 octets. Exemple : -15.5, 3.75, -2.62</point>
-      <point>Caractère (Char) : tout symbole du clavier (espace, lettres, chiffres, caractères spéciaux), représenté sur 1 octet. Exemple : 'a', 'B', '7'</point>
-      <point>Chaîne de caractères (String) : suite de caractères, maximum 255 caractères, chaque caractère sur 1 octet. Exemple : 'LICENCE INFORMATIQUE'</point>
-      <point>Booléen (Bool) : deux valeurs logiques uniquement — VRAI ou FAUX</point>
-      <point>Attention : une donnée Caractère doit être entre apostrophes. A désigne un nom, 'A' désigne la lettre A</point>
+      <point>🔢 Integer (Int): indivisible quantity (set Z), represented on 16 bits (2 bytes). Example: -5, 15, 30</point>
+      <point>🔢 Real (Float/Double): fractional value (set R), represented on 4 or 6 bytes. Example: -15.5, 3.75, -2.62</point>
+      <point>🔢 Character (Char): any keyboard symbol (space, letters, digits, special characters), represented on 1 byte. Example: 'a', 'B', '7'</point>
+      <point>🔢 String (String): sequence of characters, maximum 255 characters, each character on 1 byte. Example: 'COMPUTER SCIENCE DEGREE'</point>
+      <point>🔢 Boolean (Bool): two logical values only — TRUE or FALSE</point>
+      <point>🔢 Warning: a Character data item must be between single quotes. A designates a name, 'A' designates the letter A</point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Formes de données simples d'algorithmique">
-    <content>Une donnée simple à traiter par les instructions d'un algorithme peut être : une constante, une variable, ou une expression. Une constante a un nom fixe, un type fixe et une valeur fixe. Une variable a un nom fixe, un type fixe, mais une valeur modifiable.</content>
+  <section id="5" title="Forms of Simple Data in Algorithmics">
+    <content>Simple data to be processed by the instructions of an algorithm can be: a constant, a variable, or an expression. A constant has a fixed name, a fixed type and a fixed value. A variable has a fixed name, a fixed type, but a modifiable value.</content>
     <bulletPoints>
-      <point>Constante : valeur ne pouvant pas être modifiée durant l'exécution. Déclaration : CONSTANTE identificateur = Valeur ; (en C : int identificateur = Valeur;)</point>
-      <point>Variable : valeur pouvant être redéfinie à tout moment. Déclaration : VARIABLE liste_identificateurs : TYPE ; (en C : TYPE liste_identificateurs;)</point>
-      <point>Identificateur : nom alphanumérique commençant par une lettre, sans caractères spéciaux, unique dans l'algorithme, différent des mots clés</point>
-      <point>Expression arithmétique : forme X OP Y où OP ∈ {+, -, *, DIV, MOD, /}. Exemple : 2 * X + Y</point>
-      <point>Expression booléenne : peut être une expression de relation (>, &lt;, ≥, ≤, =, ≠) ou une expression logique (ET, OU, NON)</point>
-      <point>Réellement, une variable ou constante est un espace mémoire. À un instant donné, une variable ne contient qu'une seule valeur</point>
+      <point>💻 Constant: value that cannot be modified during execution. Declaration: CONSTANT identifier = Value; (in C: int identifier = Value;)</point>
+      <point>💻 Variable: value that can be redefined at any time. Declaration: VARIABLE list_of_identifiers : TYPE; (in C: TYPE list_of_identifiers;)</point>
+      <point>▶️ Identifier: alphanumeric name starting with a letter, without special characters, unique in the algorithm, different from keywords</point>
+      <point>🧮 Arithmetic expression: form X OP Y where OP ∈ {+, -, *, DIV, MOD, /}. Example: 2 * X + Y</point>
+      <point>🧮 Boolean expression: can be a relational expression (&gt;, &lt;, ≥, ≤, =, ≠) or a logical expression (AND, OR, NOT)</point>
+      <point>💾 In reality, a variable or constant is a memory space. At any given moment, a variable contains only one value</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Opérations permises sur les types de base">
-    <content>Chaque type de base possède un ensemble d'opérations qui peuvent être appliquées aux données de ce type. L'ordre d'évaluation des expressions obéit à des règles de priorité.</content>
+  <section id="6" title="Permitted Operations on Basic Types">
+    <content>Each basic type has a set of operations that can be applied to data of that type. The order of evaluation of expressions follows priority rules.</content>
     <bulletPoints>
-      <point>Entier : addition (+), soustraction (-), multiplication (*), division entière (DIV), reste (MOD), comparaisons (&lt;, ≤, >, =, ≠)</point>
-      <point>Réel : addition (+), soustraction (-), multiplication (*), division réelle (/), reste (MOD), comparaisons (&lt;, ≤, >, =, ≠)</point>
-      <point>Caractère : comparaisons uniquement (&lt;, ≤, >, =, ≠)</point>
-      <point>Chaîne : concaténation (+ ou &amp;), comparaisons (&lt;, ≤, >, =, ≠)</point>
-      <point>Booléen : conjonction (ET), disjonction (OU), négation (NON)</point>
-      <point>Priorités des opérateurs : 1-NON, -(unitaire) | 2-*, /, DIV, MOD, ET | 3-+, -(binaire), OU | 4-&lt;, &lt;=, =, >, &lt;></point>
-      <point>Les parenthèses sont évaluées en premier ; à priorité égale, évaluation de gauche à droite</point>
+      <point>🧮 Integer: addition (+), subtraction (-), multiplication (*), integer division (DIV), remainder (MOD), comparisons (&lt;, ≤, &gt;, =, ≠)</point>
+      <point>🧮 Real: addition (+), subtraction (-), multiplication (*), real division (/), remainder (MOD), comparisons (&lt;, ≤, &gt;, =, ≠)</point>
+      <point>▶️ Character: comparisons only (&lt;, ≤, &gt;, =, ≠)</point>
+      <point>▶️ String: concatenation (+ or &amp;), comparisons (&lt;, ≤, &gt;, =, ≠)</point>
+      <point>🧮 Boolean: conjunction (AND), disjunction (OR), negation (NOT)</point>
+      <point>🧮 Operator priorities: 1-NOT, -(unary) | 2-*, /, DIV, MOD, AND | 3-+, -(binary), OR | 4-&lt;, &lt;=, =, &gt;, &lt;&gt;</point>
+      <point>🧮 Parentheses are evaluated first; at equal priority, evaluation is from left to right</point>
     </bulletPoints>
   </section>
 
-  <section id="7" title="Les instructions de base d'un algorithme">
-    <content>Dans un algorithme, on distingue deux types d'instructions : les instructions de traitement (effectuer des opérations) et les instructions de contrôle (indiquer la manière dont les opérations sont effectuées). Les trois instructions de traitement de base sont : la lecture, l'écriture et l'affectation.</content>
+  <section id="7" title="Basic Instructions of an Algorithm">
+    <content>In an algorithm, we distinguish two types of instructions: processing instructions (perform operations) and control instructions (indicate the manner in which operations are performed). The three basic processing instructions are: read, write, and assignment.</content>
     <bulletPoints>
-      <point>LIRE (scanf) : attribue une valeur saisie au clavier à une variable. Syntaxe : LIRE(v1, v2, ..., vn); — Impossible de lire une constante ou une expression arithmétique</point>
-      <point>ÉCRIRE (printf) : affiche les résultats à l'écran. Syntaxe : ÉCRIRE(v1, v2, ..., vn); — Peut afficher des variables, constantes et expressions</point>
-      <point>Affectation (&lt;-) : donne une valeur existante en mémoire à une variable. Syntaxe : Nom_variable &lt;- valeur ; — La valeur peut être une constante, une variable ou une expression</point>
-      <point>Réel &lt;- Entier est autorisé | Entier &lt;- Réel n'est pas autorisé</point>
-      <point>Chaîne &lt;- Caractère est autorisé | Caractère &lt;- Chaîne n'est pas autorisé</point>
-      <point>Fonctionnement LIRE : arrêt du programme → saisie clavier → stockage en mémoire → reprise de l'exécution</point>
+      <point>🧮 READ (scanf): assigns a value entered from the keyboard to a variable. Syntax: READ(v1, v2, ..., vn); — Impossible to read a constant or an arithmetic expression</point>
+      <point>📤 WRITE (printf): displays results on screen. Syntax: WRITE(v1, v2, ..., vn); — Can display variables, constants and expressions</point>
+      <point>✏️ Assignment (&lt;-): gives an existing value in memory to a variable. Syntax: Variable_Name &lt;- value; — The value can be a constant, a variable or an expression</point>
+      <point>▶️ Real &lt;- Integer is allowed | Integer &lt;- Real is not allowed</point>
+      <point>▶️ String &lt;- Character is allowed | Character &lt;- String is not allowed</point>
+      <point>📥 READ operation: program stops → keyboard input → storage in memory → execution resumes</point>
     </bulletPoints>
   </section>
 
-  <section id="8" title="La trace d'exécution d'un algorithme">
-    <content>La trace d'exécution permet de suivre le déroulement (l'exécution manuelle) d'un algorithme pas à pas, instruction après instruction, afin de s'assurer de son bon fonctionnement. Elle se présente sous forme de tableau.</content>
+  <section id="8" title="Execution Trace of an Algorithm">
+    <content>The execution trace allows you to follow the course (manual execution) of an algorithm step by step, instruction after instruction, to ensure its correct functioning. It is presented in the form of a table.</content>
     <bulletPoints>
-      <point>Vérifier les valeurs des variables après exécution de chaque instruction</point>
-      <point>S'assurer que l'algorithme se termine</point>
-      <point>S'assurer que le résultat produit est correct</point>
-      <point>Exemple : ALGORITHME Trace — VAR X, Y, Z : Entier — X&lt;-3 ; Y&lt;-7 ; Z&lt;-X ; X&lt;-Y ; Z&lt;-Z+1 ; ÉCRIRE(2, X, Y) → affiche : 2 7 7 ; ÉCRIRE(X+1/2) → affiche : 7.5</point>
-      <point>Dans la trace, on suit colonne par colonne les variables et l'écran à chaque instruction</point>
+      <point>💻 Verify the values of variables after execution of each instruction</point>
+      <point>▶️ Ensure that the algorithm terminates</point>
+      <point>▶️ Ensure that the result produced is correct</point>
+      <point>📤 Example: ALGORITHM Trace — VAR X, Y, Z : Integer — X&lt;-3 ; Y&lt;-7 ; Z&lt;-X ; X&lt;-Y ; Z&lt;-Z+1 ; WRITE(2, X, Y) → displays: 2 7 7 ; WRITE(X+1/2) → displays: 7.5</point>
+      <point>💻 In the trace, we follow column by column the variables and the screen at each instruction</point>
     </bulletPoints>
   </section>
 
-  <section id="9" title="Exemple complet : algorithme de calcul de moyenne">
-    <content>Écrire un algorithme qui calcule la moyenne d'un étudiant en informatique pour l'EMD1, en passant par l'étape d'analyse. La formule est : Moyenne = (Note_EMD * 2 + Note_Evaluation) / 3.</content>
+  <section id="9" title="Complete Example: Average Calculation Algorithm">
+    <content>Write an algorithm that calculates a student's average in computer science for EMD1, going through the analysis step. The formula is: Average = (EMD_Grade * 2 + Evaluation_Grade) / 3.</content>
     <bulletPoints>
-      <point>Analyse — Entrées : Note_EMD, Note_Evaluation</point>
-      <point>Analyse — Sorties : Moyenne</point>
-      <point>Analyse — Traitement : (Note_EMD * 2 + Note_Evaluation) / 3</point>
-      <point>Algorithme : ALGORITHME moyenneEtudiant ; VAR Note_Evaluation, Note_EMD, Moyenne : Réel ;</point>
-      <point>Corps : LIRE(Note_Evaluation) ; LIRE(Note_EMD) ; Moyenne &lt;- (Note_EMD * 2 + Note_Evaluation)/3 ; ÉCRIRE(Moyenne) ;</point>
+      <point>📋 Analysis — Inputs: EMD_Grade, Evaluation_Grade</point>
+      <point>📋 Analysis — Outputs: Average</point>
+      <point>📋 Analysis — Processing: (EMD_Grade * 2 + Evaluation_Grade) / 3</point>
+      <point>📋 Algorithm: ALGORITHM studentAverage ; VAR Evaluation_Grade, EMD_Grade, Average : Real ;</point>
+      <point>📋 Body: READ(Evaluation_Grade) ; READ(EMD_Grade) ; Average &lt;- (EMD_Grade * 2 + Evaluation_Grade)/3 ; WRITE(Average) ;</point>
     </bulletPoints>
   </section>
 
-  <section id="10" title="Bonnes pratiques et points de vigilance">
-    <content>Quelques règles essentielles à retenir pour concevoir et écrire correctement des algorithmes selon le cours ALSD de Béjaïa.</content>
+  <section id="10" title="Best Practices and Points of Vigilance">
+    <content>A few essential rules to remember for correctly designing and writing algorithms according to the ALSD course from Béjaïa.</content>
     <bulletPoints>
-      <point>Un algorithme se construit AVANT l'écriture d'un programme</point>
-      <point>En algorithmique, les données ne sont pas toutes de même nature (Faux : différents types existent)</point>
-      <point>L'instruction LIRE est une instruction de traitement (Vrai), mais pas SI...SINON</point>
-      <point>On ne peut pas affecter une valeur à une constante (ni avec LIRE, ni avec l'affectation)</point>
-      <point>Un identificateur doit être alphanumérique, commencer par une lettre, sans caractères spéciaux, unique et différent des mots clés</point>
-      <point>Pour déclarer la constante X=2 : CONST X=2; juste après l'en-tête de l'algorithme</point>
+      <point>✔️ An algorithm is built BEFORE writing a program</point>
+      <point>▶️ In algorithmics, not all data is of the same nature (False: different types exist)</point>
+      <point>▶️ The READ instruction is a processing instruction (True), but not IF...ELSE</point>
+      <point>✏️ You cannot assign a value to a constant (neither with READ nor with assignment)</point>
+      <point>✔️ An identifier must be alphanumeric, start with a letter, without special characters, unique and different from keywords</point>
+      <point>✔️ To declare the constant X=2: CONST X=2; right after the algorithm header</point>
     </bulletPoints>
   </section>
 

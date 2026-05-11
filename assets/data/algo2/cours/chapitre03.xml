@@ -1,81 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter id="Chapitre_03" title="Linked List">
 
-  <section id="1" title="Introduction aux listes chaînées">
-    <content>Une liste chaînée est une structure de données dynamique composée de nœuds. Chaque nœud contient une donnée et un pointeur vers le nœud suivant. Contrairement aux tableaux, les éléments ne sont pas stockés de manière contiguë en mémoire.</content>
+  <section id="1" title="Introduction to Linked Lists">
+    <content>A linked list is a dynamic linear data structure composed of nodes allocated individually in heap memory. Each node holds two fields: a data value and a pointer to the next node in the sequence. Unlike arrays, the elements of a linked list are not stored in contiguous memory locations — each node can reside anywhere in memory, and the pointer field establishes the logical order. This decoupling of logical order from physical memory layout gives linked lists their defining advantage: they can grow or shrink at runtime without requiring memory reallocation or element shifting. However, this flexibility comes at a cost: since elements are not contiguous, direct index-based access is impossible, and reaching the k-th element always requires traversing from the head node through k-1 pointers.</content>
     <bulletPoints>
-      <point>Structure dynamique : taille variable</point>
-      <point>Chaque nœud contient : donnée + pointeur suivant</point>
-      <point>Pas de contiguïté mémoire requise</point>
-      <point>Insertion et suppression efficaces : O(1)</point>
-      <point>Accès séquentiel uniquement : O(n)</point>
+      <point>▶️ Dynamic structure: size grows or shrinks at runtime without reallocation</point>
+      <point>🔗 Each node contains two fields: a data value and a next pointer</point>
+      <point>💾 No contiguous memory required: nodes can be scattered across the heap</point>
+      <point>▶️ Logical order is defined by pointers, not physical memory addresses</point>
+      <point>⚡ Efficient insertion and deletion at known positions: O(1) pointer updates</point>
+      <point>🐢 Sequential access only: reaching the k-th element costs O(k) time</point>
+      <point>✅ No wasted capacity: memory is allocated exactly when a node is created</point>
+      <point>💾 Each node incurs a pointer overhead (typically 8 bytes on 64-bit systems)</point>
+      <point>❌ Poor cache locality compared to arrays due to scattered memory allocation</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Liste simplement chaînée">
-    <content>Dans une liste simplement chaînée, chaque nœud possède un seul pointeur qui pointe vers le nœud suivant. La traversée se fait dans un seul sens, du premier au dernier nœud.</content>
+  <section id="2" title="Singly Linked List">
+    <content>In a singly linked list, each node holds exactly one pointer — next — which points to the immediately following node. The list is anchored by a head pointer that references the first node; the last node, called the tail, has its next pointer set to null to signal the end of the list. Traversal can only proceed in one direction: from head toward tail. Insertion at the head is very efficient because it requires only two pointer updates regardless of list length. Insertion at an arbitrary position, however, requires first traversing to the predecessor node, which takes O(n) time in the worst case. Deletion follows the same pattern: deleting the head is O(1), but deleting an arbitrary node requires locating its predecessor first.</content>
     <bulletPoints>
-      <point>Un seul pointeur par nœud : next</point>
-      <point>Traversée dans un sens uniquement</point>
-      <point>Tête (head) : premier nœud de la liste</point>
-      <point>Dernier nœud : pointeur next = null</point>
-      <point>Insertion en tête : O(1), en milieu : O(n)</point>
+      <point>▶️ One pointer per node: next — points to the immediately following node</point>
+      <point>🔗 head pointer: entry point of the list, references the first node</point>
+      <point>▶️ Tail node: next == null, signals the end of the list</point>
+      <point>▶️ Traversal in one direction only: head → tail</point>
+      <point>🔧 Insertion at head: O(1) — update new node's next, then update head</point>
+      <point>🔧 Insertion at tail or middle: O(n) — must traverse to the insertion point</point>
+      <point>⚡ O(1) insertion at tail if a dedicated tail pointer is maintained</point>
+      <point>🔧 Deletion at head: O(1) — advance head to head.next and free old head</point>
+      <point>🔧 Deletion of arbitrary node: O(n) — must find the predecessor node first</point>
+      <point>🐢 Search for a value: O(n) — sequential scan from head to tail</point>
+      <point>💾 Memory per node: sizeof(data) + sizeof(pointer) — minimal overhead</point>
+      <point>❌ Cannot traverse backward: going back to a predecessor requires restarting from head</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Liste doublement chaînée">
-    <content>Dans une liste doublement chaînée, chaque nœud possède deux pointeurs : un vers le nœud suivant (next) et un vers le nœud précédent (prev). Cela permet une traversée dans les deux sens.</content>
+  <section id="3" title="Doubly Linked List">
+    <content>A doubly linked list extends the singly linked list by giving each node two pointers: next, pointing to the successor node, and prev, pointing to the predecessor node. This bidirectional linkage enables traversal in both directions — from head to tail and from tail to head — and makes many operations more efficient. Most notably, deleting a node whose reference is already known becomes O(1) because no predecessor search is needed: the node can simply unlink itself using its own prev pointer. A doubly linked list is typically anchored by both a head pointer and a tail pointer, giving O(1) access to both ends. The tradeoff is increased memory usage per node (two pointers instead of one) and additional pointer maintenance during insertions and deletions.</content>
     <bulletPoints>
-      <point>Deux pointeurs par nœud : next et prev</point>
-      <point>Traversée dans les deux sens</point>
-      <point>Suppression plus facile sans parcourir toute la liste</point>
-      <point>Plus de mémoire utilisée par nœud</point>
-      <point>Tête et queue facilement accessibles</point>
+      <point>🔗 Two pointers per node: next (successor) and prev (predecessor)</point>
+      <point>▶️ Bidirectional traversal: head → tail and tail → head</point>
+      <point>🔗 head pointer: references the first node; head.prev == null</point>
+      <point>🔗 tail pointer: references the last node; tail.next == null</point>
+      <point>🔧 Insertion at head: O(1) — update next/prev of the new node and the old head</point>
+      <point>🔧 Insertion at tail: O(1) with a tail pointer — symmetric to head insertion</point>
+      <point>🔧 Deletion of a known node: O(1) — node uses its own prev to unlink itself</point>
+      <point>🐢 Search: O(n) — can start from either end; start from tail for elements near the end</point>
+      <point>💾 Memory overhead: sizeof(data) + 2 × sizeof(pointer) per node</point>
+      <point>▶️ Pointer maintenance: both next and prev must be updated on every insert/delete</point>
+      <point>🎯 Used in: browser history (back/forward navigation), LRU cache implementations, text editors</point>
+      <point>🎯 Standard library example: Java LinkedList, C++ std::list are doubly linked lists</point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Liste circulaire">
-    <content>Une liste circulaire est une liste où le dernier nœud pointe vers le premier, formant un anneau. Elle peut être simplement ou doublement chaînée.</content>
+  <section id="4" title="Circular Linked List">
+    <content>A circular linked list is a variant in which the tail node's next pointer does not point to null but instead loops back to the head node, forming a closed ring. This structure can be built on top of a singly or doubly linked list. Because the list has no natural end, traversal algorithms must use a termination condition — typically checking whether the current node equals the starting node — to avoid infinite loops. Circular lists are particularly well-suited to applications that require cycling through a fixed set of elements repeatedly, such as round-robin CPU scheduling, carousel UI components, or multiplayer game turn management. In a circular doubly linked list, both the head's prev pointer and the tail's next pointer participate in the ring, enabling seamless backward cycling as well.</content>
     <bulletPoints>
-      <point>Dernier nœud pointe vers le premier</point>
-      <point>Pas de fin nulle : traversée infinie possible</point>
-      <point>Utile pour les applications cycliques</point>
-      <point>Exemple : tourniquet de processus dans un OS</point>
-      <point>Condition d'arrêt nécessaire lors du parcours</point>
+      <point>🔗 Tail node's next pointer loops back to the head, forming a closed ring</point>
+      <point>🔗 Can be singly circular (one pointer per node) or doubly circular (two pointers per node)</point>
+      <point>✅ No null pointer at the end: every node has a valid next (and prev in doubly variant)</point>
+      <point>▶️ Traversal requires an explicit stop condition: stop when current == startNode</point>
+      <point>▶️ Infinite traversal is possible — useful for cyclic round-robin scenarios</point>
+      <point>▶️ Insertion and deletion: same pointer logic as linear lists plus one extra link to fix the wrap-around</point>
+      <point>⚡ O(1) access to both head and tail via a single tail pointer (tail.next == head)</point>
+      <point>🎯 Use case: round-robin process scheduling in operating systems</point>
+      <point>🎯 Use case: circular buffer simulation, game turn cycling, carousel UI widgets</point>
+      <point>⚠️ Risk: forgetting the stop condition causes an infinite loop — always guard traversal</point>
+      <point>🔗 Doubly circular list: head.prev == tail and tail.next == head simultaneously</point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Opérations sur les listes chaînées">
-    <content>Les opérations fondamentales sur une liste chaînée incluent l'insertion, la suppression et la recherche d'éléments. Chacune a une complexité différente selon la position.</content>
+  <section id="5" title="Operations on Linked Lists">
+    <content>The fundamental operations on a linked list are insertion, deletion, search, and traversal. Each operation's time complexity depends heavily on the position targeted and whether auxiliary pointers (such as a tail pointer or a predecessor reference) are maintained. Insertion and deletion at the head are always O(1) because they involve only a constant number of pointer updates. Operations targeting the tail are also O(1) if a tail pointer is kept, but degrade to O(n) otherwise. Searching for a value or reaching an arbitrary index always requires a sequential scan from the head, making these O(n) operations. List reversal — rearranging all next pointers to point in the opposite direction — processes every node exactly once and thus runs in O(n) time with O(1) extra space.</content>
     <bulletPoints>
-      <point>Insertion en tête : O(1)</point>
-      <point>Insertion en queue : O(n) ou O(1) avec pointeur tail</point>
-      <point>Suppression en tête : O(1)</point>
-      <point>Recherche : O(n) dans le pire cas</point>
-      <point>Inversion d'une liste : O(n)</point>
+      <point>🔧 Insertion at head: O(1) — create node, set node.next = head, update head</point>
+      <point>🔧 Insertion at tail: O(1) with tail pointer; O(n) without it</point>
+      <point>🔧 Insertion after a given node reference: O(1) — only local pointer updates needed</point>
+      <point>🔧 Insertion at position k: O(k) — traverse k-1 steps, then splice in the new node</point>
+      <point>🔧 Deletion at head: O(1) — advance head to head.next, free old head node</point>
+      <point>🔧 Deletion of a known node (doubly linked): O(1) — use prev pointer to unlink</point>
+      <point>🔧 Deletion of a known node (singly linked): O(n) — must find predecessor first</point>
+      <point>❌ Search by value: O(n) — sequential scan; no binary search possible (no random access)</point>
+      <point>🐢 Access by index k: O(k) — traverse from head through k pointers</point>
+      <point>🐢 List reversal (iterative): O(n) time, O(1) space — reverse all next pointers in one pass</point>
+      <point>🐢 List reversal (recursive): O(n) time, O(n) stack space — elegant but uses call stack</point>
+      <point>🐢 Finding the middle node: O(n) with slow/fast pointer technique (Floyd's algorithm)</point>
+      <point>🐢 Detecting a cycle: O(n) time, O(1) space — Floyd's cycle detection (tortoise and hare)</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Comparaison liste chaînée vs tableau">
-    <content>Listes chaînées et tableaux ont chacun leurs avantages. Le choix dépend des opérations les plus fréquentes dans le programme.</content>
+  <section id="6" title="Linked List vs Array Comparison">
+    <content>Linked lists and arrays are both fundamental linear data structures, but they are optimized for entirely different access and modification patterns. An array stores elements in contiguous memory, which allows the CPU cache to prefetch data efficiently and enables direct O(1) random access via index arithmetic. The cost of this is a fixed (or expensive-to-change) capacity and O(n) insertions or deletions anywhere except the last position, due to element shifting. A linked list, conversely, supports O(1) insertions and deletions at known positions with no shifting, but sacrifices random access — any element lookup costs O(n). Choosing between them requires identifying the dominant operation in the target application: if reads by index dominate, use an array; if structural modifications dominate, use a linked list. Dynamic arrays (e.g., Java ArrayList, C++ std::vector) blur this boundary by combining contiguous storage with amortized O(1) append.</content>
     <bulletPoints>
-      <point>Tableau : accès direct O(1), insertion O(n)</point>
-      <point>Liste : accès O(n), insertion O(1) en tête</point>
-      <point>Tableau : taille fixe, mémoire contiguë</point>
-      <point>Liste : taille dynamique, mémoire fragmentée</point>
-      <point>Tableau préféré pour accès fréquent par indice</point>
-      <point>Liste préférée pour insertions/suppressions fréquentes</point>
+      <point>⚡ Array — random access: O(1) via index arithmetic (pointer + offset)</point>
+      <point>🐢 Linked list — random access: O(n) — must traverse from head each time</point>
+      <point>🐢 Array — insertion/deletion at arbitrary position: O(n) due to element shifting</point>
+      <point>⚡ Linked list — insertion/deletion at head or known node: O(1) pointer updates only</point>
+      <point>📊 Array — fixed capacity: resizing requires allocating a new block and copying all elements</point>
+      <point>📊 Linked list — dynamic capacity: grows or shrinks one node at a time, no copying needed</point>
+      <point>✅ Array — contiguous memory: excellent cache locality, hardware prefetching works well</point>
+      <point>❌ Linked list — scattered memory: poor cache locality, frequent cache misses on traversal</point>
+      <point>💾 Array — memory overhead: none beyond the element data itself</point>
+      <point>💾 Linked list — memory overhead: one or two pointers per node (8–16 extra bytes per element)</point>
+      <point>📊 Prefer array when: frequent index-based reads, small and stable size, cache performance matters</point>
+      <point>📊 Prefer linked list when: frequent insertions/deletions, unknown or highly variable size</point>
+      <point>⚡ Dynamic array (ArrayList/vector): O(1) amortized append, O(1) random access — often a practical middle ground</point>
     </bulletPoints>
   </section>
 
-  <section id="7" title="Applications des listes chaînées">
-    <content>Les listes chaînées sont à la base de nombreuses structures de données plus complexes et sont utilisées dans divers domaines de l'informatique.</content>
+  <section id="7" title="Applications of Linked Lists">
+    <content>Linked lists serve as the foundational building block for a wide range of higher-level data structures and are directly employed in numerous areas of systems and application programming. Stacks and queues can both be implemented cleanly on top of a singly linked list with O(1) push, pop, enqueue, and dequeue operations. Memory allocators (such as the C standard library's malloc) maintain free-block lists as linked lists to track available heap regions. Hash tables frequently use chaining — a linked list per bucket — to resolve collisions. Doubly linked lists underpin browser navigation history, enabling O(1) back and forward transitions. Adjacency lists, the standard representation for sparse graphs, are typically implemented as arrays of linked lists. Operating system kernels use circular doubly linked lists extensively in their scheduler ready queues and I/O wait queues.</content>
     <bulletPoints>
-      <point>Implémentation des piles et files</point>
-      <point>Gestion de la mémoire dynamique</point>
-      <point>Représentation de polynômes</point>
-      <point>Historique de navigation (liste doublement chaînée)</point>
-      <point>Implémentation de tables de hachage (chaînage)</point>
+      <point>⚡ Stack implementation: singly linked list with push/pop at head — O(1) both operations</point>
+      <point>⚡ Queue implementation: singly linked list with head and tail pointers — O(1) enqueue and dequeue</point>
+      <point>▶️ Dynamic memory allocator: free-block lists track available heap regions (e.g., malloc internals)</point>
+      <point>▶️ Hash table chaining: each bucket holds a linked list to resolve key collisions</point>
+      <point>⚡ Browser navigation history: doubly linked list enables O(1) back and forward transitions</point>
+      <point>▶️ Text editor buffer (gap buffer / piece table): linked structures enable efficient local edits</point>
+      <point>▶️ Polynomial representation: each node stores a coefficient and an exponent for sparse polynomials</point>
+      <point>▶️ Sparse graph adjacency list: array of linked lists representing edges — space-efficient for sparse graphs</point>
+      <point>🎯 OS kernel scheduler: circular doubly linked lists for ready queues and wait queues (Linux list_head)</point>
+      <point>▶️ Undo/redo history: doubly linked list allows stepping backward and forward through edit states</point>
+      <point>⚡ LRU cache: doubly linked list + hash map — O(1) access and O(1) eviction of least recently used entry</point>
+      <point>▶️ Music/video playlist with shuffle or repeat: circular linked list models seamless looping</point>
     </bulletPoints>
   </section>
 

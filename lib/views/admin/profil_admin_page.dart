@@ -8,8 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../controllers/admin_controllers/admin_profil_controller.dart';
 import '../../service/language_service.dart';
 
-import '../admin/admin_page.dart';      // ← Corrigé
-import '../admin/analytics.dart';      // ← Corrigé
+import '../admin/admin_page.dart';     
+import '../admin/analytics.dart';     
 import '../auth/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -366,19 +366,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               SizedBox(height: h * 0.03),
-
-              // Dark Mode
-              Row(
-                children: [
-                  Text(lang.t("Mode sombre", "Dark Mode"), style: TextStyle(color: Colors.white, fontSize: h * 0.018)),
-                  const Spacer(),
-                  Switch(
-                    value: _controller.model.isDarkMode,
-                    onChanged: (value) => setState(() => _controller.toggleDarkMode(value)),
-                  ),
-                ],
-              ),
-              const Divider(color: Colors.white12, height: 30),
 
               // Langue
               Row(

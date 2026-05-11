@@ -1,223 +1,251 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_03" title="Boucles">
+<chapter id="Chapter_03" title="Loops">
 
-  <section id="1" title="Introduction aux boucles">
+  <section id="1" title="Introduction to Loops">
     <content>
-Les boucles (ou structures itératives) sont des structures de contrôle qui permettent de répéter l'exécution d'un bloc d'instructions un certain nombre de fois ou jusqu'à ce qu'une condition soit remplie. Elles évitent la duplication de code et sont essentielles pour traiter des données en masse, parcourir des collections ou répéter des calculs.
+Loops (or iterative structures) are control structures that allow the execution of a block of instructions to be repeated a certain number of times or until a condition is met. They avoid code duplication and are essential for processing data in bulk, traversing collections, or repeating calculations.
     </content>
     <bulletPoints>
-      <point>Permet de répéter des actions automatiquement sans écrire plusieurs fois le même code.</point>
-      <point>Deux grandes familles : boucles comptées (nombre connu d'itérations) et boucles conditionnelles (répétition jusqu'à une condition).</point>
-      <point>Chaque boucle nécessite une condition d'arrêt pour éviter les boucles infinies.</point>
-      <point>Exemple concret : afficher les nombres de 1 à 10, calculer la somme des 100 premiers entiers, vérifier la validité d'une saisie utilisateur.</point>
+      <point>▶️ Allows actions to be repeated automatically without writing the same code multiple times.</point>
+      <point>🔁 Two main families: counted loops (known number of iterations) and conditional loops (repetition until a condition).</point>
+      <point>⚠️ Each loop requires a stopping condition to avoid infinite loops.</point>
+      <point>📥 Concrete example: display numbers from 1 to 10, calculate the sum of the first 100 integers, verify the validity of user input.</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Boucle Pour (For)">
+  <section id="2" title="For Loop">
     <content>
-La boucle Pour est utilisée lorsque le nombre de répétitions est connu à l'avance. Elle utilise un compteur qui prend successivement toutes les valeurs d'un intervalle.
+The For loop is used when the number of repetitions is known in advance. It uses a counter that successively takes all values from an interval.
     </content>
     <bulletPoints>
-      <point>Syntaxe : Pour compteur de début à fin faire instructions FinPour.</point>
-      <point>Le compteur est automatiquement incrémenté (par défaut de 1) après chaque itération.</point>
-      <point>On peut aussi spécifier un pas (ex: Pour i de 10 à 0 pas -1 faire ...).</point>
+      <point>🔁 Syntax: For counter from start to end do instructions EndFor.</point>
+      <point>🔁 The counter is automatically incremented (by default by 1) after each iteration.</point>
+      <point>🔁 You can also specify a step (e.g: For i from 10 to 0 step -1 do ...).</point>
       <point>
-Exemple : afficher les nombres de 1 à 5 :
-Pour i de 1 à 5 faire Afficher(i) FinPour → affiche 1 2 3 4 5.
+
+📤 Example: display numbers from 1 to 5:
+For i from 1 to 5 do Display(i) EndFor → displays 1 2 3 4 5.
+      
       </point>
       <point>
-Exemple avec pas négatif :
-Pour i de 5 à 1 pas -1 faire Afficher(i) FinPour → affiche 5 4 3 2 1.
+
+▶️ Example with negative step:
+For i from 5 to 1 step -1 do Display(i) EndFor → displays 5 4 3 2 1.
+      
       </point>
-      <point>Utilité : parcourir les éléments d'un tableau, effectuer une somme, un produit, etc.</point>
+      <point>🎯 Usefulness: traverse array elements, perform a sum, a product, etc.</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Boucle Tant Que (While)">
+  <section id="3" title="While Loop">
     <content>
-La boucle Tant Que exécute un bloc d'instructions tant qu'une condition reste vraie. La condition est évaluée avant chaque itération ; si elle est fausse dès le départ, le bloc n'est jamais exécuté.
+The While loop executes a block of instructions as long as a condition remains true. The condition is evaluated before each iteration; if it is false from the start, the block is never executed.
     </content>
     <bulletPoints>
-      <point>Syntaxe : Tant que condition faire instructions FinTantQue.</point>
-      <point>Attention : il faut s'assurer que la condition devient fausse à un moment donné, sinon la boucle est infinie.</point>
+      <point>🔁 Syntax: While condition do instructions EndWhile.</point>
+      <point>▶️ Warning: you must ensure that the condition becomes false at some point, otherwise the loop is infinite.</point>
       <point>
-Exemple : afficher les nombres de 1 à 5 avec Tant Que :
+
+📤 Example: display numbers from 1 to 5 with While:
 i ← 1
-Tant que i &lt;= 5 faire
-  Afficher(i)
+While i &lt;= 5 do
+  Display(i)
   i ← i + 1
-FinTantQue.
+EndWhile.
+      
       </point>
-      <point>Cas d'usage typique : répéter une action jusqu'à ce qu'une condition soit remplie.</point>
+      <point>🎯 Typical use case: repeat an action until a condition is met.</point>
       <point>
-Exemple : demander un nombre positif :
-Lire(n)
-Tant que n &lt; 0 faire
-  Afficher("Nombre négatif, recommencez")
-  Lire(n)
-FinTantQue.
+
+💻 Example: ask for a positive number:
+Read(n)
+While n &lt; 0 do
+  Display("Negative number, try again")
+  Read(n)
+EndWhile.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Boucle Répéter Jusqu'à (Do While)">
+  <section id="4" title="Repeat Until Loop">
     <content>
-La boucle Répéter Jusqu'à exécute le bloc d'instructions une première fois, puis vérifie la condition. Elle garantit donc au moins une exécution.
+The Repeat Until loop executes the block of instructions first, then checks the condition. It thus guarantees at least one execution.
     </content>
     <bulletPoints>
-      <point>Syntaxe : Répéter instructions Jusqu'à condition.</point>
-      <point>La condition est testée après l'exécution ; si elle est vraie, la boucle s'arrête.</point>
+      <point>🔁 Syntax: Repeat instructions Until condition.</point>
+      <point>💻 The condition is tested after execution; if it is true, the loop stops.</point>
       <point>
-Exemple : afficher les nombres de 1 à 5 avec Répéter :
+
+📤 Example: display numbers from 1 to 5 with Repeat:
 i ← 1
-Répéter
-  Afficher(i)
+Repeat
+  Display(i)
   i ← i + 1
-Jusqu'à i &gt; 5.
+Until i &gt; 5.
+      
       </point>
-      <point>Idéal pour les menus interactifs ou les saisies utilisateur.</point>
+      <point>📥 Ideal for interactive menus or user input.</point>
       <point>
-Exemple : saisie avec validation :
-Répéter
-  Lire(n)
-Jusqu'à n &gt;= 0.
+
+📥 Example: input with validation:
+Repeat
+  Read(n)
+Until n &gt;= 0.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Boucles imbriquées">
+  <section id="5" title="Nested Loops">
     <content>
-On peut placer une boucle à l'intérieur d'une autre (boucles imbriquées). Cela permet de parcourir des structures multidimensionnelles ou de générer des combinaisons.
+You can place a loop inside another loop (nested loops). This allows traversing multidimensional structures or generating combinations.
     </content>
     <bulletPoints>
-      <point>Chaque niveau d'imbrication doit avoir son propre compteur.</point>
+      <point>🔁 Each level of nesting must have its own counter.</point>
       <point>
-Exemple : afficher une table de multiplication :
-Pour i de 1 à 10 faire
-  Pour j de 1 à 10 faire
-    Afficher(i * j)
-  FinPour
-  Afficher(ligne suivante)
-FinPour.
+
+📤 Example: display a multiplication table:
+For i from 1 to 10 do
+  For j from 1 to 10 do
+    Display(i * j)
+  EndFor
+  Display(next line)
+EndFor.
+      
       </point>
       <point>
-Exemple : parcourir une matrice 3x3 :
-Pour i de 1 à 3 faire
-  Pour j de 1 à 3 faire
-    Lire(matrice[i][j])
-  FinPour
-FinPour.
+
+💻 Example: traverse a 3x3 matrix:
+For i from 1 to 3 do
+  For j from 1 to 3 do
+    Read(matrix[i][j])
+  EndFor
+EndFor.
+      
       </point>
-      <point>Attention à la complexité : nombre total d'itérations = produit des boucles.</point>
+      <point>⚠️ Watch out for complexity: total number of iterations = product of loops.</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Contrôle des boucles : break et continue">
+  <section id="6" title="Loop Control: break and continue">
     <content>
-Dans certaines situations, on peut vouloir interrompre prématurément une boucle (break) ou passer à l'itération suivante (continue).
+In some situations, you may want to prematurely interrupt a loop (break) or skip to the next iteration (continue).
     </content>
     <bulletPoints>
-      <point>Break : sort immédiatement de la boucle.</point>
-      <point>Continue : passe directement à l'itération suivante.</point>
-      <point>En pseudo-code : "Sortir" pour break et "Passer" pour continue.</point>
+      <point>🔁 Break: immediately exits the loop.</point>
+      <point>🔁 Continue: jumps directly to the next iteration.</point>
+      <point>🔁 In pseudo-code: "Exit" for break and "Skip" for continue.</point>
       <point>
-Exemple avec break :
-Trouvé ← faux
+
+🔁 Example with break:
+Found ← false
 i ← 1
-Tant que i &lt;= N ET non Trouvé faire
-  Si tableau[i] = valeur_cherchée alors
-    Trouvé ← vrai
-    Sortir
-  FinSi
+While i &lt;= N AND NOT Found do
+  If array[i] = value_sought then
+    Found ← true
+    Exit
+  EndIf
   i ← i + 1
-FinTantQue.
+EndWhile.
+      
       </point>
       <point>
-Exemple avec continue :
-Pour i de 1 à 10 faire
-  Si i % 2 = 0 alors Passer FinSi
-  Afficher(i)
-FinPour.
+
+🔁 Example with continue:
+For i from 1 to 10 do
+  If i % 2 = 0 then Skip EndIf
+  Display(i)
+EndFor.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="7" title="Pièges courants et boucles infinies">
+  <section id="7" title="Common Pitfalls and Infinite Loops">
     <content>
-Les erreurs de conception peuvent entraîner des boucles infinies ou des comportements inattendus.
+Design errors can lead to infinite loops or unexpected behavior.
     </content>
     <bulletPoints>
-      <point>Oubli de l'incrémentation.</point>
-      <point>Condition mal écrite.</point>
-      <point>Dépassement de capacité du compteur.</point>
-      <point>Boucle qui ne s'exécute jamais.</point>
-      <point>Tester avec des cas simples et vérifier la condition d'arrêt.</point>
+      <point>⚠️ Forgetting the increment.</point>
+      <point>⚠️ Badly written condition.</point>
+      <point>⚠️ Counter overflow.</point>
+      <point>❌ Loop that never executes.</point>
+      <point>🔁 Test with simple cases and verify the stopping condition.</point>
     </bulletPoints>
   </section>
 
-  <section id="8" title="Exemples complets d'algorithmes avec boucles">
+  <section id="8" title="Complete Examples of Algorithms with Loops">
     <content>
-Voici plusieurs exemples d'algorithmes utilisant des boucles.
+Here are several examples of algorithms using loops.
     </content>
     <bulletPoints>
       <point>
-Exemple 1 : Somme des N premiers entiers
-Lire(N)
-somme ← 0
-Pour i de 1 à N faire
-  somme ← somme + i
-FinPour
-Afficher(somme)
+
+💻 Example 1: Sum of the first N integers
+Read(N)
+sum ← 0
+For i from 1 to N do
+  sum ← sum + i
+EndFor
+Display(sum)
+      
       </point>
       <point>
-Exemple 2 : Saisie sécurisée
-Répéter
-  Lire(n)
-  Si n &lt; 1 OU n &gt; 10 Alors
-    Afficher("Saisie invalide")
-  FinSi
-Jusqu'à n &gt;= 1 ET n &lt;= 10
+
+📥 Example 2: Secure input
+Repeat
+  Read(n)
+  If n &lt; 1 OR n &gt; 10 Then
+    Display("Invalid input")
+  EndIf
+Until n &gt;= 1 AND n &lt;= 10
+      
       </point>
       <point>
-Exemple 3 : Table de multiplication
-Lire(n)
+
+🧠 Example 3: Multiplication table
+Read(n)
 i ← 1
-Tant que i &lt;= 10 faire
-  Afficher(n, " x ", i, " = ", n*i)
+While i &lt;= 10 do
+  Display(n, " x ", i, " = ", n*i)
   i ← i + 1
-FinTantQue
+EndWhile
+      
       </point>
       <point>
-Exemple 4 : Nombre premier
-Lire(n)
-Si n &lt;= 1 Alors
-  Afficher("Non premier")
-Sinon
-  premier ← vrai
+
+🧠 Example 4: Prime number
+Read(n)
+If n &lt;= 1 Then
+  Display("Not prime")
+Else
+  prime ← true
   i ← 2
-  Tant que i * i &lt;= n ET premier = vrai faire
-    Si n % i = 0 Alors
-      premier ← faux
-    FinSi
+  While i * i &lt;= n AND prime = true do
+    If n % i = 0 Then
+      prime ← false
+    EndIf
     i ← i + 1
-  FinTantQue
-  Si premier Alors Afficher("Premier") Sinon Afficher("Non premier")
-FinSi
+  EndWhile
+  If prime Then Display("Prime") Else Display("Not prime")
+EndIf
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="9" title="Bonnes pratiques pour les boucles">
+  <section id="9" title="Best Practices for Loops">
     <content>
-Pour écrire des boucles claires et efficaces, certaines bonnes pratiques sont recommandées.
+To write clear and efficient loops, certain best practices are recommended.
     </content>
     <bulletPoints>
-      <point>Choisir la bonne boucle selon le contexte.</point>
-      <point>Utiliser des noms de variables explicites.</point>
-      <point>Limiter l'imbrication.</point>
-      <point>Éviter l'abus de break et continue.</point>
-      <point>Indenter correctement.</point>
-      <point>Vérifier que la condition évolue.</point>
+      <point>✔️ Choose the right loop according to the context.</point>
+      <point>✔️ Use explicit variable names.</point>
+      <point>✔️ Limit nesting.</point>
+      <point>✔️ Avoid overuse of break and continue.</point>
+      <point>✔️ Indent correctly.</point>
+      <point>✔️ Verify that the condition evolves.</point>
     </bulletPoints>
   </section>
 

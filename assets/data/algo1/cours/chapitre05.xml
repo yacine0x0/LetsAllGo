@@ -1,185 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_05" title="Sous-programmes (Fonctions et Procédures)">
+<chapter id="Chapter_05" title="Subprograms (Functions and Procedures)">
 
-  <section id="1" title="Introduction aux sous-programmes">
+  <section id="1" title="Introduction to Subprograms">
     <content>
-Les sous-programmes (ou sous-algorithmes) sont des blocs d instructions indépendants, identifiés par un nom, qui peuvent être appelés depuis n importe quel endroit d un algorithme. Ils constituent la pierre angulaire de la modularité : ils permettent de décomposer un problème complexe en sous-problèmes plus simples, réutilisables et faciles à maintenir.
+Subprograms (or sub-algorithms) are independent blocks of instructions, identified by a name, that can be called from anywhere in an algorithm. They form the cornerstone of modularity: they allow decomposing a complex problem into simpler, reusable, and easy-to-maintain sub-problems.
     </content>
     <bulletPoints>
-      <point>Évitent la duplication de code : une même séquence d instructions peut être utilisée plusieurs fois sans être réécrite.</point>
-      <point>Améliorent la lisibilité : un algorithme bien structuré devient plus clair et plus facile à comprendre.</point>
-      <point>Facilitent la maintenance : corriger un bug dans un sous-programme corrige tous ses appels.</point>
-      <point>Deux types principaux : les fonctions (qui retournent une valeur) et les procédures (qui ne retournent rien).</point>
-      <point>Exemple : utiliser calculerMoyenne() au lieu de répéter le calcul.</point>
+      <point>✅ Avoid code duplication: the same sequence of instructions can be used multiple times without being rewritten.</point>
+      <point>✅ Improve readability: a well-structured algorithm becomes clearer and easier to understand.</point>
+      <point>✅ Facilitate maintenance: fixing a bug in a subprogram fixes all its calls.</point>
+      <point>💻 Two main types: functions (which return a value) and procedures (which return nothing).</point>
+      <point>💻 Example: use calculateAverage() instead of repeating the calculation.</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Fonctions">
+  <section id="2" title="Functions">
     <content>
-Une fonction est un sous-programme qui retourne une valeur.
+A function is a subprogram that returns a value.
     </content>
     <bulletPoints>
       <point>
-Syntaxe :
-Fonction nomFonction(paramètres) : Type
-  Retourner valeur
-FinFonction.
+
+💻 Syntax:
+Function functionName(parameters) : Type
+  Return value
+EndFunction.
+      
       </point>
       <point>
-Exemple :
-Fonction somme(a, b : Entier) : Entier
-  Retourner a + b
-FinFonction.
+
+💻 Example:
+Function sum(a, b : Integer) : Integer
+  Return a + b
+EndFunction.
+      
       </point>
-      <point>Appel : resultat ← somme(3, 4)</point>
-      <point>Peut avoir zéro paramètre.</point>
+      <point>💻 Call: result ← sum(3, 4)</point>
+      <point>▶️ Can have zero parameters.</point>
       <point>
-Exemple puissance :
-Fonction puissance(base : Réel, exp : Entier) : Réel
-  resultat ← 1
-  Pour i de 1 à exp faire
-    resultat ← resultat * base
-  FinPour
-  Retourner resultat
-FinFonction.
+
+▶️ Example power:
+Function power(base : Real, exp : Integer) : Real
+  result ← 1
+  For i from 1 to exp do
+    result ← result * base
+  EndFor
+  Return result
+EndFunction.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Procédures">
+  <section id="3" title="Procedures">
     <content>
-Une procédure exécute des actions sans retourner de valeur.
+A procedure performs actions without returning a value.
     </content>
     <bulletPoints>
       <point>
-Syntaxe :
-Procédure nomProcédure(paramètres)
-FinProcédure.
+
+💻 Syntax:
+Procedure procedureName(parameters)
+EndProcedure.
+      
       </point>
       <point>
-Exemple :
-Procédure afficherBienvenue(nom)
-  Afficher("Bonjour ", nom)
-FinProcédure.
+
+💻 Example:
+Procedure displayWelcome(name)
+  Display("Hello ", name)
+EndProcedure.
+      
       </point>
       <point>
-Exemple échange :
-Procédure echanger(a, b par Référence)
+
+▶️ Example swap:
+Procedure swap(a, b by Reference)
   temp ← a
   a ← b
   b ← temp
-FinProcédure.
+EndProcedure.
+      
       </point>
-      <point>Les procédures modifient souvent l état du programme.</point>
+      <point>▶️ Procedures often modify the state of the program.</point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Paramètres : valeur vs référence">
+  <section id="4" title="Parameters: Value vs Reference">
     <content>
-Les paramètres peuvent être passés par valeur ou par référence.
+Parameters can be passed by value or by reference.
     </content>
     <bulletPoints>
       <point>
-Par valeur :
-Procédure incrementer(v)
+
+▶️ By value:
+Procedure increment(v)
   v ← v + 1
-FinProcédure.
-→ ne change pas la variable originale
+EndProcedure.
+→ does not change the original variable
+      
       </point>
       <point>
-Par référence :
-Procédure incrementerRef(v par Référence)
+
+▶️ By reference:
+Procedure incrementRef(v by Reference)
   v ← v + 1
-FinProcédure.
-→ modifie la variable originale
+EndProcedure.
+→ modifies the original variable
+      
       </point>
-      <point>Choisir selon besoin (lecture vs modification).</point>
+      <point>▶️ Choose according to need (read vs modification).</point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Variables locales et globales">
+  <section id="5" title="Local and Global Variables">
     <content>
-La portée d une variable définit où elle est accessible.
+The scope of a variable defines where it is accessible.
     </content>
     <bulletPoints>
-      <point>Variables locales : visibles uniquement dans le sous-programme.</point>
-      <point>Variables globales : visibles partout.</point>
-      <point>Privilégier les paramètres plutôt que globales.</point>
+      <point>▶️ Local variables: visible only within the subprogram.</point>
+      <point>▶️ Global variables: visible everywhere.</point>
+      <point>▶️ Prefer parameters rather than globals.</point>
       <point>
-Exemple :
+
+💻 Example:
 Variables x, y
-Fonction somme()
-  Retourner x + y
-FinFonction.
+Function sum()
+  Return x + y
+EndFunction.
+      
       </point>
-      <point>Une variable locale masque une globale du même nom.</point>
+      <point>▶️ A local variable masks a global one with the same name.</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Récursivité">
+  <section id="6" title="Recursion">
     <content>
-Une fonction récursive s appelle elle-même.
+A recursive function calls itself.
     </content>
     <bulletPoints>
-      <point>Doit avoir un cas de base.</point>
+      <point>✔️ Must have a base case.</point>
       <point>
-Factorielle :
-Fonction fact(n)
-  Si n = 0 Alors Retourner 1
-  Sinon Retourner n * fact(n-1)
-FinFonction.
+
+▶️ Factorial:
+Function fact(n)
+  If n = 0 Then Return 1
+  Else Return n * fact(n-1)
+EndFunction.
+      
       </point>
       <point>
-Fibonacci :
-Fonction fib(n)
-  Si n = 0 Alors Retourner 0
-  Si n = 1 Alors Retourner 1
-  Sinon Retourner fib(n-1) + fib(n-2)
-FinFonction.
+
+▶️ Fibonacci:
+Function fib(n)
+  If n = 0 Then Return 0
+  If n = 1 Then Return 1
+  Else Return fib(n-1) + fib(n-2)
+EndFunction.
+      
       </point>
-      <point>Attention au stack overflow.</point>
+      <point>⚠️ Be careful of stack overflow.</point>
     </bulletPoints>
   </section>
 
-  <section id="7" title="Exemples complets">
+  <section id="7" title="Complete Examples">
     <content>
-Exemples de programmes modulaires.
+Examples of modular programs.
     </content>
     <bulletPoints>
       <point>
-Gestion des notes :
-Procédure saisirNotes(tab, n)
-  Lire(n)
-  Pour i de 1 à n faire Lire(tab[i]) FinPour
-FinProcédure
 
-Fonction moyenne(tab, n)
-  somme ← 0
-  Pour i de 1 à n faire somme ← somme + tab[i] FinPour
-  Retourner somme / n
-FinFonction
+💻 Grade management:
+Procedure readGrades(tab, n)
+  Read(n)
+  For i from 1 to n do Read(tab[i]) EndFor
+EndProcedure
+
+Function average(tab, n)
+  sum ← 0
+  For i from 1 to n do sum ← sum + tab[i] EndFor
+  Return sum / n
+EndFunction
+      
       </point>
       <point>
-Puissance récursive :
-Fonction puissanceRec(base, exp)
-  Si exp = 0 Alors Retourner 1
-  Sinon Retourner base * puissanceRec(base, exp-1)
-FinFonction.
+
+💻 Recursive power:
+Function powerRec(base, exp)
+  If exp = 0 Then Return 1
+  Else Return base * powerRec(base, exp-1)
+EndFunction.
+      
       </point>
     </bulletPoints>
   </section>
 
-  <section id="8" title="Bonnes pratiques">
+  <section id="8" title="Best Practices">
     <content>
-Bonnes pratiques pour les sous-programmes.
+Best practices for subprograms.
     </content>
     <bulletPoints>
-      <point>Noms explicites.</point>
-      <point>Une seule responsabilité.</point>
-      <point>Limiter les paramètres.</point>
-      <point>Utiliser valeur / référence correctement.</point>
-      <point>Toujours définir un cas de base en récursivité.</point>
-      <point>Éviter les effets de bord.</point>
+      <point>✔️ Explicit names.</point>
+      <point>✔️ Single responsibility.</point>
+      <point>✔️ Limit parameters.</point>
+      <point>▶️ Use value / reference correctly.</point>
+      <point>✔️ Always define a base case in recursion.</point>
+      <point>✔️ Avoid side effects.</point>
     </bulletPoints>
   </section>
 

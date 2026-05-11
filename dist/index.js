@@ -11,9 +11,11 @@ const user_routes_1 = __importDefault(require("./lib/routes/user.routes"));
 const leaderboard_routes_1 = __importDefault(require("./lib/routes/leaderboard.routes"));
 const admin_routes_1 = __importDefault(require("./lib/routes/admin.routes"));
 const quiz_routes_1 = __importDefault(require("./lib/routes/quiz.routes"));
-const courses_routes_1 = __importDefault(require("./lib/routes/courses.routes")); // ✅ NOUVEAU
+const courses_routes_1 = __importDefault(require("./lib/routes/courses.routes")); 
 const app = (0, express_1.default)();
+
 const PORT = process.env.PORT ?? 3000;
+
 app.use((0, cors_1.default)({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
@@ -24,7 +26,7 @@ app.use('/api/auth', authroutes_1.default);
 app.use('/api/users', user_routes_1.default);
 app.use('/api/leaderboard', leaderboard_routes_1.default);
 app.use('/api/quiz', quiz_routes_1.default);
-app.use('/api/courses', courses_routes_1.default); // ✅ NOUVEAU
+app.use('/api/courses', courses_routes_1.default); 
 app.use('/api/admin', admin_routes_1.default);
 app.get('/', (_req, res) => res.json({ message: 'LetsAllGo API is running 🚀' }));
 app.use((_req, res) => res.status(404).json({ success: false, message: 'Route introuvable' }));
