@@ -275,6 +275,7 @@
       <choice id="D">O(log n)</choice>
     </choices>
     <bonneReponse>A</bonneReponse>
+    <bonneReponse>A</bonneReponse>
   </question>
 
   <question id="c4_q26" type="multipleChoice">

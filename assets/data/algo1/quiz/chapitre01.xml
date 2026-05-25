@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_01" title="Basics - Introduction à l'algorithmique">
+<chapter id="Chapitre_01_Quiz" title="Quiz – Éléments de base d'algorithmique">
 
-  <question id="c1_q1" type="multipleChoice">
-    <enonce>What is an algorithm?</enonce>
+  <!-- ==================== PAGE 6 ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>En algorithmique, toutes les données à traiter sont d'une même nature.</enonce>
     <choices>
       <choice id="A">A step-by-step procedure for solving a problem</choice>
       <choice id="B">A programming language</choice>
@@ -12,8 +13,8 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q2" type="multipleChoice">
-    <enonce>Which of the following is NOT a characteristic of an algorithm?</enonce>
+  <question id="q2" type="multipleChoice">
+    <enonce>L'instruction qui permet de lire une donnée simple à partir du clavier est l'instruction SI ... SINON.</enonce>
     <choices>
       <choice id="A">Ambiguity</choice>
       <choice id="B">Finiteness</choice>
@@ -34,19 +35,20 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q4" type="multipleChoice">
-    <enonce>Which is the best time complexity for a search algorithm?</enonce>
+  <question id="q3" type="multipleChoice">
+    <enonce>L'instruction LIRE est une instruction d'opération.</enonce>
     <choices>
       <choice id="A">O(n log n)</choice>
       <choice id="B">O(n)</choice>
       <choice id="C">O(1)</choice>
       <choice id="D">O(log n)</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q5" type="multipleChoice">
-    <enonce>What does "Big O" notation describe?</enonce>
+  <!-- ==================== PAGE 7 ==================== -->
+  <question id="q4" type="multipleChoice">
+    <enonce>Un algorithme présente une solution automatique à un problème.</enonce>
     <choices>
       <choice id="A">The number of lines of code</choice>
       <choice id="B">CPU speed</choice>
@@ -56,8 +58,8 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q6" type="multipleChoice">
-    <enonce>Which of the following is an example of a sorting algorithm?</enonce>
+  <question id="q5" type="multipleChoice">
+    <enonce>Un algorithme peut s'exécuter sur un ordinateur.</enonce>
     <choices>
       <choice id="A">Linear Search</choice>
       <choice id="B">Hash Table</choice>
@@ -67,8 +69,8 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c1_q7" type="multipleChoice">
-    <enonce>What is the space complexity of an algorithm?</enonce>
+  <question id="q6" type="multipleChoice">
+    <enonce>Un algorithme contient souvent plusieurs types d'instructions.</enonce>
     <choices>
       <choice id="A">The amount of memory the algorithm needs to run</choice>
       <choice id="B">The execution time of the algorithm</choice>
@@ -76,10 +78,12 @@
       <choice id="D">The number of loops used</choice>
     </choices>
     <bonneReponse>A</bonneReponse>
+    <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q8" type="multipleChoice">
-    <enonce>What is a pseudocode?</enonce>
+  <!-- ==================== PAGE 8 ==================== -->
+  <question id="q7" type="multipleChoice">
+    <enonce>L'unité centrale est un composant software.</enonce>
     <choices>
       <choice id="A">A compiled programming language</choice>
       <choice id="B">A debugging tool</choice>
@@ -89,8 +93,8 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q9" type="multipleChoice">
-    <enonce>What does O(n²) complexity mean?</enonce>
+  <question id="q8" type="multipleChoice">
+    <enonce>Le clavier d'un ordinateur :</enonce>
     <choices>
       <choice id="A">The algorithm runs in logarithmic time</choice>
       <choice id="B">The algorithm's time grows quadratically with input size</choice>
@@ -100,19 +104,20 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c1_q10" type="ordering">
-    <enonce>Order the steps of algorithm design:</enonce>
-    <bonneReponse>Understand the problem|Design the algorithm|Write pseudocode|Implement the code</bonneReponse>
-    <codeLines>
-      <line>Write pseudocode</line>
-      <line>Understand the problem</line>
-      <line>Implement the code</line>
-      <line>Design the algorithm</line>
-    </codeLines>
+  <!-- ==================== PAGE 14 ==================== -->
+  <question id="q9" type="multipleChoice">
+    <enonce>Un algorithme se construit :</enonce>
+    <choices>
+      <choice id="A">Après l'écriture d'un programme</choice>
+      <choice id="B">Avant l'écriture d'un programme</choice>
+      <choice id="C">L'ordre n'a pas d'importance</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c1_q11" type="multipleChoice">
-    <enonce>What is the time complexity of Binary Search?</enonce>
+  <!-- ==================== PAGE 25 ==================== -->
+  <question id="q10" type="multipleChoice">
+    <enonce>Quelle est l'écriture qui permet d'ajouter 5 à la variable "prix" ?</enonce>
     <choices>
       <choice id="A">O(n²)</choice>
       <choice id="B">O(log n)</choice>
@@ -133,8 +138,9 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q13" type="multipleChoice">
-    <enonce>What is the time complexity of Bubble Sort in the worst case?</enonce>
+  <!-- ==================== PAGE 30 ==================== -->
+  <question id="q13" type="multipleChoice">
+    <enonce>Quelle est la différence entre une variable et une constante ?</enonce>
     <choices>
       <choice id="A">O(n log n)</choice>
       <choice id="B">O(n)</choice>
@@ -144,8 +150,9 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q14" type="multipleChoice">
-    <enonce>What does it mean for an algorithm to be "correct"?</enonce>
+  <!-- ==================== PAGE 32 ==================== -->
+  <question id="q14" type="multipleChoice">
+    <enonce>Après exécution de : a←7, b←-5, c←a-b, c←c+a, quelle est la valeur de c ?</enonce>
     <choices>
       <choice id="A">It runs without errors</choice>
       <choice id="B">It uses the least memory</choice>
@@ -155,8 +162,8 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c1_q15" type="multipleChoice">
-    <enonce>Which notation describes the best-case complexity of an algorithm?</enonce>
+  <question id="q15" type="multipleChoice">
+    <enonce>Pour déclarer la constante X=2, il faut écrire :</enonce>
     <choices>
       <choice id="A">Big Theta</choice>
       <choice id="B">Big O</choice>
@@ -166,8 +173,9 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q16" type="multipleChoice">
-    <enonce>What is the difference between an algorithm and a program?</enonce>
+  <!-- ==================== QUESTIONS SUPPLÉMENTAIRES (petits ajouts) ==================== -->
+  <question id="q16" type="multipleChoice">
+    <enonce>Le type de donnée pour 'A' (entre apostrophes) est :</enonce>
     <choices>
       <choice id="A">An algorithm is language-independent; a program is written in a specific language</choice>
       <choice id="B">A program is faster than an algorithm</choice>
@@ -177,8 +185,8 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q17" type="multipleChoice">
-    <enonce>Which of the following has O(1) time complexity?</enonce>
+  <question id="q17" type="multipleChoice">
+    <enonce>Lequel de ces opérateurs est utilisé pour la division entière ?</enonce>
     <choices>
       <choice id="A">Accessing an array element by index</choice>
       <choice id="B">Binary search</choice>
@@ -188,8 +196,8 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q18" type="multipleChoice">
-    <enonce>What is a flowchart used for?</enonce>
+  <question id="q18" type="multipleChoice">
+    <enonce>Lequel de ces opérateurs donne le reste d'une division ?</enonce>
     <choices>
       <choice id="A">To visually represent the steps of an algorithm</choice>
       <choice id="B">To measure execution time</choice>
@@ -199,8 +207,8 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q19" type="multipleChoice">
-    <enonce>What does "input" mean in the context of an algorithm?</enonce>
+  <question id="q19" type="multipleChoice">
+    <enonce>Quelle affectation est autorisée ?</enonce>
     <choices>
       <choice id="A">The code written by the programmer</choice>
       <choice id="B">The result produced by the algorithm</choice>
@@ -210,30 +218,19 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q20" type="multipleChoice">
-    <enonce>What is the time complexity of accessing the last element of a linked list?</enonce>
+  <question id="q20" type="multipleChoice">
+    <enonce>Une variable booléenne peut valoir :</enonce>
     <choices>
       <choice id="A">O(n²)</choice>
       <choice id="B">O(log n)</choice>
       <choice id="C">O(n)</choice>
       <choice id="D">O(1)</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c1_q21" type="ordering">
-    <enonce>Order the steps to analyze an algorithm's complexity:</enonce>
-    <bonneReponse>Identify the input size|Count basic operations|Express as a function of n|Apply Big O notation</bonneReponse>
-    <codeLines>
-      <line>Apply Big O notation</line>
-      <line>Identify the input size</line>
-      <line>Express as a function of n</line>
-      <line>Count basic operations</line>
-    </codeLines>
-  </question>
-
-  <question id="c1_q22" type="multipleChoice">
-    <enonce>Which of the following best describes "divide and conquer"?</enonce>
+  <question id="q21" type="multipleChoice">
+    <enonce>Que fait l'instruction ÉCRIRE( "Bonjour" ) ?</enonce>
     <choices>
       <choice id="A">Using memory to store results of subproblems</choice>
       <choice id="B">Solving a problem by trying all possible solutions</choice>
@@ -254,8 +251,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c1_q24" type="multipleChoice">
-    <enonce>What is a greedy algorithm?</enonce>
+  <question id="q24" type="multipleChoice">
+    <enonce>Un identificateur valide doit :</enonce>
     <choices>
       <choice id="A">An algorithm that explores all possible paths</choice>
       <choice id="B">An algorithm that always runs in O(1)</choice>
@@ -265,8 +262,8 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c1_q25" type="multipleChoice">
-    <enonce>What is dynamic programming?</enonce>
+  <question id="q25" type="multipleChoice">
+    <enonce>L'instruction "LIRE(5)" est :</enonce>
     <choices>
       <choice id="A">Programming with dynamic typing</choice>
       <choice id="B">A technique that stores results of subproblems to avoid recomputation</choice>
@@ -287,8 +284,9 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q27" type="multipleChoice">
-    <enonce>What does it mean for two algorithms to have the same asymptotic complexity?</enonce>
+  <!-- ==================== QUESTIONS DE TRACE ==================== -->
+  <question id="q28" type="multipleChoice">
+    <enonce>Si X←3, Y←7, Z←X, X←Y, alors que vaut Z ?</enonce>
     <choices>
       <choice id="A">They use the same amount of memory</choice>
       <choice id="B">They produce identical output</choice>
@@ -298,8 +296,8 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q28" type="multipleChoice">
-    <enonce>Which algorithm paradigm explores all possible solutions?</enonce>
+  <question id="q29" type="multipleChoice">
+    <enonce>La trace d'exécution permet de :</enonce>
     <choices>
       <choice id="A">Greedy</choice>
       <choice id="B">Dynamic programming</choice>
@@ -309,20 +307,8 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c1_q29" type="ordering">
-    <enonce>Order the complexity classes from fastest to slowest:</enonce>
-    <bonneReponse>O(1)|O(log n)|O(n)|O(n log n)|O(n²)</bonneReponse>
-    <codeLines>
-      <line>O(n)</line>
-      <line>O(1)</line>
-      <line>O(n²)</line>
-      <line>O(log n)</line>
-      <line>O(n log n)</line>
-    </codeLines>
-  </question>
-
-  <question id="c1_q30" type="multipleChoice">
-    <enonce>What is the primary goal of algorithm optimization?</enonce>
+  <question id="q30" type="multipleChoice">
+    <enonce>L'instruction ÉCRIRE (a, '+', b, '=', a+b) avec a=3, b=1 affiche :</enonce>
     <choices>
       <choice id="A">To reduce time and/or space complexity</choice>
       <choice id="B">To add more comments</choice>

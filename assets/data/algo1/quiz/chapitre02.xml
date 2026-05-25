@@ -3,8 +3,9 @@
 
   <!-- ==================== MULTIPLE CHOICE QUESTIONS (20) ==================== -->
 
-  <question id="c2_q1" type="multipleChoice">
-    <enonce>What does an "if-else" statement do?</enonce>
+  <!-- ==================== QUESTIONS PAGE 17 (TEST) ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>L'instruction conditionnelle simple est basée sur une seule condition.</enonce>
     <choices>
       <choice id="A">Variable declaration</choice>
       <choice id="B">Function definition</choice>
@@ -25,19 +26,19 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c2_q3" type="multipleChoice">
-    <enonce>What is the logical operator for AND?</enonce>
+  <question id="q2" type="multipleChoice">
+    <enonce>Dans l'instruction conditionnelle simple, le traitement à l'intérieur de la condition est effectué si la condition n'est pas vérifiée.</enonce>
     <choices>
       <choice id="A">||</choice>
       <choice id="B">|</choice>
       <choice id="C">&amp;&amp;</choice>
       <choice id="D">&amp;</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q4" type="multipleChoice">
-    <enonce>What is the logical operator for OR?</enonce>
+  <question id="q3" type="multipleChoice">
+    <enonce>L'instruction conditionnelle complète impose un choix entre deux traitements différents en se basant sur trois conditions.</enonce>
     <choices>
       <choice id="A">&amp;&amp;</choice>
       <choice id="B">||</choice>
@@ -47,8 +48,9 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q5" type="multipleChoice">
-    <enonce>What does the NOT operator (!) do?</enonce>
+  <!-- ==================== QUESTION PAGE 18 ==================== -->
+  <question id="q4" type="multipleChoice">
+    <enonce>La condition "3 &lt; X &lt; 6" est mal formée. Quelle(s) forme(s) est/sont correcte(s) ?</enonce>
     <choices>
       <choice id="A">Adds two numbers</choice>
       <choice id="B">Inverts a boolean value</choice>
@@ -58,8 +60,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q6" type="multipleChoice">
-    <enonce>What is the result of (true &amp;&amp; false)?</enonce>
+  <question id="q5" type="multipleChoice">
+    <enonce>Quelle(s) affirmation(s) concernant SELON...FAIRE est/sont correcte(s) ?</enonce>
     <choices>
       <choice id="A">true</choice>
       <choice id="B">null</choice>
@@ -69,8 +71,23 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q7" type="multipleChoice">
-    <enonce>What is the result of (false || true)?</enonce>
+  <!-- ==================== ALGORITHME ALG1 (PAGE 15) ==================== -->
+  <question id="q6" type="multipleChoice">
+    <enonce>Que doit afficher l'algorithme suivant ?<br/>
+ALGORITHME Alg1 ;<br/>
+VAR X, Y : Entier ;<br/>
+DÉBUT<br/>
+  X ← 3 ; Y ← 2 ;<br/>
+  SI (X&lt;Y) ALORS<br/>
+    ÉCRIRE(Y, " est supérieur à", X) ;<br/>
+  SINON<br/>
+    SI (Y &gt; 0) ALORS<br/>
+      ÉCRIRE(Y, " est strictement positif") ;<br/>
+    SINON<br/>
+      ÉCRIRE(Y, " est inférieur ou égal à 0") ;<br/>
+    FIN SI ;<br/>
+  FIN SI ;<br/>
+FIN.</enonce>
     <choices>
       <choice id="A">false</choice>
       <choice id="B">true</choice>
@@ -78,10 +95,23 @@
       <choice id="D">error</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q8" type="multipleChoice">
-    <enonce>Which statement executes a block of code if the condition is false?</enonce>
+  <!-- ==================== ALGORITHME ALG2 (PAGE 16) ==================== -->
+  <question id="q7" type="multipleChoice">
+    <enonce>Que doit afficher l'algorithme suivant ?<br/>
+ALGORITHME Alg2 ;<br/>
+VAR X, Y : Entier ;<br/>
+DÉBUT<br/>
+  X ← 3 ; Y ← 2 ;<br/>
+  SELON (X+Y-1) FAIRE<br/>
+    CAS 3 : ÉCRIRE("Premier CAS") ;<br/>
+    CAS 5 : ÉCRIRE("Deuxième CAS") ;<br/>
+    CAS 7 : ÉCRIRE("Troisième CAS") ;<br/>
+    CAS AUTRE : ÉCRIRE("CAS AUTRE") ;<br/>
+  FIN SELON ;<br/>
+FIN.</enonce>
     <choices>
       <choice id="A">if</choice>
       <choice id="B">for</choice>
@@ -91,8 +121,9 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q9" type="multipleChoice">
-    <enonce>What is the ternary operator used for?</enonce>
+  <!-- ==================== QUESTIONS SUPPLÉMENTAIRES (PETITS AJOUTS) ==================== -->
+  <question id="q8" type="multipleChoice">
+    <enonce>Une condition en algorithmique retourne toujours un résultat de type :</enonce>
     <choices>
       <choice id="A">Defining functions</choice>
       <choice id="B">Looping through arrays</choice>
@@ -105,16 +136,16 @@
   <question id="c2_q11" type="multipleChoice">
     <enonce>What is the result of (!true)?</enonce>
     <choices>
-      <choice id="A">true</choice>
-      <choice id="B">1</choice>
-      <choice id="C">false</choice>
-      <choice id="D">null</choice>
+      <choice id="A">Alternative complète</choice>
+      <choice id="B">Alternative simple</choice>
+      <choice id="C">Alternative multiple</choice>
+      <choice id="D">Sélection</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q12" type="multipleChoice">
-    <enonce>In a switch statement, what happens if no case matches and there is no default?</enonce>
+  <question id="q10" type="multipleChoice">
+    <enonce>L'instruction SI ... ALORS ... SINON est appelée :</enonce>
     <choices>
       <choice id="A">An error is thrown</choice>
       <choice id="B">The program stops</choice>
@@ -124,8 +155,8 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q13" type="multipleChoice">
-    <enonce>What is short-circuit evaluation?</enonce>
+  <question id="q11" type="multipleChoice">
+    <enonce>Quel mot clé termine une instruction conditionnelle ?</enonce>
     <choices>
       <choice id="A">Evaluating all conditions regardless of the result</choice>
       <choice id="B">Stopping evaluation of a logical expression as soon as the result is determined</choice>
@@ -135,8 +166,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q14" type="multipleChoice">
-    <enonce>What does "else if" allow you to do?</enonce>
+  <question id="q12" type="multipleChoice">
+    <enonce>L'instruction SELON ... FAIRE utilise :</enonce>
     <choices>
       <choice id="A">Declare multiple variables</choice>
       <choice id="B">Check multiple conditions sequentially</choice>
@@ -146,8 +177,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q15" type="multipleChoice">
-    <enonce>What is the result of (false &amp;&amp; false)?</enonce>
+  <question id="q13" type="multipleChoice">
+    <enonce>Que fait "SI (nombre = 0) ALORS" ?</enonce>
     <choices>
       <choice id="A">true</choice>
       <choice id="B">undefined</choice>
@@ -157,19 +188,30 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q16" type="multipleChoice">
-    <enonce>Which operator checks both value and type equality?</enonce>
+  <question id="q14" type="multipleChoice">
+    <enonce>Dans l'algorithme de la valeur absolue, si nombre = -5, que vaut nombre après exécution ?</enonce>
     <choices>
-      <choice id="A">==</choice>
-      <choice id="B">!=</choice>
-      <choice id="C">===</choice>
-      <choice id="D">=</choice>
+      <choice id="A">-5</choice>
+      <choice id="B">0</choice>
+      <choice id="C">5</choice>
+      <choice id="D">10</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q17" type="multipleChoice">
-    <enonce>What is a boolean expression?</enonce>
+  <question id="q15" type="multipleChoice">
+    <enonce>Pour l'inverse d'un nombre, que doit-on vérifier pour éviter une erreur ?</enonce>
+    <choices>
+      <choice id="A">nombre = 0</choice>
+      <choice id="B">nombre ≠ 0</choice>
+      <choice id="C">nombre &gt; 0</choice>
+      <choice id="D">nombre &lt; 0</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q16" type="multipleChoice">
+    <enonce>Laquelle de ces conditions est correctement écrite ?</enonce>
     <choices>
       <choice id="A">An expression that returns a number</choice>
       <choice id="B">An expression used only in loops</choice>
@@ -179,19 +221,19 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q18" type="multipleChoice">
-    <enonce>What is the result of (true || false)?</enonce>
+  <question id="q17" type="multipleChoice">
+    <enonce>Quel est l'opérateur de comparaison "différent de" ?</enonce>
     <choices>
-      <choice id="A">false</choice>
-      <choice id="B">null</choice>
-      <choice id="C">error</choice>
-      <choice id="D">true</choice>
+      <choice id="A">=</choice>
+      <choice id="B">==</choice>
+      <choice id="C">&lt;&gt;</choice>
+      <choice id="D">!=</choice>
     </choices>
-    <bonneReponse>D</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c2_q19" type="multipleChoice">
-    <enonce>In a switch statement, what is the purpose of "break"?</enonce>
+  <question id="q18" type="multipleChoice">
+    <enonce>Dans l'exemple "Observation selon la moyenne", un étudiant avec moyenne 9.5 aura :</enonce>
     <choices>
       <choice id="A">To skip the current case</choice>
       <choice id="B">To stop execution and exit the switch block</choice>
@@ -212,13 +254,13 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c2_q22" type="multipleChoice">
-    <enonce>Which comparison operator means "not equal to"?</enonce>
+  <question id="q20" type="multipleChoice">
+    <enonce>Dans l'exemple des jours d'un mois, le mois 2 affiche :</enonce>
     <choices>
-      <choice id="A">==</choice>
-      <choice id="B">&gt;=</choice>
-      <choice id="C">!=</choice>
-      <choice id="D">&lt;=</choice>
+      <choice id="A">31 jours</choice>
+      <choice id="B">30 jours</choice>
+      <choice id="C">28 ou 29 jours</choice>
+      <choice id="D">Mois inexistant</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
   </question>

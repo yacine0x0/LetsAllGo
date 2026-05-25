@@ -114,6 +114,29 @@
       <point>✔️ An identifier must be alphanumeric, start with a letter, without special characters, unique and different from keywords</point>
       <point>✔️ To declare the constant X=2: CONST X=2; right after the algorithm header</point>
     </bulletPoints>
+
+    <subsection title="Exemple de trace d'un algorithme">
+      <content>Que sera-t-il affiché à l'écran par l'algorithme suivant :</content>
+      <content>ALGORITHME Trace ;<br/>
+VAR X, Y, Z : Entier ;<br/>
+DÉBUT<br/>
+  X &lt;- 3 ;<br/>
+  Y &lt;- 7 ;<br/>
+  Z &lt;- X ;<br/>
+  X &lt;- Y ;<br/>
+  Z &lt;- Z + 1 ;<br/>
+  ÉCRIRE(2, X, Y) ;<br/>
+  ÉCRIRE(X + 1 / 2) ;<br/>
+FIN.</content>
+      <content><strong>Trace d'exécution :</strong><br/>
+- Après X&lt;-3 : X=3, Y=?, Z=?<br/>
+- Après Y&lt;-7 : X=3, Y=7, Z=?<br/>
+- Après Z&lt;-X : X=3, Y=7, Z=3<br/>
+- Après X&lt;-Y : X=7, Y=7, Z=3<br/>
+- Après Z&lt;-Z+1 : X=7, Y=7, Z=4<br/>
+- ÉCRIRE(2, X, Y) affiche : 2 7 7<br/>
+- ÉCRIRE(X+1/2) affiche : 7.5</content>
+    </subsection>
   </section>
 
 </chapter>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_3" title="Les pointeurs (Partie 1)">
+
+  <!-- ==================== CONTENU DU CHAPITRE ==================== -->
+  <section id="0" title="Contenu du chapitre">
+    <bulletPoints>
+      <point>1. Notion d'adresse</point>
+      <point>2. Définition d'un pointeur</point>
+      <point>3. Déclaration d'un pointeur</point>
+      <point>4. Manipulation des pointeurs</point>
+      <point>5. Arithmétique des pointeurs</point>
+      <point>6. Pointeur vers un enregistrement</point>
+      <point>7. Pointeurs et tableaux</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 1. NOTION D'ADRESSE ==================== -->
+  <section id="1" title="Notion d'adresse">
+    <content>La mémoire centrale (RAM) utilisée par les programmes est découpée en octets, dont chacun est identifié par un numéro séquentiel appelé adresse. Par convention, une adresse est notée en hexadécimal et précédée par 0x.</content>
+    
+    <content><strong>Illustration :</strong><br/>
+Adresse - Case mémoire<br/>
+0x3fffd10 - [ ]<br/>
+0x3fffd11 - [ ]<br/>
+0x3fffd12 - [ ]<br/>
+0x3fffd13 - [ ]</content>
+
+    <subsection title="Déclaration d'une variable">
+      <content>Déclarer une variable c'est attribuer un nom (identificateur) à une zone de la mémoire centrale. Cette zone est définie par :</content>
+      <bulletPoints>
+        <point>Sa position : l'adresse de son premier octet.</point>
+        <point>Sa taille : le nombre d'octets.</point>
+      </bulletPoints>
+    </subsection>
+
+    <subsection title="Exemple">
+      <content>X : entier ;<br/>
+X &lt;- 18 ;</content>
+      <content><strong>Représentation mémoire :</strong><br/>
+Adresse 0x3fffd13 contient la valeur 18 pour la variable X.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 2. DÉFINITION D'UN POINTEUR ==================== -->
+  <section id="2" title="Définition d'un pointeur">
+    <content>Pour accéder à une valeur d'une variable, il suffit d'utiliser son nom. D'une manière analogue, pour accéder à l'adresse d'une variable, on utilise un pointeur. Par conséquent, un pointeur est une variable qui contient l'adresse d'une autre variable.</content>
+    <content>Le but d'utilisation d'un pointeur est d'accéder directement à la mémoire, de faire référence à une entité, sans la nommer.</content>
+  </section>
+
+  <!-- ==================== 3. DÉCLARATION D'UN POINTEUR ==================== -->
+  <section id="3" title="Déclaration d'un pointeur">
+    <content>On déclare un pointeur de la manière suivante :</content>
+    <content><strong>Syntaxe :</strong><br/>
+Nom : ^ Type pointé ; // Pointeur sur type pointé</content>
+    
+    <subsection title="Exemple">
+      <content>Var<br/>
+P : ^ entier ; // Pointeur sur entier<br/>
+X : entier ;</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 4. MANIPULATION DES POINTEURS ==================== -->
+  <section id="4" title="Manipulation des pointeurs">
+    
+    <subsection title="4.1 Initialisation">
+      <content>Il existe 3 manières pour initialiser une variable de type pointeur :</content>
+      <bulletPoints>
+        <point>Initialisation avec la constante NIL (le pointeur ne pointe sur rien).</point>
+        <point>Initialisation avec l'adresse d'une donnée existante (adresse d'une variable ou valeur d'un autre pointeur).</point>
+        <point>Initialisation par allocation dynamique de mémoire (allouer).</point>
+      </bulletPoints>
+      <content>Il est à noter que pour une variable donnée, seule une des trois manières doit être utilisée.</content>
+    </subsection>
+
+    <!-- ==================== 4.1.1 INITIALISATION PAR NIL ==================== -->
+    <subsection title="4.1.1 Initialisation par NIL">
+      <content>Un pointeur qui n'est pas initialisé s'appelle un pointeur pendant. C'est un pointeur qui pointe n'importe où. Si on déréférence ce pointeur et on lui affecte une nouvelle valeur, on va écraser un emplacement mémoire quelconque et on risque de faire planter le programme. Si on veut que le pointeur ne pointe nulle part, il faut l'initialiser à NIL (Not Identified Link, NULL en C).</content>
+      
+      <content><strong>Exemple :</strong><br/>
+P : ^ entier ;<br/>
+P &lt;- NIL ; // P pointe nulle part</content>
+    </subsection>
+
+    <!-- ==================== 4.1.2 INITIALISATION PAR DES DONNÉES ==================== -->
+    <subsection title="4.1.2 Initialisation par des données">
+      <content>On affecte l'adresse d'une variable en utilisant l'opérateur d'adresse &amp;.</content>
+      
+      <content><strong>Exemple :</strong><br/>
+Var<br/>
+P : ^entier ;<br/>
+X : entier ;<br/>
+Début<br/>
+  X &lt;- 18 ; // X est placée dans les quatre cases qui suivent la case à l'adresse 0x3fffd11<br/>
+  P &lt;- &amp;X ; // P contient l'adresse de la première case de la zone attribuée à X. On dit dans ce cas-là : P pointe sur X<br/>
+Fin.</content>
+
+      <content><strong>Remarques importantes :</strong></content>
+      <bulletPoints>
+        <point>Un pointeur pointe sur la variable dont il contient l'adresse.</point>
+        <point>Un pointeur est associé à un type de variable sur lequel il peut pointer. Par exemple, un pointeur sur entier ne peut pointer que sur des variables entières.</point>
+      </bulletPoints>
+
+      <content><strong>Opérateur de déréférenciation ^ :</strong></content>
+      <content>Il est possible d'extraire la valeur de la variable pointée. Cette opération s'appelle déréférenciation d'un pointeur. La déréférenciation est possible grâce à l'opérateur ^.</content>
+
+      <content><strong>Exemple de déréférenciation :</strong><br/>
+Var X : entier ; P : ^ entier ;<br/>
+Début<br/>
+  X &lt;- 33 ;<br/>
+  P &lt;- &amp;X ; // P pointe sur X<br/>
+  Écrire(P^) ; // la valeur 33 est affichée sur l'écran<br/>
+  P^ &lt;- 34 ; // X vaut maintenant 34<br/>
+Fin.</content>
+
+      <subsection title="Exemple récapitulatif : Trace d'exécution">
+        <content>Donnez la trace d'exécution des instructions suivantes :</content>
+        <content>Var<br/>
+X, N : entier ;<br/>
+P : ^ entier ;<br/>
+Début<br/>
+  N &lt;- 20 ;<br/>
+  P &lt;- &amp;N ;<br/>
+  Écrire(P^) ;<br/>
+  X &lt;- P^ ;<br/>
+  P^ &lt;- 30 ;<br/>
+  Écrire(P^) ;<br/>
+  P &lt;- &amp;X ;<br/>
+  Écrire(P^) ;<br/>
+Fin.</content>
+      </subsection>
+    </subsection>
+
+    <!-- ==================== 4.1.3 ALLOCATION DYNAMIQUE ==================== -->
+    <subsection title="4.1.3 Allocation dynamique">
+      <content>La RAM d'un ordinateur est composée de plusieurs types de mémoires, essentiellement :</content>
+      <bulletPoints>
+        <point>Mémoire statique : zone de la mémoire où sont stockés les données qui ont la même durée de vie que le programme (variables globales).</point>
+        <point>Mémoire automatique : zone de la mémoire appelée Pile d'exécution où sont stockés les paramètres, les adresses et valeurs du retour et variables locales des fonctions empilées. Cette mémoire est gérée automatiquement par le compilateur (réservation et libération).</point>
+        <point>Mémoire dynamique : zone de la mémoire appelée TAS dans laquelle le programmeur peut réserver explicitement de la place. Il devra la libérer explicitement.</point>
+      </bulletPoints>
+
+      <content>L'allocation dynamique permet d'allouer un emplacement dans la mémoire appelée TAS. Les variables du TAS ne sont pas déclarées. Elles sont créées par une instruction spécifique. Elles ne portent pas de nom, mais on peut y accéder par leur adresse. Elles peuvent être utilisées partout jusqu'à leur destruction.</content>
+
+      <content>Pour créer une variable dans le tas, on utilise l'instruction ALLOUER suivi du type de la variable qu'on veut créer.</content>
+
+      <content><strong>Exemple :</strong><br/>
+P : ^ entier ; // P est une variable de type pointeur<br/>
+Début<br/>
+  ALLOUER(P) ;<br/>
+  /* ALLOUER réserve de la mémoire dans le TAS. P contient alors l'adresse de la mémoire allouée (NIL si aucun espace mémoire n'est disponible pour allocation */<br/>
+Fin.</content>
+
+      <content><strong>Remarque importante :</strong> ALLOUER réserve de la mémoire, mais ne l'utilise pas.</content>
+
+      <content><strong>Libération de mémoire : LIBÉRER</strong></content>
+      <content>Si on ne libère pas la mémoire, elle peut être saturée et le programme peut se planter.</content>
+      <content>Pour éviter la saturation de la mémoire, il est donc nécessaire de désallouer les emplacements alloués dans le TAS. On utilise donc l'instruction LIBÉRER.</content>
+
+      <content><strong>Attention : il est interdit de :</strong></content>
+      <bulletPoints>
+        <point>Libérer un pointeur de valeur NIL.</point>
+        <point>Libérer une zone déjà libérée.</point>
+        <point>Accéder à une zone mémoire libérée.</point>
+        <point>Libérer de la mémoire allouée automatiquement par le compilateur (variable nommée).</point>
+      </bulletPoints>
+
+      <content><strong>Exemple complet avec allocation et libération :</strong><br/>
+Var<br/>
+P : ^ entier ;<br/>
+Début<br/>
+  ALLOUER(P) ; // Réservation de la mémoire dans le TAS pour P<br/>
+  … // Utilisation du pointeur P<br/>
+  LIBÉRER(P) ; // Récupération de la mémoire réservée pour P dans le TAS<br/>
+Fin.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 5. ARITHMÉTIQUE DES POINTEURS ==================== -->
+  <section id="5" title="Arithmétique des pointeurs">
+    <content>Les seules opérations arithmétiques valides sur les pointeurs (de type entier par exemple) sont :</content>
+    <bulletPoints>
+      <point>L'addition d'un entier à un pointeur. Le résultat est un pointeur de même type que le pointeur de départ.</point>
+      <point>La soustraction d'un entier à un pointeur. Le résultat est un pointeur de même type que le pointeur de départ.</point>
+      <point>La différence de deux pointeurs pointant sur des objets de même type. Le résultat est entier.</point>
+    </bulletPoints>
+
+    <subsection title="Règle importante">
+      <content>Si X est un entier et P un pointeur sur un objet de type TYPE1 donnée, l'expression P+X désigne un pointeur sur un objet de type TYPE1 dont la valeur de l'adresse égale à l'adresse de P incrémentée de X fois la taille du type TYPE1.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 6. POINTEUR VERS UN ENREGISTREMENT ==================== -->
+  <section id="6" title="Pointeur vers un enregistrement">
+    <content>Nous pouvons utiliser un pointeur pour mémoriser l'adresse d'un enregistrement.</content>
+
+    <subsection title="Exemple complet">
+      <content>Type Personne = ENREGISTREMENT<br/>
+  Nom : Chaîne de caractères ;<br/>
+  Num : entier ;<br/>
+Fin ;<br/>
+Var<br/>
+  Pointpers : ^ Personne ;<br/>
+  Pers : Personne ;<br/>
+Début<br/>
+  Pers.Nom &lt;- "Ali" ;<br/>
+  Pers.Num &lt;- 12 ;<br/>
+  Pointpers &lt;- &amp;Pers ; // Pointpers reçoit l'adresse de l'enregistrement Pers<br/>
+  Écrire(Pointpers ^.Nom) ;<br/>
+  Écrire(Pointpers ^.Num) ;<br/>
+Fin.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 7. POINTEURS ET TABLEAUX ==================== -->
+  <section id="7" title="Pointeurs et tableaux">
+    <content>Tout tableau, en algorithmique est en fait un pointeur constant.</content>
+
+    <subsection title="Exemple">
+      <content>Var<br/>
+T : TABLEAU [1..10] d'entier ;</content>
+      <content>T est un pointeur constant dont la valeur est l'adresse du premier élément du tableau. De ce fait :</content>
+      <bulletPoints>
+        <point>T^ contient la valeur de T[1].</point>
+        <point>(T+1)^ contient la valeur de T[2].</point>
+        <point>(T+2)^ contient la valeur de T[3].</point>
+        <point>Etc.</point>
+      </bulletPoints>
+      <content>En général, (T+i)^ contient la valeur T[i+1].</content>
+    </subsection>
+  </section>
+
+</chapter>

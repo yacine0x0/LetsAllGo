@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="Chapitre_2" title="Les fichiers">
+
+  <!-- ==================== CONTENU DU CHAPITRE ==================== -->
+  <section id="0" title="Contenu du chapitre">
+    <bulletPoints>
+      <point>1. Définition d'un fichier</point>
+      <point>2. Fichier typé</point>
+      <point>3. Exemples illustratifs d'utilisation d'un fichier typé</point>
+      <point>4. Fichier texte</point>
+      <point>5. Exercice</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 1. DÉFINITION ==================== -->
+  <section id="1" title="Définition d'un fichier">
+    <content>Un fichier est une collection de données de même type stockée en général sur un support externe (disquette, disque dur, disque optique, flash disque, etc.).</content>
+    <content>Les fichiers permettent de stocker des informations de manière permanente. Un fichier peut être :</content>
+    <bulletPoints>
+      <point>Un fichier typé : déclaré avec les mots clés « FICHIER DE »</point>
+      <point>Un fichier texte : déclaré avec le mot clé « TEXTE »</point>
+    </bulletPoints>
+  </section>
+
+  <!-- ==================== 2. FICHIER TYPÉ ==================== -->
+  <section id="2" title="Fichier typé">
+    <content>Utilisé pour stocker des données structurées (enregistrements, tableaux, etc.). Généralement, les données sont stockées dans le fichier sous le format binaire.</content>
+    
+    <subsection title="Syntaxe de déclaration">
+      <content>TYPE Nom_type_enregistrement = ENREGISTREMENT<br/>
+  Champ1 : Type1 ;<br/>
+  Champ2 : Type2 ;<br/>
+  ...<br/>
+  ChampN : TypeN ;<br/>
+FIN ;<br/><br/>
+VAR nom_fichier : FICHIER DE Nom_type_enregistrement ;</content>
+    </subsection>
+
+    <subsection title="Exemple de déclaration d'un fichier qui contient des élèves">
+      <content>TYPE eleve = ENREGISTREMENT<br/>
+  Nom : Chaîne de caractères ;<br/>
+  Age : Entier ;<br/>
+FIN ;<br/><br/>
+VAR Fichier_eleves : FICHIER DE eleve ;</content>
+    </subsection>
+
+    <subsection title="Nom logique vs. Nom physique">
+      <bulletPoints>
+        <point>Nom logique : c'est le nom de fichier utilisé dans un programme. Exemple : Fichier_eleves</point>
+        <point>Nom physique : c'est le nom de fichier stocké sur le disque. Exemple : "D:\TP\MonFichier.dat"</point>
+      </bulletPoints>
+    </subsection>
+
+    <!-- ==================== 2.1. OPÉRATION D'ASSOCIATION ==================== -->
+    <subsection title="2.1. Opération d'association (assignation)">
+      <content>C'est une opération qui consiste à associer un nom logique d'un fichier à son nom physique. Elle se fait en utilisant le mot clé « ASSOCIER ».</content>
+      <content><strong>Syntaxe :</strong><br/>
+ASSOCIER(Nom_logique, Nom_Physique) ;</content>
+      <content><strong>Exemple :</strong> Associer le nom logique « Fichier_eleves » au nom physique « D:\TP\MonFichier.dat »<br/>
+ASSOCIER(Fichier_eleves, "D:\TP\MonFichier.dat") ;</content>
+    </subsection>
+
+    <!-- ==================== 2.2. OUVERTURE D'UN FICHIER ==================== -->
+    <subsection title="2.2. Ouverture d'un fichier">
+      <content>L'ouverture d'un fichier se fait soit en écriture, soit en lecture/écriture.</content>
+      
+      <subsubsection title="2.2.1. L'instruction « REECRIRE »">
+        <content>Cette instruction permet d'ouvrir un fichier en écriture, c'est-à-dire de créer le fichier, et d'autoriser des opérations d'écriture dans ce dernier. Si le fichier existe déjà, son contenu sera effacé.</content>
+        <content><strong>Syntaxe :</strong><br/>
+REECRIRE(Nom_logique) ;</content>
+      </subsubsection>
+
+      <subsubsection title="2.2.2. L'instruction « RELIRE »">
+        <content>Cette instruction permet de renvoyer le pointeur au début du fichier pour pouvoir lire ou écrire à partir du début du fichier.</content>
+        <content><strong>Syntaxe :</strong><br/>
+RELIRE(Nom_logique) ;</content>
+      </subsubsection>
+    </subsection>
+
+    <!-- ==================== 2.3. ÉCRITURE ==================== -->
+    <subsection title="2.3. Écriture dans un fichier">
+      <content>L'instruction « ECRIRE » permet d'écrire ou de modifier une valeur ou un enregistrement dans un fichier.</content>
+      <content><strong>Syntaxe :</strong><br/>
+ECRIRE(Nom_logique, variable) ;</content>
+      <content><strong>Exemple :</strong> Écrire l'enregistrement « Enreg » dans le fichier « Fichier_eleves »<br/>
+ECRIRE(Fichier_eleves, Enreg) ;</content>
+    </subsection>
+
+    <!-- ==================== 2.4. LECTURE ==================== -->
+    <subsection title="2.4. Lecture à partir d'un fichier">
+      <content>L'instruction « LIRE » permet de lire une valeur (ou un enregistrement) à partir d'un fichier et de la (le) mettre dans une variable.</content>
+      <content><strong>Syntaxe :</strong><br/>
+LIRE(Nom_logique, variable) ;</content>
+      <content><strong>Exemple :</strong> Lire un enregistrement à partir de « Fichier_eleves » et le mettre dans la variable « Enreg »<br/>
+LIRE(Fichier_eleves, Enreg) ;</content>
+    </subsection>
+
+    <!-- ==================== 2.5. FERMETURE ==================== -->
+    <subsection title="2.5. Fermeture d'un fichier">
+      <content>L'instruction « FERMER » permet de fermer un fichier.</content>
+      <content><strong>Syntaxe :</strong><br/>
+FERMER(Nom_logique) ;</content>
+      <content><strong>Exemple :</strong> Fermer le fichier « Fichier_eleves »<br/>
+FERMER(Fichier_eleves) ;</content>
+    </subsection>
+
+    <!-- ==================== 2.6. TEST DE FIN DE FICHIER ==================== -->
+    <subsection title="2.6. Test de fin de fichier">
+      <content>L'instruction « FDF » permet de savoir si on a atteint la fin d'un fichier ou non. C'est une fonction qui retourne un booléen. En fait, elle retourne VRAI si on a atteint la fin du fichier, sinon elle retourne FAUX.</content>
+      <content><strong>Syntaxe :</strong><br/>
+FDF(Nom_logique) ;</content>
+      <content><strong>Exemple :</strong> Vérifier si on a atteint la fin du fichier « Fichier_eleves »<br/>
+FDF(Fichier_eleves) ;</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 3. EXEMPLES ILLUSTRATIFS ==================== -->
+  <section id="3" title="Exemples illustratifs d'utilisation d'un fichier typé">
+    
+    <subsection title="3.1. Écriture dans un fichier typé">
+      <content>Algorithme qui permet de créer un fichier « Fichier_eleves » avec les champs : nom et âge de l'élève.</content>
+      <content>ALGORITHME Fichier_ecriture ;<br/>
+TYPE eleve = ENREGISTREMENT<br/>
+  Nom : Chaîne de caractères ;<br/>
+  Age : Entier ;<br/>
+FIN ;<br/>
+VAR<br/>
+  Fichier_eleves : FICHIER DE eleve ;<br/>
+  Enreg : eleve ;<br/>
+  Choix : Entier ;<br/>
+DÉBUT<br/>
+  {Création du fichier « Fichier_élèves » : ouverture en écriture}<br/>
+  ASSOCIER(Fichier_eleves, "D:\TP\MonFichier.dat") ;<br/>
+  REECRIRE(Fichier_eleves) ;<br/>
+  RÉPÉTER<br/>
+    ÉCRIRE('Nom de l'élève ? ') ;<br/>
+    LIRE(Enreg.Nom) ;<br/>
+    ÉCRIRE('Age de l'élève ? ') ;<br/>
+    LIRE(Enreg.Age) ;<br/>
+    {On écrit sur le fichier}<br/>
+    ÉCRIRE(Fichier_eleves, Enreg) ;<br/>
+    ÉCRIRE('Autre saisie ? 1. OUI 2. NON') ;<br/>
+    LIRE(Choix) ;<br/>
+  JUSQU'À (Choix = 2) ;<br/>
+  FERMER(Fichier_eleves) ;<br/>
+FIN.</content>
+    </subsection>
+
+    <subsection title="3.2. Lecture à partir d'un fichier typé">
+      <content>Algorithme qui permet de consulter le fichier « Fichier_eleves » créé précédemment.</content>
+      <content>ALGORITHME Fichier_lecture ;<br/>
+TYPE eleve = ENREGISTREMENT<br/>
+  Nom : Chaîne de caractères ;<br/>
+  Age : Entier ;<br/>
+FIN ;<br/>
+VAR<br/>
+  Fichier_eleves : FICHIER DE eleve ;<br/>
+  Enreg : eleve ;<br/>
+DÉBUT<br/>
+  {Consultation du fichier « Fichier_élèves » : ouverture en lecture}<br/>
+  ASSOCIER(Fichier_eleves, "D:\TP\MonFichier.dat") ;<br/>
+  RELIRE(Fichier_eleves) ;<br/>
+  TANT QUE (NON FDF(Fichier_eleves)) FAIRE<br/>
+    LIRE(Fichier_eleves, Enreg) ; {On lit dans le fichier}<br/>
+    ÉCRIRE(Enreg.Nom, '  ', Enreg.Age) ;<br/>
+  FIN TANT QUE ;<br/>
+  FERMER(Fichier_eleves) ;<br/>
+FIN.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 4. FICHIER TEXTE ==================== -->
+  <section id="4" title="Fichier texte">
+    <content>C'est un cas particulier des fichiers. Un fichier texte est formé par des caractères (texte) qui sont organisés en lignes. Chaque ligne se termine par une marque de fin de ligne (caractère 10 du code ASCII), et le fichier lui-même se termine par une marque de fin de fichier (caractère 13 du code ASCII). Les deux marques de fin sont transparentes au programmeur.</content>
+    
+    <subsection title="Syntaxe de déclaration">
+      <content>VAR Nom_fichier : TEXTE ;</content>
+    </subsection>
+
+    <subsection title="4.6. Manipulation d'un fichier texte">
+      <content>En lecture comme en écriture, la manipulation d'un fichier texte se passe très naturellement, de la même façon que la lecture au clavier ou l'écriture à l'écran. En fait, le clavier et l'écran sont tout simplement considérés comme des fichiers texte.</content>
+    </subsection>
+
+    <subsection title="4.7. Exemple illustratif d'utilisation d'un fichier texte">
+      <content>ALGORITHME Lecture_texte ;<br/>
+VAR<br/>
+  F : TEXTE ;<br/>
+  S : Chaîne de caractères ;<br/>
+DÉBUT<br/>
+  ASSOCIER(F, "D:\TP\MonFichier.txt") ;<br/>
+  RELIRE(F) ;<br/>
+  TANT QUE (NON FDF(F)) FAIRE<br/>
+    LIRE(F, S); {Lire une ligne complète dans « F »}<br/>
+    ÉCRIRE(S); {Écrire « S » sur l'écran}<br/>
+  FIN TANT QUE ;<br/>
+  FERMER(F) ;<br/>
+FIN.</content>
+      <content>De la même manière, on peut lire et/ou écrire des caractères, entiers, réels, etc.</content>
+    </subsection>
+
+    <subsection title="Remarque importante">
+      <content>Les valeurs numériques sont stockées dans le fichier texte comme des chaînes de caractères. La conversion nombre/chaîne de caractères est faite automatiquement par le compilateur. Par contre, si le type d'une variable ne correspond pas avec la donnée lue dans le fichier et qu'aucune conversion n'est possible alors cela produit une erreur.</content>
+    </subsection>
+  </section>
+
+  <!-- ==================== 5. EXERCICE ==================== -->
+  <section id="5" title="Exercice">
+    <content>Écrire un algorithme qui permet de :</content>
+    
+    <subsection title="Partie A">
+      <content>Créer un fichier « étudiants » avec les champs suivants : numéro d'identification de l'étudiant, nom de l'étudiant, et moyenne de l'étudiant.</content>
+      <content>La création du fichier doit se faire dans une procédure.</content>
+    </subsection>
+    
+    <subsection title="Partie B">
+      <content>Consulter la moyenne d'un étudiant donnée avec son numéro d'identification. Ceci doit être réalisé par une fonction.</content>
+      <content>L'algorithme demande d'entrer le numéro d'identification de l'étudiant recherché, le passe comme paramètre à une fonction, celle-ci retourne la moyenne de l'étudiant au programme principal qui l'affiche.</content>
+    </subsection>
+
+    <subsection title="Orientation et remédiation">
+      <bulletPoints>
+        <point>Pour la résolution de l'exercice, l'étudiant a besoin des notions du chapitre 6 (Enregistrements).</point>
+        <point>Si l'étudiant n'arrive pas à faire la partie « A » de l'exercice, il est conseillé de refaire la lecture et analyse des Sections 1 et 2. Plus exactement, les Sous-Sections 2.1, 2.2, et 2.3.</point>
+        <point>Si l'étudiant n'arrive pas à faire la partie « B » de l'exercice, il est conseillé de refaire la lecture et analyse des Sous-Sections 2.4 et 2.5.</point>
+        <point>Si l'étudiant a pu terminer l'exercice, il est conseillé de passer au chapitre suivant.</point>
+      </bulletPoints>
+    </subsection>
+  </section>
+
+</chapter>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_04" title="Data Structures - Structures de données">
+<chapter id="Chapitre_04_Quiz" title="Quiz – Vecteurs et matrices">
 
-  <question id="c4_q1" type="multipleChoice">
-    <enonce>What is a vector?</enonce>
+  <!-- ==================== EXERCICE PAGE 10 ==================== -->
+  <question id="q1" type="multipleChoice">
+    <enonce>Lesquelles des affirmations suivantes sont correctes ?</enonce>
     <choices>
       <choice id="A">A dynamic array that can grow or shrink</choice>
       <choice id="B">A fixed-size array</choice>
@@ -12,8 +13,9 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c4_q2" type="multipleChoice">
-    <enonce>What is the time complexity of accessing an element in an array?</enonce>
+  <!-- ==================== EXERCICE PAGE 14 ==================== -->
+  <question id="q2" type="multipleChoice">
+    <enonce>Lesquelles des affirmations suivantes sont correctes ?</enonce>
     <choices>
       <choice id="A">O(log n)</choice>
       <choice id="B">O(1)</choice>
@@ -23,8 +25,9 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q3" type="multipleChoice">
-    <enonce>What is a matrix?</enonce>
+  <!-- ==================== TEST PAGE 15 ==================== -->
+  <question id="q3" type="multipleChoice">
+    <enonce>En algorithmique, dans un vecteur V de N cases, la première case a pour indice ___ et le contenu de cette case est accessible en utilisant l'instruction ___.</enonce>
     <choices>
       <choice id="A">A one-dimensional array</choice>
       <choice id="B">A dynamic array</choice>
@@ -34,19 +37,8 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c4_q4" type="ordering">
-    <enonce>Order the steps for matrix traversal:</enonce>
-    <bonneReponse>Initialize row index|Initialize column index|Access element|Move to next element</bonneReponse>
-    <codeLines>
-      <line>Access element</line>
-      <line>Initialize row index</line>
-      <line>Move to next element</line>
-      <line>Initialize column index</line>
-    </codeLines>
-  </question>
-
-  <question id="c4_q5" type="multipleChoice">
-    <enonce>What is the advantage of using vectors over arrays?</enonce>
+  <question id="q4" type="multipleChoice">
+    <enonce>On considère deux tableaux T1 et T2. Peut-on copier le contenu de T2 dans T1 sans perdre d'information ?</enonce>
     <choices>
       <choice id="A">Less memory usage</choice>
       <choice id="B">Faster access</choice>
@@ -56,8 +48,8 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c4_q6" type="multipleChoice">
-    <enonce>What is the index of the first element in an array?</enonce>
+  <question id="q5" type="multipleChoice">
+    <enonce>Quelle(s) déclaration(s) correspond(ent) à une matrice de N lignes et M colonnes ?</enonce>
     <choices>
       <choice id="A">1</choice>
       <choice id="B">-1</choice>
@@ -67,8 +59,9 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c4_q7" type="multipleChoice">
-    <enonce>What happens when you access an index out of bounds in an array?</enonce>
+  <!-- ==================== QUESTIONS SUPPLÉMENTAIRES (AJOUTS MINIMES) ==================== -->
+  <question id="q6" type="multipleChoice">
+    <enonce>Quel type d'allocation mémoire correspond à un tableau déclaré avec une taille fixe ?</enonce>
     <choices>
       <choice id="A">The array resizes automatically</choice>
       <choice id="B">Returns null</choice>
@@ -78,19 +71,19 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c4_q8" type="multipleChoice">
-    <enonce>What is the time complexity of inserting an element at the beginning of an array?</enonce>
+  <question id="q7" type="multipleChoice">
+    <enonce>Dans un vecteur, les valeurs sont repérées par :</enonce>
     <choices>
       <choice id="A">O(log n)</choice>
       <choice id="B">O(1)</choice>
       <choice id="C">O(n)</choice>
       <choice id="D">O(n²)</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q9" type="multipleChoice">
-    <enonce>How do you calculate the number of elements in a matrix of size m x n?</enonce>
+  <question id="q8" type="multipleChoice">
+    <enonce>La déclaration "Note : TABLEAU [1 .. 10] DE Réel" crée un vecteur contenant :</enonce>
     <choices>
       <choice id="A">m * n</choice>
       <choice id="B">m + n</choice>
@@ -100,19 +93,8 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c4_q10" type="ordering">
-    <enonce>Order the steps to insert an element into a vector:</enonce>
-    <bonneReponse>Choose insertion position|Shift elements right|Insert new element|Update size</bonneReponse>
-    <codeLines>
-      <line>Insert new element</line>
-      <line>Update size</line>
-      <line>Choose insertion position</line>
-      <line>Shift elements right</line>
-    </codeLines>
-  </question>
-
-  <question id="c4_q11" type="multipleChoice">
-    <enonce>What is the time complexity of deleting an element from the middle of an array?</enonce>
+  <question id="q9" type="multipleChoice">
+    <enonce>Pour accéder à la valeur de la 3ème case d'un vecteur T, on écrit :</enonce>
     <choices>
       <choice id="A">O(n²)</choice>
       <choice id="B">O(log n)</choice>
@@ -133,8 +115,8 @@
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c4_q13" type="multipleChoice">
-    <enonce>What is the last index of an array of size n?</enonce>
+  <question id="q10" type="multipleChoice">
+    <enonce>L'instruction "T[5] &lt;- 12" signifie :</enonce>
     <choices>
       <choice id="A">n+1</choice>
       <choice id="B">n</choice>
@@ -144,8 +126,8 @@
     <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c4_q14" type="multipleChoice">
-    <enonce>What is a sparse matrix?</enonce>
+  <question id="q11" type="multipleChoice">
+    <enonce>Pour initialiser un vecteur de 10 cases avec des valeurs saisies par l'utilisateur, on utilise :</enonce>
     <choices>
       <choice id="A">A matrix with only one row</choice>
       <choice id="B">A matrix where most elements are zero</choice>
@@ -155,8 +137,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q15" type="multipleChoice">
-    <enonce>What is column-major order in matrix storage?</enonce>
+  <question id="q12" type="multipleChoice">
+    <enonce>Dans l'algorithme de recherche séquentielle, la condition d'arrêt de la boucle TANT QUE est :</enonce>
     <choices>
       <choice id="A">Storing elements in random order</choice>
       <choice id="B">Storing elements column by column</choice>
@@ -166,30 +148,30 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q16" type="multipleChoice">
-    <enonce>What is the memory layout of a 1D array?</enonce>
+  <question id="q13" type="multipleChoice">
+    <enonce>Une matrice se différencie d'un vecteur par :</enonce>
     <choices>
-      <choice id="A">Random locations in memory</choice>
-      <choice id="B">Contiguous (consecutive) memory locations</choice>
-      <choice id="C">Linked nodes in memory</choice>
-      <choice id="D">Stored on the hard disk</choice>
+      <choice id="A">Le nombre de dimensions (2 au lieu de 1)</choice>
+      <choice id="B">Le type de données stockées</choice>
+      <choice id="C">La taille maximale</choice>
+      <choice id="D">La couleur d'affichage</choice>
     </choices>
     <bonneReponse>D</bonneReponse>
   </question>
 
-  <question id="c4_q17" type="multipleChoice">
-    <enonce>What is the time complexity of appending an element to the end of a dynamic array (vector)?</enonce>
+  <question id="q14" type="multipleChoice">
+    <enonce>Pour remplir une matrice de dimensions L x C, on utilise :</enonce>
     <choices>
       <choice id="A">O(n)</choice>
       <choice id="B">O(n²)</choice>
       <choice id="C">O(log n)</choice>
       <choice id="D">O(1) amortized</choice>
     </choices>
-    <bonneReponse>D</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q18" type="multipleChoice">
-    <enonce>What does "row-major order" mean?</enonce>
+  <question id="q15" type="multipleChoice">
+    <enonce>Dans une matrice carrée, la diagonale principale correspond aux éléments où :</enonce>
     <choices>
       <choice id="A">Sorting rows before storing</choice>
       <choice id="B">Storing matrix elements row by row in memory</choice>
@@ -197,10 +179,11 @@
       <choice id="D">Accessing only the first row</choice>
     </choices>
     <bonneReponse>C</bonneReponse>
+    <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c4_q19" type="multipleChoice">
-    <enonce>What is the size of a 3x4 matrix?</enonce>
+  <question id="q16" type="multipleChoice">
+    <enonce>La déclaration "Achat : TABLEAU [1 .. 100, 1 .. 100] d'Entier" contient combien d'éléments ?</enonce>
     <choices>
       <choice id="A">7 elements</choice>
       <choice id="B">12 elements</choice>
@@ -210,20 +193,19 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c4_q20" type="ordering">
-    <enonce>Order the steps to search for an element in an unsorted array:</enonce>
-    <bonneReponse>Start at index 0|Compare element with target|If match: return index|If not: move to next index|If end reached: return -1</bonneReponse>
-    <codeLines>
-      <line>If match: return index</line>
-      <line>Start at index 0</line>
-      <line>If end reached: return -1</line>
-      <line>If not: move to next index</line>
-      <line>Compare element with target</line>
-    </codeLines>
+  <question id="q17" type="multipleChoice">
+    <enonce>Dans la recherche séquentielle d'un vecteur, si la valeur recherchée n'existe pas, l'algorithme affichera :</enonce>
+    <choices>
+      <choice id="A">La position 0</choice>
+      <choice id="B">La dernière case du vecteur</choice>
+      <choice id="C">Un message indiquant que la valeur n'existe pas</choice>
+      <choice id="D">Une erreur</choice>
+    </choices>
+    <bonneReponse>C</bonneReponse>
   </question>
 
-  <question id="c4_q21" type="multipleChoice">
-    <enonce>What is the diagonal of a square matrix?</enonce>
+  <question id="q18" type="multipleChoice">
+    <enonce>L'allocation statique se caractérise par :</enonce>
     <choices>
       <choice id="A">The last column of the matrix</choice>
       <choice id="B">Elements where the row index equals the column index</choice>
@@ -233,8 +215,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q22" type="multipleChoice">
-    <enonce>What happens to the size of a dynamic array when it exceeds its capacity?</enonce>
+  <question id="q19" type="multipleChoice">
+    <enonce>Dans l'algorithme d'addition de deux vecteurs, la somme se fait :</enonce>
     <choices>
       <choice id="A">An error is thrown</choice>
       <choice id="B">It reallocates with a larger capacity (typically doubles)</choice>
@@ -244,8 +226,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q23" type="multipleChoice">
-    <enonce>How do you find the transpose of a matrix?</enonce>
+  <question id="q20" type="multipleChoice">
+    <enonce>Pour afficher tous les éléments d'une matrice, on doit utiliser :</enonce>
     <choices>
       <choice id="A">Add the matrix to itself</choice>
       <choice id="B">Swap rows and columns (matrix[i][j] becomes matrix[j][i])</choice>
@@ -253,10 +235,11 @@
       <choice id="D">Multiply all elements by -1</choice>
     </choices>
     <bonneReponse>B</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q24" type="multipleChoice">
-    <enonce>What is an identity matrix?</enonce>
+  <question id="q21" type="multipleChoice">
+    <enonce>Quelle est l'utilité principale des tableaux (vecteurs et matrices) ?</enonce>
     <choices>
       <choice id="A">A matrix where all rows are equal</choice>
       <choice id="B">A matrix with 1s on the diagonal and 0s elsewhere</choice>
@@ -266,8 +249,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q25" type="multipleChoice">
-    <enonce>What is the time complexity of searching for an element in a sorted array using binary search?</enonce>
+  <question id="q22" type="multipleChoice">
+    <enonce>Dans un vecteur, l'indice doit être de type :</enonce>
     <choices>
       <choice id="A">O(n²)</choice>
       <choice id="B">O(log n)</choice>
@@ -277,8 +260,8 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q26" type="multipleChoice">
-    <enonce>What is a jagged array?</enonce>
+  <question id="q23" type="multipleChoice">
+    <enonce>Si on déclare "Tab : TABLEAU [1 .. 5] d'Entier", l'instruction "Tab[6] &lt;- 10" est :</enonce>
     <choices>
       <choice id="A">An array stored in non-contiguous memory</choice>
       <choice id="B">A 2D array where each row can have a different length</choice>
@@ -288,19 +271,19 @@
     <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q27" type="multipleChoice">
-    <enonce>What does it mean to "flatten" a matrix?</enonce>
+  <question id="q24" type="multipleChoice">
+    <enonce>Dans l'algorithme d'addition de deux matrices de dimensions 10x20, combien de boucles POUR sont utilisées pour l'addition ?</enonce>
     <choices>
       <choice id="A">To sort the matrix rows</choice>
       <choice id="B">To convert a 2D array into a 1D array</choice>
       <choice id="C">To remove all zero elements</choice>
       <choice id="D">To transpose the matrix</choice>
     </choices>
-    <bonneReponse>C</bonneReponse>
+    <bonneReponse>B</bonneReponse>
   </question>
 
-  <question id="c4_q28" type="multipleChoice">
-    <enonce>What is the index formula for element at row i, column j in a row-major matrix of width n?</enonce>
+  <question id="q25" type="multipleChoice">
+    <enonce>La recherche séquentielle dans un vecteur non trié a une complexité :</enonce>
     <choices>
       <choice id="A">i + j</choice>
       <choice id="B">i * n + j</choice>
@@ -310,18 +293,33 @@
     <bonneReponse>A</bonneReponse>
   </question>
 
-  <question id="c4_q29" type="ordering">
-    <enonce>Order the steps to delete an element at position k from an array of size n:</enonce>
-    <bonneReponse>Identify position k|Shift elements left from k+1 to n-1|Decrease array size by 1</bonneReponse>
+  <question id="q28" type="ordering">
+    <enonce>Remettez dans l'ordre la déclaration correcte d'un vecteur :</enonce>
+    <bonneReponse>VAR|Tab|TABLEAU|[1..N]|DE|Entier</bonneReponse>
     <codeLines>
-      <line>Shift elements left from k+1 to n-1</line>
-      <line>Identify position k</line>
-      <line>Decrease array size by 1</line>
+      <line>TABLEAU</line>
+      <line>DE</line>
+      <line>[1..N]</line>
+      <line>Entier</line>
+      <line>VAR</line>
+      <line>Tab</line>
     </codeLines>
   </question>
 
-  <question id="c4_q30" type="multipleChoice">
-    <enonce>What is the main disadvantage of arrays compared to linked lists?</enonce>
+  <!-- ==================== QUESTIONS DE COMPRÉHENSION ==================== -->
+  <question id="q29" type="multipleChoice">
+    <enonce>Dans l'algorithme de la moyenne, l'utilisation d'un vecteur plutôt que 15 variables séparées présente quel avantage ?</enonce>
+    <choices>
+      <choice id="A">Rend l'algorithme plus long et plus complexe</choice>
+      <choice id="B">Permet d'utiliser des boucles pour traiter les notes</choice>
+      <choice id="C">Limite le nombre de notes à 15 exactement</choice>
+      <choice id="D">Empêche la manipulation des notes</choice>
+    </choices>
+    <bonneReponse>B</bonneReponse>
+  </question>
+
+  <question id="q30" type="multipleChoice">
+    <enonce>L'allocation dynamique garantit :</enonce>
     <choices>
       <choice id="A">Arrays use more memory than linked lists</choice>
       <choice id="B">Fixed size — difficult to insert or delete elements efficiently</choice>
