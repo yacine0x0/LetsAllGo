@@ -1,173 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_02" title="Instructions conditionnelles">
+<chapter id="Chapter_02" title="Conditional Instructions">
 
   <section id="1" title="Introduction">
-    <content>L'ordre dans lequel les instructions sont arrangées dans un algorithme est très important. Ces instructions sont effectuées une à une suivant l'ordre dans lequel elles y figurent. Une instruction d'un algorithme ne peut être effectuée qu'après avoir effectué l'instruction qui lui est précédente. Mais parfois, certaines situations exigent qu'une ou plusieurs instructions soient ignorées dans une séquence d'instructions. Ce traitement est possible grâce aux instructions conditionnelles.</content>
+    <content>The order in which instructions are arranged in an algorithm is very important. These instructions are executed one by one in the order they appear. An instruction in an algorithm can only be executed after the instruction that precedes it has been executed. But sometimes, certain situations require that one or more instructions be skipped in a sequence of instructions. This processing is possible thanks to conditional instructions.</content>
     <bulletPoints>
-      <point>Les instructions sont exécutées séquentiellement par défaut</point>
-      <point>Les instructions conditionnelles permettent de sauter ou d'ignorer certaines instructions</point>
-      <point>Ce chapitre présente les différentes instructions conditionnelles avec leur syntaxe, organigramme et exemples</point>
+      <point>▶️ Instructions are executed sequentially by default</point>
+      <point>🔀 Conditional instructions allow skipping or ignoring certain instructions</point>
+      <point>🔀 This chapter presents the different conditional instructions with their syntax, flowchart and examples</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Intérêt des instructions conditionnelles">
-    <content>Pour illustrer l'importance des instructions conditionnelles, prenons l'exemple d'un algorithme qui calcule l'inverse d'un nombre. L'algorithme simple suivant causera une fin anormale si le nombre tapé est nul :</content>
+  <section id="2" title="Importance of Conditional Instructions">
+    <content>To illustrate the importance of conditional instructions, let's take the example of an algorithm that calculates the inverse of a number. The following simple algorithm will cause an abnormal termination if the entered number is zero:</content>
     <example>
-      <title>Algorithme Inverse (problématique)</title>
-      <point>ALGORITHME Inverse ;
-VAR nombre : Réel ;
-DÉBUT
-  ÉCRIRE('Donner un nombre : ');
-  LIRE(nombre);
-  ÉCRIRE('L\'inverse du nombre : ', nombre, 'est : ', 1/nombre);
-FIN.</point>
-      <point>L'ordinateur ne doit calculer l'inverse d'un nombre que si ce nombre n'est pas nul. Les instructions de base (affectation, lecture, écriture) ne peuvent pas répondre à ce besoin. Nous avons donc besoin d'instructions conditionnelles.</point>
+      <title>Inverse Algorithm (problematic)</title>
+      <point>
+▶️ ALGORITHM Inverse ;
+VAR number : Real ;
+BEGIN
+  WRITE('Give a number: ');
+  READ(number);
+  WRITE('The inverse of the number: ', number, ' is: ', 1/number);
+END.
+      </point>
+      <point>✏️ The computer should calculate the inverse of a number only if that number is not zero. Basic instructions (assignment, read, write) cannot respond to this need. Therefore, we need conditional instructions.</point>
     </example>
   </section>
 
-  <section id="3" title="Présentation d'une condition">
-    <content>Une condition est une expression logique de relation ou booléenne. Une condition retourne toujours un résultat de type Booléen (Vrai ou Faux).</content>
+  <section id="3" title="Presentation of a Condition">
+    <content>A condition is a logical expression of relation or boolean type. A condition always returns a result of Boolean type (True or False).</content>
     <point>
-      <title>Enchaînement d'opérateurs de comparaison</title>
-      <content>En algorithmique, une condition ne peut pas avoir deux opérateurs de comparaison enchaînés. Par exemple, la condition (4 &lt; a &lt; 8) est incorrecte. La forme algorithmique correcte est : (a > 4) et (a &lt; 8).</content>
-    </point>
+
+      ▶️ <title>Chaining of Comparison Operators</title>
+      <content>In algorithmics, a condition cannot have two comparison operators chained together. For example, the condition (4 &lt; a &lt; 8) is incorrect. The correct algorithmic form is: (a &gt; 4) and (a &lt; 8).</content>
+    
+      </point>
   </section>
 
-  <section id="4" title="Instructions conditionnelles">
-    <content>Les instructions de contrôle utilisées en algorithmique se divisent en deux grandes catégories : les instructions conditionnelles et les instructions de bouclage. Les instructions conditionnelles permettent de choisir entre des traitements différents, et les instructions de bouclage sont utilisées pour répéter plusieurs fois un même traitement.</content>
+  <section id="4" title="Conditional Instructions">
+    <content>Control instructions used in algorithmics are divided into two main categories: conditional instructions and looping instructions. Conditional instructions allow you to choose between different processing, and looping instructions are used to repeat the same processing multiple times.</content>
 
-    <subsection id="4.1" title="Alternatives à un ou deux choix">
-      <content>Ces instructions conditionnelles se basent sur la réalisation d'une seule condition pour choisir le traitement à exécuter. Elles peuvent prendre deux formes : l'alternative simple ou l'alternative complète.</content>
+    <subsection id="4.1" title="Alternatives with One or Two Choices">
+      <content>These conditional instructions are based on the execution of a single condition to choose the processing to execute. They can take two forms: simple alternative or complete alternative.</content>
 
-      <subsubsection id="4.1.1" title="L'alternative simple (SI ... ALORS)">
-        <content>L'alternative simple est utilisée lorsque nous voulons effectuer un traitement spécifique si une condition est vraie, et ne rien faire si la condition est fausse. La condition utilisée est souvent de comparaison.</content>
+      <subsubsection id="4.1.1" title="Simple Alternative (IF ... THEN)">
+        <content>The simple alternative is used when we want to perform a specific processing if a condition is true, and do nothing if the condition is false. The condition used is often of comparison type.</content>
         <syntax>
-          <algorithmic>SI (condition) ALORS
-  Traitement ;
-FIN SI ;</algorithmic>
+          <algorithmic>IF (condition) THEN
+  Processing ;
+END IF ;</algorithmic>
           <cLanguage>if (condition) {
-  Traitement ;
+  Processing ;
 }</cLanguage>
         </syntax>
         <example>
-          <title>Valeur absolue d'un entier</title>
-          <point>ALGORITHME valeur_absolue;
-VAR Nombre : Entier ;
-DÉBUT
-  LIRE(nombre) ;
-  SI (nombre &lt; 0) ALORS
-    nombre &lt;- -(nombre) ;
-  FIN SI ;
-  ÉCRIRE('La valeur absolue est', nombre) ;
-FIN.</point>
+          <title>Absolute Value of an Integer</title>
+          <point>
+▶️ ALGORITHM absolute_value;
+VAR Number : Integer ;
+BEGIN
+  READ(number) ;
+  IF (number &lt; 0) THEN
+    number &lt;- -(number) ;
+  END IF ;
+  WRITE('The absolute value is', number) ;
+END.
+      </point>
         </example>
         <example>
-          <title>Inverse d'un nombre (version complète)</title>
-          <point>ALGORITHME InverseComplet ;
-VAR nombre: Réel ;
-DÉBUT
-  ÉCRIRE('Donner un nombre') ;
-  LIRE(nombre) ;
-  SI (nombre &lt;> 0) ALORS
-    ÉCRIRE('L\'inverse du nombre : ', nombre, ' est : ', 1/nombre) ;
-  FIN SI ;
-  SI (nombre = 0) ALORS
-    ÉCRIRE('le nombre tapé est nul') ;
-  FIN SI ;
-FIN.</point>
+          <title>Inverse of a Number (Complete Version)</title>
+          <point>
+▶️ ALGORITHM InverseComplete ;
+VAR number: Real ;
+BEGIN
+  WRITE('Give a number') ;
+  READ(number) ;
+  IF (number &lt;&gt; 0) THEN
+    WRITE('The inverse of the number: ', number, ' is: ', 1/number) ;
+  END IF ;
+  IF (number = 0) THEN
+    WRITE('the entered number is zero') ;
+  END IF ;
+END.
+      </point>
         </example>
       </subsubsection>
 
-      <subsubsection id="4.1.2" title="L'alternative complète (SI ... ALORS ... SINON)">
-        <content>L'alternative complète exprime un choix entre deux traitements : Traitement 1 et Traitement 2. Lorsque la condition est satisfaite (VRAI), on exécute le Traitement 1. Lorsque la condition n'est pas satisfaite (FAUX), on exécute le Traitement 2.</content>
+      <subsubsection id="4.1.2" title="Complete Alternative (IF ... THEN ... ELSE)">
+        <content>The complete alternative expresses a choice between two processing: Processing 1 and Processing 2. When the condition is satisfied (TRUE), we execute Processing 1. When the condition is not satisfied (FALSE), we execute Processing 2.</content>
         <syntax>
-          <point>SI (condition) ALORS
-  Traitement 1 ;
-SINON
-  Traitement 2 ;
-FIN SI ;</point>
-          <point>if (condition) {
-  Traitement 1 ;
+          <point>
+🔀 IF (condition) THEN
+  Processing 1 ;
+ELSE
+  Processing 2 ;
+END IF ;
+      </point>
+          <point>
+🔀 if (condition) {
+  Processing 1 ;
 } else {
-  Traitement 2 ;
-}</point>
+  Processing 2 ;
+}
+      </point>
         </syntax>
         <example>
-          <title>Inverse d'un nombre avec alternative complète</title>
-          <point>ALGORITHME InverseAltcomp;
-VAR nombre : Réel ;
-DÉBUT
-  LIRE(nombre) ;
-  SI (nombre &lt;> 0) ALORS
-    ÉCRIRE('L\'inverse du nombre : ', nombre, ' est : ', 1/nombre) ;
-  SINON
-    ÉCRIRE('le nombre introduit est nul') ;
-  FIN SI ;
-FIN.</point>
+          <title>Inverse of a Number with Complete Alternative</title>
+          <point>
+▶️ ALGORITHM InverseAltcomplete;
+VAR number : Real ;
+BEGIN
+  READ(number) ;
+  IF (number &lt;&gt; 0) THEN
+    WRITE('The inverse of the number: ', number, ' is: ', 1/number) ;
+  ELSE
+    WRITE('the introduced number is zero') ;
+  END IF ;
+END.
+      </point>
         </example>
       </subsubsection>
     </subsection>
 
-    <subsection id="4.2" title="Alternative à plusieurs choix">
-      <content>Dans le cas d'un choix multiple, il est possible d'imbriquer plusieurs instructions conditionnelles simples ou complètes pour former une structure plus complexe capable de supporter plusieurs choix.</content>
+    <subsection id="4.2" title="Alternative with Multiple Choices">
+      <content>In the case of multiple choices, it is possible to nest several simple or complete conditional instructions to form a more complex structure capable of supporting multiple choices.</content>
       <example>
-        <title>Observation selon la moyenne d'un étudiant</title>
-        <point>ALGORITHME Observation ;
-VAR Moyenne : Réel ;
-DÉBUT
-  LIRE(Moyenne) ;
-  SI (Moyenne >= 10) ALORS
-    ÉCRIRE('Admis') ;
-  SINON
-    SI (Moyenne >= 9.5) ALORS
-      ÉCRIRE('Racheté') ;
-    SINON
-      ÉCRIRE('Ajourné') ;
-    FIN SI ;
-  FIN SI ;
-FIN.</point>
+        <title>Observation Based on a Student's Average</title>
+        <point>
+▶️ ALGORITHM Observation ;
+VAR Average : Real ;
+BEGIN
+  READ(Average) ;
+  IF (Average &gt;= 10) THEN
+    WRITE('Admitted') ;
+  ELSE
+    IF (Average &gt;= 9.5) THEN
+      WRITE('Remedial') ;
+    ELSE
+      WRITE('Failed') ;
+    END IF ;
+  END IF ;
+END.
+      </point>
         <explanation>
-          <point>Admis si la moyenne est supérieure ou égale à 10</point>
-          <point>Racheté si la moyenne est strictement inférieure à 10 et supérieure ou égale à 9.5</point>
-          <point>Ajourné si la moyenne est strictement inférieure à 9.5</point>
+          <point>🔀 Admitted if the average is greater than or equal to 10</point>
+          <point>🔀 Remedial if the average is strictly less than 10 and greater than or equal to 9.5</point>
+          <point>🔀 Failed if the average is strictly less than 9.5</point>
         </explanation>
       </example>
     </subsection>
 
-    <subsection id="4.3" title="L'instruction SELON ... FAIRE (CASE ... OF)">
-      <content>Cette instruction conditionnelle est aussi appelée condition à choix sélectif. Elle sélectionne entre plusieurs choix à la fois, et non entre deux choix alternatifs. Sa particularité est l'utilisation d'une expression arithmétique, contrairement aux instructions précédentes qui utilisent une ou plusieurs conditions.</content>
+    <subsection id="4.3" title="CASE ... OF Instruction">
+      <content>This conditional instruction is also called selective choice condition. It selects between multiple choices at once, not between two alternative choices. Its particularity is the use of an arithmetic expression, unlike the previous instructions which use one or more conditions.</content>
       <syntax>
-        <point>SELON (expression) FAIRE
-  CAS C1 : Traitement 1 ;
-  CAS C2 : Traitement 2 ;
-  CAS C3 : Traitement 3 ;
+        <point>
+🔀 CASE (expression) OF
+  CASE C1 : Processing 1 ;
+  CASE C2 : Processing 2 ;
+  CASE C3 : Processing 3 ;
   ...
-  CAS CN : Traitement N ;
-  CAS AUTRE Traitement (N+1) ;
-FIN SELON ;</point>
-        <point>switch (expression) {
-  case C1 : Traitement 1 ; break;
-  case C2 : Traitement 2 ; break;
-  case C3 : Traitement 3 ; break;
+  CASE CN : Processing N ;
+  DEFAULT : Processing (N+1) ;
+END CASE ;
+      </point>
+        <point>
+🔀 switch (expression) {
+  case C1 : Processing 1 ; break;
+  case C2 : Processing 2 ; break;
+  case C3 : Processing 3 ; break;
   ...
-  case CN : Traitement N ; break;
-  default : Traitement (N+1) ;
-}</point>
+  case CN : Processing N ; break;
+  default : Processing (N+1) ;
+}
+      </point>
       </syntax>
       <example>
-        <title>Nombre de jours d'un mois</title>
-        <point>ALGORITHME jours_mois ;
-VAR mois : Entier ;
-DÉBUT
-  ÉCRIRE('De quel mois s\'agit-il?');
-  LIRE(mois) ;
-  SELON (mois) FAIRE
-    CAS 1, 3, 5, 7, 8, 10, 12 : ÉCRIRE('Nombre de jours : 31') ;
-    CAS 4, 6, 9, 11 : ÉCRIRE('Nombre de jours : 30') ;
-    CAS 2 : ÉCRIRE('Nombre de jours : 28 ou 29') ;
-    CAS AUTRE ÉCRIRE('Ce mois n\'existe pas') ;
-  FIN SELON ;
-FIN.</point>
+        <title>Number of Days in a Month</title>
+        <point>
+▶️ ALGORITHM days_month ;
+VAR month : Integer ;
+BEGIN
+  WRITE('Which month is it?');
+  READ(month) ;
+  CASE (month) OF
+    CASE 1, 3, 5, 7, 8, 10, 12 : WRITE('Number of days: 31') ;
+    CASE 4, 6, 9, 11 : WRITE('Number of days: 30') ;
+    CASE 2 : WRITE('Number of days: 28 or 29') ;
+    DEFAULT WRITE('This month does not exist') ;
+  END CASE ;
+END.
+      </point>
       </example>
     </subsection>
   </section>

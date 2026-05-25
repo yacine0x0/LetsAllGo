@@ -24,7 +24,7 @@ app.use('/api/auth',        authRoutes);
 app.use('/api/users',       userRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/quiz',        quizRoutes);
-app.use('/api/courses',     coursesRoutes); // ✅ NOUVEAU
+app.use('/api/courses',     coursesRoutes); 
 app.use('/api/admin',       adminRoutes);
 
 app.get('/', (_req, res) =>

@@ -1,80 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_01" title="Data Structure">
+<chapter id="Chapter_02" title="Queues">
 
-  <section id="1" title="Introduction aux structures de données">
-    <content>Une structure de données est une façon d'organiser et de stocker des données en mémoire pour pouvoir les utiliser efficacement. Le choix d'une bonne structure de données est crucial pour la performance d'un algorithme.</content>
+  <section id="1" title="Introduction to Queues">
+    <content>A queue is a fundamental linear data structure that strictly follows the FIFO principle: First In First Out. This means that the first element inserted into the queue will be the first one to be removed, preserving the natural order of arrival. Queues are widely used in computer science to model real-world scenarios where order and fairness matter, such as a line of customers waiting at a bank counter, a printer job queue, or a CPU task scheduler. Unlike a stack, which operates on a LIFO (Last In First Out) basis, a queue ensures that no element is processed out of turn. The two ends of a queue have specific roles: the rear (also called the tail or back) is where new elements are added, and the front (also called the head) is where elements are removed.</content>
     <bulletPoints>
-      <point>Organise les données en mémoire</point>
-      <point>Permet un accès et une manipulation efficaces</point>
-      <point>Le choix dépend du problème à résoudre</point>
-      <point>Exemples : tableaux, listes, arbres, graphes</point>
+      <point>📌 FIFO: First In First Out — the fundamental principle governing queue behavior</point>
+      <point>▶️ Insertion at the rear (enqueue) — new elements always join at the back</point>
+      <point>▶️ Removal at the front (dequeue) — elements leave from the front of the queue</point>
+      <point>▶️ Two distinct ends: front (exit point) and rear (entry point)</point>
+      <point>▶️ Preserves the chronological order of element insertion</point>
+      <point>📊 Contrast with Stack (LIFO) and Priority Queue (ordered by priority)</point>
+      <point>▶️ Real-world analogies: supermarket checkout line, airport boarding queue, ticket counter</point>
+      <point>🎯 Applications: OS scheduling, network packet handling, BFS graph traversal</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Les tableaux (Arrays)">
-    <content>Un tableau est une collection d'éléments du même type stockés en mémoire contiguë. Chaque élément est accessible via son indice. C'est la structure de données la plus simple et la plus utilisée.</content>
+  <section id="2" title="Operations on Queues">
+    <content>A queue supports a well-defined set of operations that allow efficient management of its elements. Each operation has a specific role and, when implemented correctly, runs in constant time O(1). The core operations are Enqueue and Dequeue, but auxiliary operations such as Peek, IsEmpty, IsFull, and Size are equally important for building robust programs. Understanding both the behavior and the time complexity of each operation is essential for choosing the right implementation in a given context. Improper use — such as attempting to dequeue from an empty queue — leads to underflow errors and must be guarded against with proper checks.</content>
     <bulletPoints>
-      <point>Accès direct par indice en O(1)</point>
-      <point>Taille fixe définie à la création</point>
-      <point>Éléments du même type</point>
-      <point>Exemple : T[0]=10, T[1]=20, T[2]=30</point>
-      <point>Insertion et suppression coûteuses : O(n)</point>
+      <point>🔧 Enqueue (push/offer): insert a new element at the rear of the queue — O(1)</point>
+      <point>🔧 Dequeue (pop/poll): remove and return the element at the front of the queue — O(1)</point>
+      <point>🔧 Peek / Front: inspect the front element without removing it — O(1)</point>
+      <point>⚡ Rear / Back: inspect the last inserted element without removing it — O(1)</point>
+      <point>🔧 IsEmpty: returns true if the queue contains no elements — O(1)</point>
+      <point>🔧 IsFull: returns true if the queue has reached its maximum capacity (array-based) — O(1)</point>
+      <point>🔧 Size / Count: returns the current number of elements in the queue — O(1)</point>
+      <point>🔧 Clear / Flush: removes all elements from the queue at once</point>
+      <point>⚠️ Overflow error: attempting to enqueue into a full queue (fixed-size implementations)</point>
+      <point>⚠️ Underflow error: attempting to dequeue from an empty queue — must always be checked</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Les enregistrements (Records)">
-    <content>Un enregistrement est une structure regroupant plusieurs champs de types différents sous un même nom. Il permet de représenter des entités complexes comme un étudiant avec son nom, prénom et note.</content>
+  <section id="3" title="Implementation with an Array">
+    <content>One of the simplest ways to implement a queue is by using a static array combined with two integer indices: front and rear. The front index always points to the first valid element, while the rear index points to the position of the last inserted element. Enqueue increments rear and stores the new value; Dequeue reads the value at front and then increments front. Although this approach is easy to understand and implement, it has a significant drawback: as elements are dequeued, the front pointer advances, leaving unused memory slots at the beginning of the array that can never be reused. This leads to a phenomenon called data displacement, which wastes memory and eventually makes the array appear full even when it still has free space at the start. This limitation motivates the use of a circular queue instead.</content>
     <bulletPoints>
-      <point>Regroupe des données hétérogènes</point>
-      <point>Chaque champ a un nom et un type</point>
-      <point>Exemple : Etudiant { nom: chaîne, age: entier, note: réel }</point>
-      <point>Accès par nom de champ : etudiant.nom</point>
-      <point>Similaire aux struct en C ou classes en Java</point>
+      <point>▶️ Uses a fixed-size array T[0..maxSize-1] as the underlying storage</point>
+      <point>▶️ front index: initialized to 0, points to the oldest element in the queue</point>
+      <point>▶️ rear index: initialized to -1 (or 0 depending on convention), points to the latest element</point>
+      <point>⚠️ Enqueue operation: rear++ then T[rear] = value (check for overflow first)</point>
+      <point>⚠️ Dequeue operation: value = T[front] then front++ (check for underflow first)</point>
+      <point>▶️ IsEmpty condition: front &gt; rear</point>
+      <point>▶️ IsFull condition: rear == maxSize - 1</point>
+      <point>▶️ Size: rear - front + 1</point>
+      <point>⚡ Time complexity: O(1) for all operations</point>
+      <point>🐢 Space complexity: O(n) where n is the maximum capacity</point>
+      <point>❌ Critical flaw: memory waste — freed slots at the front cannot be reused</point>
+      <point>❌ Workaround (costly): shift all elements left after each dequeue — O(n) time</point>
+      <point>▶️ Better solution: use a circular array to avoid displacement entirely</point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="Les pointeurs">
-    <content>Un pointeur est une variable qui contient l'adresse mémoire d'une autre variable. Les pointeurs permettent de créer des structures de données dynamiques comme les listes chaînées et les arbres.</content>
+  <section id="4" title="Circular Queue">
+    <content>The circular queue (also called a ring buffer) is an optimized array-based implementation that eliminates the memory waste problem of the simple array queue. Instead of treating the array as a linear sequence, the circular queue treats it as a closed ring: when either index reaches the end of the array, it wraps around to index 0 using the modulo operator. This allows freed slots at the front to be reused as soon as they become available. Managing a circular queue requires careful handling of the full and empty conditions, because both states can result in front == rear depending on the convention used. A common strategy is to intentionally leave one slot unused, so that a full queue satisfies (rear + 1) % size == front, clearly distinguishing it from the empty condition front == rear. Circular queues are widely used in operating systems for I/O buffers and in hardware communication interfaces.</content>
     <bulletPoints>
-      <point>Contient une adresse mémoire</point>
-      <point>Permet l'allocation dynamique de mémoire</point>
-      <point>Base des structures de données dynamiques</point>
-      <point>Opérations : référencer (&amp;) et déréférencer (*)</point>
-      <point>Attention aux pointeurs nuls et aux fuites mémoire</point>
+      <point>▶️ Treats the array as a ring: indices wrap around using the modulo operator</point>
+      <point>🔧 Enqueue: rear = (rear + 1) % size, then T[rear] = value</point>
+      <point>🔧 Dequeue: value = T[front], then front = (front + 1) % size</point>
+      <point>▶️ Empty condition: front == rear (the queue holds no valid elements)</point>
+      <point>▶️ Full condition: (rear + 1) % size == front (one slot is intentionally left empty)</point>
+      <point>▶️ Maximum usable capacity: size - 1 elements (due to the sentinel slot)</point>
+      <point>✅ Completely eliminates memory waste caused by index displacement</point>
+      <point>⚡ All four primary operations remain O(1)</point>
+      <point>✅ Space efficiency: 100% reuse of available memory slots</point>
+      <point>▶️ Requires careful boundary checks to avoid overwriting unread data</point>
+      <point>🎯 Practical uses: kernel I/O ring buffers, audio/video streaming buffers, hardware FIFOs</point>
+      <point>▶️ Alternative: use a size counter to distinguish full from empty without wasting a slot</point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="Complexité et choix de structure">
-    <content>Chaque structure de données a ses forces et faiblesses en termes de complexité temporelle et spatiale. Il faut choisir la structure adaptée au problème.</content>
+  <section id="5" title="Queue with Linked List">
+    <content>A queue can also be implemented using a singly linked list, where each node holds a data value and a pointer to the next node. This approach eliminates the fixed-size constraint of array-based implementations: the queue can grow or shrink dynamically as elements are enqueued or dequeued, bounded only by the available heap memory. Two pointers are maintained: head (or front) pointing to the first node to be dequeued, and tail (or rear) pointing to the last node added. Enqueue creates a new node and appends it after the current tail, then advances the tail pointer. Dequeue reads the value at head and moves the head pointer to the next node, freeing the old node. Both operations run in O(1) time. The tradeoff compared to arrays is a higher memory overhead per element due to the pointer stored in each node, and reduced cache locality since nodes are scattered in heap memory.</content>
     <bulletPoints>
-      <point>Complexité temporelle : temps d'exécution des opérations</point>
-      <point>Complexité spatiale : mémoire utilisée</point>
-      <point>Tableau : accès O(1), insertion O(n)</point>
-      <point>Liste chaînée : insertion O(1), accès O(n)</point>
-      <point>Arbre binaire de recherche : O(log n) en moyenne</point>
+      <point>🔗 Built on a singly linked list: each node contains data and a next pointer</point>
+      <point>🔗 head pointer: always points to the front node (next to be dequeued)</point>
+      <point>🔗 tail pointer: always points to the rear node (last inserted)</point>
+      <point>🔧 Enqueue: create new node, set tail.next = newNode, then tail = newNode — O(1)</point>
+      <point>🔧 Dequeue: save head.data, advance head = head.next, free old node — O(1)</point>
+      <point>▶️ IsEmpty condition: head == null (or head == tail in some implementations)</point>
+      <point>✅ Dynamic sizing: no predefined capacity limit — grows with heap availability</point>
+      <point>✅ No overflow risk (unless the system runs out of memory)</point>
+      <point>✅ No memory waste: each node is allocated and freed on demand</point>
+      <point>❌ Tradeoff: extra memory per node (the next pointer, typically 8 bytes on 64-bit systems)</point>
+      <point>❌ Tradeoff: poor cache locality — nodes are scattered across heap memory</point>
+      <point>▶️ Suitable when queue size is unpredictable or varies greatly at runtime</point>
+      <point>▶️ Thread-safe variants exist (e.g., lock-free linked queues using CAS operations)</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Structures linéaires vs non linéaires">
-    <content>Les structures de données se divisent en deux grandes catégories : linéaires où les éléments sont organisés séquentiellement, et non linéaires où les éléments ont des relations hiérarchiques ou en réseau.</content>
+  <section id="6" title="Applications of Queues">
+    <content>Queues are one of the most practically important data structures in computer science, appearing in a wide range of system-level, algorithmic, and application-level contexts. Their FIFO ordering makes them ideal whenever tasks, requests, or data must be processed in the exact order they arrive, ensuring fairness and predictability. In operating systems, queues underpin process and thread scheduling, where the CPU selects the next task from a ready queue. In networking, queues manage incoming and outgoing packets at routers and switches, and HTTP request queues balance load across web servers. In graph theory, breadth-first search (BFS) relies on a queue to explore nodes level by level, guaranteeing the shortest path in unweighted graphs. Real-time systems use ring-buffer queues for audio and video streaming to absorb timing jitter. Even everyday software features like undo history, print spoolers, and message brokers (Kafka, RabbitMQ) are fundamentally queue-based.</content>
     <bulletPoints>
-      <point>Linéaires : tableaux, listes, piles, files</point>
-      <point>Non linéaires : arbres, graphes</point>
-      <point>Structures linéaires : traversée séquentielle</point>
-      <point>Arbres : hiérarchie parent-enfant</point>
-      <point>Graphes : relations complexes entre nœuds</point>
-    </bulletPoints>
-  </section>
-
-  <section id="7" title="Allocation statique vs dynamique">
-    <content>La mémoire peut être allouée de manière statique à la compilation ou dynamiquement à l'exécution. Chaque approche a ses avantages selon les besoins du programme.</content>
-    <bulletPoints>
-      <point>Statique : taille fixe, rapide, simple</point>
-      <point>Dynamique : taille variable, flexible, via pointeurs</point>
-      <point>Allocation dynamique : malloc/new selon le langage</point>
-      <point>Libération obligatoire pour éviter les fuites mémoire</point>
-      <point>Exemple statique : tableau de 100 entiers</point>
-      <point>Exemple dynamique : liste chaînée</point>
+      <point>🎯 CPU process scheduling: the OS ready queue manages threads awaiting CPU time (Round-Robin)</point>
+      <point>🎯 I/O request queuing: disk and network I/O requests are buffered in kernel queues</point>
+      <point>🎯 Network packet routing: routers enqueue packets at each hop to manage congestion</point>
+      <point>🎯 Load balancing: web servers distribute incoming HTTP requests via request queues</point>
+      <point>🧠 Breadth-First Search (BFS): graph traversal that explores nodes level by level using a queue</point>
+      <point>🧠 Shortest path in unweighted graphs: BFS with a queue guarantees minimum hop count</point>
+      <point>🎯 Print spooler: documents are queued and printed in submission order</point>
+      <point>🎯 Message brokers: Kafka, RabbitMQ, and ActiveMQ implement persistent distributed queues</point>
+      <point>🎯 Real-time audio/video streaming: ring buffer queues absorb timing jitter between producer and consumer</point>
+      <point>▶️ Simulation of discrete-event systems: events are processed in chronological order from a queue</point>
+      <point>🎯 Keyboard and mouse input buffering: hardware events are enqueued before the OS processes them</point>
+      <point>▶️ Multithreaded producer-consumer pattern: a shared queue decouples data production from consumption</point>
+      <point>🎯 Call center systems: incoming calls are queued and routed to available agents in order</point>
     </bulletPoints>
   </section>
 

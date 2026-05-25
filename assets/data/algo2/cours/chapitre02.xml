@@ -1,69 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="Chapitre_02" title="Files">
+<chapter id="Chapter_01" title="Data Structure">
 
-  <section id="1" title="Introduction aux files">
-    <content>Une file (queue) est une structure de données linéaire qui suit le principe FIFO : First In First Out. Le premier élément inséré est le premier à être retiré. On peut la comparer à une file d'attente dans un magasin.</content>
+  <section id="1" title="Introduction to Data Structures">
+    <content>A data structure is a way of organizing and storing data in memory to use them efficiently. The choice of a good data structure is crucial for the performance of an algorithm.</content>
     <bulletPoints>
-      <point>FIFO : First In First Out</point>
-      <point>Insertion en queue (enqueue)</point>
-      <point>Suppression en tête (dequeue)</point>
-      <point>Exemple : file d'attente, impression de documents</point>
+      <point>▶️ Organizes data in memory</point>
+      <point>▶️ Allows efficient access and manipulation</point>
+      <point>▶️ The choice depends on the problem to solve</point>
+      <point>▶️ Examples: arrays, lists, trees, graphs</point>
     </bulletPoints>
   </section>
 
-  <section id="2" title="Opérations sur les files">
-    <content>Une file supporte principalement quatre opérations fondamentales qui permettent de gérer les éléments de manière ordonnée.</content>
+  <section id="2" title="Arrays">
+    <content>An array is a collection of elements of the same type stored in contiguous memory. Each element is accessible via its index. It is the simplest and most widely used data structure.</content>
     <bulletPoints>
-      <point>Enqueue : ajouter un élément en fin de file</point>
-      <point>Dequeue : retirer l'élément en tête de file</point>
-      <point>Peek/Front : consulter l'élément en tête sans le retirer</point>
-      <point>IsEmpty : vérifier si la file est vide</point>
-      <point>Size : obtenir le nombre d'éléments</point>
+      <point>⚡ Direct access by index in O(1)</point>
+      <point>▶️ Fixed size defined at creation</point>
+      <point>▶️ Elements of the same type</point>
+      <point>▶️ Example: T[0]=10, T[1]=20, T[2]=30</point>
+      <point>🐢 Insertion and deletion expensive: O(n)</point>
     </bulletPoints>
   </section>
 
-  <section id="3" title="Implémentation avec un tableau">
-    <content>Une file peut être implémentée avec un tableau en maintenant deux indices : tête (front) et queue (rear). Cette implémentation est simple mais souffre du problème de déplacement des données.</content>
+  <section id="3" title="Records">
+    <content>A record is a structure that groups several fields of different types under the same name. It allows representing complex entities like a student with their name, first name and grade.</content>
     <bulletPoints>
-      <point>Indice front : pointe sur le premier élément</point>
-      <point>Indice rear : pointe sur le dernier élément</point>
-      <point>Enqueue : rear++ puis T[rear] = valeur</point>
-      <point>Dequeue : lire T[front] puis front++</point>
-      <point>Problème : gaspillage de mémoire avec déplacements</point>
+      <point>▶️ Groups heterogeneous data</point>
+      <point>▶️ Each field has a name and a type</point>
+      <point>▶️ Example: Student { name: string, age: integer, grade: real }</point>
+      <point>▶️ Access by field name: student.name</point>
+      <point>▶️ Similar to struct in C or classes in Java</point>
     </bulletPoints>
   </section>
 
-  <section id="4" title="File circulaire">
-    <content>La file circulaire résout le problème de gaspillage de mémoire en traitant le tableau comme un anneau. Quand on arrive à la fin du tableau, on repart au début.</content>
+  <section id="4" title="Pointers">
+    <content>A pointer is a variable that contains the memory address of another variable. Pointers allow creating dynamic data structures like linked lists and trees.</content>
     <bulletPoints>
-      <point>Utilise le modulo pour les indices : rear = (rear+1) % taille</point>
-      <point>Réutilise l'espace libéré en tête</point>
-      <point>Condition pleine : (rear+1) % taille == front</point>
-      <point>Condition vide : front == rear</point>
-      <point>Efficacité maximale de l'espace mémoire</point>
+      <point>▶️ Contains a memory address</point>
+      <point>▶️ Allows dynamic memory allocation</point>
+      <point>▶️ Basis of dynamic data structures</point>
+      <point>▶️ Operations: reference (&amp;) and dereference (*)</point>
+      <point>⚠️ Be careful with null pointers and memory leaks</point>
     </bulletPoints>
   </section>
 
-  <section id="5" title="File avec liste chaînée">
-    <content>Une file peut aussi être implémentée avec une liste chaînée, ce qui permet une taille dynamique sans risque de dépassement de capacité.</content>
+  <section id="5" title="Complexity and Choice of Structure">
+    <content>Each data structure has its strengths and weaknesses in terms of time and space complexity. You must choose the structure suited to the problem.</content>
     <bulletPoints>
-      <point>Taille dynamique : pas de limite fixe</point>
-      <point>Enqueue : ajouter un nœud en queue</point>
-      <point>Dequeue : supprimer le nœud en tête</point>
-      <point>Deux pointeurs : head et tail</point>
-      <point>Complexité O(1) pour les deux opérations</point>
+      <point>▶️ Time complexity: execution time of operations</point>
+      <point>💾 Space complexity: memory used</point>
+      <point>🐢 Array: access O(1), insertion O(n)</point>
+      <point>🐢 Linked list: insertion O(1), access O(n)</point>
+      <point>🐢 Binary search tree: O(log n) on average</point>
     </bulletPoints>
   </section>
 
-  <section id="6" title="Applications des files">
-    <content>Les files sont utilisées dans de nombreux contextes en informatique, notamment pour gérer les processus, les communications réseau et les algorithmes de parcours.</content>
+  <section id="6" title="Linear vs Non-Linear Structures">
+    <content>Data structures are divided into two main categories: linear where elements are organized sequentially, and non-linear where elements have hierarchical or network relationships.</content>
     <bulletPoints>
-      <point>Ordonnancement des processus dans un OS</point>
-      <point>Gestion des requêtes réseau</point>
-      <point>Parcours en largeur (BFS) dans les graphes</point>
-      <point>Impression de documents</point>
-      <point>Simulation de systèmes à événements discrets</point>
-      <point>Tampon (buffer) de données en temps réel</point>
+      <point>▶️ Linear: arrays, lists, stacks, queues</point>
+      <point>▶️ Non-linear: trees, graphs</point>
+      <point>▶️ Linear structures: sequential traversal</point>
+      <point>▶️ Trees: parent-child hierarchy</point>
+      <point>▶️ Graphs: complex relationships between nodes</point>
+    </bulletPoints>
+  </section>
+
+  <section id="7" title="Static vs Dynamic Allocation">
+    <content>Memory can be allocated statically at compile time or dynamically at runtime. Each approach has its advantages depending on the program's needs.</content>
+    <bulletPoints>
+      <point>▶️ Static: fixed size, fast, simple</point>
+      <point>▶️ Dynamic: variable size, flexible, via pointers</point>
+      <point>▶️ Dynamic allocation: malloc/new depending on language</point>
+      <point>⚠️ Mandatory release to avoid memory leaks</point>
+      <point>▶️ Static example: array of 100 integers</point>
+      <point>▶️ Dynamic example: linked list</point>
     </bulletPoints>
   </section>
 

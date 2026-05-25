@@ -23,19 +23,19 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   static const String _baseUrl = 'http://localhost:3000/api';
 
-  final LoginController       _controller   = LoginController();
-  final TextEditingController _emailCtrl    = TextEditingController();
+  final LoginController _controller = LoginController();
+  final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
-  final AudioPlayer           _audioPlayer  = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
-  bool    _isLoading       = false;
-  bool    _obscurePassword = true;
+  bool _isLoading = false;
+  bool _obscurePassword = true;
   String? _errorMessage;
 
   // ══════════════════════════════════════════
   // SOUND — edit the file names here to change sounds
   // ══════════════════════════════════════════
-  static const String _soundLoginButton  = 'sounds/PRESS_1.wav';
+  static const String _soundLoginButton = 'sounds/PRESS_1.wav';
   static const String _soundToggleButton = 'sounds/PRESS_2.wav';
 
   Future<void> _playSound(String soundPath) async {
@@ -53,10 +53,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _handleLogin() async {
     await _playSound(_soundLoginButton);
-    setState(() { _isLoading = true; _errorMessage = null; });
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
 
-    final error = await _controller.login(
-        _emailCtrl.text, _passwordCtrl.text);
+    final error = await _controller.login(_emailCtrl.text, _passwordCtrl.text);
 
     if (!mounted) return;
     setState(() => _isLoading = false);
@@ -64,15 +66,20 @@ class _LoginPageState extends State<LoginPage> {
     if (error == null) {
       final role = LoginController.currentUser?.role ?? 'etudiant';
       if (role == 'admin') {
-        Navigator.pushReplacement(context, PageRouteBuilder(
-          pageBuilder: (_, _, _) => const AdminWelcomePage(),
-          transitionsBuilder: (_, anim, _, child) =>
-              FadeTransition(opacity: anim, child: child),
-          transitionDuration: const Duration(milliseconds: 400),
-        ));
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, _, _) => const AdminWelcomePage(),
+            transitionsBuilder: (_, anim, _, child) =>
+                FadeTransition(opacity: anim, child: child),
+            transitionDuration: const Duration(milliseconds: 400),
+          ),
+        );
       } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => const DashboardPage()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const DashboardPage()),
+        );
       }
     } else {
       setState(() => _errorMessage = error);
@@ -84,18 +91,15 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => _ForgotPasswordDialog(
-        lang:    lang,
-        baseUrl: _baseUrl,
-      ),
+      builder: (_) => _ForgotPasswordDialog(lang: lang, baseUrl: _baseUrl),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final lang = context.watch<LanguageService>();
-    final h    = MediaQuery.of(context).size.height;
-    final w    = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Stack(
@@ -114,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
 
           Positioned(
-            top:   h * 0.02,
+            top: h * 0.02,
             right: w * 0.02,
             child: _buildLanguageSelector(lang, h, w),
           ),
@@ -128,14 +132,20 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: h * 0.08),
-                      Image.asset("assets/images/logo1_login.png",
-                          width: h * 0.15, height: h * 0.15),
+                      Image.asset(
+                        "assets/images/logo1_login.png",
+                        width: h * 0.15,
+                        height: h * 0.15,
+                      ),
                       SizedBox(height: h * 0.005),
-                      Text("Let'sAllgo",
-                          style: TextStyle(
-                              fontSize: h * 0.035,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
+                      Text(
+                        "Let'sAllgo",
+                        style: TextStyle(
+                          fontSize: h * 0.035,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                       SizedBox(height: h * 0.01),
                       Text(
                         lang.t(
@@ -144,8 +154,9 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: h * 0.016,
-                            color: const Color.fromARGB(246, 255, 255, 255)),
+                          fontSize: h * 0.016,
+                          color: const Color.fromARGB(246, 255, 255, 255),
+                        ),
                       ),
                       SizedBox(height: h * 0.04),
 
@@ -156,29 +167,40 @@ class _LoginPageState extends State<LoginPage> {
                           child: Container(
                             width: w * 0.35,
                             padding: EdgeInsets.symmetric(
-                                horizontal: h * 0.04, vertical: h * 0.06),
+                              horizontal: h * 0.04,
+                              vertical: h * 0.06,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                  color: Colors.white.withOpacity(0.3),
-                                  width: 1.5),
+                                color: Colors.white.withOpacity(0.3),
+                                width: 1.5,
+                              ),
                             ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Icon(Icons.lock_outline,
-                                    size: h * 0.06, color: Colors.blue),
+                                Icon(
+                                  Icons.lock_outline,
+                                  size: h * 0.06,
+                                  color: Colors.blue,
+                                ),
                                 SizedBox(height: h * 0.02),
                                 Text(
                                   lang.t("Connexion", "Login"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: h * 0.03,
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(
-                                          255, 52, 52, 90)),
+                                    fontSize: h * 0.03,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color.fromARGB(
+                                      255,
+                                      52,
+                                      52,
+                                      90,
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(height: h * 0.01),
                                 Text(
@@ -188,42 +210,61 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: const Color.fromARGB(
-                                          255, 249, 249, 250),
-                                      fontSize: h * 0.014),
+                                    color: const Color.fromARGB(
+                                      255,
+                                      249,
+                                      249,
+                                      250,
+                                    ),
+                                    fontSize: h * 0.014,
+                                  ),
                                 ),
                                 SizedBox(height: h * 0.03),
 
                                 TextField(
                                   controller: _emailCtrl,
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: h * 0.016),
+                                    color: Colors.white,
+                                    fontSize: h * 0.016,
+                                  ),
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.next,
-                                  onSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                                  onSubmitted: (_) =>
+                                      FocusScope.of(context).nextFocus(),
                                   decoration: InputDecoration(
                                     labelText: "Email",
                                     labelStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: h * 0.016),
+                                      color: Colors.white,
+                                      fontSize: h * 0.016,
+                                    ),
                                     hintText: "exemple@gmail.com",
                                     hintStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 148, 144, 227),
-                                        fontSize: h * 0.015),
-                                    prefixIcon: Icon(Icons.email_outlined,
-                                        size: h * 0.025),
+                                      color: const Color.fromARGB(
+                                        255,
+                                        148,
+                                        144,
+                                        227,
+                                      ),
+                                      fontSize: h * 0.015,
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.email_outlined,
+                                      size: h * 0.025,
+                                    ),
                                     prefixIconColor: Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          color: Colors.white, width: 1.5),
+                                        color: Colors.white,
+                                        width: 1.5,
+                                      ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          color: Colors.blue, width: 2.0),
+                                        color: Colors.blue,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -232,25 +273,38 @@ class _LoginPageState extends State<LoginPage> {
                                 TextField(
                                   controller: _passwordCtrl,
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: h * 0.016),
+                                    color: Colors.white,
+                                    fontSize: h * 0.016,
+                                  ),
                                   obscureText: _obscurePassword,
                                   textInputAction: TextInputAction.done,
                                   onSubmitted: (_) => _handleLogin(),
                                   decoration: InputDecoration(
-                                    labelText: lang.t("Mot de passe", "Password"),
+                                    labelText: lang.t(
+                                      "Mot de passe",
+                                      "Password",
+                                    ),
                                     labelStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: h * 0.016),
+                                      color: Colors.white,
+                                      fontSize: h * 0.016,
+                                    ),
                                     hintText: lang.t(
-                                        "Entrez votre mot de passe",
-                                        "Enter your password"),
+                                      "Entrez votre mot de passe",
+                                      "Enter your password",
+                                    ),
                                     hintStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 148, 144, 227),
-                                        fontSize: h * 0.015),
-                                    prefixIcon: Icon(Icons.lock_outline,
-                                        size: h * 0.025),
+                                      color: const Color.fromARGB(
+                                        255,
+                                        148,
+                                        144,
+                                        227,
+                                      ),
+                                      fontSize: h * 0.015,
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.lock_outline,
+                                      size: h * 0.025,
+                                    ),
                                     prefixIconColor: Colors.white,
                                     suffixIcon: IconButton(
                                       icon: Icon(
@@ -259,18 +313,24 @@ class _LoginPageState extends State<LoginPage> {
                                             : Icons.visibility_off_outlined,
                                         size: h * 0.025,
                                       ),
-                                      onPressed: () => setState(() =>
-                                          _obscurePassword = !_obscurePassword),
+                                      onPressed: () => setState(
+                                        () => _obscurePassword =
+                                            !_obscurePassword,
+                                      ),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          color: Colors.white, width: 1.5),
+                                        color: Colors.white,
+                                        width: 1.5,
+                                      ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
-                                          color: Colors.blue, width: 2.0),
+                                        color: Colors.blue,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -281,8 +341,10 @@ class _LoginPageState extends State<LoginPage> {
                                   child: GestureDetector(
                                     onTap: _showForgotPasswordDialog,
                                     child: Text(
-                                      lang.t("Mot de passe oublié ?",
-                                          "Forgot password?"),
+                                      lang.t(
+                                        "Mot de passe oublié ?",
+                                        "Forgot password?",
+                                      ),
                                       style: TextStyle(
                                         color: Colors.blue.shade200,
                                         fontSize: h * 0.013,
@@ -295,11 +357,14 @@ class _LoginPageState extends State<LoginPage> {
                                 SizedBox(height: h * 0.02),
 
                                 if (_errorMessage != null)
-                                  Text(_errorMessage!,
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: h * 0.014),
-                                      textAlign: TextAlign.center),
+                                  Text(
+                                    _errorMessage!,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: h * 0.014,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
 
                                 SizedBox(height: h * 0.02),
 
@@ -310,17 +375,20 @@ class _LoginPageState extends State<LoginPage> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
                                     ),
                                     child: _isLoading
                                         ? const CircularProgressIndicator(
-                                            color: Colors.white)
+                                            color: Colors.white,
+                                          )
                                         : Text(
                                             lang.t("Entrer", "Enter"),
                                             style: TextStyle(
-                                                fontSize: h * 0.02,
-                                                color: Colors.white)),
+                                              fontSize: h * 0.02,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                   ),
                                 ),
                                 SizedBox(height: h * 0.02),
@@ -330,26 +398,37 @@ class _LoginPageState extends State<LoginPage> {
                                   children: [
                                     Text(
                                       lang.t(
-                                          "Pas encore de compte ? ",
-                                          "Don't have an account? "),
+                                        "Pas encore de compte ? ",
+                                        "Don't have an account? ",
+                                      ),
                                       style: TextStyle(
-                                          color: const Color.fromARGB(
-                                              255, 2, 17, 102),
-                                          fontSize: h * 0.014),
+                                        color: const Color.fromARGB(
+                                          255,
+                                          2,
+                                          17,
+                                          102,
+                                        ),
+                                        fontSize: h * 0.014,
+                                      ),
                                     ),
                                     GestureDetector(
                                       onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (_) =>
-                                                  const CreateAccountPage())),
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              const CreateAccountPage(),
+                                        ),
+                                      ),
                                       child: Text(
-                                        lang.t("Créer un compte",
-                                            "Create an account"),
+                                        lang.t(
+                                          "Créer un compte",
+                                          "Create an account",
+                                        ),
                                         style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: h * 0.014),
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: h * 0.014,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -372,8 +451,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLanguageSelector(LanguageService lang, double h, double w) {
-    final selectorWidth =
-        (w * 0.28).clamp(200.0, 320.0);
+    final selectorWidth = (w * 0.28).clamp(200.0, 320.0);
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: BackdropFilter(
@@ -385,7 +463,9 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.white.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-                color: Colors.white.withOpacity(0.3), width: 1.5),
+              color: Colors.white.withOpacity(0.3),
+              width: 1.5,
+            ),
           ),
           child: Row(
             children: [
@@ -447,10 +527,10 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
-              child: CountryFlag.fromCountryCode(
-                countryCode,
+              child: SizedBox(
                 height: h * 0.028,
                 width: (h * 0.028) * (3 / 2),
+                child: CountryFlag.fromCountryCode(countryCode),
               ),
             ),
             const SizedBox(width: 6),
@@ -466,8 +546,9 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                       color: isSelected ? Colors.white : Colors.white60,
                       fontSize: (h * 0.015).clamp(11.0, 15.0),
-                      fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                   Text(
@@ -476,8 +557,7 @@ class _LoginPageState extends State<LoginPage> {
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color:
-                          isSelected ? Colors.white70 : Colors.white38,
+                      color: isSelected ? Colors.white70 : Colors.white38,
                       fontSize: (h * 0.012).clamp(9.0, 12.0),
                       fontWeight: FontWeight.w500,
                     ),
@@ -497,33 +577,29 @@ class _LoginPageState extends State<LoginPage> {
 // ══════════════════════════════════════════════════════
 class _ForgotPasswordDialog extends StatefulWidget {
   final LanguageService lang;
-  final String          baseUrl;
+  final String baseUrl;
 
-  const _ForgotPasswordDialog({
-    required this.lang,
-    required this.baseUrl,
-  });
+  const _ForgotPasswordDialog({required this.lang, required this.baseUrl});
 
   @override
-  State<_ForgotPasswordDialog> createState() =>
-      _ForgotPasswordDialogState();
+  State<_ForgotPasswordDialog> createState() => _ForgotPasswordDialogState();
 }
 
 class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
-  int     _step    = 1;
-  bool    _loading = false;
+  int _step = 1;
+  bool _loading = false;
   String? _error;
 
-  String _userId      = '';
-  String _email       = '';
+  String _userId = '';
+  String _email = '';
   String _verifiedOtp = '';
 
-  final _emailCtrl    = TextEditingController();
-  final _otpCtrl      = TextEditingController();
-  final _newPassCtrl  = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _otpCtrl = TextEditingController();
+  final _newPassCtrl = TextEditingController();
   final _confPassCtrl = TextEditingController();
 
-  bool _obscureNew  = true;
+  bool _obscureNew = true;
   bool _obscureConf = true;
 
   @override
@@ -538,28 +614,39 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
   Future<void> _sendCode() async {
     final email = _emailCtrl.text.trim();
     if (email.isEmpty || !email.contains('@')) {
-      setState(() => _error = widget.lang.t(
-          'Email invalide', 'Invalid email'));
+      setState(() => _error = widget.lang.t('Email invalide', 'Invalid email'));
       return;
     }
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
     try {
       final response = await http.post(
         Uri.parse('${widget.baseUrl}/auth/forgot-password'),
         headers: {'Content-Type': 'application/json'},
-        body:    jsonEncode({'email': email}),
+        body: jsonEncode({'email': email}),
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200 && data['success'] == true) {
-        _email  = email;
+        _email = email;
         _userId = data['userId'] ?? '';
-        setState(() { _step = 2; _loading = false; });
+        setState(() {
+          _step = 2;
+          _loading = false;
+        });
       } else {
-        setState(() { _error = data['message'] ?? 'Erreur'; _loading = false; });
+        setState(() {
+          _error = data['message'] ?? 'Erreur';
+          _loading = false;
+        });
       }
     } catch (e) {
       setState(() {
-        _error   = widget.lang.t('Impossible de contacter le serveur', 'Unable to contact server');
+        _error = widget.lang.t(
+          'Impossible de contacter le serveur',
+          'Unable to contact server',
+        );
         _loading = false;
       });
     }
@@ -568,68 +655,112 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
   Future<void> _verifyOtp() async {
     final code = _otpCtrl.text.trim();
     if (code.length != 6) {
-      setState(() => _error = widget.lang.t(
-          'Entrez le code à 6 chiffres', 'Enter the 6-digit code'));
+      setState(
+        () => _error = widget.lang.t(
+          'Entrez le code à 6 chiffres',
+          'Enter the 6-digit code',
+        ),
+      );
       return;
     }
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
     try {
       final response = await http.post(
         Uri.parse('${widget.baseUrl}/auth/verify-reset-otp'),
         headers: {'Content-Type': 'application/json'},
-        body:    jsonEncode({'userId': _userId, 'code': code}),
+        body: jsonEncode({'userId': _userId, 'code': code}),
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200 && data['success'] == true) {
         _verifiedOtp = code;
-        setState(() { _step = 3; _loading = false; });
+        setState(() {
+          _step = 3;
+          _loading = false;
+        });
       } else {
-        setState(() { _error = data['message'] ?? 'Code invalide'; _loading = false; });
+        setState(() {
+          _error = data['message'] ?? 'Code invalide';
+          _loading = false;
+        });
       }
     } catch (e) {
       setState(() {
-        _error   = widget.lang.t('Impossible de contacter le serveur', 'Unable to contact server');
+        _error = widget.lang.t(
+          'Impossible de contacter le serveur',
+          'Unable to contact server',
+        );
         _loading = false;
       });
     }
   }
 
   Future<void> _resetPassword() async {
-    final newPass  = _newPassCtrl.text;
+    final newPass = _newPassCtrl.text;
     final confPass = _confPassCtrl.text;
     if (newPass.length < 6) {
-      setState(() => _error = widget.lang.t('Minimum 6 caractères', 'Minimum 6 characters'));
+      setState(
+        () => _error = widget.lang.t(
+          'Minimum 6 caractères',
+          'Minimum 6 characters',
+        ),
+      );
       return;
     }
     if (newPass != confPass) {
-      setState(() => _error = widget.lang.t(
-          'Les mots de passe ne correspondent pas', 'Passwords do not match'));
+      setState(
+        () => _error = widget.lang.t(
+          'Les mots de passe ne correspondent pas',
+          'Passwords do not match',
+        ),
+      );
       return;
     }
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
     try {
       final response = await http.post(
         Uri.parse('${widget.baseUrl}/auth/reset-password'),
         headers: {'Content-Type': 'application/json'},
-        body:    jsonEncode({'userId': _userId, 'code': _verifiedOtp, 'newPassword': newPass}),
+        body: jsonEncode({
+          'userId': _userId,
+          'code': _verifiedOtp,
+          'newPassword': newPass,
+        }),
       );
       final data = jsonDecode(response.body);
       if (response.statusCode == 200 && data['success'] == true) {
         if (mounted) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(widget.lang.t(
-                '✅ Mot de passe réinitialisé !', '✅ Password reset successfully!')),
-            backgroundColor: Colors.green.shade700,
-            behavior: SnackBarBehavior.floating,
-          ));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                widget.lang.t(
+                  '✅ Mot de passe réinitialisé !',
+                  '✅ Password reset successfully!',
+                ),
+              ),
+              backgroundColor: Colors.green.shade700,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         }
       } else {
-        setState(() { _error = data['message'] ?? 'Erreur'; _loading = false; });
+        setState(() {
+          _error = data['message'] ?? 'Erreur';
+          _loading = false;
+        });
       }
     } catch (e) {
       setState(() {
-        _error   = widget.lang.t('Impossible de contacter le serveur', 'Unable to contact server');
+        _error = widget.lang.t(
+          'Impossible de contacter le serveur',
+          'Unable to contact server',
+        );
         _loading = false;
       });
     }
@@ -637,8 +768,8 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final h    = MediaQuery.of(context).size.height;
-    final w    = MediaQuery.of(context).size.width;
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
     final lang = widget.lang;
 
     return Dialog(
@@ -648,13 +779,13 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
-            width:       w * 0.32,
+            width: w * 0.32,
             constraints: const BoxConstraints(maxWidth: 480),
-            padding:     const EdgeInsets.all(28),
+            padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color:        const Color(0xFF0D1B3E).withOpacity(0.95),
+              color: const Color(0xFF0D1B3E).withOpacity(0.95),
               borderRadius: BorderRadius.circular(20),
-              border:       Border.all(color: Colors.blue.withOpacity(0.3)),
+              border: Border.all(color: Colors.blue.withOpacity(0.3)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -669,10 +800,14 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
-                        _step == 1 ? Icons.email_outlined
-                            : _step == 2 ? Icons.pin_outlined
+                        _step == 1
+                            ? Icons.email_outlined
+                            : _step == 2
+                            ? Icons.pin_outlined
                             : Icons.lock_reset_outlined,
-                        color: Colors.blue, size: 20),
+                        color: Colors.blue,
+                        size: 20,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -683,20 +818,25 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
                             ? lang.t('Vérification', 'Verification')
                             : lang.t('Nouveau mot de passe', 'New Password'),
                         style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Row(
-                      children: List.generate(3, (i) => Container(
-                        margin: const EdgeInsets.only(left: 4),
-                        width: 8, height: 8,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: i < _step ? Colors.blue : Colors.white24,
+                      children: List.generate(
+                        3,
+                        (i) => Container(
+                          margin: const EdgeInsets.only(left: 4),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: i < _step ? Colors.blue : Colors.white24,
+                          ),
                         ),
-                      )),
+                      ),
                     ),
                   ],
                 ),
@@ -730,13 +870,21 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
         const SizedBox(height: 20),
-        _field(ctrl: _emailCtrl, label: lang.t('Email', 'Email'),
-            hint: 'exemple@gmail.com', icon: Icons.email_outlined,
-            type: TextInputType.emailAddress),
+        _field(
+          ctrl: _emailCtrl,
+          label: lang.t('Email', 'Email'),
+          hint: 'exemple@gmail.com',
+          icon: Icons.email_outlined,
+          type: TextInputType.emailAddress,
+        ),
         if (_error != null) ...[const SizedBox(height: 12), _errorBox(_error!)],
         const SizedBox(height: 24),
-        _actions(lang: lang, label: lang.t('Envoyer le code', 'Send Code'),
-            color: Colors.blue, onConfirm: _sendCode),
+        _actions(
+          lang: lang,
+          label: lang.t('Envoyer le code', 'Send Code'),
+          color: Colors.blue,
+          onConfirm: _sendCode,
+        ),
       ],
     );
   }
@@ -747,8 +895,10 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          lang.t('Un code à 6 chiffres a été envoyé à\n$_email',
-              'A 6-digit code was sent to\n$_email'),
+          lang.t(
+            'Un code à 6 chiffres a été envoyé à\n$_email',
+            'A 6-digit code was sent to\n$_email',
+          ),
           textAlign: TextAlign.center,
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
@@ -759,8 +909,11 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           maxLength: 6,
           textAlign: TextAlign.center,
           style: const TextStyle(
-              color: Colors.white, fontSize: 28,
-              letterSpacing: 8, fontWeight: FontWeight.bold),
+            color: Colors.white,
+            fontSize: 28,
+            letterSpacing: 8,
+            fontWeight: FontWeight.bold,
+          ),
           decoration: InputDecoration(
             counterText: '',
             hintText: '000000',
@@ -779,9 +932,17 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
         ),
         if (_error != null) ...[const SizedBox(height: 12), _errorBox(_error!)],
         const SizedBox(height: 24),
-        _actions(lang: lang, label: lang.t('Vérifier', 'Verify'),
-            color: Colors.teal, onConfirm: _verifyOtp,
-            showBack: true, onBack: () => setState(() { _step = 1; _error = null; })),
+        _actions(
+          lang: lang,
+          label: lang.t('Vérifier', 'Verify'),
+          color: Colors.teal,
+          onConfirm: _verifyOtp,
+          showBack: true,
+          onBack: () => setState(() {
+            _step = 1;
+            _error = null;
+          }),
+        ),
       ],
     );
   }
@@ -792,30 +953,56 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          lang.t('Créez un nouveau mot de passe sécurisé.',
-              'Create a new secure password.'),
+          lang.t(
+            'Créez un nouveau mot de passe sécurisé.',
+            'Create a new secure password.',
+          ),
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
         const SizedBox(height: 20),
-        _field(ctrl: _newPassCtrl, label: lang.t('Nouveau mot de passe', 'New Password'),
-            hint: '••••••••', icon: Icons.lock_outline, obscure: _obscureNew,
-            suffix: IconButton(
-              icon: Icon(_obscureNew ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                  color: Colors.white38, size: 18),
-              onPressed: () => setState(() => _obscureNew = !_obscureNew),
-            )),
+        _field(
+          ctrl: _newPassCtrl,
+          label: lang.t('Nouveau mot de passe', 'New Password'),
+          hint: '••••••••',
+          icon: Icons.lock_outline,
+          obscure: _obscureNew,
+          suffix: IconButton(
+            icon: Icon(
+              _obscureNew
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              color: Colors.white38,
+              size: 18,
+            ),
+            onPressed: () => setState(() => _obscureNew = !_obscureNew),
+          ),
+        ),
         const SizedBox(height: 16),
-        _field(ctrl: _confPassCtrl, label: lang.t('Confirmer le mot de passe', 'Confirm Password'),
-            hint: '••••••••', icon: Icons.lock_reset_outlined, obscure: _obscureConf,
-            suffix: IconButton(
-              icon: Icon(_obscureConf ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                  color: Colors.white38, size: 18),
-              onPressed: () => setState(() => _obscureConf = !_obscureConf),
-            )),
+        _field(
+          ctrl: _confPassCtrl,
+          label: lang.t('Confirmer le mot de passe', 'Confirm Password'),
+          hint: '••••••••',
+          icon: Icons.lock_reset_outlined,
+          obscure: _obscureConf,
+          suffix: IconButton(
+            icon: Icon(
+              _obscureConf
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+              color: Colors.white38,
+              size: 18,
+            ),
+            onPressed: () => setState(() => _obscureConf = !_obscureConf),
+          ),
+        ),
         if (_error != null) ...[const SizedBox(height: 12), _errorBox(_error!)],
         const SizedBox(height: 24),
-        _actions(lang: lang, label: lang.t('Réinitialiser', 'Reset Password'),
-            color: Colors.green, onConfirm: _resetPassword),
+        _actions(
+          lang: lang,
+          label: lang.t('Réinitialiser', 'Reset Password'),
+          color: Colors.green,
+          onConfirm: _resetPassword,
+        ),
       ],
     );
   }
@@ -832,7 +1019,10 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white54, fontSize: 12),
+        ),
         const SizedBox(height: 6),
         TextField(
           controller: ctrl,
@@ -871,8 +1061,12 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
       children: [
         const Icon(Icons.error_outline, color: Colors.red, size: 16),
         const SizedBox(width: 8),
-        Expanded(child: Text(msg,
-            style: const TextStyle(color: Colors.red, fontSize: 13))),
+        Expanded(
+          child: Text(
+            msg,
+            style: const TextStyle(color: Colors.red, fontSize: 13),
+          ),
+        ),
       ],
     ),
   );
@@ -891,8 +1085,10 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           Expanded(
             child: TextButton(
               onPressed: _loading ? null : onBack,
-              child: Text(lang.t('Retour', 'Back'),
-                  style: const TextStyle(color: Colors.white38)),
+              child: Text(
+                lang.t('Retour', 'Back'),
+                style: const TextStyle(color: Colors.white38),
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -900,8 +1096,10 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
           Expanded(
             child: TextButton(
               onPressed: _loading ? null : () => Navigator.pop(context),
-              child: Text(lang.t('Annuler', 'Cancel'),
-                  style: const TextStyle(color: Colors.white38)),
+              child: Text(
+                lang.t('Annuler', 'Cancel'),
+                style: const TextStyle(color: Colors.white38),
+              ),
             ),
           ),
           const SizedBox(width: 8),
@@ -912,16 +1110,26 @@ class _ForgotPasswordDialogState extends State<_ForgotPasswordDialog> {
             style: ElevatedButton.styleFrom(
               backgroundColor: color,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
               padding: const EdgeInsets.symmetric(vertical: 14),
             ),
             child: _loading
-                ? const SizedBox(width: 18, height: 18,
+                ? const SizedBox(
+                    width: 18,
+                    height: 18,
                     child: CircularProgressIndicator(
-                        color: Colors.white, strokeWidth: 2))
-                : Text(label,
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(
+                    label,
                     style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
           ),
         ),
       ],

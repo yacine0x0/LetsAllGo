@@ -113,6 +113,27 @@ class FilesController {
           algo: "algo1",
           category: "sheatsheet",
         ),
+
+        FileItem(
+  id: "f13",
+  title: "Fiche — Types d'algorithmes",
+  chapterId: "Chapitre 01",
+  chapterTitle: "Notions de base",
+  filePath: "assets/files/typealgos.jpg",
+  type: FileType.image,
+  algo: "algo1",
+  category: "sheatsheet",
+),
+FileItem(
+  id: "f14",
+  title: "Fiche — Types de matrices",
+  chapterId: "Chapitre 04",
+  chapterTitle: "Vecteurs & Matrices",
+  filePath: "assets/files/Typesmatrices.jpg",
+  type: FileType.image,
+  algo: "algo1",
+  category: "sheatsheet",
+),
       ],
     );
 

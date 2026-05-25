@@ -1,735 +1,426 @@
-<<<<<<< HEAD
-# LetsAllGo 🦊
-
-## An interactive platforme to learn and practice Algorithmics and Data-Structures "all in one place to Go !" 
-
-#### Developed to target mainly CS students and coding beginners, LetsAllGO is a project launched by us, the 7 main members of the group, as a university graduation project. The idea behind this creation was to join scattered knowledge, that students usually struggle to collect, all in one place where you can study, practice and read legit academic files of different universities around the country.  
-
-
-## What's included ?
-=======
 <!-- @format -->
 
-# LetsAllGo 🦊
+<h1 align="center">LetsAllGo 🦊</h1>
 
-## An interactive platforme to learn and practice Algorithmics and Data-Structures "all in one place to Go !"
+<p align="center">
+  <strong>An interactive platform to learn and practice Algorithmics and Data Structures — all in one place to Go!</strong>
+  <br />
+  <em>Designed for CS students and coding beginners seeking structured, gamified academic learning.</em>
+</p>
 
-#### Developed to target mainly CS students and coding beginners, LetsAllGO is a project launched by us, the 7 main members of the group, as a university graduation project. The idea behind this creation was to join scattered knowledge, that students usually struggle to collect, all in one place where you can study, practice and read legit academic files of different universities around the country.
+<p align="center">
+  <img src="assets/banner.png" alt="LetsAllGo Banner" width="400px" style="margin:0;"  />
+</p>
 
-## What's included ?
+<p align="center">
+  <a href="#-quick-start"><img src="https://img.shields.io/badge/Quick_Start-blue" alt="Quick Start" /></a>
+  <a href="#-license"><img src="https://img.shields.io/badge/License-MIT-yellow" alt="License: MIT" /></a>
+  <img src="https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter" alt="Flutter" />
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?logo=node.js" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma" alt="Prisma" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Supabase-4169E1?logo=postgresql" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Brevo-Email-0B996E" alt="Brevo" />
+  <img src="https://img.shields.io/badge/FL_Studio-Music-FF7F00" alt="FL Studio" />
+</p>
 
->>>>>>> 46850abcd2dfdc0640306fe9acec79fbf8e3d894
-- Algorithemics 1 and 2 Courses
-- Randomized Quizes with adjustable intensity
-- Academic files (exams + TD)
+---
 
-<<<<<<< HEAD
+## 📖 About the Project
+
+**LetsAllGo** is a university graduation project developed by a team of 7 students with the goal of consolidating scattered academic resources into a single, engaging platform. Students preparing for Algorithmics and Data Structures courses often face the challenge of sourcing quality material — lecture notes, practice problems, past exams, and exercises — from multiple disconnected places.
+
+LetsAllGo solves this by providing a unified, gamified learning environment where students can study theory, test their knowledge, and access vetted academic files from universities across the country — all within a clean mobile interface.
+
+> _"The goal is not just to study algorithms — it's to understand them, practice them, and track how far you've come."_
+
+---
+
+## ✨ Features
+
+### 📚 Course Content
+
+- Complete **Algorithmics 1 & 2** course material with structured lessons
+- Coverage of core data structures: linked lists, stacks, queues, trees, graphs, hash tables, and more
+- Step-by-step algorithm explanations with worked examples
+
+### 🎲 Randomized Quizzes
+
+- Quizzes generated dynamically from the course content pool
+- **Adjustable difficulty intensity** — from beginner warm-ups to exam-level challenges
+- Immediate feedback with explanations on wrong answers
+
+### 🗂️ Academic File Repository
+
+- Curated collection of **past exams and TDs** from multiple Algerian universities
+- Organized by module, year, and institution
+- Searchable and downloadable directly within the app
+
+### 🏆 Gamified Reward System
+
+- Points and badges earned through quiz performance and lesson completion
+- Encourages consistent daily engagement through streaks and milestones
+- Visual progress indicators tied to course advancement
+
+### 📊 Leaderboard & Personal Dashboard
+
+- **Global leaderboard** ranking students by performance score
+- **Personal dashboard** displaying completed modules, quiz history, accuracy rate, and XP
+- Progress charts updated in real time after each session
+
+### 🎵 Original Soundtrack
+
+- Custom in-app music composed with **FL Studio** to create a focused, enjoyable study atmosphere
+
+---
+
+## 🖼️ Screenshots
+
+<h2 align="center">Home Screen</h2>
+
+<p align="center">
+  <img src="assets/screenshots/home.png" alt="Home Screen" width="100%" />
+</p>
+
+<h2 align="center">Create Account Screen</h2>
+
+<p align="center">
+  <img src="assets/screenshots/account.png" alt="Create Account Screen" width="100%" />
+</p>
 
 
-## Special features
-- Gamified reward system for an effective learning
-- Leaderboard + Dashboard to track your progress
-=======
-## Special features
+<h2 align="center">Quiz Interface</h2>
 
-- Gamified reward system for an effective learning
-- Leaderboard + Dashboard to track your progress
+<p align="center">
+  <img src="assets/screenshots/quiz.png" alt="Quiz Interface" width="100%" />
+</p>
 
-```
+<h2 align="center">Dashboard</h2>
 
-LetsAllGo-one_folder
-├─ .metadata
-├─ .sixth
-│  └─ skills
-=======
-letsallgo
-├─ .metadata
+<p align="center">
+  <img src="assets/screenshots/dashboard.png" alt="Dashboard" width="100%" />
+</p>
 
-├─ analysis_options.yaml
-├─ android
-│  ├─ .gradle
-│  │  ├─ 8.14
-│  │  │  ├─ checksums
-│  │  │  │  └─ checksums.lock
-│  │  │  ├─ expanded
-│  │  │  ├─ fileChanges
-│  │  │  │  └─ last-build.bin
-│  │  │  ├─ fileHashes
-│  │  │  │  ├─ fileHashes.bin
-│  │  │  │  ├─ fileHashes.lock
-│  │  │  │  └─ resourceHashesCache.bin
-│  │  │  ├─ gc.properties
-│  │  │  └─ vcsMetadata
-│  │  ├─ buildOutputCleanup
-│  │  │  ├─ buildOutputCleanup.lock
-│  │  │  └─ cache.properties
-│  │  ├─ noVersion
-│  │  │  └─ buildLogic.lock
-│  │  └─ vcs-1
-│  │     └─ gc.properties
-│  ├─ app
-│  │  ├─ build.gradle.kts
-│  │  └─ src
-│  │     ├─ debug
-│  │     │  └─ AndroidManifest.xml
-│  │     ├─ main
-│  │     │  ├─ AndroidManifest.xml
-│  │     │  ├─ java
-│  │     │  │  └─ io
-│  │     │  │     └─ flutter
-│  │     │  │        └─ plugins
-│  │     │  │           └─ GeneratedPluginRegistrant.java
-│  │     │  ├─ kotlin
-│  │     │  │  └─ com
-│  │     │  │     └─ example
-│  │     │  │        └─ flutter_project_1
-│  │     │  │           └─ MainActivity.kt
-│  │     │  └─ res
-│  │     │     ├─ drawable
-│  │     │     │  └─ launch_background.xml
-│  │     │     ├─ drawable-v21
-│  │     │     │  └─ launch_background.xml
-│  │     │     ├─ mipmap-hdpi
-│  │     │     │  └─ ic_launcher.png
-│  │     │     ├─ mipmap-mdpi
-│  │     │     │  └─ ic_launcher.png
-│  │     │     ├─ mipmap-xhdpi
-│  │     │     │  └─ ic_launcher.png
-│  │     │     ├─ mipmap-xxhdpi
-│  │     │     │  └─ ic_launcher.png
-│  │     │     ├─ mipmap-xxxhdpi
-│  │     │     │  └─ ic_launcher.png
-│  │     │     ├─ values
-│  │     │     │  └─ styles.xml
-│  │     │     └─ values-night
-│  │     │        └─ styles.xml
-│  │     └─ profile
-│  │        └─ AndroidManifest.xml
-│  ├─ build.gradle.kts
-│  ├─ gradle
-│  │  └─ wrapper
-│  │     └─ gradle-wrapper.properties
-│  ├─ gradle.properties
-│  ├─ local.properties
-│  └─ settings.gradle.kts
-├─ assets
-│  ├─ data
-│  │  └─ algo1
-│  │     ├─ cours
-│  │     │  ├─ chapitre01.xml
-│  │     │  ├─ chapitre02.xml
-│  │     │  ├─ chapitre03.xml
-│  │     │  ├─ chapitre04.xml
-│  │     │  └─ chapitre05.xml
-│  │     └─ quiz
-│  │        ├─ chapitre01.xml
-│  │        ├─ chapitre02.xml
-│  │        ├─ chapitre03.xml
-│  │        ├─ chapitre04.xml
-│  │        └─ chapitre05.xml
-│  ├─ files
-│  │  ├─ Fiche_TP2.pdf
-│  │  └─ image.png
-│  └─ images
-│     ├─ background.png
-│     ├─ background1.jpg
-│     ├─ background3.png
-│     ├─ icone_dash.png
-│     ├─ icons_algo1
-│     │  ├─ basics_icone.png
-│     │  ├─ fonction_procedure_icone.png
-│     │  ├─ loops_icone.png
-│     │  ├─ si_sinon_icon.png
-│     │  └─ vectors_matris_icon.png
-│     ├─ icons_algo2
-│     │  ├─ data_structure_icone.png
-│     │  ├─ files_icone.png
-│     │  ├─ listes_icones.png
-│     │  └─ stacks_icone.png
-│     ├─ image_create_account.png
-│     ├─ logo1_login.png
-│     └─ masscott01.png
+<h2 align="center">Leaderboard</h2>
 
-├─ Desktop.ini
-=======
-├─ backend
+<p align="center">
+  <img src="assets/screenshots/leaderboard.png" alt="Leaderboard" width="100%" />
+</p>
 
-├─ index.ts
-├─ ios
-│  ├─ Flutter
-│  │  ├─ AppFrameworkInfo.plist
-│  │  ├─ Debug.xcconfig
-│  │  ├─ ephemeral
-│  │  │  ├─ flutter_lldbinit
-│  │  │  └─ flutter_lldb_helper.py
-│  │  └─ Release.xcconfig
-│  ├─ Runner
-│  │  ├─ AppDelegate.swift
-│  │  ├─ Assets.xcassets
-│  │  │  ├─ AppIcon.appiconset
-│  │  │  │  ├─ Contents.json
-│  │  │  │  ├─ Icon-App-1024x1024@1x.png
-│  │  │  │  ├─ Icon-App-20x20@1x.png
-│  │  │  │  ├─ Icon-App-20x20@2x.png
-│  │  │  │  ├─ Icon-App-20x20@3x.png
-│  │  │  │  ├─ Icon-App-29x29@1x.png
-│  │  │  │  ├─ Icon-App-29x29@2x.png
-│  │  │  │  ├─ Icon-App-29x29@3x.png
-│  │  │  │  ├─ Icon-App-40x40@1x.png
-│  │  │  │  ├─ Icon-App-40x40@2x.png
-│  │  │  │  ├─ Icon-App-40x40@3x.png
-│  │  │  │  ├─ Icon-App-60x60@2x.png
-│  │  │  │  ├─ Icon-App-60x60@3x.png
-│  │  │  │  ├─ Icon-App-76x76@1x.png
-│  │  │  │  ├─ Icon-App-76x76@2x.png
-│  │  │  │  └─ Icon-App-83.5x83.5@2x.png
-│  │  │  └─ LaunchImage.imageset
-│  │  │     ├─ Contents.json
-│  │  │     ├─ LaunchImage.png
-│  │  │     ├─ LaunchImage@2x.png
-│  │  │     ├─ LaunchImage@3x.png
-│  │  │     └─ README.md
-│  │  ├─ Base.lproj
-│  │  │  ├─ LaunchScreen.storyboard
-│  │  │  └─ Main.storyboard
-│  │  ├─ GeneratedPluginRegistrant.h
-│  │  ├─ GeneratedPluginRegistrant.m
-│  │  ├─ Info.plist
-│  │  ├─ Runner-Bridging-Header.h
-│  │  └─ SceneDelegate.swift
-│  ├─ Runner.xcodeproj
-│  │  ├─ project.pbxproj
-│  │  ├─ project.xcworkspace
-│  │  │  ├─ contents.xcworkspacedata
-│  │  │  └─ xcshareddata
-│  │  │     ├─ IDEWorkspaceChecks.plist
-│  │  │     └─ WorkspaceSettings.xcsettings
-│  │  └─ xcshareddata
-│  │     └─ xcschemes
-│  │        └─ Runner.xcscheme
-│  ├─ Runner.xcworkspace
-│  │  ├─ contents.xcworkspacedata
-│  │  └─ xcshareddata
-│  │     ├─ IDEWorkspaceChecks.plist
-│  │     └─ WorkspaceSettings.xcsettings
-│  └─ RunnerTests
-│     └─ RunnerTests.swift
-├─ lib
-│  ├─ controllers
-│  │  ├─ auth
-│  │  │  ├─ AuthController.ts
-│  │  │  ├─ create_account_controller.dart
-│  │  │  ├─ leaderboard.controller.ts
-│  │  │  ├─ login_controller.dart
-│  │  │  ├─ usercontroller.ts
-│  │  │  └─ verify_account_controller.dart
-│  │  ├─ courses_study
-│  │  │  └─ courses_study_controller.dart
-│  │  ├─ dashboard
-│  │  │  ├─ algo2_controller.dart
-│  │  │  └─ dashboard_controller.dart
-│  │  ├─ files
-│  │  │  ├─ files_algo2_controller.dart
-│  │  │  └─ files_controller.dart
-│  │  ├─ leaderboard
-│  │  │  └─ leaderboard_controller.dart
-│  │  ├─ profil
-│  │  │  └─ profil_controller.dart
-│  │  └─ quiz
-│  │     ├─ algo2_quiz_controller.dart
-│  │     ├─ base_quiz_controller.dart
-│  │     └─ quiz_controller.dart
-│  ├─ main.dart
-│  ├─ middlewares
-│  │  └─ auth.middleware.ts
-│  ├─ models
-│  │  ├─ auth
-│  │  │  ├─ auth.model.ts
-│  │  │  ├─ create_account_model.dart
-│  │  │  ├─ login_model.dart
-│  │  │  └─ verify_account_model.dart
-│  │  ├─ courses_study
-│  │  │  └─ courses_study_model.dart
-│  │  ├─ dashboard
-│  │  │  ├─ algo2_model.dart
-│  │  │  └─ dashboard_model.dart
-│  │  ├─ files
-│  │  │  ├─ files_algo2_model.dart
-│  │  │  └─ files_model.dart
-│  │  ├─ leaderboard
-│  │  │  └─ leaderboard_model.dart
-│  │  ├─ profil
-│  │  │  └─ profil_model.dart
-│  │  └─ quiz
-│  │     ├─ algo2_quiz_model.dart
-│  │     └─ quiz_model.dart
-│  ├─ routes
-│  │  ├─ authroutes.ts
-│  │  ├─ leaderboard.routes.ts
-│  │  └─ user.routes.ts
-│  ├─ service
-│  │  ├─ AuthService.ts
-│  │  ├─ auth_services.dart
-│  │  ├─ email.service.ts
-│  │  ├─ leaderboard.service.ts
-│  │  ├─ LoginService.dart
-│  │  ├─ serviceXML.dart
-│  │  └─ user.service.ts
-│  ├─ utils
-│  │  └─ verificationStore.ts
-│  └─ views
-│     ├─ auth
-│     │  ├─ create_account_page.dart
-│     │  ├─ login_page.dart
-│     │  └─ welcome
-│     │     └─ welcome_page.dart
-│     ├─ courses_study_page
-│     │  └─ courses_study_page.dart
-│     ├─ dashboard
-│     │  ├─ algo2_grid.dart
-│     │  └─ dashboard_page.dart
-│     ├─ files
-│     │  ├─ algo2_files_grid.dart
-│     │  └─ files_page.dart
-│     ├─ leaderboard
-│     │  └─ leaderboard_page.dart
-│     ├─ pdf_images_views
-│     │  ├─ image_viewer_page.dart
-│     │  └─ pdf_viewer_page.dart
-│     ├─ profil
-│     │  └─ profil_page.dart
-│     └─ quiz
-│        ├─ quiz_page_content.dart
-│        ├─ quiz_selection_page.dart
-│        └─ widgets
-│           ├─ quiz_chapters_grid.dart
-│           └─ quiz_intensity_selector.dart
-├─ LICENSE
-├─ linux
-│  ├─ CMakeLists.txt
-│  ├─ flutter
-│  │  ├─ CMakeLists.txt
-│  │  ├─ ephemeral
-│  │  │  └─ .plugin_symlinks
-│  │  │     ├─ device_info_plus
-│  │  │     │  ├─ android
-│  │  │     │  │  ├─ build.gradle
-│  │  │     │  │  ├─ gradle
-│  │  │     │  │  │  └─ wrapper
-│  │  │     │  │  │     └─ gradle-wrapper.properties
-│  │  │     │  │  ├─ gradle.properties
-│  │  │     │  │  ├─ settings.gradle
-│  │  │     │  │  └─ src
-│  │  │     │  │     └─ main
-│  │  │     │  │        ├─ AndroidManifest.xml
-│  │  │     │  │        └─ kotlin
-│  │  │     │  │           └─ dev
-│  │  │     │  │              └─ fluttercommunity
-│  │  │     │  │                 └─ plus
-│  │  │     │  │                    └─ device_info
-│  │  │     │  │                       ├─ DeviceInfoPlusPlugin.kt
-│  │  │     │  │                       └─ MethodCallHandlerImpl.kt
-│  │  │     │  ├─ CHANGELOG.md
-│  │  │     │  ├─ example
-│  │  │     │  │  ├─ android
-│  │  │     │  │  │  ├─ app
-│  │  │     │  │  │  │  ├─ build.gradle
-│  │  │     │  │  │  │  └─ src
-│  │  │     │  │  │  │     ├─ debug
-│  │  │     │  │  │  │     │  └─ AndroidManifest.xml
-│  │  │     │  │  │  │     ├─ main
-│  │  │     │  │  │  │     │  ├─ AndroidManifest.xml
-│  │  │     │  │  │  │     │  ├─ kotlin
-│  │  │     │  │  │  │     │  │  └─ io
-│  │  │     │  │  │  │     │  │     └─ flutter
-│  │  │     │  │  │  │     │  │        └─ plugins
-│  │  │     │  │  │  │     │  │           └─ deviceinfoexample
-│  │  │     │  │  │  │     │  │              └─ example
-│  │  │     │  │  │  │     │  │                 └─ MainActivity.kt
-│  │  │     │  │  │  │     │  └─ res
-│  │  │     │  │  │  │     │     ├─ drawable
-│  │  │     │  │  │  │     │     │  └─ launch_background.xml
-│  │  │     │  │  │  │     │     ├─ mipmap-hdpi
-│  │  │     │  │  │  │     │     │  └─ ic_launcher.png
-│  │  │     │  │  │  │     │     ├─ mipmap-mdpi
-│  │  │     │  │  │  │     │     │  └─ ic_launcher.png
-│  │  │     │  │  │  │     │     ├─ mipmap-xhdpi
-│  │  │     │  │  │  │     │     │  └─ ic_launcher.png
-│  │  │     │  │  │  │     │     ├─ mipmap-xxhdpi
-│  │  │     │  │  │  │     │     │  └─ ic_launcher.png
-│  │  │     │  │  │  │     │     ├─ mipmap-xxxhdpi
-│  │  │     │  │  │  │     │     │  └─ ic_launcher.png
-│  │  │     │  │  │  │     │     └─ values
-│  │  │     │  │  │  │     │        └─ styles.xml
-│  │  │     │  │  │  │     └─ profile
-│  │  │     │  │  │  │        └─ AndroidManifest.xml
-│  │  │     │  │  │  ├─ build.gradle
-│  │  │     │  │  │  ├─ gradle
-│  │  │     │  │  │  │  └─ wrapper
-│  │  │     │  │  │  │     └─ gradle-wrapper.properties
-│  │  │     │  │  │  ├─ gradle.properties
-│  │  │     │  │  │  └─ settings.gradle
-│  │  │     │  │  ├─ integration_test
-│  │  │     │  │  │  └─ device_info_plus_test.dart
-│  │  │     │  │  ├─ ios
-│  │  │     │  │  │  ├─ Flutter
-│  │  │     │  │  │  │  ├─ AppFrameworkInfo.plist
-│  │  │     │  │  │  │  ├─ Debug.xcconfig
-│  │  │     │  │  │  │  └─ Release.xcconfig
-│  │  │     │  │  │  ├─ Runner
-│  │  │     │  │  │  │  ├─ AppDelegate.swift
-│  │  │     │  │  │  │  ├─ Assets.xcassets
-│  │  │     │  │  │  │  │  ├─ AppIcon.appiconset
-│  │  │     │  │  │  │  │  │  ├─ Contents.json
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-1024x1024@1x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-20x20@1x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-20x20@2x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-20x20@3x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-29x29@1x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-29x29@2x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-29x29@3x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-40x40@1x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-40x40@2x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-40x40@3x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-60x60@2x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-60x60@3x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-76x76@1x.png
-│  │  │     │  │  │  │  │  │  ├─ Icon-App-76x76@2x.png
-│  │  │     │  │  │  │  │  │  └─ Icon-App-83.5x83.5@2x.png
-│  │  │     │  │  │  │  │  └─ LaunchImage.imageset
-│  │  │     │  │  │  │  │     ├─ Contents.json
-│  │  │     │  │  │  │  │     ├─ LaunchImage.png
-│  │  │     │  │  │  │  │     ├─ LaunchImage@2x.png
-│  │  │     │  │  │  │  │     ├─ LaunchImage@3x.png
-│  │  │     │  │  │  │  │     └─ README.md
-│  │  │     │  │  │  │  ├─ Base.lproj
-│  │  │     │  │  │  │  │  ├─ LaunchScreen.storyboard
-│  │  │     │  │  │  │  │  └─ Main.storyboard
-│  │  │     │  │  │  │  ├─ Info.plist
-│  │  │     │  │  │  │  └─ Runner-Bridging-Header.h
-│  │  │     │  │  │  ├─ Runner.xcodeproj
-│  │  │     │  │  │  │  ├─ project.pbxproj
-│  │  │     │  │  │  │  ├─ project.xcworkspace
-│  │  │     │  │  │  │  │  ├─ contents.xcworkspacedata
-│  │  │     │  │  │  │  │  └─ xcshareddata
-│  │  │     │  │  │  │  │     ├─ IDEWorkspaceChecks.plist
-│  │  │     │  │  │  │  │     └─ WorkspaceSettings.xcsettings
-│  │  │     │  │  │  │  └─ xcshareddata
-│  │  │     │  │  │  │     └─ xcschemes
-│  │  │     │  │  │  │        └─ Runner.xcscheme
-│  │  │     │  │  │  ├─ Runner.xcworkspace
-│  │  │     │  │  │  │  ├─ contents.xcworkspacedata
-│  │  │     │  │  │  │  └─ xcshareddata
-│  │  │     │  │  │  │     ├─ IDEWorkspaceChecks.plist
-│  │  │     │  │  │  │     └─ WorkspaceSettings.xcsettings
-│  │  │     │  │  │  └─ RunnerTests
-│  │  │     │  │  │     └─ RunnerTests.swift
-│  │  │     │  │  ├─ lib
-│  │  │     │  │  │  └─ main.dart
-│  │  │     │  │  ├─ linux
-│  │  │     │  │  │  ├─ CMakeLists.txt
-│  │  │     │  │  │  ├─ flutter
-│  │  │     │  │  │  │  └─ CMakeLists.txt
-│  │  │     │  │  │  ├─ main.cc
-│  │  │     │  │  │  ├─ my_application.cc
-│  │  │     │  │  │  └─ my_application.h
-│  │  │     │  │  ├─ macos
-│  │  │     │  │  │  ├─ Flutter
-│  │  │     │  │  │  │  ├─ Flutter-Debug.xcconfig
-│  │  │     │  │  │  │  └─ Flutter-Release.xcconfig
-│  │  │     │  │  │  ├─ Runner
-│  │  │     │  │  │  │  ├─ AppDelegate.swift
-│  │  │     │  │  │  │  ├─ Assets.xcassets
-│  │  │     │  │  │  │  │  └─ AppIcon.appiconset
-│  │  │     │  │  │  │  │     ├─ app_icon_1024.png
-│  │  │     │  │  │  │  │     ├─ app_icon_128.png
-│  │  │     │  │  │  │  │     ├─ app_icon_16.png
-│  │  │     │  │  │  │  │     ├─ app_icon_256.png
-│  │  │     │  │  │  │  │     ├─ app_icon_32.png
-│  │  │     │  │  │  │  │     ├─ app_icon_512.png
-│  │  │     │  │  │  │  │     ├─ app_icon_64.png
-│  │  │     │  │  │  │  │     └─ Contents.json
-│  │  │     │  │  │  │  ├─ Base.lproj
-│  │  │     │  │  │  │  │  └─ MainMenu.xib
-│  │  │     │  │  │  │  ├─ Configs
-│  │  │     │  │  │  │  │  ├─ AppInfo.xcconfig
-│  │  │     │  │  │  │  │  ├─ Debug.xcconfig
-│  │  │     │  │  │  │  │  ├─ Release.xcconfig
-│  │  │     │  │  │  │  │  └─ Warnings.xcconfig
-│  │  │     │  │  │  │  ├─ DebugProfile.entitlements
-│  │  │     │  │  │  │  ├─ Info.plist
-│  │  │     │  │  │  │  ├─ MainFlutterWindow.swift
-│  │  │     │  │  │  │  └─ Release.entitlements
-│  │  │     │  │  │  ├─ Runner.xcodeproj
-│  │  │     │  │  │  │  ├─ project.pbxproj
-│  │  │     │  │  │  │  ├─ project.xcworkspace
-│  │  │     │  │  │  │  │  └─ xcshareddata
-│  │  │     │  │  │  │  │     └─ IDEWorkspaceChecks.plist
-│  │  │     │  │  │  │  └─ xcshareddata
-│  │  │     │  │  │  │     └─ xcschemes
-│  │  │     │  │  │  │        └─ Runner.xcscheme
-│  │  │     │  │  │  ├─ Runner.xcworkspace
-│  │  │     │  │  │  │  ├─ contents.xcworkspacedata
-│  │  │     │  │  │  │  └─ xcshareddata
-│  │  │     │  │  │  │     └─ IDEWorkspaceChecks.plist
-│  │  │     │  │  │  └─ RunnerTests
-│  │  │     │  │  │     └─ RunnerTests.swift
-│  │  │     │  │  ├─ pubspec.yaml
-│  │  │     │  │  ├─ README.md
-│  │  │     │  │  ├─ web
-│  │  │     │  │  │  ├─ favicon.png
-│  │  │     │  │  │  ├─ icons
-│  │  │     │  │  │  │  ├─ Icon-192.png
-│  │  │     │  │  │  │  └─ Icon-512.png
-│  │  │     │  │  │  ├─ index.html
-│  │  │     │  │  │  └─ manifest.json
-│  │  │     │  │  └─ windows
-│  │  │     │  │     ├─ CMakeLists.txt
-│  │  │     │  │     ├─ flutter
-│  │  │     │  │     │  └─ CMakeLists.txt
-│  │  │     │  │     └─ runner
-│  │  │     │  │        ├─ CMakeLists.txt
-│  │  │     │  │        ├─ flutter_window.cpp
-│  │  │     │  │        ├─ flutter_window.h
-│  │  │     │  │        ├─ main.cpp
-│  │  │     │  │        ├─ resource.h
-│  │  │     │  │        ├─ resources
-│  │  │     │  │        │  └─ app_icon.ico
-│  │  │     │  │        ├─ Runner.rc
-│  │  │     │  │        ├─ run_loop.cpp
-│  │  │     │  │        ├─ run_loop.h
-│  │  │     │  │        ├─ utils.cpp
-│  │  │     │  │        ├─ utils.h
-│  │  │     │  │        ├─ win32_window.cpp
-│  │  │     │  │        └─ win32_window.h
-│  │  │     │  ├─ ios
-│  │  │     │  │  ├─ Classes
-│  │  │     │  │  │  ├─ FPPDeviceInfoPlusPlugin.h
-│  │  │     │  │  │  └─ FPPDeviceInfoPlusPlugin.m
-│  │  │     │  │  ├─ device_info_plus.podspec
-│  │  │     │  │  └─ PrivacyInfo.xcprivacy
-│  │  │     │  ├─ lib
-│  │  │     │  │  ├─ device_info_plus.dart
-│  │  │     │  │  └─ src
-│  │  │     │  │     ├─ device_info_plus_linux.dart
-│  │  │     │  │     ├─ device_info_plus_macos.dart
-│  │  │     │  │     ├─ device_info_plus_web.dart
-│  │  │     │  │     ├─ device_info_plus_windows.dart
-│  │  │     │  │     └─ model
-│  │  │     │  │        ├─ android_device_info.dart
-│  │  │     │  │        ├─ ios_device_info.dart
-│  │  │     │  │        ├─ linux_device_info.dart
-│  │  │     │  │        ├─ macos_device_info.dart
-│  │  │     │  │        ├─ web_browser_info.dart
-│  │  │     │  │        └─ windows_device_info.dart
-│  │  │     │  ├─ LICENSE
-│  │  │     │  ├─ macos
-│  │  │     │  │  ├─ Classes
-│  │  │     │  │  │  ├─ CwlSysctl.swift
-│  │  │     │  │  │  ├─ DeviceInfoPlusMacosPlugin.swift
-│  │  │     │  │  │  └─ SystemUUID.swift
-│  │  │     │  │  └─ device_info_plus.podspec
-│  │  │     │  ├─ pubspec.yaml
-│  │  │     │  ├─ README.md
-│  │  │     │  └─ test
-│  │  │     │     ├─ device_info_plus_linux_test.dart
-│  │  │     │     ├─ device_info_plus_web_test.dart
-│  │  │     │     ├─ device_info_plus_windows_test.dart
-│  │  │     │     └─ model
-│  │  │     │        ├─ android_device_info_fake.dart
-│  │  │     │        ├─ android_device_info_test.dart
-│  │  │     │        ├─ ios_device_info_test.dart
-│  │  │     │        ├─ linux_device_info_test.dart
-│  │  │     │        ├─ macos_device_info_test.dart
-│  │  │     │        ├─ web_browser_info_test.dart
-│  │  │     │        └─ windows_device_info_test.dart
-│  │  │     ├─ open_file_linux
-│  │  │     │  ├─ analysis_options.yaml
-│  │  │     │  ├─ CHANGELOG.md
-│  │  │     │  ├─ lib
-│  │  │     │  │  ├─ open_file_linux.dart
-│  │  │     │  │  └─ parse_args.dart
-│  │  │     │  ├─ LICENSE
-│  │  │     │  ├─ linux
-│  │  │     │  │  ├─ CMakeLists.txt
-│  │  │     │  │  ├─ include
-│  │  │     │  │  │  └─ open_file_linux
-│  │  │     │  │  │     └─ open_file_linux_plugin.h
-│  │  │     │  │  ├─ open_file_linux_plugin.cc
-│  │  │     │  │  ├─ open_file_linux_plugin_private.h
-│  │  │     │  │  └─ test
-│  │  │     │  │     └─ open_file_linux_plugin_test.cc
-│  │  │     │  ├─ pubspec.yaml
-│  │  │     │  ├─ README.md
-│  │  │     │  └─ test
-│  │  │     │     └─ open_file_linux_test.dart
-│  │  │     ├─ path_provider_linux
-│  │  │     │  ├─ AUTHORS
-│  │  │     │  ├─ CHANGELOG.md
-│  │  │     │  ├─ example
-│  │  │     │  │  ├─ integration_test
-│  │  │     │  │  │  └─ path_provider_test.dart
-│  │  │     │  │  ├─ lib
-│  │  │     │  │  │  └─ main.dart
-│  │  │     │  │  ├─ linux
-│  │  │     │  │  │  ├─ CMakeLists.txt
-│  │  │     │  │  │  ├─ flutter
-│  │  │     │  │  │  │  ├─ CMakeLists.txt
-│  │  │     │  │  │  │  └─ generated_plugins.cmake
-│  │  │     │  │  │  ├─ main.cc
-│  │  │     │  │  │  ├─ my_application.cc
-│  │  │     │  │  │  └─ my_application.h
-│  │  │     │  │  ├─ pubspec.yaml
-│  │  │     │  │  ├─ README.md
-│  │  │     │  │  └─ test_driver
-│  │  │     │  │     └─ integration_test.dart
-│  │  │     │  ├─ lib
-│  │  │     │  │  ├─ path_provider_linux.dart
-│  │  │     │  │  └─ src
-│  │  │     │  │     ├─ get_application_id.dart
-│  │  │     │  │     ├─ get_application_id_real.dart
-│  │  │     │  │     ├─ get_application_id_stub.dart
-│  │  │     │  │     └─ path_provider_linux.dart
-│  │  │     │  ├─ LICENSE
-│  │  │     │  ├─ pubspec.yaml
-│  │  │     │  ├─ README.md
-│  │  │     │  └─ test
-│  │  │     │     ├─ get_application_id_test.dart
-│  │  │     │     └─ path_provider_linux_test.dart
-│  │  │     └─ url_launcher_linux
-│  │  │        ├─ AUTHORS
-│  │  │        ├─ CHANGELOG.md
-│  │  │        ├─ example
-│  │  │        │  ├─ integration_test
-│  │  │        │  │  └─ url_launcher_test.dart
-│  │  │        │  ├─ lib
-│  │  │        │  │  └─ main.dart
-│  │  │        │  ├─ linux
-│  │  │        │  │  ├─ CMakeLists.txt
-│  │  │        │  │  ├─ flutter
-│  │  │        │  │  │  ├─ CMakeLists.txt
-│  │  │        │  │  │  └─ generated_plugins.cmake
-│  │  │        │  │  ├─ main.cc
-│  │  │        │  │  ├─ my_application.cc
-│  │  │        │  │  └─ my_application.h
-│  │  │        │  ├─ pubspec.yaml
-│  │  │        │  ├─ README.md
-│  │  │        │  └─ test_driver
-│  │  │        │     └─ integration_test.dart
-│  │  │        ├─ lib
-│  │  │        │  ├─ src
-│  │  │        │  │  └─ messages.g.dart
-│  │  │        │  └─ url_launcher_linux.dart
-│  │  │        ├─ LICENSE
-│  │  │        ├─ linux
-│  │  │        │  ├─ CMakeLists.txt
-│  │  │        │  ├─ include
-│  │  │        │  │  └─ url_launcher_linux
-│  │  │        │  │     └─ url_launcher_plugin.h
-│  │  │        │  ├─ messages.g.cc
-│  │  │        │  ├─ messages.g.h
-│  │  │        │  ├─ test
-│  │  │        │  │  └─ url_launcher_linux_test.cc
-│  │  │        │  ├─ url_launcher_plugin.cc
-│  │  │        │  └─ url_launcher_plugin_private.h
-│  │  │        ├─ pigeons
-│  │  │        │  ├─ copyright.txt
-│  │  │        │  └─ messages.dart
-│  │  │        ├─ pubspec.yaml
-│  │  │        ├─ README.md
-│  │  │        └─ test
-│  │  │           └─ url_launcher_linux_test.dart
-│  │  ├─ generated_plugins.cmake
-│  │  ├─ generated_plugin_registrant.cc
-│  │  └─ generated_plugin_registrant.h
-│  └─ runner
-│     ├─ CMakeLists.txt
-│     ├─ main.cc
-│     ├─ my_application.cc
-│     └─ my_application.h
-├─ macos
-│  ├─ Flutter
-│  │  ├─ ephemeral
-│  │  │  ├─ Flutter-Generated.xcconfig
-│  │  │  └─ flutter_export_environment.sh
-│  │  ├─ Flutter-Debug.xcconfig
-│  │  └─ Flutter-Release.xcconfig
-│  ├─ Runner
-│  │  ├─ AppDelegate.swift
-│  │  ├─ Assets.xcassets
-│  │  │  └─ AppIcon.appiconset
-│  │  │     ├─ app_icon_1024.png
-│  │  │     ├─ app_icon_128.png
-│  │  │     ├─ app_icon_16.png
-│  │  │     ├─ app_icon_256.png
-│  │  │     ├─ app_icon_32.png
-│  │  │     ├─ app_icon_512.png
-│  │  │     ├─ app_icon_64.png
-│  │  │     └─ Contents.json
-│  │  ├─ Base.lproj
-│  │  │  └─ MainMenu.xib
-│  │  ├─ Configs
-│  │  │  ├─ AppInfo.xcconfig
-│  │  │  ├─ Debug.xcconfig
-│  │  │  ├─ Release.xcconfig
-│  │  │  └─ Warnings.xcconfig
-│  │  ├─ DebugProfile.entitlements
-│  │  ├─ Info.plist
-│  │  ├─ MainFlutterWindow.swift
-│  │  └─ Release.entitlements
-│  ├─ Runner.xcodeproj
-│  │  ├─ project.pbxproj
-│  │  ├─ project.xcworkspace
-│  │  │  └─ xcshareddata
-│  │  │     └─ IDEWorkspaceChecks.plist
-│  │  └─ xcshareddata
-│  │     └─ xcschemes
-│  │        └─ Runner.xcscheme
-│  ├─ Runner.xcworkspace
-│  │  ├─ contents.xcworkspacedata
-│  │  └─ xcshareddata
-│  │     └─ IDEWorkspaceChecks.plist
-│  └─ RunnerTests
-│     └─ RunnerTests.swift
-├─ package-lock.json
-├─ package.json
-├─ prisma
-│  └─ schema.prisma
-├─ pubspec.lock
-├─ pubspec.yaml
-├─ README.md
-├─ test
-│  └─ widget_test.dart
-├─ tsconfig.json
-├─ web
-│  ├─ favicon.png
-│  ├─ icons
-│  │  ├─ Icon-192.png
-│  │  ├─ Icon-512.png
-│  │  ├─ Icon-maskable-192.png
-│  │  └─ Icon-maskable-512.png
-│  ├─ index.html
-│  └─ manifest.json
-└─ windows
-   ├─ CMakeLists.txt
-   ├─ flutter
-   │  ├─ CMakeLists.txt
-   │  ├─ generated_plugins.cmake
-   │  ├─ generated_plugin_registrant.cc
-   │  └─ generated_plugin_registrant.h
-   └─ runner
-      ├─ CMakeLists.txt
-      ├─ flutter_window.cpp
-      ├─ flutter_window.h
-      ├─ main.cpp
-      ├─ resource.h
-      ├─ resources
-      │  └─ app_icon.ico
-      ├─ Runner.rc
-      ├─ utils.cpp
-      ├─ utils.h
-      ├─ win32_window.cpp
-      └─ win32_window.h
+<h2 align="center">Admin Analytics</h2>
+
+<p align="center">
+  <img src="assets/screenshots/admin_dash.png" alt="Admin Dashboard" width="100%" />
+</p>
+
+<h2 align="center">Admin Dashboard</h2>
+
+<p align="center">
+  <img src="assets/screenshots/admin_us.png" alt="Admin Dashboard" width="100%" />
+</p>
+
+<h2 align="center">Admin Secret Code</h2>
+
+<p align="center">
+  <img src="assets/screenshots/admin_code.png" alt="Verification of Admin Secret Code" width="100%" />
+</p>
+
+---
+
+## 🗂️ Project Structure
 
 ```
->>>>>>> 46850abcd2dfdc0640306fe9acec79fbf8e3d894
+Lets_All_Go/
+│
+└──--
+    ├── index.ts
+    ├── tsconfig.json
+    ├── package.json
+    ├── .env
+    │
+    ├── prisma/
+    │   └── schema.prisma
+    │
+    ├── lib/
+    │   │
+    │   ├── controllers/
+    │   │   ├── auth/
+    │   │   │   ├── AuthController.ts
+    │   │   │   ├── login_controller.dart
+    │   │   │   ├── create_account_controller.dart
+    │   │   │   └── verify_account_controller.dart
+    │   │   │
+    │   │   ├── chapter/
+    │   │   │   └── ChapterController.ts
+    │   │   │
+    │   │   ├── courses_study/
+    │   │   │   ├── courses_study_controller.dart
+    │   │   │   └── chapter_quiz_controller.dart
+    │   │   │
+    │   │   ├── dashboard/
+    │   │   │   ├── dashboard_controller.dart
+    │   │   │   └── algo2_controller.dart
+    │   │   │
+    │   │   ├── files/
+    │   │   │   ├── files_controller.dart
+    │   │   │   └── files_algo2_controller.dart
+    │   │   │
+    │   │   ├── leaderboard/
+    │   │   │   └── leaderboard_controller.dart
+    │   │   │
+    │   │   ├── profil/
+    │   │   │   └── profil_controller.dart
+    │   │   │
+    │   │   └── quiz/
+    │   │       ├── base_quiz_controller.dart
+    │   │       ├── quiz_controller.dart
+    │   │       └── algo2_quiz_controller.dart
+    │   │
+    │   ├── middlewares/
+    │   │   └── auth/
+    │   │       └── auth.middleware.ts
+    │   │
+    │   ├── models/
+    │   │   ├── auth/
+    │   │   │   ├── auth.model.ts
+    │   │   │   ├── login_model.dart
+    │   │   │   ├── create_account_model.dart
+    │   │   │   └── verify_account_model.dart
+    │   │   │
+    │   │   ├── courses_study/
+    │   │   │   └── courses_study_model.dart
+    │   │   │
+    │   │   ├── dashboard/
+    │   │   │   ├── dashboard_model.dart
+    │   │   │   └── algo2_model.dart
+    │   │   │
+    │   │   ├── files/
+    │   │   │   └── files_model.dart
+    │   │   │
+    │   │   ├── leaderboard/
+    │   │   │   └── leaderboard_model.dart
+    │   │   │
+    │   │   └── quiz/
+    │   │       └── quiz_model.dart
+    │   │
+    │   ├── routes/
+    │   │   ├── auth/
+    │   │   │   └── authRoutes.ts
+    │   │   ├── chapter/
+    │   │   │   └── chapterRoutes.ts
+    │   │   ├── leaderboard/
+    │   │   │   └── leaderboardRoutes.ts
+    │   │   ├── quiz/
+    │   │   │   └── quizRoutes.ts
+    │   │   └── user/
+    │   │       └── userRoutes.ts
+    │   │
+    │   ├── services/
+    │   │   ├── auth/
+    │   │   │   ├── AuthService.ts
+    │   │   │   └── email.service.ts
+    │   │   ├── chapter/
+    │   │   │   └── chapter.service.ts
+    │   │   ├── leaderboard/
+    │   │   │   └── leaderboard.service.ts
+    │   │   ├── quiz/
+    │   │   │   └── quiz.service.ts
+    │   │   └── user/
+    │   │       └── user.service.ts
+    │   │
+    │   ├── utils/
+    │   │   └── verificationStore.ts
+    │   │
+    │   ├── service/                   ← Flutter services
+    │   │   ├── auth/
+    │   │   │   └── LoginService.dart
+    │   │   ├── quiz/
+    │   │   │   └── quiz_score_service.dart
+    │   │   ├── progress/
+    │   │   │   └── progress_service.dart
+    │   │   ├── auth_service.dart
+    │   │   ├── chapter_complete_service.dart
+    │   │   ├── language_service.dart
+    │   │   ├── LoginService.dart
+    │   │   └── serviceXML.dart
+    │   │
+    │   └── views/
+    │       ├── admin/
+    │       │   └── admin_welcome_page.dart
+    │       │
+    │       ├── auth/
+    │       │   ├── login_page.dart
+    │       │   ├── create_account_page.dart
+    │       │   └── welcome/
+    │       │       └── welcome_page.dart
+    │       │
+    │       ├── courses_study_page/
+    │       │   ├── courses_study_page.dart
+    │       │   └── chapter_quiz_page.dart
+    │       │
+    │       ├── dashboard/
+    │       │   ├── dashboard_page.dart
+    │       │   └── algo2_grid.dart
+    │       │
+    │       ├── files/
+    │       │   ├── files_page.dart
+    │       │   └── algo2_files_grid.dart
+    │       │
+    │       ├── leaderboard/
+    │       │   └── leaderboard_page.dart
+    │       │
+    │       ├── pdf_images_views/
+    │       │   ├── pdf_viewer_page.dart
+    │       │   └── image_viewer_page.dart
+    │       │
+    │       ├── profil/
+    │       │   └── profil_page.dart
+    │       │
+    │       └── quiz/
+    │           ├── quiz_selection_page.dart
+    │           └── quiz_page_content.dart
+    │
+    ├── assets/
+    │   ├── images/
+    │   │   ├── background.png
+    │   │   ├── background1.jpg
+    │   │   ├── logo1_login.png
+    │   │   ├── image_create_account.png
+    │   │   ├── icone_dash.png
+    │   │   ├── masscott01.png
+    │   │   ├── icons_algo1/
+    │   │   │   ├── basics_icone.png
+    │   │   │   ├── si_sinon_icon.png
+    │   │   │   ├── loops_icone.png
+    │   │   │   ├── vectors_matris_icon.png
+    │   │   │   └── fonction_procedure_icone.png
+    │   │   └── icons_algo2/
+    │   │       ├── data_structure_icone.png
+    │   │       ├── files_icone.png
+    │   │       ├── listes_icones.png
+    │   │       └── stacks_icone.png
+    │   │
+    │   ├── sounds/
+    │   │   ├── PRESS_1.wav
+    │   │   ├── PRESS_2.wav
+    │   │   ├── CORRECTANSWER.mp3
+    │   │   ├── WRONGANSWER.mp3
+    │   │   └── CHEERS.wav
+    │   │
+    │   ├── data/
+    │   │   ├── algo1/
+    │   │   │   ├── cours/
+    │   │   │   │   ├── chapitre01.xml
+    │   │   │   │   ├── chapitre02.xml
+    │   │   │   │   ├── chapitre03.xml
+    │   │   │   │   ├── chapitre04.xml
+    │   │   │   │   └── chapitre05.xml
+    │   │   │   └── quiz/
+    │   │   │       ├── chapitre01.xml
+    │   │   │       ├── chapitre02.xml
+    │   │   │       ├── chapitre03.xml
+    │   │   │       ├── chapitre04.xml
+    │   │   │       └── chapitre05.xml
+    │   │   └── algo2/
+    │   │       ├── cours/
+    │   │       │   ├── chapitre01.xml
+    │   │       │   ├── chapitre02.xml
+    │   │       │   ├── chapitre03.xml
+    │   │       │   └── chapitre04.xml
+    │   │       └── quiz/
+    │   │           ├── chapitre01.xml
+    │   │           ├── chapitre02.xml
+    │   │           ├── chapitre03.xml
+    │   │           └── chapitre04.xml
+    │   │
+    │   └── files/                     ← academic files (PDFs, images)
+    │
+    ├── pubspec.yaml
+    ├── analysis_options.yaml
+    └── node_modules/
+```
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer            | Technology            | Purpose                                                      |
+| ---------------- | --------------------- | ------------------------------------------------------------ |
+| Mobile Frontend  | Flutter 3.x           | Cross-platform mobile UI (iOS & Android)                     |
+| Backend API      | Node.js + Express     | RESTful API server                                           |
+| ORM              | Prisma                | Type-safe database access layer                              |
+| Database         | PostgreSQL (Supabase) | Relational data storage and real-time capabilities           |
+| Auth & Storage   | Supabase              | Authentication, file storage, row-level security             |
+| Email Service    | Brevo                 | Automated transactional emails (registration, notifications) |
+| Music Production | FL Studio             | Original in-app ambient soundtrack                           |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (v3.x or above)
+- [Node.js](https://nodejs.org/) (v18 or above) and npm
+- A [Supabase](https://supabase.com/) account with a project created
+- A [Brevo](https://www.brevo.com/) account for email credentials
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-org/LetsAllGo.git
+cd LetsAllGo
+```
+
+### 2. Set up the backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Fill in your Supabase DATABASE_URL and Brevo API key in .env
+npx prisma migrate dev
+npm run dev
+```
+
+### 3. Set up the mobile app
+
+```bash
+cd mobile
+flutter pub get
+# Update lib/utils/constants.dart with your backend API base URL
+flutter run
+```
+
+---
+
+## 👥 Team
+
+LetsAllGo was conceived and built as a graduation project by seven members:
+
+| Name                   | Role                                             |
+| ---------------------- | ------------------------------------------------ |
+| **Ilyes Kersani**      | Project Lead & Frontend Developer                |
+| **Mohamed Ali Lebsir** | Flutter & Backend Developer (Most contributions) |
+| **Zakaria Laadj**      | Flutter Developer & UI/UX Designer               |
+| **Yacine Madani**      | Backend Developer & Sound Designer(FL Studio)    |
+| **Arezki Lounis**      | Report Structure & Database Setup                |
+| **Fouad Mahrez**       | Content & Academic Resources                     |
+| **Mouloud Kherbouche** | Database Schema & Corrections                    |
+
+---
+
+## 🤝 Contributing
+
+This project was developed as a university graduation project. External contributions are not open at this time. For academic inquiries or collaboration proposals, please open an issue.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">
+  <em>Built with care by seven students who wanted to make studying algorithms a little less painful — and a little more rewarding.</em>
+</p>
