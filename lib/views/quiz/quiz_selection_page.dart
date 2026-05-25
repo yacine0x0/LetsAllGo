@@ -733,9 +733,8 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                         color: Colors.green, size: h * 0.03),
                     const SizedBox(width: 12),
                     Text(
-                        _lang.t("Configuration du Quiz",
-                                "Quiz Configuration") +
-                            " — ${_selectedAlgo == 1 ? "Algo 1" : "Algo 2"}",
+                        "${_lang.t("Configuration du Quiz",
+                                "Quiz Configuration")} — ${_selectedAlgo == 1 ? "Algo 1" : "Algo 2"}",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: h * 0.022,
@@ -944,8 +943,7 @@ class _QuizSelectionPageState extends State<QuizSelectionPage> {
                       color: Colors.blue, size: h * 0.022),
                   const SizedBox(width: 8),
                   Text(
-                      _lang.t("Infos Quiz", "Quiz Info") +
-                          " — ${_selectedAlgo == 1 ? "Algo 1" : "Algo 2"}",
+                      "${_lang.t("Infos Quiz", "Quiz Info")} — ${_selectedAlgo == 1 ? "Algo 1" : "Algo 2"}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: h * 0.020,

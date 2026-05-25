@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:ui';
 import '../../controllers/admin_controllers/analytics_controller.dart';
-import '../../models/admin_models/analytics_model.dart';
 import '../admin/admin_page.dart';
 import '../admin/profil_admin_page.dart';
 import '../auth/login_page.dart';
@@ -135,7 +134,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
               Image.asset(
                 "assets/images/icone_dash.png",
                 width: h * 0.13, height: h * 0.13,
-                errorBuilder: (_, __, ___) =>
+                errorBuilder: (_, _, _) =>
                     const Icon(Icons.school, color: Colors.blue, size: 40),
               ),
               SizedBox(height: h * 0.04),
@@ -148,8 +147,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                           MaterialPageRoute(builder: (_) => const AdminPage()));
                     } else if (entry.key == 2) {
                       Navigator.of(context).push(PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const ProfilePage(),
-                        transitionsBuilder: (_, animation, __, child) =>
+                        pageBuilder: (_, _, _) => const ProfilePage(),
+                        transitionsBuilder: (_, animation, _, child) =>
                             SlideTransition(
                           position: Tween(
                                   begin: const Offset(0.0, 1.0),
@@ -174,8 +173,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                 onTap: () => Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => const LoginPage(),
-                    transitionsBuilder: (_, anim, __, child) =>
+                    pageBuilder: (_, _, _) => const LoginPage(),
+                    transitionsBuilder: (_, anim, _, child) =>
                         FadeTransition(opacity: anim, child: child),
                   ),
                 ),

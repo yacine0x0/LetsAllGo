@@ -292,7 +292,9 @@ class Algo2QuizController implements BaseQuizController {
 
   @override
   void resetSession() {
-    for (final quiz in _session.quizzes) quiz.reset();
+    for (final quiz in _session.quizzes) {
+      quiz.reset();
+    }
     _session.currentQuizIndex = 0;
   }
 }

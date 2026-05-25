@@ -27,7 +27,7 @@ class ChapterQuizPage extends StatefulWidget {
 }
 
 class _ChapterQuizPageState extends State<ChapterQuizPage> {
-  bool?        _answerChecked       = null;
+  bool?        _answerChecked;
   List<String> _currentOrder        = [];
   bool         _quizCompleted       = false;
   bool         _isQuestionValidated = false;
@@ -483,7 +483,7 @@ class _ChapterQuizPageState extends State<ChapterQuizPage> {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis),
             ),
-            if (trailingIcon != null) trailingIcon,
+            ?trailingIcon,
           ]),
         ),
       );

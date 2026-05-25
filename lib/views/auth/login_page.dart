@@ -65,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
       final role = LoginController.currentUser?.role ?? 'etudiant';
       if (role == 'admin') {
         Navigator.pushReplacement(context, PageRouteBuilder(
-          pageBuilder: (_, __, ___) => const AdminWelcomePage(),
-          transitionsBuilder: (_, anim, __, child) =>
+          pageBuilder: (_, _, _) => const AdminWelcomePage(),
+          transitionsBuilder: (_, anim, _, child) =>
               FadeTransition(opacity: anim, child: child),
           transitionDuration: const Duration(milliseconds: 400),
         ));

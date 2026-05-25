@@ -83,7 +83,7 @@ model utilisateur {
   motdepasse           String
   dateinscription      DateTime?              @default(now()) @db.Timestamp(6)
   scoretotal           Int?                   @default(0)
-  rang                 Int?                   @unique
+  rang                 Int?
   etudie               etudie[]
   obtient              obtient[]
   passe                passe[]
@@ -146,7 +146,7 @@ model passe {
   id_etudiant String      @db.Uuid
   id_quiz     String      @db.Uuid
   datepassage DateTime?   @default(now()) @db.Timestamp(6)
-  utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  utilisateur utilisateur @relation(fields: [id_etudiant], references: [id], onDelete: Cascade)
   quizz       quizz       @relation(fields: [id_quiz], references: [id_quiz], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([id_etudiant, id_quiz])

@@ -21,9 +21,9 @@ class QuizScoreService {
         'correctAnswers': correctAnswers,
         'algoType':       algoType,
         // ✅ On envoie "Chapitre 01" directement, le serveur fait le mapping
-        if (chapterName    != null) 'chapterName':    chapterName,
-        if (totalQuestions != null) 'totalQuestions': totalQuestions,
-        if (intensity      != null) 'intensity':      intensity,
+        'chapterName':    ?chapterName,
+        'totalQuestions': ?totalQuestions,
+        'intensity':      ?intensity,
       };
 
       print('📤 Envoi quiz: $body');

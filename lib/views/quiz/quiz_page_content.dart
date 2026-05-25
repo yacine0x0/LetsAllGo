@@ -33,7 +33,7 @@ class QuizPageContent extends StatefulWidget {
 class _QuizPageContentState extends State<QuizPageContent> {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
-  bool?        _answerChecked       = null;
+  bool?        _answerChecked;
   List<String> _currentOrder        = [];
   bool         _quizCompleted       = false;
   bool         _isQuestionValidated = false;
@@ -372,7 +372,7 @@ Future<void> _submitAndComplete() async {
           Image.asset("assets/images/icone_dash.png",
               height: h * 0.12,
               width:  w * 0.12,
-              errorBuilder: (_, __, ___) => const Icon(
+              errorBuilder: (_, _, _) => const Icon(
                   Icons.school, color: Colors.blue, size: 40)),
           SizedBox(width: w * 0.02),
           Container(width: 1, height: h * 0.05, color: Colors.white24),
@@ -856,8 +856,7 @@ Future<void> _submitAndComplete() async {
                     color:        Colors.blue.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  _lang.t("Question ", "Question ") +
-                      "${widget.controller.currentQuestionIndex + 1} ${_lang.t("sur", "of")} ${widget.controller.totalQuestionsInCurrentQuiz}",
+                  "${_lang.t("Question ", "Question ")}${widget.controller.currentQuestionIndex + 1} ${_lang.t("sur", "of")} ${widget.controller.totalQuestionsInCurrentQuiz}",
                   style: TextStyle(
                       color:      Colors.blue,
                       fontSize:   h * 0.016,
@@ -971,7 +970,7 @@ Future<void> _submitAndComplete() async {
                           fontSize: h * 0.016),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis)),
-              if (trailingIcon != null) trailingIcon,
+              ?trailingIcon,
             ],
           ),
         ),
@@ -1397,8 +1396,7 @@ Future<void> _submitAndComplete() async {
                                   size: h * 0.016),
                               const SizedBox(width: 6),
                               Text(
-                                  _lang.t("Question ", "Question ") +
-                                      "${index + 1}",
+                                  "${_lang.t("Question ", "Question ")}${index + 1}",
                                   style: TextStyle(
                                       color: isCurrent
                                           ? Colors.white

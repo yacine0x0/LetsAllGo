@@ -30,7 +30,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProvider
     LogicalKeyboardKey.arrowUp,
   ];
 
-  List<LogicalKeyboardKey> _currentInput = [];
+  final List<LogicalKeyboardKey> _currentInput = [];
   bool _codeSuccess = false;
   bool _codeError = false;
   String _statusMessage = "";
@@ -62,7 +62,9 @@ class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProvider
     final key = event.logicalKey;
 
     if (![LogicalKeyboardKey.arrowUp, LogicalKeyboardKey.arrowDown, LogicalKeyboardKey.arrowLeft, LogicalKeyboardKey.arrowRight]
-        .contains(key)) return;
+        .contains(key)) {
+      return;
+    }
 
     _handleKeyInput(key);
   }
@@ -107,8 +109,8 @@ class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProvider
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const AdminPage(),
-        transitionsBuilder: (_, anim, __, child) => FadeTransition(opacity: anim, child: child),
+        pageBuilder: (_, _, _) => const AdminPage(),
+        transitionsBuilder: (_, anim, _, child) => FadeTransition(opacity: anim, child: child),
       ),
     );
   }
@@ -199,7 +201,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProvider
                       children: [
                         AnimatedBuilder(
                           animation: _pulseCtrl,
-                          builder: (_, __) {
+                          builder: (_, _) {
                             final glow = _codeSuccess ? 1.0 : _pulseCtrl.value;
                             return Container(
                               padding: EdgeInsets.all(h * 0.025),
@@ -275,8 +277,9 @@ class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProvider
         final isWrong = isEntered && !isCorrectSoFar;
 
         Color color = Colors.white24;
-        if (_codeSuccess) color = const Color(0xFF00FF9D);
-        else if (isWrong || (_codeError && isEntered)) color = Colors.red.shade400;
+        if (_codeSuccess) {
+          color = const Color(0xFF00FF9D);
+        } else if (isWrong || (_codeError && isEntered)) color = Colors.red.shade400;
         else if (isEntered) color = Colors.blue;
 
         return Padding(
@@ -299,7 +302,7 @@ class _AdminWelcomePageState extends State<AdminWelcomePage> with TickerProvider
   Widget _buildActionButton(double h, LanguageService lang) {
     return AnimatedBuilder(
       animation: _pulseCtrl,
-      builder: (_, __) {
+      builder: (_, _) {
         return Transform.scale(
           scale: _codeSuccess ? 1.02 : 1.0,
           child: GestureDetector(
